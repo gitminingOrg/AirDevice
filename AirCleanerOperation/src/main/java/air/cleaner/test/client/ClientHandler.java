@@ -1,13 +1,14 @@
 package air.cleaner.test.client;
 
+import model.MCPPacket;
+
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import air.cleaner.model.MCPPacket;
-import air.cleaner.utils.ByteUtil;
+import utils.ByteUtil;
 
 public class ClientHandler extends IoHandlerAdapter{
 	public static Logger LOG = LoggerFactory.getLogger(ClientHandler.class);

@@ -2,6 +2,8 @@ package air.cleaner.device.controller;
 
 import java.util.Set;
 
+import model.ResultMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import air.cleaner.cache.SessionCacheManager;
 import air.cleaner.device.service.DeviceControlService;
-import air.cleaner.model.ResultMap;
 
 @RestController
 public class MockNotifyController {

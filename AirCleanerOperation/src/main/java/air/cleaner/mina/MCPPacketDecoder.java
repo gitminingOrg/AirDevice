@@ -1,5 +1,8 @@
 package air.cleaner.mina;
 
+import model.HeartbeatMCPPacket;
+import model.MCPPacket;
+
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
@@ -7,9 +10,7 @@ import org.apache.mina.filter.codec.ProtocolDecoderOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import air.cleaner.model.MCPPacket;
-import air.cleaner.model.HeartbeatMCPPacket;
-import air.cleaner.utils.ByteUtil;
+import utils.ByteUtil;
 
 public class MCPPacketDecoder extends CumulativeProtocolDecoder {
 	public static Logger LOG = LoggerFactory.getLogger(MCPPacketDecoder.class);

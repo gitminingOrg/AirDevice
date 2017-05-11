@@ -1,12 +1,12 @@
 package air.cleaner.cache;
 
+import model.DeviceInfo;
 import net.spy.memcached.MemcachedClient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import air.cleaner.model.DeviceInfo;
-import air.cleaner.utils.TimeUtil;
+import utils.TimeUtil;
 
 @Repository
 public class DeviceInfoCacheManager {

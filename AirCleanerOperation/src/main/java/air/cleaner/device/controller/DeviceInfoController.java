@@ -2,16 +2,17 @@ package air.cleaner.device.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import model.DeviceInfo;
+import model.ResultMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import utils.Constant;
 import air.cleaner.device.service.DeviceControlService;
 import air.cleaner.device.service.DeviceReceiveService;
-import air.cleaner.model.DeviceInfo;
-import air.cleaner.model.ResultMap;
-import air.cleaner.utils.Constant;
 @RequestMapping(value="/device/info")
 @RestController
 public class DeviceInfoController {
