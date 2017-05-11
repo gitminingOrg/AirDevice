@@ -1,4 +1,4 @@
-package utils;
+package air.cleaner.utils;
 
 import java.util.Arrays;
 

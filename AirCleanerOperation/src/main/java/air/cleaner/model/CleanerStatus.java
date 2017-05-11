@@ -1,13 +1,13 @@
-package model;
+package air.cleaner.model;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import utils.Constant;
-import utils.MethodUtil;
-import annotation.AQIData;
-import annotation.Command;
+import air.cleaner.annotation.AQIData;
+import air.cleaner.annotation.Command;
+import air.cleaner.utils.Constant;
+import air.cleaner.utils.MethodUtil;
 
 public class CleanerStatus implements Serializable{
 	

@@ -1,12 +1,12 @@
-package model;
+package air.cleaner.model;
 
 import java.io.Serializable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.ByteUtil;
-import utils.CRC16;
+import air.cleaner.utils.ByteUtil;
+import air.cleaner.utils.CRC16;
 
 
 public class MCPPacket implements Serializable{

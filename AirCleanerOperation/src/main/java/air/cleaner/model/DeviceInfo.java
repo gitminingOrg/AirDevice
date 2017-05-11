@@ -1,9 +1,9 @@
-package model;
+package air.cleaner.model;
 
 import java.io.Serializable;
 
-import utils.Constant;
-import annotation.Command;
+import air.cleaner.annotation.Command;
+import air.cleaner.utils.Constant;
 
 public class DeviceInfo implements Serializable{
 

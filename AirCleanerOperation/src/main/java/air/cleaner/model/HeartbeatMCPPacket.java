@@ -1,13 +1,13 @@
-package model;
+package air.cleaner.model;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import utils.ByteUtil;
-import utils.MethodUtil;
-import annotation.AQIData;
+import air.cleaner.annotation.AQIData;
+import air.cleaner.utils.ByteUtil;
+import air.cleaner.utils.MethodUtil;
 
 /**
  * this is the heartbeat form-like MCPPacket, specialized for AQI heartbeat data
