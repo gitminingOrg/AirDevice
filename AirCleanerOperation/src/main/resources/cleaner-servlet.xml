@@ -12,7 +12,7 @@
 	<context:annotation-config />
 	<context:component-scan base-package="air.cleaner.device.controller"></context:component-scan>
 	<context:component-scan base-package="air.cleaner.vip.controller"></context:component-scan>
-	<mvc:resources location="/static/" mapping="/static/**" />
+	<mvc:resources location="/www/" mapping="/www/**" />
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
@@ -43,5 +43,10 @@
 	<!-- HandlerAdapter -->
 	<bean
 		class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
-
+		
+<!-- 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> -->
+<!-- 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property> -->
+<!-- 		<property name="prefix" value="/www/"></property> -->
+<!-- 		<property name="suffix" value=".html"></property> -->
+<!-- 	</bean> -->
 </beans>
