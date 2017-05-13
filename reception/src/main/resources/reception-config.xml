@@ -10,28 +10,10 @@
 		http://www.springframework.org/schema/context
       	http://www.springframework.org/schema/context/spring-context.xsd">
 	<context:annotation-config />
-	<context:component-scan base-package="air.cleaner.device.service"></context:component-scan>
-	<context:component-scan base-package="air.cleaner.vip.service"></context:component-scan>
-	<context:component-scan base-package="air.cleaner.cache"></context:component-scan>
-	<context:component-scan base-package="air.cleaner.dao"></context:component-scan>
-	<context:component-scan base-package="air.cleaner.config"></context:component-scan>
+	<context:component-scan base-package="device.service"></context:component-scan>
+	<context:component-scan base-package="vip.service"></context:component-scan>
+	<context:component-scan base-package="dao"></context:component-scan>
 	<context:property-placeholder location="classpath:config.properties" />	
-	<util:properties id="configFile" location="classpath:config.properties"></util:properties>
-	
-	<bean id="memcachedClient" class="net.spy.memcached.spring.MemcachedClientFactoryBean">
-		<property name="servers" value="127.0.0.1:11211" />
-		<property name="protocol" value="BINARY" />
-		<property name="transcoder">
-			<bean class="net.spy.memcached.transcoders.SerializingTranscoder">
-				<property name="compressionThreshold" value="1024" />
-			</bean>
-		</property>
-		<property name="opTimeout" value="1000" />
-		<property name="timeoutExceptionThreshold" value="1998" />
-		<property name="locatorType" value="CONSISTENT" />
-		<property name="failureMode" value="Redistribute" />
-		<property name="useNagleAlgorithm" value="false" />
-	</bean>
 	
 	<!-- 	mybatis config -->	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">

@@ -1,0 +1,61 @@
+﻿<ion-view view-title="QAir新风净化">
+  <ion-content class="padding" style="background-color:#FAFAFA">
+	<div class="list card">
+		<div class="item">
+			<button class="button button-small button-light"  ng-click="modal.show()"><i class="icon ion-location"></i> {{location}} <i class="icon ion-ios-arrow-down"></i></button>
+			<highchart style="width:85%;height:35%" id="gaugeChart" config="gaugeChart"></highchart>
+			<h2>空气质量: <span style="color:green">{{airQuality}}</span></h2>
+			<p>低污染，低PM2.5，对健康危害极小或无危害</p>
+		</div>
+
+		<div class="item item-toggle">
+	     电源
+	     <label class="toggle toggle-calm">
+	       <input type="checkbox" ng-click="start()">
+	       <div class="track">
+	         <div class="handle"></div>
+	       </div>
+	     </label>			
+		</div>
+
+		<div ng-if="power" class="item item-toggle">
+	     辅热
+	     <label class="toggle toggle-calm">
+	       <input type="checkbox">
+	       <div class="track">
+	         <div class="handle"></div>
+	       </div>
+	     </label>			
+		</div>
+
+		<div ng-if="power" class="item item-toggle">
+	     紫外
+	     <label class="toggle toggle-calm">
+	       <input type="checkbox">
+	       <div class="track">
+	         <div class="handle"></div>
+	       </div>
+	     </label>			
+		</div>
+
+	  <div ng-if="power" class="item">
+		  模式
+
+		  <div class="row">
+		  <div class="col"><button ng-click="setMode(1)" ng-class="{'button button-outline button-calm' : mode == 1, 'button button-outline button-stable':mode != 1}">自动模式</button></div>
+		  <div class="col"><button ng-click="setMode(2)" ng-class="{'button button-outline button-calm' : mode == 2, 'button button-outline button-stable':mode != 2}">睡眠模式</button></div>
+		  <div class="col"><button ng-click="setMode(3)" ng-class="{'button button-outline button-calm' : mode == 3, 'button button-outline button-stable':mode != 3}">手动模式</button></div>
+		  </div>
+
+		  
+		  <div ng-if="mode == 3" class="range range-positive">
+		  	<p>风量</p>
+            <i class="icon ion-ios-minus-empty"></i>
+            <input type="range" name="volume" min="0" max="5" value="2">
+            <i class="icon ion-ios-plus-empty"></i>
+          </div>
+	  </div>
+	</div>
+
+  </ion-content>
+</ion-view>

@@ -1,0 +1,26 @@
+﻿<ion-modal-view>
+  <ion-header-bar class="bar bar-header bar-calm">
+    <h1 class="title">wifi设置</h1>
+    <button class="button button-clear" ng-click="modal.hide()">取消</button>
+  </ion-header-bar>
+  <ion-content>
+
+    <div class="list list-inset">
+      <label class="item item-input">
+        <i class="icon ion-wifi placeholder-icon"></i>
+        <input type="text" placeholder="wifi" ng-model="ssid">
+      </label>
+    </div>
+
+    <div class="list list-inset">
+      <label class="item item-input">
+        <i class="icon ion-key placeholder-icon"></i>
+        <input type="text" placeholder="password"  ng-model="password">
+      </label>
+    </div>
+
+    <div class="padding">
+        <button class="button button-block button-calm" ng-click="broadcastWifi(ssid,password)">连接</button>
+    </div>
+  </ion-content>
+</ion-modal-view>
