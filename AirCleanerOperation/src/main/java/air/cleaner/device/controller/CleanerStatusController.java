@@ -117,6 +117,21 @@ public class CleanerStatusController {
 		return resultMap;
 	}
 	
+	@RequestMapping(value="/cycle/{cycle}")
+	public ResultMap cycleControl(@PathVariable("cycle")int cycle, HttpServletRequest request){
+		ResultMap resultMap = new ResultMap();
+		String device = request.getParameter("token");
+		boolean result = deviceControlService.statusControl(Constant.CYCLE, cycle, device);
+		if (result) {
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.setInfo("更新状态成功");
+		}else{
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.setInfo("更新状态失败");
+		}
+		return resultMap;
+	}
+	
 	@RequestMapping(value="/command/{CTF}/{command}/{data}")
 	public ResultMap generalCommand(@PathVariable("CTF")int CTF, @PathVariable("command")String command, @PathVariable("data") int data, HttpServletRequest request){
 		ResultMap resultMap = new ResultMap();

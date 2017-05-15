@@ -10,4 +10,11 @@ public class TimeUtil {
 		String time = sdf.format(calendar.getTime());
 		return time;
 	}
+	
+	public static String getCurrentDate(){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar calendar = Calendar.getInstance();
+		String time = sdf.format(calendar.getTime());
+		return time;
+	}
 }

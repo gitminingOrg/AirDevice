@@ -8,6 +8,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
           classpath:reception-config.xml
+          classpath:reception-task.xml
       </param-value>
 	</context-param>
 	<listener>

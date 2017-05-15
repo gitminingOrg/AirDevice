@@ -39,7 +39,7 @@ public class ClientTest extends Thread{
 	    
 	    
 	    while(true){
-	    	ConnectFuture cf = connector.connect(new InetSocketAddress("localhost", 8888));//建立连接 
+	    	ConnectFuture cf = connector.connect(new InetSocketAddress("commander.qingair.net", 8888));//建立连接 
 	    	cf.awaitUninterruptibly();//等待连接创建完成 
 	        
 	        byte[] FRH =new byte[]{-0x11};
