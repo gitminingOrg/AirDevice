@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userVip">
+	<resultMap type="bean.DeviceStatus" id="deviceStatus">
+		<result property="userID" column="user_id" />
+		<result property="deviceID" column="device_id" />
+		<result property="deviceName" column="device_name" />
+		<result property="role" column="role" />
+	</resultMap>
+	
+	<resultMap type="bean.UserDevice" id="userDevice">
+		<result property="userID" column="user_id" />
+		<result property="deviceID" column="device_id" />
+		<result property="role" column="role" />
+	</resultMap>
+	
+	<resultMap type="bean.DeviceName" id="deviceName">
+		<result property="deviceID" column="device_id" />
+		<result property="name" column="name" />
+		<result property="version" column="version" />
+	</resultMap>
+	
+	<resultMap type="model.CleanerStatus" id="cleanerStatus">
+		<result property="deviceID" column="device_id" />
+		<result property="pm25" column="pm25"/>
+		<result property="temperature" column="temperature"/>
+		<result property="humidity" column="humidity"/>
+		<result property="HCHO" column="hcho"/>
+		<result property="CO2" column="co2"/>
+		<result property="velocity" column="velocity"/>
+		<result property="power" column="power"/>
+		<result property="workMode" column="workmode"/>
+		<result property="UV" column="uv"/>
+		<result property="heat" column="heat"/>
+		<result property="light" column="light"/>
+		<result property="cycle" column="cycle"/>
+		<result property="time" column="time"/>
+	</resultMap>
+	
+	<select id="getUserDevice" resultMap="deviceStatus">
+		SELECT
+		ud.user_id AS user_id, ud.device_id AS device_id, dn.name AS device_name, ud.role AS role
+		FROM
+		userDevice ud, deviceName dn
+		WHERE
+		user_id = #{userID}
+	</select>
+	
+	<select id="getRecentDeviceStatus" resultMap="deviceStatus">
+		SELECT 
+		ud.user_id, ud.device_id, dn.device_name, ds.pm25, ds.temperature, 
+		ds.humidity, ds.hcho, ds.co2, ds.velocity, ds.power, ds.workmode, ds.uv, ds.heat,
+		ds.light, ds.cycle, ds.time
+		FROM 
+		userDevice ud, deviceName dn, deviceStatus ds
+		WHERE
+		user_id = #{userID} AND ud.device_id = dn.device_id AND ud.device_id = ds.device_id
+	</select>
+	
+	<select id="selectRecentCleanerStatus" resultMap="cleanerStatus">
+		SELECT device_id, pm25, temperature, humidity, hcho, 
+		co2, velocity, power, workmode, uv, heat,
+		light, cycle, time 
+		FROM
+		deviceStatus ds
+		WHERE
+		device_id
+		IN
+		(SELECT device_id FROM userDevice WHERE user_id = #{userID})
+		AND 
+		NOT EXISTS (SELECT * FROM deviceStatus ds2 WHERE ds2.time > ds.time AND ds2.device_id = ds.device_id)
+	</select>
+	
+	<insert id="insertNewUserDevice" parameterType="bean.UserDevice">
+		INSERT INTO
+		userDevice(user_id, device_id, role)
+		VALUES(#{userID}, #{deviceID}, #{role})
+	</insert>
+	
+	<select id="selectDeviceName" resultMap="deviceName">
+		SELECT 
+		device_id, name, version
+		FROM
+		deviceName
+		WHERE
+		device_id = #{deviceID}
+	</select>
+	
+	<insert id="insertDeviceName" parameterType="bean.DeviceName">
+		INSERT INTO
+		deviceName(device_id, name)
+		VALUES(#{deviceID}, #{name})
+	</insert>
+	
+	<update id="updateDeviceName" parameterType="bean.DeviceName">
+		UPDATE 
+		deviceName
+		SET
+		device_id = #{deviceID}
+		<if test="name != null">
+			,name = #{name}
+		</if>
+		<if test="version >= 0">
+			,version = #{version} + 1
+		</if>
+		WHERE
+		device_id = #{deviceID} AND version = #{version}
+	</update>
+</mapper>

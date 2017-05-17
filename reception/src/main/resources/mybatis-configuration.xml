@@ -3,5 +3,6 @@
 <configuration>
 	<mappers>
 		<mapper resource="mapper/userAction.xml" />
+		<mapper resource="mapper/userVip.xml" />
 	</mappers>
 </configuration>
