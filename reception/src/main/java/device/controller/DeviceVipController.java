@@ -48,6 +48,13 @@ public class DeviceVipController {
 		return resultMap;
 	}
 	
+	@RequestMapping("/authorize/{token}")
+	public ResultMap authorizeUser(@PathVariable("token") String token){
+		ResultMap resultMap = new ResultMap();
+		
+		return resultMap;
+	}
+	
 	@RequestMapping(value = "/name", method= RequestMethod.POST)
 	public ResultMap configName(@RequestBody DeviceName deviceName){
 		ResultMap resultMap = new ResultMap();

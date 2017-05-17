@@ -12,4 +12,5 @@ public class ReceptionConstant {
 	public static final String cycleControlPath = "/AirCleaner/device/status/cycle/%s?token=%s";
 	public static final String STATUS_LIST = "statusList";
 	public static final String DEVICE_NAME = "deviceName";
+	public static final String CLEANER_STATUS = "cleanerStatus";
 }

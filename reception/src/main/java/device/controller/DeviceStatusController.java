@@ -1,5 +1,6 @@
 package device.controller;
 
+import model.CleanerStatus;
 import model.ResultMap;
 import model.ReturnCode;
 
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import util.ReceptionConstant;
 import utils.Constant;
 import auth.UserComponent;
 import device.service.DeviceStatusService;
@@ -24,7 +26,15 @@ public class DeviceStatusController {
 	@RequestMapping("/device/{deviceID}")
 	public ResultMap getDeviceStatus(@PathVariable("deviceID")String device){
 		ResultMap resultMap = new ResultMap();
-		
+		String userID = UserComponent.getUserID();
+		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(device, userID);
+		if (cleanerStatus == null) {
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo("未找到相应设备状态");
+		}else {
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.addContent(ReceptionConstant.CLEANER_STATUS, cleanerStatus);
+		}
 		return resultMap;
 	}
 	

@@ -20,6 +20,16 @@
 		<result property="version" column="version" />
 	</resultMap>
 	
+	<resultMap type="bean.DeviceShareCode" id="deviceShareCode">
+		<result property="token" column="token"/>
+		<result property="deviceID" column="device_id" />
+		<result property="ownerID" column="owner_id" />
+		<result property="role" column="role" />
+		<result property="status" column="status" />
+		<result property="authID" column="auth_id" />
+		<result property="expireTime" column="expire_time" />
+	</resultMap>
+	
 	<resultMap type="model.CleanerStatus" id="cleanerStatus">
 		<result property="deviceID" column="device_id" />
 		<result property="pm25" column="pm25"/>
@@ -105,5 +115,36 @@
 		</if>
 		WHERE
 		device_id = #{deviceID} AND version = #{version}
+	</update>
+	
+	<select id="getDeviceShareCode" resultMap="deviceShareCode">
+		SELECT
+		token, device_id, owner_id, role, status, auth_id, expire_time
+		FROM
+		deviceShareCode
+		WHERE
+		token = #{token}
+	</select>
+	
+	<insert id="insertDeviceShareCode" parameterType="bean.DeviceShareCode">
+		INSERT INTO
+		deviceShareCode(token, device_id, owner_id, role, expire_time)
+		VALUES(token, deviceID, ownerID, role, expireTime)
+	</insert>
+	
+	<update id="updateDeviceShareCode" parameterType="bean.DeviceShareCode">
+		UPDATE 
+		deviceShareCode
+		SET
+		token = #{token}
+		<if test="auth_id != null">
+			
+		</if>
+		<if test="status >= 0">
+			,status = #{status}
+			,auth_id = #{authID}
+		</if>
+		WHERE
+		token = #{token} AND status = 1
 	</update>
 </mapper>
