@@ -8,9 +8,7 @@
 		<artifactId>aircleaner</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>owen</groupId>
 	<artifactId>reception</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>reception Maven Webapp</name>
 	<url>http://maven.apache.org</url>
@@ -296,6 +294,29 @@
 			<version>1.7.7</version>
 		</dependency>
 
+		<dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>1.2.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+            <version>1.2.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>1.2.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+            <version>1.2.4</version>
+        </dependency>
 	</dependencies>
 	<build>
 		<plugins>

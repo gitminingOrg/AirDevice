@@ -68,7 +68,7 @@ public class DeviceStatusService {
 	 * @param userID
 	 * @return
 	 */
-	public ReturnCode deviceControl(int data, String deviceID, String userID, String command){
+	public ReturnCode deviceControl(final int data, final String deviceID, final String userID, final String command){
 		String urlPath = getMappingUrl(command);
 		if (urlPath == null) {
 			LOG.warn("unknown command type");
@@ -83,7 +83,7 @@ public class DeviceStatusService {
 		boolean check = checkStatus(DEFAULT_TIMES, DEFAULT_PERIOD, command, data, deviceID, userID);
 		//add user action to db
 		executor.execute(new Runnable() {
-			@Override
+			
 			public void run() {
 				UserAction userAction = new UserAction();
 				userAction.setCommand(command);
