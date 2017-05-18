@@ -15,7 +15,8 @@
 	       <div class="track">
 	         <div class="handle"></div>
 	       </div>
-	     </label>			
+	       <ion-spinner style="display:none" icon="bubbles" class="spinner-calm"></ion-spinner>
+	     </label>	
 		</div>
 
 		<div ng-if="power" class="item item-toggle">
@@ -25,6 +26,7 @@
 	       <div class="track">
 	         <div class="handle"></div>
 	       </div>
+	       <ion-spinner style="display:none" icon="bubbles" class="spinner-calm"></ion-spinner>
 	     </label>			
 		</div>
 
@@ -35,11 +37,12 @@
 	       <div class="track">
 	         <div class="handle"></div>
 	       </div>
+	       <ion-spinner style="display:none" icon="bubbles" class="spinner-calm"></ion-spinner>
 	     </label>			
 		</div>
 
 	  <div ng-if="power" class="item">
-		  模式
+		  <p>模式 <ion-spinner style="float:right" icon="bubbles" class="spinner-calm"></ion-spinner></p>
 
 		  <div class="row">
 		  <div class="col"><button ng-click="setMode(1)" ng-class="{'button button-outline button-calm' : mode == 1, 'button button-outline button-stable':mode != 1}">自动模式</button></div>

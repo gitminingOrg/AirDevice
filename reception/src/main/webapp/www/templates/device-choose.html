@@ -1,30 +1,17 @@
 ﻿<ion-view view-title="QAir新风净化">
   <ion-content style="background-color:#FAFAFA">
-     <div class="card">
+     <div ng-repeat="device in deviceList" class="card">
 		<a class="item item-icon-left" href="#/tab/dash">
 			<i class="icon ion-cube"></i>
-			<h2>设备名称<span style="float:right;font-size:18 px">7 ug/m<sup>3</sup></span></h2>
-			<p>我的卧室<span style="float:right">风速：133</span></p>
+			<h2>设备名称<span style="float:right;font-size:18 px">{{ device.cleanerStatus.pm25 }} ug/m<sup>3</sup></span></h2>
+			<p>{{ device.deviceName }}<span style="float:right">风速：{{ device.cleanerStatus.velocity }}</span></p>
 		</a>	
 
 		<div class="item item-text-wrap row" style="float:right;color:#888888">
-			<div class="col">辅热: off</div>
-			<div class="col">湿度: 77%</div>
-			<div class="col">二氧化碳: 490</div>
-		</div>     
-     </div> 
-
-	<div class="card">
-		<a class="item item-icon-left" href="#/tab/dash">
-			<i class="icon ion-cube"></i>
-			<h2>设备名称<span style="float:right;font-size:18 px">7 ug/m<sup>3</sup></span></h2>
-			<p>我的卧室<span style="float:right">风速：133</span></p>
-		</a>	
-
-		<div class="item item-text-wrap row" style="float:right;color:#888888">
-			<div class="col">辅热: off</div>
-			<div class="col">湿度: 77%</div>
-			<div class="col">二氧化碳: 490</div>
+			<div ng-if="device.cleanerStatus.heat == 0" class="col">辅热: off</div>
+			<div ng-if="device.cleanerStatus.heat == 1" class="col">辅热: on</div>
+			<div class="col">湿度: {{ device.cleanerStatus.humidity }}%</div>
+			<div class="col">二氧化碳: {{ device.cleanerStatus.co2 }}</div>
 		</div>     
      </div> 
   </ion-content>
