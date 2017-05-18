@@ -52,5 +52,29 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 		<constructor-arg index="1" value="BATCH" />
-	</bean>    
+	</bean> 
+	
+	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:encache-shiro.xml"/>
+    </bean>   
+    
+    <bean id="mobileRealm" class="security.MobileRealm"></bean>
+    
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realms">
+            <list>
+            	<ref bean="mobileRealm" />
+            </list>
+        </property>
+        <property name="cacheManager" ref="shiroEhcacheManager"/>
+    </bean>
+    
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login"/>
+        <property name="unauthorizedUrl" value="/login"/>
+        <property name="filterChainDefinitions">
+    		<value></value>
+    	</property>
+    </bean>
 </beans>
