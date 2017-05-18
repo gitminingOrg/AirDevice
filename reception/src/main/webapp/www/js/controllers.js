@@ -1,6 +1,11 @@
 angular.module('starter.controllers', ['ngCordova'])
-.controller('DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicModal) {
-
+.controller('DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicModal, $http) {
+	$http.get("/reception/own/device").then(
+		function success(response) {
+	        $scope.deviceList = response.data.contents.statusList;
+	    }, function error(response) {
+	        // 请求失败执行代码
+	    });
     $scope.scanBarcode = function() {
         $cordovaBarcodeScanner.scan().then(function(imageData) {
             alert(imageData.text);

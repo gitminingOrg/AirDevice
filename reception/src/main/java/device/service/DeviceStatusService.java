@@ -1,6 +1,5 @@
 package device.service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import model.CleanerStatus;
@@ -14,15 +13,17 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-
-import dao.DeviceStatusDao;
-import bean.UserAction;
 import util.JsonResponseConverter;
 import util.ReceptionConstant;
 import utils.Constant;
 import utils.MethodUtil;
 import utils.TimeUtil;
+import bean.CityAqi;
+import bean.UserAction;
+
+import com.google.gson.Gson;
+
+import dao.DeviceStatusDao;
 
 @Service
 public class DeviceStatusService {
@@ -104,6 +105,15 @@ public class DeviceStatusService {
 		LOG.info("update air condition");
 	}
 	
+	public CityAqi getCityCurrentAqi(String cityName){
+		CityAqi cityAqi = deviceStatusDao.getCityAqi(cityName);
+		return cityAqi;
+	}
+	
+	public void updateTodayDeviceAir(){
+		
+	}
+	
 	private String getMappingUrl(String command){
 		if (command.equals(Constant.POWER)) {
 			return ReceptionConstant.powerControlPath;
@@ -146,7 +156,7 @@ public class DeviceStatusService {
 				if (actual == expect) {
 					return true;
 				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			} catch (Exception e) {
 				LOG.error("REFLECT METHOD INVOKE FAILED!", e);
 			}
 			

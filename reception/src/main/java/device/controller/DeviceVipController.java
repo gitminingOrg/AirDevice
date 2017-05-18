@@ -1,10 +1,16 @@
 package device.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import model.DeviceInfo;
 import model.ResultMap;
 import model.ReturnCode;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,14 +19,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import util.ReceptionConstant;
+import utils.QRCodeGenerator;
 import auth.UserComponent;
 import bean.DeviceName;
+import bean.DeviceShareCode;
 import bean.DeviceStatus;
 import device.service.DeviceVipService;
 
 @RequestMapping("/own")
 @RestController
 public class DeviceVipController {
+	private static Logger LOG = LoggerFactory.getLogger(DeviceVipController.class);
 	@Autowired
 	private DeviceVipService deviceVipService;
 	public void setDeviceVipService(DeviceVipService deviceVipService) {
@@ -43,15 +52,32 @@ public class DeviceVipController {
 	}
 	
 	@RequestMapping("/share/{deviceID}/{role}")
-	public ResultMap shareDevice(@PathVariable("deviceID") String deviceID, @PathVariable("role") String role){
+	public ResultMap shareDevice(@PathVariable("deviceID") String deviceID, @PathVariable("role") int role, HttpServletResponse response){
 		ResultMap resultMap = new ResultMap();
+		String userID = UserComponent.getUserID();
+		DeviceShareCode deviceShareCode = deviceVipService.generateShareCode(userID, deviceID, role, ReceptionConstant.DEFAULT_EXPIRE_DAYS);
+		try {
+			QRCodeGenerator.createQRCode(deviceShareCode.getToken(), ReceptionConstant.DEFAULT_QR_LENGTH, ReceptionConstant.DEFAULT_QR_LENGTH, response.getOutputStream());
+		} catch (IOException e) {
+			LOG.error("write QR code failed", e);
+		}
 		return resultMap;
 	}
 	
 	@RequestMapping("/authorize/{token}")
 	public ResultMap authorizeUser(@PathVariable("token") String token){
 		ResultMap resultMap = new ResultMap();
-		
+		String userID = UserComponent.getUserID();
+		ReturnCode returnCode = deviceVipService.authorizeDevice(token, userID);
+		if(returnCode.equals(ReturnCode.SUCCESS)){
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		}else if (returnCode.equals(ReturnCode.FORBIDDEN)) {
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			resultMap.setInfo("无权限");
+		}else {
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo("授权失败");
+		}
 		return resultMap;
 	}
 	
@@ -73,9 +99,18 @@ public class DeviceVipController {
 		return resultMap;
 	}
 	
-	@RequestMapping("/{deviceID}/info")
+	@RequestMapping("/info/{deviceID}")
 	public ResultMap getDeviceInfo(@PathVariable("deviceID") String deviceID){
 		ResultMap resultMap = new ResultMap();
+		String userID = UserComponent.getUserID();
+		DeviceInfo deviceInfo = deviceVipService.getDeviceInfo(userID, deviceID);
+		if (deviceInfo == null) {
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo("无法查询到设备");
+		}else {
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.addContent(ReceptionConstant.DEVICE, deviceInfo);
+		}
 		return resultMap;
 	}
 }
