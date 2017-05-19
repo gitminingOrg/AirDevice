@@ -19,6 +19,7 @@ import utils.Constant;
 import utils.MethodUtil;
 import utils.TimeUtil;
 import bean.CityAqi;
+import bean.DeviceCity;
 import bean.UserAction;
 
 import com.google.gson.Gson;
@@ -110,6 +111,24 @@ public class DeviceStatusService {
 		return cityAqi;
 	}
 	
+	public ReturnCode setDeviceCity(String userID, String deviceID, String cityName){
+		DeviceCity deviceCity = new DeviceCity();
+		deviceCity.setCity(cityName);
+		deviceCity.setDeviceID(deviceID);
+		boolean disable = deviceStatusDao.disableDeviceCity(deviceID);
+		boolean insert = deviceStatusDao.insertDeviceCity(deviceCity);
+		if (insert) {
+			return ReturnCode.SUCCESS;
+		}else {
+			return ReturnCode.FAILURE;
+		}
+	}
+	
+	public DeviceCity getDeviceCity(String userID, String deviceID){
+		DeviceCity deviceCity = deviceStatusDao.getDeviceCity(deviceID);
+		return deviceCity;
+	}
+	
 	public void updateTodayDeviceAir(){
 		
 	}
@@ -127,6 +146,8 @@ public class DeviceStatusService {
 			return ReceptionConstant.heatControlPath;
 		}else if (command.equals(Constant.CYCLE)){
 			return ReceptionConstant.cycleControlPath;
+		}else if (command.equals(Constant.LIGHT)){
+			return ReceptionConstant.lightControlPath;
 		}else{
 			return null;
 		}

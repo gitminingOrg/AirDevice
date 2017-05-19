@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import bean.CityAqi;
+import bean.DeviceCity;
 import bean.UserAction;
 
 @Repository
@@ -28,5 +29,18 @@ public class DeviceStatusDao extends BaseDaoImpl{
 		params.put("beginTime", beginTime);
 		params.put("endTime", endTime);
 		return sqlSession.selectList("aqiData.selectAllCityAvgAqi", params);
+	}
+	
+	public DeviceCity getDeviceCity(String deviceName){
+		return sqlSession.selectOne("aqiData.selectDeviceCity", deviceName);
+	}
+	
+	
+	public boolean insertDeviceCity(DeviceCity deviceCity){
+		return sqlSession.insert("aqiData.insertDeviceCity", deviceCity) > 0;
+	}
+	
+	public boolean disableDeviceCity(String deviceName){
+		return sqlSession.update("aqiData.disableDeviceCity", deviceName) >= 0;
 	}
 }

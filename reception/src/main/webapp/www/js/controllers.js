@@ -2,7 +2,9 @@ angular.module('starter.controllers', ['ngCordova'])
 .controller('DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicModal, $http) {
 	$http.get("/reception/own/device").then(
 		function success(response) {
-	        $scope.deviceList = response.data.contents.statusList;
+			if(response.data.status == 1){
+				$scope.deviceList = response.data.contents.statusList;
+			}
 	    }, function error(response) {
 	        // 请求失败执行代码
 	    });
@@ -75,7 +77,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 
 })
-.controller('DashCtrl', function($scope, $ionicModal, Chats, $http, $timeout) {
+.controller('DashCtrl', function($scope, $ionicModal, Chats, $http, $timeout, $stateParams) {
     $scope.gaugeChart = {
       credits: {
             enabled: false
@@ -144,16 +146,153 @@ angular.module('starter.controllers', ['ngCordova'])
             }
         }] 
     }
-
-    $scope.power = false
+	$http.get("/reception/status/device/"+$stateParams.deviceID).then(
+			function success(response) {
+				if(response.data.status == 1){
+					$scope.cleanerStatus = response.data.contents.cleanerStatus;
+					//电源打开
+					if(response.data.contents.cleanerStatus.power == 0){
+						$scope.power = false
+						$('#dash_power').attr("checked", false)
+					}else{
+						$scope.power = true
+						$('#dash_power').attr("checked", true)
+					}
+					//辅热打开
+					if(response.data.contents.cleanerStatus.heat == 0){
+						$scope.heat = false
+						$('#dash_heat').attr("checked", false)
+					}else{
+						$scope.heat = true
+						$('#dash_heat').attr("checked", true)
+					}
+					//杀菌打开
+					if(response.data.contents.cleanerStatus.uv == 0){
+						$scope.uv = false
+						$('#dash_uv').attr("checked", false)
+					}else{
+						$scope.uv = true
+						$('#dash_uv').attr("checked", true)
+					}
+					$scope.mode = response.data.contents.cleanerStatus.workMode
+				}
+		    }, function error(response) {
+		        // 请求失败执行代码
+		});
+    
     $scope.location = "北京"
     $scope.airQuality = "优"
-    $scope.mode = 3
+    
     $scope.start = function(){
         $scope.power = !$scope.power;
+        var powerInt = 0
+        if($scope.power){
+        	powerInt = 1
+        }
+        $scope.powerRequest = true;
+        $http.get("/reception/status/"+$stateParams.deviceID+"/power/"+powerInt).then(
+    		function success(response) {
+    			$scope.powerRequest = false;
+    			if(response.data.status != 1){
+    				//$scope.power = !$scope.power;
+    			}
+    	    }, function error(response) {
+    	    	$scope.powerRequest = false;
+    	        // 请求失败执行代码
+    	});
+    }
+    
+    $scope.heatControl = function(){
+        $scope.heat = !$scope.heat;
+        var heatInt = 0
+        if($scope.heat){
+        	heatInt = 1
+        }
+        $scope.heatRequest = true;
+        $http.get("/reception/status/"+$stateParams.deviceID+"/heat/"+heatInt).then(
+    		function success(response) {
+    			$scope.heatRequest = false;
+    			if(response.data.status != 1){
+    				//$scope.heat = !$scope.heat;
+    			}
+    	    }, function error(response) {
+    	    	$scope.heatRequest = false;
+    	        // 请求失败执行代码
+    	});
+    }
+    
+    $scope.uvControl = function(){
+        $scope.uv = !$scope.uv;
+        var uvInt = 0
+        if($scope.uv){
+        	uvInt = 1
+        }
+        $scope.uvRequest = true;
+        $http.get("/reception/status/"+$stateParams.deviceID+"/uv/"+uvInt).then(
+    		function success(response) {
+    			$scope.uvRequest = false;
+    			if(response.data.status != 1){
+    				//$scope.uv = !$scope.uv;
+    			}
+    	    }, function error(response) {
+    	    	$scope.uvRequest = false;
+    	        // 请求失败执行代码
+    	});
+    }
+    
+    $scope.lightControl = function(light){
+    	$scope.lightRequest = true;
+    	$http.get("/reception/status/"+$stateParams.deviceID+"/light/"+light).then(
+        		function success(response) {
+        			$scope.lightRequest = false;
+        			if(response.data.status != 1){
+        				//$scope.uv = !$scope.uv;
+        			}
+        	    }, function error(response) {
+        	    	$scope.lightRequest = false;
+        	        // 请求失败执行代码
+        	});
+    }
+    $scope.cycleControl = function(cycle){
+    	$scope.cycleRequest = true;
+    	$http.get("/reception/status/"+$stateParams.deviceID+"/cycle/"+cycle).then(
+        		function success(response) {
+        			$scope.cycleRequest = false;
+        			if(response.data.status != 1){
+        				//$scope.uv = !$scope.uv;
+        			}
+        	    }, function error(response) {
+        	    	$scope.cycleRequest = false;
+        	        // 请求失败执行代码
+        	});
+    }
+    $scope.velocityControl = function(velocity){
+    	$scope.velocityRequest = true;
+    	var value = velocity * 100;
+    	$http.get("/reception/status/"+$stateParams.deviceID+"/velocity/"+value).then(
+        		function success(response) {
+        			$scope.velocityRequest = false;
+        			if(response.data.status != 1){
+        				//$scope.uv = !$scope.uv;
+        			}
+        	    }, function error(response) {
+        	    	$scope.velocityRequest = false;
+        	        // 请求失败执行代码
+        	});
     }
     $scope.setMode = function(mode){
-        $scope.mode = mode
+    	$scope.velocityRequest = true;
+        $scope.mode = mode;
+        $http.get("/reception/status/"+$stateParams.deviceID+"/workmode/"+mode).then(
+        		function success(response) {
+        			$scope.velocityRequest = false;
+        			if(response.data.status != 1){
+        				//$scope.uv = !$scope.uv;
+        			}
+        	    }, function error(response) {
+        	    	$scope.velocityRequest = false;
+        	        // 请求失败执行代码
+        	});
     }
 
     $ionicModal.fromTemplateUrl('templates/city-choose.html', {

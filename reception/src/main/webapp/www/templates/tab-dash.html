@@ -11,38 +11,57 @@
 		<div class="item item-toggle">
 	     电源
 	     <label class="toggle toggle-calm">
-	       <input type="checkbox" ng-click="start()">
+	       <input type="checkbox" ng-click="start()" id="dash_power">
 	       <div class="track">
 	         <div class="handle"></div>
 	       </div>
-	       <ion-spinner style="display:none" icon="bubbles" class="spinner-calm"></ion-spinner>
+	       <ion-spinner ng-if="powerRequest" icon="bubbles" class="spinner-calm"></ion-spinner>
 	     </label>	
 		</div>
 
-		<div ng-if="power" class="item item-toggle">
+		<div class="item item-toggle">
 	     辅热
 	     <label class="toggle toggle-calm">
-	       <input type="checkbox">
+	       <input type="checkbox" ng-click="heatControl()" id="dash_heat">
 	       <div class="track">
 	         <div class="handle"></div>
 	       </div>
-	       <ion-spinner style="display:none" icon="bubbles" class="spinner-calm"></ion-spinner>
+	       <ion-spinner ng-if="heatRequest" icon="bubbles" class="spinner-calm"></ion-spinner>
 	     </label>			
 		</div>
 
-		<div ng-if="power" class="item item-toggle">
+		<div class="item item-toggle">
 	     紫外
 	     <label class="toggle toggle-calm">
-	       <input type="checkbox">
+	       <input type="checkbox" ng-click="uvControl()" id="dash_uv">
 	       <div class="track">
 	         <div class="handle"></div>
 	       </div>
-	       <ion-spinner style="display:none" icon="bubbles" class="spinner-calm"></ion-spinner>
+	       <ion-spinner ng-if="uvRequest" icon="bubbles" class="spinner-calm"></ion-spinner>
 	     </label>			
 		</div>
 
+		<div class="item">
+		背光 <ion-spinner ng-if="lightRequest" style="float:right" icon="bubbles" class="spinner-calm"></ion-spinner>
+		<div class="range range-positive">
+			
+			<i class="icon ion-ios-minus-empty"></i>
+			<input type="range" on-release="lightControl(light)" ng-model="light" name="volume" min="0" max="100" value="30">
+			<i class="icon ion-ios-plus-empty"></i>
+		</div>
+		</div>
+		
+		<div class="item">
+		循环
+		<div class="range range-positive">
+			<span style="color:#666; font-size:14px">内循环</span>
+			<input type="range"  on-release="cycleControl(cycle)" ng-model="cycle" name="volume" min="0" max="1" value="0">
+			<span style="color:#666; font-size:14px">外循环</span>
+		</div>
+		</div>
+		
 	  <div ng-if="power" class="item">
-		  <p>模式 <ion-spinner style="float:right" icon="bubbles" class="spinner-calm"></ion-spinner></p>
+		  模式 <ion-spinner ng-if="velocityRequest" style="float:right" icon="bubbles" class="spinner-calm"></ion-spinner>
 
 		  <div class="row">
 		  <div class="col"><button ng-click="setMode(1)" ng-class="{'button button-outline button-calm' : mode == 1, 'button button-outline button-stable':mode != 1}">自动模式</button></div>
@@ -54,7 +73,7 @@
 		  <div ng-if="mode == 3" class="range range-positive">
 		  	<p>风量</p>
             <i class="icon ion-ios-minus-empty"></i>
-            <input type="range" name="volume" min="0" max="5" value="2">
+            <input type="range" on-release="velocityControl(velocity)" ng-model="velocity" name="volume" min="0" max="5" value="2">
             <i class="icon ion-ios-plus-empty"></i>
           </div>
 	  </div>

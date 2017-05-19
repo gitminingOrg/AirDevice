@@ -1,14 +1,22 @@
 package device.controller;
 
+import java.io.UnsupportedEncodingException;
+
+import javax.servlet.http.HttpServletRequest;
+
 import model.CleanerStatus;
 import model.ResultMap;
 import model.ReturnCode;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import bean.DeviceCity;
 import util.ReceptionConstant;
 import utils.Constant;
 import auth.UserComponent;
@@ -17,6 +25,7 @@ import device.service.DeviceStatusService;
 @RequestMapping("/status")
 @RestController
 public class DeviceStatusController {
+	Logger LOG = LoggerFactory.getLogger(DeviceStatusController.class);
 	@Autowired
 	private DeviceStatusService deviceStatusService;
 	public void setDeviceStatusService(DeviceStatusService deviceStatusService) {
@@ -155,6 +164,44 @@ public class DeviceStatusController {
 		if (returnCode.equals(ReturnCode.FAILURE)) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("无法远程控制设备");
+		}else if (returnCode.equals(ReturnCode.FORBIDDEN)) {
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			resultMap.setInfo("没有权限");
+		}else if (returnCode.equals(ReturnCode.SUCCESS)) {
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		}
+		return resultMap;
+	}
+	
+	@RequestMapping("/city/info/{deviceID}")
+	public ResultMap getDeviceCity(@PathVariable("deviceID")String deviceID){
+		ResultMap resultMap = new ResultMap();
+		String userID = UserComponent.getUserID();
+		DeviceCity deviceCity = deviceStatusService.getDeviceCity(userID, deviceID);
+		if(deviceCity == null){
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo("未找到对应的城市");
+		}else{
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.addContent(ReceptionConstant.DEVICE_CITY, deviceCity);
+		}
+		return resultMap;
+	}
+	
+	@RequestMapping(value= "/city/config/{deviceID}", method= RequestMethod.POST)
+	public ResultMap configDeviceCity(@PathVariable("deviceID")String deviceID, HttpServletRequest request){
+		try {
+			request.setCharacterEncoding("utf-8");
+		} catch (UnsupportedEncodingException e) {
+			LOG.error("set request encode failed", e);
+		}
+		String city = request.getParameter(ReceptionConstant.CITY);
+		ResultMap resultMap = new ResultMap();
+		String userID = UserComponent.getUserID();
+		ReturnCode returnCode = deviceStatusService.setDeviceCity(userID, deviceID, city);
+		if (returnCode.equals(ReturnCode.FAILURE)) {
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo("无法设置所在城市");
 		}else if (returnCode.equals(ReturnCode.FORBIDDEN)) {
 			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
 			resultMap.setInfo("没有权限");

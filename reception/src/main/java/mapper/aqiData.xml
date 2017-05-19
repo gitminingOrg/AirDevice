@@ -8,6 +8,12 @@
 		<result property="aqiGrade" column="aqi_grade" />
 	</resultMap>
 	
+	<resultMap type="bean.DeviceCity" id="deviceCity">
+		<result property="deviceID" column="device_id" />
+		<result property="city" column="city" />
+		<result property="status" column="status" />
+	</resultMap>
+	
 	<select id="selectCityCurrentAqi" resultMap="cityAqi">
 		SELECT 
 		city_name, time, aqi_data, aqi_grade
@@ -28,9 +34,27 @@
 		city_name
 	</select>
 	
-	<insert id="insertUserAction" parameterType="bean.UserAction">
+	<insert id="insertDeviceCity" parameterType="bean.DeviceCity">
 		INSERT INTO
-		userAction(user_id,device_id,command,data,time)
-		VALUES(#{userID},#{deviceID},#{command},#{data},#{time})
+		device_city(device_id,city)
+		VALUES(#{deviceID},#{city})
 	</insert>
+	
+	<select id="selectDeviceCity" resultMap="deviceCity">
+		SELECT
+		device_id, city, status
+		FROM 
+		device_city
+		WHERE
+		device_id = #{deviceID}
+	</select>
+	
+	<update id="disableDeviceCity">
+		UPDATE
+		device_city
+		SET
+		status = 0
+		WHERE
+		device_id = #{deviceID}
+	</update>
 </mapper>

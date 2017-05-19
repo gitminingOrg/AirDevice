@@ -36,8 +36,27 @@
 		<property name="triggers">
 			<list>
 				<ref bean="cronTrigger" />
+				<ref bean="aqiTrigger" />
 			</list>
 		</property>
 		<property name="taskExecutor" ref="executor" />
+	</bean>
+	
+	
+	<bean id="aqiTrigger" class=" org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="aqiJob" />
+		<property name="cronExpression" value="0 47 * * * ?" />
+	</bean>
+	
+	<bean id="aqiTask" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="aqiJob" />
+		<property name="startDelay" value="10000" />
+		<property name="repeatInterval" value="60000" />
+	</bean>
+	
+	<bean id="aqiJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="aqiDataUpdateService" />
+		<property name="targetMethod" value="updateCityAQI" />
 	</bean>
 </beans>

@@ -1,7 +1,7 @@
 ﻿<ion-view view-title="QAir新风净化">
   <ion-content style="background-color:#FAFAFA">
      <div ng-repeat="device in deviceList" class="card">
-		<a class="item item-icon-left" href="#/tab/dash">
+		<a class="item item-icon-left" href="#/tab/dash/{{ device.deviceID}}">
 			<i class="icon ion-cube"></i>
 			<h2>设备名称<span style="float:right;font-size:18 px">{{ device.cleanerStatus.pm25 }} ug/m<sup>3</sup></span></h2>
 			<p>{{ device.deviceName }}<span style="float:right">风速：{{ device.cleanerStatus.velocity }}</span></p>

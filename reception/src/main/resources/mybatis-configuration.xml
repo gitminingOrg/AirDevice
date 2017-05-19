@@ -4,5 +4,6 @@
 	<mappers>
 		<mapper resource="mapper/userAction.xml" />
 		<mapper resource="mapper/userVip.xml" />
+		<mapper resource="mapper/aqiData.xml" />
 	</mappers>
 </configuration>
