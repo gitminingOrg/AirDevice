@@ -16,14 +16,14 @@ public class ConsumerServiceImpl implements ConsumerSerivce{
 	@Override
 	public ConsumerVo login(String phone) {
 		ConsumerVo result = new ConsumerVo();
-		result.setCustomerID("uid3618");
+		result.setCustomerId("uid3618");
 		return result;
 	}
 	
 	@Override
 	public ConsumerVo fetch(Map<String, Object> condition) {
 		ConsumerVo result = new ConsumerVo();
-		result.setCustomerID("uid3618");
+		result.setCustomerId("uid3618");
 		return result;
 	}
 	
