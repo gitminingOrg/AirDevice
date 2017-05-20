@@ -3,6 +3,7 @@
 <mapper namespace="aqiData">
 	<resultMap type="bean.CityAqi" id="cityAqi">
 		<result property="cityName" column="city_name" />
+		<result property="cityPinyin" column="city_pinyin" />
 		<result property="time" column="time" />
 		<result property="aqiData" column="aqi_data" />
 		<result property="aqiGrade" column="aqi_grade" />
@@ -14,24 +15,37 @@
 		<result property="status" column="status" />
 	</resultMap>
 	
+	<resultMap type="bean.CityList" id="cityList">
+		<result property="cityName" column="city_name" />
+		<result property="cityPinyin" column="city_pinyin" />
+		<result property="initial" column="initial" />
+	</resultMap>
+	
+	<select id="selectAllCities" resultMap="cityList">
+		SELECT
+		city_name, city_pinyin, initial
+		FROM
+		city_list
+	</select>
+	
 	<select id="selectCityCurrentAqi" resultMap="cityAqi">
 		SELECT 
-		city_name, time, aqi_data, aqi_grade
+		city_name, city_pinyin, time, aqi_data, aqi_grade
 		FROM
 		city_aqi
 		WHERE
-		city_name=#{cityName} AND time in (select max(time) from city_aqi where city_name=#{cityName})
+		city_pinyin=#{city} AND time in (select max(time) from city_aqi where city_pinyin=#{city})
 	</select>
 	
 	<select id="selectAllCityAvgAqi" resultMap="cityAqi">
 		SELECT 
-		avg(aqi_data) AS aqi_data, #{beginTime} AS time , city_name
+		avg(aqi_data) AS aqi_data, #{beginTime} AS time , city_name, city_pinyin
 		FROM
 		city_aqi
 		WHERE
 		time &gt;= #{beginTime} AND time &lt; #{endTime}
 		GROUP BY 
-		city_name
+		city_name, city_pinyin
 	</select>
 	
 	<insert id="insertDeviceCity" parameterType="bean.DeviceCity">
@@ -47,6 +61,8 @@
 		device_city
 		WHERE
 		device_id = #{deviceID}
+		AND 
+		status = 1
 	</select>
 	
 	<update id="disableDeviceCity">

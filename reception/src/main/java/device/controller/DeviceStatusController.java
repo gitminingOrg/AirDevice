@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import bean.DeviceCity;
 import util.ReceptionConstant;
 import utils.Constant;
 import auth.UserComponent;
+import bean.CityAqi;
+import bean.DeviceCity;
 import device.service.DeviceStatusService;
 
 @RequestMapping("/status")
@@ -207,6 +208,21 @@ public class DeviceStatusController {
 			resultMap.setInfo("没有权限");
 		}else if (returnCode.equals(ReturnCode.SUCCESS)) {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		}
+		return resultMap;
+	}
+	
+	@RequestMapping(value= "/city/aqi", method= RequestMethod.POST)
+	public ResultMap getCityCurrentAqi(HttpServletRequest request){
+		ResultMap resultMap = new ResultMap();
+		String city = request.getParameter("city");
+		CityAqi cityAqi = deviceStatusService.getCityCurrentAqi(city);
+		if(cityAqi == null){
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo(ResultMap.EMPTY_INFO);
+		}else {
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.addContent(ReceptionConstant.CITY_AQI, cityAqi);
 		}
 		return resultMap;
 	}

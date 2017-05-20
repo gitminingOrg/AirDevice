@@ -2,6 +2,7 @@ package bean;
 
 public class CityAqi {
 	private String cityName;
+	private String cityPinyin;
 	private String time;
 	private String aqiData;
 	private String aqiGrade;
@@ -29,6 +30,12 @@ public class CityAqi {
 	}
 	public void setAqiGrade(String aqiGrade) {
 		this.aqiGrade = aqiGrade;
+	}
+	public String getCityPinyin() {
+		return cityPinyin;
+	}
+	public void setCityPinyin(String cityPinyin) {
+		this.cityPinyin = cityPinyin;
 	}
 	
 }

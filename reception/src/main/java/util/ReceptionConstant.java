@@ -18,6 +18,7 @@ public class ReceptionConstant {
 	public static final String CLEANER_STATUS = "cleanerStatus";
 	public static final String DEVICE = "device";
 	public static final String CITY = "city";
+	public static final String CITY_AQI = "cityAqi";
 	public static final String DEVICE_CITY = "deviceCity";
 	
 	public static final int TOKEN_LENGTH = 40;

@@ -78,6 +78,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 })
 .controller('DashCtrl', function($scope, $ionicModal, Chats, $http, $timeout, $stateParams) {
+	$scope.deviceID = $stateParams.deviceID;
     $scope.gaugeChart = {
       credits: {
             enabled: false
@@ -179,9 +180,28 @@ angular.module('starter.controllers', ['ngCordova'])
 		    }, function error(response) {
 		        // 请求失败执行代码
 		});
-    
     $scope.location = "北京"
     $scope.airQuality = "优"
+    $http.get("/reception/status/city/info/"+$stateParams.deviceID).success(function(response){
+    	if(response.status == 1){
+    		
+    		var data = { city : response.contents.deviceCity.city}
+    		$http({  
+		        url    : '/reception/status/city/aqi',  
+		        method : "post",  
+		        params   : data,  
+		    }).success(function(response){
+		    	if(response.status == 1){
+		    		$scope.airQuality = response.contents.cityAqi.aqiGrade
+		    		$scope.aqiData = response.contents.cityAqi.aqiData
+		    		$scope.location = response.contents.cityAqi.cityName;
+		            var point = Highcharts.charts[0].series[0].points[0];
+		            point.update(parseInt($scope.aqiData));
+		    	}
+		    });
+    	}
+    });
+    
     
     $scope.start = function(){
         $scope.power = !$scope.power;
@@ -322,14 +342,13 @@ angular.module('starter.controllers', ['ngCordova'])
 
     })
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+.controller('ChatsCtrl', function($http, $scope, $stateParams, Chats) {
+  $scope.deviceID = $stateParams.deviceID;
+  $http.get('/reception/status/device/'+$stateParams.deviceID).success(function(response){
+	  if(response.status == 1){
+		  $scope.cleanerStatus = response.contents.cleanerStatus
+	  }
+  });
   $scope.test = function(){
     $scope.currentCompare = null;
   }
@@ -423,54 +442,8 @@ angular.module('starter.controllers', ['ngCordova'])
     }]
     }
 })
-
-.controller('ChatDetailCtrl', function($scope, $stateParams) {
-  $scope.chartConfig = {
-    chart: {
-        type: 'column'
-    },
-    title: {
-        text: 'Monthly Average Rainfall'
-    },
-    xAxis: {
-        categories: [
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec'
-        ],
-        crosshair: true
-    },
-    yAxis: {
-        min: 0,
-        title: {
-            text: 'Rainfall (mm)'
-        }
-    },
-    tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-    },
-    series: [{
-        name: 'London',
-        data: [59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
-
-    }, {
-        name: 'Berlin',
-        data: [57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
-
-    }]
-    }
-})
-
-.controller('AccountCtrl',function($scope, $rootScope, $cordovaNetwork) {
+.controller('AccountCtrl',function($scope, $rootScope, $cordovaNetwork, $stateParams) {
+	$scope.deviceID = $stateParams.deviceID;
     document.addEventListener("deviceready", function () {
         var type = $cordovaNetwork.getNetwork()
         var isOnline = $cordovaNetwork.isOnline()
@@ -504,9 +477,12 @@ angular.module('starter.controllers', ['ngCordova'])
 		            'Content-Type': 'application/x-www-form-urlencoded'  
 		        },  
 		    }).success(function(data) { 
-		    	
+		    	window.location = '/www/index.html#/home/device';
 		    })
 	};
+})
+.controller('TabCtrl',function($stateParams,$scope) {
+	$scope.deviceID = $stateParams.deviceID;
 });
 
 
