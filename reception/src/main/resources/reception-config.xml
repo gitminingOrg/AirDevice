@@ -74,7 +74,9 @@
         <property name="loginUrl" value="/login"/>
         <property name="unauthorizedUrl" value="/login"/>
         <property name="filterChainDefinitions">
-    		<value></value>
+    		<value>
+    			/consumer/login = anon
+    		</value>
     	</property>
     </bean>
 </beans>

@@ -9,9 +9,16 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import vip.service.ConsumerSerivce;
+import vo.vip.ConsumerVo;
 
 public class MobileRealm extends AuthorizingRealm {
 
+	@Autowired
+	private ConsumerSerivce consumerSerivce;
+	
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
@@ -22,6 +29,7 @@ public class MobileRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken arg0) throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) arg0;
 		String mobile = token.getUsername();
-		return new SimpleAuthenticationInfo();
+		ConsumerVo consumer = consumerSerivce.login(mobile);
+		return new SimpleAuthenticationInfo(consumer, token.getPassword(), getName());
 	}
 }
