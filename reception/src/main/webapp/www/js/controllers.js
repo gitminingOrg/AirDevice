@@ -480,7 +480,10 @@ angular.module('starter.controllers', ['ngCordova'])
 		            'Content-Type': 'application/x-www-form-urlencoded'  
 		        },  
 		    }).success(function(data) { 
-		    	window.location = '/www/index.html#/home/device';
+		    	if(data.status == 1){
+		    		window.location = '/reception/www/index.html#/home/device';
+		    	}
+		    	
 		    })
 	};
 })
