@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import model.CleanerStatus;
+
 import org.springframework.stereotype.Repository;
 
 import bean.CityAqi;
@@ -42,5 +44,13 @@ public class DeviceStatusDao extends BaseDaoImpl{
 	
 	public boolean disableDeviceCity(String deviceName){
 		return sqlSession.update("aqiData.disableDeviceCity", deviceName) >= 0;
+	}
+	
+	public List<String> selectAllActiveDevices(){
+		return sqlSession.selectList("aqiData.selectAllDevices");
+	}
+	
+	public boolean insertDeviceStatus(List<CleanerStatus> list){
+		return sqlSession.insert("aqiData.insertCleanerStatusList", list) == list.size();
 	}
 }

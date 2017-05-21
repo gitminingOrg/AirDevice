@@ -37,7 +37,7 @@ public class DeviceStatusController {
 	public ResultMap getDeviceStatus(@PathVariable("deviceID")String device){
 		ResultMap resultMap = new ResultMap();
 		String userID = UserComponent.getUserID();
-		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(device, userID);
+		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(device);
 		if (cleanerStatus == null) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("未找到相应设备状态");
