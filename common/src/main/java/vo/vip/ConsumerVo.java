@@ -1,5 +1,7 @@
 package vo.vip;
 
+import java.sql.Timestamp;
+
 public class ConsumerVo {
 	
 	private String customerId;
@@ -9,6 +11,10 @@ public class ConsumerVo {
 	private String customerPhone;
 	
 	private String customerAddress;
+	
+	private boolean blockFlag;
+	
+	private Timestamp createAt;
 	
 	public String getCustomerId() {
 		return customerId;
@@ -40,5 +46,21 @@ public class ConsumerVo {
 
 	public void setCustomerAddress(String customerAddress) {
 		this.customerAddress = customerAddress;
+	}
+
+	public boolean isBlockFlag() {
+		return blockFlag;
+	}
+
+	public void setBlockFlag(boolean blockFlag) {
+		this.blockFlag = blockFlag;
+	}
+
+	public Timestamp getCreateAt() {
+		return createAt;
+	}
+
+	public void setCreateAt(Timestamp createAt) {
+		this.createAt = createAt;
 	}
 }

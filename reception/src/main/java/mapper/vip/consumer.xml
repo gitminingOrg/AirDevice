@@ -10,7 +10,7 @@
 		<result property="createAt" column="create_time"></result>
 	</resultMap>
 	
-	<select id="query">
+	<select id="query" parameterType="java.util.Map" resultMap="consumerVo">
 		select consumer_id, consumer_name, consumer_phone, consumer_address, block_flag, create_time
 		from consumer_view
 		where 1 = 1
