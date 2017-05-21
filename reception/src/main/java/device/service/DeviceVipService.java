@@ -15,16 +15,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.gson.Gson;
-
 import util.JsonResponseConverter;
 import util.ReceptionConstant;
 import utils.TimeUtil;
-import dao.DeviceVipDao;
 import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;
 import bean.UserDevice;
+
+import com.google.gson.Gson;
+
+import dao.DeviceVipDao;
 
 @Service
 public class DeviceVipService {
@@ -49,7 +50,7 @@ public class DeviceVipService {
 		List<DeviceStatus> userDevices = deviceVipDao.getUserDevice(userID);
 		for (DeviceStatus deviceStatus : userDevices) {
 			String deviceID = deviceStatus.getDeviceID();
-			CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(deviceID, userID);
+			CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(deviceID);
 			deviceStatus.setCleanerStatus(cleanerStatus);
 		}
 		return userDevices;

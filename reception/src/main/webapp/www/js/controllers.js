@@ -65,8 +65,10 @@ angular.module('starter.controllers', ['ngCordova'])
         $scope.modal = modal;
     });
 })
-.controller('VipCtrl', function($scope) {
-
+.controller('VipCtrl', function($scope, $http) {
+	$http.get('/reception/customer/info').success(function(response){
+		
+	});
 
 })
 .controller('AboutCtrl', function($scope) {
@@ -346,7 +348,8 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.deviceID = $stateParams.deviceID;
   $http.get('/reception/status/device/'+$stateParams.deviceID).success(function(response){
 	  if(response.status == 1){
-		  $scope.cleanerStatus = response.contents.cleanerStatus
+		  $scope.cleanerStatus = response.contents.cleanerStatus;
+		  
 	  }
   });
   $scope.test = function(){

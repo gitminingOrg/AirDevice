@@ -1,6 +1,8 @@
 package device.service;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.CleanerStatus;
 import model.ResultMap;
@@ -50,7 +52,7 @@ public class DeviceStatusService {
 	 * @param deviceID
 	 * @return
 	 */
-	public CleanerStatus getCleanerStatus(String deviceID, String userID){
+	public CleanerStatus getCleanerStatus(String deviceID){
 		ResultMap result = JsonResponseConverter.getDefaultResultMapWithParams(ReceptionConstant.deviceStatusPath, deviceID);
 		if(result.getStatus() != ResultMap.STATUS_SUCCESS){
 			return null;
@@ -103,7 +105,16 @@ public class DeviceStatusService {
 	}
 	
 	public void updateAirCondition(){
-		LOG.info("update air condition");
+		//get all device
+		List<String> devices = deviceStatusDao.selectAllActiveDevices();
+		//get device aqi data
+		List<CleanerStatus> cleanerStatusList = new ArrayList<CleanerStatus>();
+		for (String deviceID : devices) {
+			CleanerStatus cleanerStatus = getCleanerStatus(deviceID);
+			cleanerStatusList.add(cleanerStatus);
+		}
+		//insert device aqi data
+		boolean update = deviceStatusDao.insertDeviceStatus(cleanerStatusList);
 	}
 	
 	public CityAqi getCityCurrentAqi(String cityName){
@@ -169,7 +180,7 @@ public class DeviceStatusService {
 		int cursor = 0;
 		while(cursor < times){
 			cursor++;
-			CleanerStatus cleanerStatus = getCleanerStatus(deviceID, userID);
+			CleanerStatus cleanerStatus = getCleanerStatus(deviceID);
 			Method method;
 			try {
 				method = cleanerStatus.getClass().getDeclaredMethod(MethodUtil.getFieldGetMethod(field));

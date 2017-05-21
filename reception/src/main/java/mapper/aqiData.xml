@@ -21,6 +21,32 @@
 		<result property="initial" column="initial" />
 	</resultMap>
 	
+	<resultMap type="model.CleanerStatus" id="cleanerStatus">
+		<result property="deviceID" column="device_id" />
+		<result property="pm25" column="pm25"/>
+		<result property="temperature" column="temperature"/>
+		<result property="humidity" column="humidity"/>
+		<result property="HCHO" column="hcho"/>
+		<result property="CO2" column="co2"/>
+		<result property="velocity" column="velocity"/>
+		<result property="power" column="power"/>
+		<result property="workMode" column="workmode"/>
+		<result property="UV" column="uv"/>
+		<result property="heat" column="heat"/>
+		<result property="light" column="light"/>
+		<result property="cycle" column="cycle"/>
+		<result property="time" column="time"/>
+	</resultMap>
+	
+	<select id="selectAllDevices" resultType="string">
+		SELECT distinct
+		device_id
+		FROM
+		userDevice
+		WHERE
+		status = 1
+	</select>
+	
 	<select id="selectAllCities" resultMap="cityList">
 		SELECT
 		city_name, city_pinyin, initial
@@ -73,4 +99,15 @@
 		WHERE
 		device_id = #{deviceID}
 	</update>
+	
+	<insert id="insertCleanerStatusList" parameterType="java.util.List">
+		INSERT INTO
+		deviceStatus
+		(device_id, pm25, temperature, humidity, hcho, co2, velocity, power, workmode, uv, heat, light, cycle)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+		(#{item.deviceID},#{item.pm25},#{item.temperature},#{item.humidity},#{item.HCHO}
+		,#{item.CO2},#{item.velocity},#{item.power},#{item.workMode},#{item.UV},#{item.heat},#{item.light},#{item.cycle})
+		</foreach>
+	</insert>
 </mapper>
