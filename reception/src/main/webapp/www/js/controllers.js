@@ -66,8 +66,10 @@ angular.module('starter.controllers', ['ngCordova'])
     });
 })
 .controller('VipCtrl', function($scope, $http) {
-	$http.get('/reception/customer/info').success(function(response){
-		
+	$http.get('/reception/consumer/info').success(function(response){
+		if(response.status == 1){
+			$scope.consumer = response.contents.consumer
+		}
 	});
 
 })
