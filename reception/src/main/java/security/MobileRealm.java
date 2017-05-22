@@ -10,6 +10,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import vip.service.ConsumerSerivce;
 import vo.vip.ConsumerVo;
@@ -30,6 +31,9 @@ public class MobileRealm extends AuthorizingRealm {
 		UsernamePasswordToken token = (UsernamePasswordToken) arg0;
 		String mobile = token.getUsername();
 		ConsumerVo consumer = consumerSerivce.login(mobile);
+		if(StringUtils.isEmpty(consumer)) {
+			return null;
+		}
 		return new SimpleAuthenticationInfo(consumer, token.getPassword(), getName());
 	}
 }

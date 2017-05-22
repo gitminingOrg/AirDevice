@@ -33,6 +33,7 @@ public class ConsumerController {
 			logger.error(e.getMessage());
 			result.setStatus(ResultMap.STATUS_FAILURE);
 			result.setInfo(e.getMessage());
+			return result;
 		}
 		result.setStatus(ResultMap.STATUS_SUCCESS);
 		return result;
