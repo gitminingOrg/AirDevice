@@ -110,6 +110,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
     url: '/login',
     templateUrl: 'templates/login.html',
     controller: 'LoginCtrl'         
+  })
+  .state('deviceName', {
+    url: '/device/name/:deviceID',
+    templateUrl: 'templates/device-name.html',
+    controller: 'DeviceNameCtrl'         
+  })
+  .state('deviceShare', {
+	    url: '/device/share/:deviceID',
+	    templateUrl: 'templates/device-share.html',
+	    controller: 'DeviceShareCtrl'         
   });
 
   // if none of the above states are matched, use this as the fallback

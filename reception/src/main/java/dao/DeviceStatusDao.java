@@ -8,7 +8,9 @@ import model.CleanerStatus;
 
 import org.springframework.stereotype.Repository;
 
+import util.ReceptionConstant;
 import bean.CityAqi;
+import bean.DeviceAir;
 import bean.DeviceCity;
 import bean.UserAction;
 
@@ -52,5 +54,9 @@ public class DeviceStatusDao extends BaseDaoImpl{
 	
 	public boolean insertDeviceStatus(List<CleanerStatus> list){
 		return sqlSession.insert("aqiData.insertCleanerStatusList", list) == list.size();
+	}
+	
+	public List<DeviceAir> selectTopNDayStatus(String deviceID){
+		return sqlSession.selectList("aqiData.selectTopNDayStatus", deviceID);
 	}
 }

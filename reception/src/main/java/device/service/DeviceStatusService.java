@@ -20,7 +20,9 @@ import util.ReceptionConstant;
 import utils.Constant;
 import utils.MethodUtil;
 import utils.TimeUtil;
+import bean.AirCompareVO;
 import bean.CityAqi;
+import bean.DeviceAir;
 import bean.DeviceCity;
 import bean.UserAction;
 
@@ -132,6 +134,28 @@ public class DeviceStatusService {
 			return ReturnCode.SUCCESS;
 		}else {
 			return ReturnCode.FAILURE;
+		}
+	}
+	
+	public AirCompareVO getAirCompareVO(String deviceID){
+		List<String> dates = new ArrayList<String>();
+		List<Integer> insides = new ArrayList<Integer>();
+		List<Integer> outsides = new ArrayList<Integer>();
+		
+		List<DeviceAir> deviceAirs = deviceStatusDao.selectTopNDayStatus(deviceID);
+		if (deviceAirs == null || deviceAirs.size() == 0) {
+			return null;
+		}else {
+			for (DeviceAir deviceAir : deviceAirs) {
+				dates.add(deviceAir.getDate());
+				insides.add(deviceAir.getInsideAir());
+				outsides.add(deviceAir.getOutsideAir());
+			}
+			AirCompareVO airCompareVO = new AirCompareVO();
+			airCompareVO.setDates(dates);
+			airCompareVO.setInsides(insides);
+			airCompareVO.setOutsides(outsides);
+			return airCompareVO;
 		}
 	}
 	

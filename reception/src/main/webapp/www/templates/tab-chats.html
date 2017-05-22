@@ -1,9 +1,9 @@
 ﻿<ion-view view-title="QAir新风净化">
   <ion-content style="background-color:#FAFAFA">
      <div class="card">
-	     <div class="item item-divider"><i class="icon ion-android-home"></i> 室内环境</div>
+	     <div class="item item-divider" style="font-size:12px"><i class="icon ion-android-home"></i> 室内环境</div>
 	     <div class="row">
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-cloud"></i><br/>PM2.5<br/> {{ cleanerStatus.pm25 }} ug/m<sup>3</sup></div>
+	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-cloud"></i><br/>PM2.5<br/> {{ cleanerStatus.pm25 }}</div>
 	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-speedometer assertive"></i><br/>温度<br/> {{ cleanerStatus.temperature }} <sup>o</sup>C</div>
 	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-waterdrop calm"></i><br/>湿度<br/> {{ cleanerStatus.humidity }}%</div>
 	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-erlenmeyer-flask dark"></i><br/>甲醛<br/> {{ cleanerStatus.hcho }}</div>
@@ -14,25 +14,25 @@
      </div>  
 
      <div class="card">
-	     <div class="item item-divider"><i class="icon ion-cube"></i> 设备状态</div>
+	     <div class="item item-divider"  style="font-size:12px"><i class="icon ion-cube"></i> 设备状态</div>
 	     <div class="row">
 	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-power"></i><br/>电源<br/> {{ cleanerStatus.power == 1 ? 'On' : 'Off' }}</div>
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-closed-captioning"></i><br/>工作模式<br/> {{ cleanerStatus.workMode }} </div>
+	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-closed-captioning"></i><br/>工作模式<br/> {{ cleanerStatus.workMode == 1 ? '自动' : cleanerStatus.workMode == 2 ? '睡眠' : '手动' }} </div>
 	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-flame assertive"></i><br/>辅热<br/> {{ cleanerStatus.heat == 1 ? 'On' : 'Off' }}</div>
 	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-lightbulb energized"></i><br/>背光<br/>{{ cleanerStatus.light }}</div>
 	     </div>
 	     <div class="row">
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-ionic"></i><br/>循环方式<br/> {{ cleanerStatus.cycle == 0 ? '内' : '外' }}</div>
+	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-ionic"></i><br/>循环方式<br/> {{ cleanerStatus.cycle == 0 ? '内循环' : '外循环' }}</div>
 	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-paper-airplane"></i><br/>风量<br/>{{ cleanerStatus.velocity }} m<sup>3</sup>/h</div>
 	     </div>
      </div>  
      
-	<div class="card">
+	<div class="card" style="display:none">
 		<highchart style="width:80%;height:30%" id="chart1" config="currentCompare"></highchart>
 	</div>
 
-	<div class="card">
-		<highchart style="width:80%;height:30%" id="chart1" config="historyCompare"></highchart>
+	<div style="height:30%" class="card">
+		<div style="height:250px" id="chart2"></div>
 	</div>
   </ion-content>
 </ion-view>

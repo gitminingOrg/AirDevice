@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import util.ReceptionConstant;
 import utils.Constant;
 import auth.UserComponent;
+import bean.AirCompareVO;
 import bean.CityAqi;
 import bean.DeviceCity;
 import device.service.DeviceStatusService;
@@ -223,6 +224,20 @@ public class DeviceStatusController {
 		}else {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.addContent(ReceptionConstant.CITY_AQI, cityAqi);
+		}
+		return resultMap;
+	}
+	
+	@RequestMapping(value= "/{deviceID}/aqi/compare")
+	public ResultMap getAirCompareVO(@PathVariable("deviceID") String deviceID){
+		ResultMap resultMap = new ResultMap();
+		AirCompareVO airCompareVO = deviceStatusService.getAirCompareVO(deviceID);
+		if (airCompareVO == null) {
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo(ResultMap.EMPTY_INFO);
+		}else{
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.addContent(ReceptionConstant.AIR_COMPARE, airCompareVO);
 		}
 		return resultMap;
 	}

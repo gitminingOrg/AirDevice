@@ -1,0 +1,22 @@
+﻿<ion-view view-title="QAir新风净化">
+<ion-content>
+<div class="bar bar-header">
+      <div class="h1 title">设备名称管理</div>
+    </div>
+    
+    <div class="content has-header">
+      <div class="list">
+        <label class="item item-input">
+          <input type="text" ng-model="deviceName" placeholder="设备名称">
+        </label>
+      </div>
+      <div class="padding">
+        <button class="button button-block button-calm" ng-click="configName(deviceName)">提交</button>
+      </div>
+      
+      <div class="padding">
+        <a href="#/tab/{{deviceID}}/dash" class="button button-block button-royal">返回</a>
+      </div>
+    </div>
+</ion-content>
+</ion-view>

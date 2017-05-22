@@ -372,7 +372,7 @@ angular.module('starter.controllers', ['ngCordova'])
             }
             
         },
-        colors: ['#0AB2F3','#D68F00'],
+        colors: ['#0AB2F3','#FFAA00'],
         xAxis: {
             categories: ['对比'],
             title: {
@@ -400,52 +400,52 @@ angular.module('starter.controllers', ['ngCordova'])
   }
 
   $scope.historyCompare = {
-    credits: {
-            enabled: false
-        },
-    chart: {
-        type: 'column'
-    },
-    title: {
-        align: 'left',
-        text: '近7日空气质量对比',
-        style:{
-          fontSize: '13px'
-        }
-    },
-    colors: ['#0AB2F3','#D68F00'],
-    xAxis: {
-        categories: [
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec'
-        ],
-        crosshair: true
-    },
-    yAxis: {
-        min: 0,
-        title: {
-            text: '空气污染指数'
-        }
-    },
-    legend: {
-        align: 'right', //水平方向位置
-        verticalAlign: 'top', //垂直方向位置
-    },
-    series: [{
-        name: '室内',
-        data: [59.0, 59.6, 52.4, 65.2, 59.3, 51.2, 22.2]
 
-    }, {
-        name: '室外',
-        data: [57.4, 60.4, 47.6, 39.1, 46.8, 51.1, 44.4]
-
-    }]
     }
+  $http.get('/reception/status/'+$stateParams.deviceID+'/aqi/compare').success(function(response){
+	  if(response.status == 1){
+		  var airCompare = response.contents.airCompare
+		    $('#chart2').highcharts({
+		        credits: {
+		            enabled: false
+		        },
+		    chart: {
+		        type: 'column'
+		    },
+		    title: {
+		        align: 'left',
+		        text: '近日空气质量对比',
+		        style:{
+		          fontSize: '13px'
+		        }
+		    },
+		    colors: ['#0AB2F3','#FFAA00'],
+		    xAxis: {
+		        categories: airCompare.dates,
+		        crosshair: true
+		    },
+		    yAxis: {
+		        min: 0,
+		        title: {
+		            text: '空气污染指数'
+		        }
+		    },
+		    legend: {
+		        align: 'right', //水平方向位置
+		        verticalAlign: 'top', //垂直方向位置
+		    },
+		    series: [{
+		        name: '室内',
+		        data: airCompare.insides
+
+		    }, {
+		        name: '室外',
+		        data: airCompare.outsides
+
+		    }]
+		    });
+	  }
+  });
 })
 .controller('AccountCtrl',function($scope, $rootScope, $cordovaNetwork, $stateParams) {
 	$scope.deviceID = $stateParams.deviceID;
@@ -488,6 +488,15 @@ angular.module('starter.controllers', ['ngCordova'])
 		    	
 		    })
 	};
+})
+.controller('DeviceNameCtrl',function($stateParams,$http,$scope) {
+	$scope.deviceID = $stateParams.deviceID;
+	$scope.configName = function(deviceName){
+		
+	};
+})
+.controller('DeviceShareCtrl',function($stateParams,$http,$scope) {
+	$scope.deviceID = $stateParams.deviceID;
 })
 .controller('TabCtrl',function($stateParams,$scope) {
 	$scope.deviceID = $stateParams.deviceID;

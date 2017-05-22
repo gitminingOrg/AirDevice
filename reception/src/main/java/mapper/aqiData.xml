@@ -38,6 +38,13 @@
 		<result property="time" column="time"/>
 	</resultMap>
 	
+	<resultMap type="bean.DeviceAir" id="deviceAir">
+		<result property="deviceID" column="device_id" />
+		<result property="insideAir" column="inside_air"/>
+		<result property="outsideAir" column="outside_air"/>
+		<result property="date" column="date"/>
+	</resultMap>
+	
 	<select id="selectAllDevices" resultType="string">
 		SELECT distinct
 		device_id
@@ -110,4 +117,13 @@
 		,#{item.CO2},#{item.velocity},#{item.power},#{item.workMode},#{item.UV},#{item.heat},#{item.light},#{item.cycle})
 		</foreach>
 	</insert>
+	
+	<select id="selectTopNDayStatus" resultMap="deviceAir">
+		SELECT device_id, inside_air, outside_air, date 
+		FROM deviceAir 
+		WHERE device_id = #{deviceID} 
+		AND date 
+		IN 
+		(SELECT DISTINCT date FROM deviceAir WHERE device_id = #{deviceID} ORDER BY date DESC);
+	</select>
 </mapper>
