@@ -1,4 +1,4 @@
-package payment;
+package payment.controller;
 
 public class BillController {
 
