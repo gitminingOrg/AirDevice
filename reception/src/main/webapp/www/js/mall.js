@@ -1,0 +1,4 @@
+.controller('MallCtrl', function($scope) {
+
+
+})

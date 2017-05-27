@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import bean.CityList;
 import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;
@@ -41,5 +42,9 @@ public class DeviceVipDao extends BaseDaoImpl{
 	
 	public boolean insertUserDevice(UserDevice userDevice){
 		return sqlSession.insert("userVip.insertNewUserDevice", userDevice) > 0;
+	}
+	
+	public List<CityList> getAllCityList(){
+		return sqlSession.selectList("aqiData.selectAllCities");
 	}
 }

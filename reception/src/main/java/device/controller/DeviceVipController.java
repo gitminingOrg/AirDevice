@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import util.ReceptionConstant;
 import utils.QRCodeGenerator;
 import auth.UserComponent;
+import bean.CityList;
 import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;
@@ -111,6 +112,15 @@ public class DeviceVipController {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.addContent(ReceptionConstant.DEVICE, deviceInfo);
 		}
+		return resultMap;
+	}
+	
+	@RequestMapping("/all/cities")
+	public ResultMap getAllCities(){
+		ResultMap resultMap = new ResultMap();
+		List<CityList> cityList = deviceVipService.getAllCities();
+		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		resultMap.addContent("cityList", cityList);
 		return resultMap;
 	}
 }

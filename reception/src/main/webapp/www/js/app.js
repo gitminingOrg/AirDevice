@@ -55,8 +55,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
       url: '/chats',
       views: {
         'tab-chats': {
-          templateUrl: 'templates/tab-chats.html',
-          controller: 'ChatsCtrl'
+          templateUrl: 'templates/tab-status.html',
+          controller: 'StatusCtrl'
         }
       }
     })

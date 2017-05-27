@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import util.JsonResponseConverter;
 import util.ReceptionConstant;
 import utils.TimeUtil;
+import bean.CityList;
 import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;
@@ -155,6 +156,10 @@ public class DeviceVipService {
 			DeviceInfo deviceInfo = gson.fromJson(infoString, DeviceInfo.class);
 			return deviceInfo;
 		}
+	}
+	
+	public List<CityList> getAllCities(){
+		return deviceVipDao.getAllCityList();
 	}
 	
 	private String generateNCharString(int length){
