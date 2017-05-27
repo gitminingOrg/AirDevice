@@ -1,7 +1,5 @@
 package device.controller;
 
-import java.io.UnsupportedEncodingException;
-
 import javax.servlet.http.HttpServletRequest;
 
 import model.CleanerStatus;
@@ -37,7 +35,6 @@ public class DeviceStatusController {
 	@RequestMapping("/device/{deviceID}")
 	public ResultMap getDeviceStatus(@PathVariable("deviceID")String device){
 		ResultMap resultMap = new ResultMap();
-		String userID = UserComponent.getUserID();
 		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(device);
 		if (cleanerStatus == null) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
@@ -233,6 +230,24 @@ public class DeviceStatusController {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.addContent(ReceptionConstant.AIR_COMPARE, airCompareVO);
 		}
+		return resultMap;
+	}
+	@RequestMapping(value= "/{deviceID}/aqi/current")
+	public ResultMap currentAqiCompare(@PathVariable("deviceID") String deviceID){
+		ResultMap resultMap = new ResultMap();
+		String userID = UserComponent.getUserID();
+		DeviceCity deviceCity =  deviceStatusService.getDeviceCity(userID, deviceID);
+		CityAqi cityAqi = deviceStatusService.getCityCurrentAqi(deviceCity.getCity());
+		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(deviceID);
+		if(cityAqi == null || cleanerStatus == null){
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			return resultMap;
+		}
+		int cityData = cityAqi.getAqiData();
+		int deviceData = cleanerStatus.getPm25();
+		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		resultMap.addContent("cityData", cityData);
+		resultMap.addContent("deviceData", deviceData);
 		return resultMap;
 	}
 }

@@ -1,15 +1,13 @@
 ﻿<ion-view view-title="QAir新风净化">
   <ion-content style="background-color:#FAFAFA">
      <div class="card">
-	     <div class="item item-divider" style="font-size:12px"><i class="icon ion-android-home"></i> 室内环境</div>
+	     <!-- <div class="item item-divider" style="font-size:12px"><i class="icon ion-android-home"></i> 室内环境</div> -->
 	     <div class="row">
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-cloud"></i><br/>PM2.5<br/> {{ cleanerStatus.pm25 }}</div>
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-speedometer assertive"></i><br/>温度<br/> {{ cleanerStatus.temperature }} <sup>o</sup>C</div>
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-waterdrop calm"></i><br/>湿度<br/> {{ cleanerStatus.humidity }}%</div>
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-erlenmeyer-flask dark"></i><br/>甲醛<br/> {{ cleanerStatus.hcho }}</div>
-	     </div>
-	     <div class="row">
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-leaf balanced"></i><br/>二氧化碳<br/> {{ cleanerStatus.co2 }}</div>
+	     <div class="col col-20" style="text-align:center;color:#666666"><i class="icon ion-cloud"></i><br/>PM2.5<br/> {{ cleanerStatus.pm25 }}</div>
+	     <div class="col col-20" style="text-align:center;color:#666666"><i class="icon ion-speedometer assertive"></i><br/>温度<br/> {{ cleanerStatus.temperature }} <sup>o</sup>C</div>
+	     <div class="col col-20" style="text-align:center;color:#666666"><i class="icon ion-waterdrop calm"></i><br/>湿度<br/> {{ cleanerStatus.humidity }}%</div>
+	     <div class="col col-20" style="text-align:center;color:#666666"><i class="icon ion-erlenmeyer-flask dark"></i><br/>甲醛<br/> {{ cleanerStatus.hcho }}</div>
+	     <div class="col col-20" style="text-align:center;color:#666666"><i class="icon ion-leaf balanced"></i><br/>二氧化碳<br/> {{ cleanerStatus.co2 }}</div>
 	     </div>
      </div>  
 
@@ -27,8 +25,8 @@
 	     </div>
      </div>  
      
-	<div class="card" style="display:none">
-		<highchart style="width:80%;height:30%" id="chart1" config="currentCompare"></highchart>
+	<div class="card">
+		<div style="height:250px" id="chart1"></div>
 	</div>
 
 	<div style="height:30%" class="card">

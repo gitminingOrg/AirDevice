@@ -4,7 +4,7 @@ public class CityAqi {
 	private String cityName;
 	private String cityPinyin;
 	private String time;
-	private String aqiData;
+	private int aqiData;
 	private String aqiGrade;
 	public String getCityName() {
 		return cityName;
@@ -19,10 +19,11 @@ public class CityAqi {
 		this.time = time;
 	}
 	
-	public String getAqiData() {
+	
+	public int getAqiData() {
 		return aqiData;
 	}
-	public void setAqiData(String aqiData) {
+	public void setAqiData(int aqiData) {
 		this.aqiData = aqiData;
 	}
 	public String getAqiGrade() {

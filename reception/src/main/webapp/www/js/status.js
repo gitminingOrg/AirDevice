@@ -6,54 +6,53 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, Chats) {
 		  
 	  }
   });
-  $scope.test = function(){
-    $scope.currentCompare = null;
-  }
-  $scope.currentCompare = {
-        credits: {
-            enabled: false
-        },
-        chart: {
-            type: 'bar'
-        },
-        title: {
-            align: 'left',
-            text: '空气质量对比',
-            style:{
-              fontSize: '13px'
-            }
-            
-        },
-        colors: ['#0AB2F3','#FFAA00'],
-        xAxis: {
-            categories: ['对比'],
-            title: {
-                text: null
-            }
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: '空气质量指数',
-                align: 'high'
-            },
-        },
-        legend: {
-            align: 'right', //水平方向位置
-            verticalAlign: 'top', //垂直方向位置
-        },
-        series: [{
-            name: '室内',
-            data: [20]
-        }, {
-            name: '室外',
-            data: [133]
-        }]
-  }
 
-  $scope.historyCompare = {
-
-    }
+  $http.get('/reception/status/'+$stateParams.deviceID+'/aqi/current').success(function(response){
+	  if(response.status == 1){
+		  $('#chart1').highcharts({
+			  credits: {
+		            enabled: false
+		        },
+		        chart: {
+		            type: 'bar'
+		        },
+		        title: {
+		            align: 'left',
+		            text: '空气质量对比',
+		            style:{
+		              fontSize: '13px'
+		            }
+		            
+		        },
+		        colors: ['#0AB2F3','#FFAA00'],
+		        xAxis: {
+		            categories: ['对比'],
+		            title: {
+		                text: null
+		            }
+		        },
+		        yAxis: {
+		            min: 0,
+		            title: {
+		                text: '空气质量指数',
+		                align: 'high'
+		            },
+		        },
+		        legend: {
+		            align: 'right', //水平方向位置
+		            verticalAlign: 'top', //垂直方向位置
+		        },
+		        series: [{
+		            name: '室内',
+		            data: [response.contents.deviceData]
+		        }, {
+		            name: '室外',
+		            data: [response.contents.cityData]
+		        }]
+		    });
+	  }
+  });
+  
   $http.get('/reception/status/'+$stateParams.deviceID+'/aqi/compare').success(function(response){
 	  if(response.status == 1){
 		  var airCompare = response.contents.airCompare
