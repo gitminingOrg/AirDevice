@@ -5,8 +5,8 @@
   </ion-header-bar>
   <ion-content>
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" ng-repeat="city in cities" type="item-text-wrap" href="" ng-click="choose(city)">
-        <h2>{{city.name}}</h2>
+      <ion-item class="item-remove-animate item-icon-right" ng-repeat="city in cities" type="item-text-wrap" href="" ng-click="choose(city.cityPinyin)">
+        <h2>{{city.cityName}}</h2>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
     </ion-list>

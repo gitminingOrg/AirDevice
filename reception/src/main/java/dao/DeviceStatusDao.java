@@ -41,7 +41,8 @@ public class DeviceStatusDao extends BaseDaoImpl{
 	
 	
 	public boolean insertDeviceCity(DeviceCity deviceCity){
-		return sqlSession.insert("aqiData.insertDeviceCity", deviceCity) > 0;
+		int affect = sqlSession.insert("aqiData.insertDeviceCity", deviceCity);
+		return affect > 0;
 	}
 	
 	public boolean disableDeviceCity(String deviceName){

@@ -1,4 +1,3 @@
-.controller('MallCtrl', function($scope) {
-
+app.controller('MallCtrl', function($scope) {
 
 })

@@ -190,14 +190,8 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
-	@RequestMapping(value= "/city/config/{deviceID}", method= RequestMethod.POST)
-	public ResultMap configDeviceCity(@PathVariable("deviceID")String deviceID, HttpServletRequest request){
-		try {
-			request.setCharacterEncoding("utf-8");
-		} catch (UnsupportedEncodingException e) {
-			LOG.error("set request encode failed", e);
-		}
-		String city = request.getParameter(ReceptionConstant.CITY);
+	@RequestMapping(value= "/city/config/{deviceID}/{city}", method= RequestMethod.POST)
+	public ResultMap configDeviceCity(@PathVariable("deviceID")String deviceID, @PathVariable("city")String city){
 		ResultMap resultMap = new ResultMap();
 		String userID = UserComponent.getUserID();
 		ReturnCode returnCode = deviceStatusService.setDeviceCity(userID, deviceID, city);

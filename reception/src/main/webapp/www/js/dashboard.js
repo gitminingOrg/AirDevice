@@ -254,24 +254,38 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
       }).then(function(modal) {
         $scope.modal = modal;
       });
-      
-      $scope.cities = Chats.all();
+      $http.get('/reception/own/all/cities').success(function(response){
+    	  if(response.status == 1){
+    		  $scope.cities = response.contents.cityList;
+    	  }
+      });
       $scope.choose = function(city){
-        if(city.sub){
-            $scope.cities = city.sub ;
-        }else{
-            $scope.location = city.name;
-            var point = Highcharts.charts[0].series[0].points[0];
-            point.update(100);
-            $scope.airQuality = "良";
+    	  	$http.post('/reception/status/city/config/'+$scope.deviceID+'/'+city).success(function(data){
+    	  		if(data.status != 1){
+    	  			console.log('set device city failed');
+    	  			return;
+    	  		}
+    	  	    $http.get("/reception/status/city/info/"+$stateParams.deviceID).success(function(response){
+    	  	    	if(response.status == 1){
+    	  	    		
+    	  	    		var data = { city : response.contents.deviceCity.city}
+    	  	    		$http({  
+    	  			        url    : '/reception/status/city/aqi',  
+    	  			        method : "post",  
+    	  			        params   : data,  
+    	  			    }).success(function(response){
+    	  			    	if(response.status == 1){
+    	  			    		$scope.airQuality = response.contents.cityAqi.aqiGrade
+    	  			    		$scope.aqiData = response.contents.cityAqi.aqiData
+    	  			    		$scope.location = response.contents.cityAqi.cityName;
+    	  			            var point = Highcharts.charts[0].series[0].points[0];
+    	  			            point.update(parseInt($scope.aqiData));
+    	  			    	}
+    	  			    });
+    	  	    	}
+    	  	    });
+    	  	});
             $scope.modal.hide();
-            $scope.cities = Chats.all();
-        } 
       }
-      
-      $scope.createContact = function(u) {        
-        $scope.contacts.push({ name: u.firstName + ' ' + u.lastName });
-        $scope.modal.hide();
-      };
 
     })
