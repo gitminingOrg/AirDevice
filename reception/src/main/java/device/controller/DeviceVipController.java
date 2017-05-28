@@ -3,6 +3,7 @@ package device.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.DeviceInfo;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import util.ReceptionConstant;
@@ -82,8 +84,8 @@ public class DeviceVipController {
 		return resultMap;
 	}
 	
-	@RequestMapping(value = "/name", method= RequestMethod.POST)
-	public ResultMap configName(@RequestBody DeviceName deviceName){
+	@RequestMapping(value = "/config/name", method= RequestMethod.POST)
+	public ResultMap configName(DeviceName deviceName){
 		ResultMap resultMap = new ResultMap();
 		String userID = UserComponent.getUserID();
 		ReturnCode returnCode = deviceVipService.configDeviceName(userID, deviceName);
@@ -96,6 +98,19 @@ public class DeviceVipController {
 		}else {
 			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
 			resultMap.setInfo("无设置权限");
+		}
+		return resultMap;
+	}
+	
+	@RequestMapping(value = "/info/name/{deviceID}")
+	public ResultMap getDeviceName(@PathVariable("deviceID") String deviceID){
+		ResultMap resultMap = new ResultMap();
+		DeviceName deviceName = deviceVipService.getDeviceName(deviceID);
+		if(deviceName == null){
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+		}else {
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.addContent(ReceptionConstant.DEVICE_NAME, deviceName);
 		}
 		return resultMap;
 	}
@@ -120,7 +135,7 @@ public class DeviceVipController {
 		ResultMap resultMap = new ResultMap();
 		List<CityList> cityList = deviceVipService.getAllCities();
 		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
-		resultMap.addContent("cityList", cityList);
+		resultMap.addContent(ReceptionConstant.CITY_LIST, cityList);
 		return resultMap;
 	}
 }

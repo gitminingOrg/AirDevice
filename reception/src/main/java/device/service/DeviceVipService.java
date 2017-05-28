@@ -130,6 +130,7 @@ public class DeviceVipService {
 	 */
 	public ReturnCode configDeviceName(String userID, DeviceName deviceName){
 		//check privilege
+		System.out.println(deviceName.getName().equals("啊啊啊"));
 		//update deviceName
 		boolean result = deviceVipDao.updateDeviceName(deviceName);
 		if (result) {
@@ -137,6 +138,16 @@ public class DeviceVipService {
 		}else {
 			return ReturnCode.FAILURE;
 		}
+	}
+	
+	/**
+	 * get device name by device id
+	 * @param deviceID
+	 * @return
+	 */
+	public DeviceName getDeviceName(String deviceID){
+		DeviceName deviceName = deviceVipDao.getDeviceName(deviceID);
+		return deviceName;
 	}
 	
 	/**

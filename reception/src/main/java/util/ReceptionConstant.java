@@ -19,6 +19,7 @@ public class ReceptionConstant {
 	public static final String DEVICE = "device";
 	public static final String CITY = "city";
 	public static final String CITY_AQI = "cityAqi";
+	public static final String CITY_LIST = "cityList";
 	public static final String DEVICE_CITY = "deviceCity";
 	public static final String AIR_COMPARE = "airCompare";
 	
