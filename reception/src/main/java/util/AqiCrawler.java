@@ -1,7 +1,7 @@
 package util;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -9,27 +9,42 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import bean.CityAqi;
+import bean.CityList;
+import dao.DeviceStatusDao;
+
+@Component
 public class AqiCrawler {
+	@Autowired
+	private DeviceStatusDao deviceStatusDao;
+	
 	Logger LOG = LoggerFactory.getLogger(AqiCrawler.class);
 	
 	public void crawlAQI(String time){
-		AqiDao aqiDao = new AqiDao();
-		HashMap<String, String> city_map = aqiDao.getCityList();
+		List<CityList> cityList = deviceStatusDao.getAllCities();
 		
 		try {
-			for(String city_name : city_map.keySet()){
-				String city_pinyin = city_map.get(city_name);
+			for(int i = 0 ; i < cityList.size() ; i ++) {
+				String city_pinyin = cityList.get(i).getCityPinyin();
 				Document detail_doc = Jsoup.connect("http://air-level.com/air/" + city_pinyin).timeout(90000).get();
 				//some cities have no aqi data,the webpage may redirect,need skip
 				if(detail_doc.getElementsByClass("aqi-bg").size() > 0){
 					Element data_element = detail_doc.getElementsByClass("aqi-bg").get(0);
 					int aqi_value = Integer.parseInt(data_element.html().split(" ")[0]);
 					String aqi_grade = data_element.html().split(" ")[1];
-					System.out.println(city_name + ":" + data_element.html());
+					System.out.println(cityList.get(i).getCityName() + ":" + data_element.html());
 					//each hour period can only have one aqi record
-					if(!aqiDao.findCityAqi(city_name, time)){
-						aqiDao.insertCityAqi(city_name, city_pinyin, time, aqi_value, aqi_grade);
+					if(!deviceStatusDao.findCityAqi(cityList.get(i).getCityName(), time)){
+						CityAqi cityAqi = new CityAqi();
+						cityAqi.setCityName(cityList.get(i).getCityName());
+						cityAqi.setCityPinyin(city_pinyin);
+						cityAqi.setTime(time);
+						cityAqi.setAqiData(aqi_value);
+						cityAqi.setAqiGrade(aqi_grade);
+						deviceStatusDao.insertCityAqi(cityAqi);
 					}
 				}
 			}
@@ -39,7 +54,6 @@ public class AqiCrawler {
 	}
 	
 	public void updateCityList(){
-		AqiDao aqiDao = new AqiDao();
 		
 		try {
 			Document doc = Jsoup.connect("http://air-level.com/").timeout(90000).get();
@@ -51,8 +65,12 @@ public class AqiCrawler {
 					String city_pinyin = city.attr("href").split("/")[2];
 					String initial = (city_pinyin.charAt(0) + "").toUpperCase();
 					
-					if(!aqiDao.findCity(city_name)){
-						aqiDao.insertCity(city_name, city_pinyin, initial);
+					if(!deviceStatusDao.findCity(city_name)){
+						CityList cityList = new CityList();
+						cityList.setCityName(city_name);
+						cityList.setCityPinyin(city_pinyin);
+						cityList.setInitial(initial);
+						deviceStatusDao.insertCity(cityList);
 					}
 				}
 			}

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import util.ReceptionConstant;
 import bean.CityAqi;
+import bean.CityList;
 import bean.DeviceAir;
 import bean.DeviceCity;
 import bean.UserAction;
@@ -59,5 +60,28 @@ public class DeviceStatusDao extends BaseDaoImpl{
 	
 	public List<DeviceAir> selectTopNDayStatus(String deviceID){
 		return sqlSession.selectList("aqiData.selectTopNDayStatus", deviceID);
+	}
+	
+	public boolean insertCityAqi(CityAqi cityAqi){
+		return sqlSession.insert("insertCityAqi", cityAqi) > 0;
+	}
+	
+	public boolean insertCity(CityList cityList){
+		return sqlSession.insert("insertCity", cityList) > 0;
+	}
+	
+	public boolean findCityAqi(String cityName, String time){
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("cityName", cityName);
+		params.put("time", time);
+		return sqlSession.selectList("findCityAqi", params).size() > 0;
+	}
+	
+	public boolean findCity(String cityName){
+		return sqlSession.selectList("findCity", cityName).size() > 0;
+	}
+	
+	public List<CityList> getAllCities(){
+		return sqlSession.selectList("selectAllCities");
 	}
 }

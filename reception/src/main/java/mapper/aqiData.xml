@@ -45,6 +45,32 @@
 		<result property="date" column="date"/>
 	</resultMap>
 	
+	<insert id="insertCityAqi" parameterType="bean.CityAqi">
+		INSERT INTO
+		city_aqi (city_name,city_pinyin,time,aqi_data,aqi_grade)
+		VALUES
+		(#{cityName},#{cityPinyin},#{time},#{aqiData},#{aqiGrade})
+	</insert>
+	
+	<select id="findCityAqi" resultMap="cityAqi">
+		SELECT *
+		FROM city_aqi
+		WHERE city_name=#{cityName} AND time=#{time}
+	</select>
+	
+	<insert id="insertCity" parameterType="bean.CityList">
+		INSERT INTO
+		city_list (city_name,city_pinyin,initial)
+		VALUES
+		(#{cityName},#{cityPinyin},#{initial})
+	</insert>
+	
+	<select id="findCity" resultMap="cityList">
+		SELECT *
+		FROM city_list
+		WHERE city_name=#{cityName}
+	</select>
+	
 	<select id="selectAllDevices" resultType="string">
 		SELECT distinct
 		device_id
