@@ -1,4 +1,4 @@
-app.controller('DeviceNameCtrl',function($stateParams,$http,$scope) {
+app.controller('DeviceNameCtrl',function($stateParams,$http,$scope,$ionicPopup,$state) {
 	$scope.deviceID = $stateParams.deviceID;
 	$http.get('/reception/own/info/name/'+$scope.deviceID).success(function(response){
 		if(response.status == 1){
@@ -16,10 +16,29 @@ app.controller('DeviceNameCtrl',function($stateParams,$http,$scope) {
 		        },  
 		    }).success(function(response){
 		    	if(response.status == 1){
-		    		alert('succeed!')
+		    		$scope.showSuccess();
 		    	}else{
-		    		alert('failed')
+		    		$scope.showFailure();
 		    	}
 		    });
 	};
+	$scope.showSuccess = function() {
+        var alertPopup = $ionicPopup.alert({
+          title: '',
+          template: '修改成功'
+        });
+        alertPopup.then(function(res) {
+        	$state.go('tab.account',{deviceID : $scope.deviceID});
+        });
+      };
+      
+  	$scope.showFailure = function() {
+        var alertPopup = $ionicPopup.alert({
+          title: '',
+          template: '修改失败'
+        });
+        alertPopup.then(function(res) {
+        	console.log('config name failed');
+        });
+      };
 })

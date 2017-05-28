@@ -1,6 +1,8 @@
 package dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -46,5 +48,19 @@ public class DeviceVipDao extends BaseDaoImpl{
 	
 	public List<CityList> getAllCityList(){
 		return sqlSession.selectList("aqiData.selectAllCities");
+	}
+	
+	public UserDevice getUserDeviceRole(String userID, String deviceID){
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("userID", userID);
+		params.put("deviceID", deviceID);
+		return sqlSession.selectOne("userVip.selectUserDeviceRole", params);
+	}
+	
+	public boolean disableUserDevice(String userID, String deviceID){
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("userID", userID);
+		params.put("deviceID", deviceID);
+		return sqlSession.update("userVip.disableUserDevice", params) >= 0;
 	}
 }

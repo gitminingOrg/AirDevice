@@ -53,7 +53,7 @@
 		FROM
 		userDevice ud, deviceName dn
 		WHERE
-		user_id = #{userID}
+		user_id = #{userID} AND ud.status = 1
 	</select>
 	
 	<select id="getRecentDeviceStatus" resultMap="deviceStatus">
@@ -87,6 +87,15 @@
 		VALUES(#{userID}, #{deviceID}, #{role})
 	</insert>
 	
+	<select id="selectUserDeviceRole" resultMap="userDevice">
+		SELECT
+		user_id, device_id, role
+		FROM 
+		userDevice
+		WHERE
+		status = 1 AND user_id = #{userID} AND device_id = #{deviceID}
+	</select>
+	
 	<select id="selectDeviceName" resultMap="deviceName">
 		SELECT 
 		device_id, name, version
@@ -95,6 +104,15 @@
 		WHERE
 		device_id = #{deviceID}
 	</select>
+	
+	<update id="disableUserDevice">
+		UPDATE 
+		userDevice
+		SET
+		status = 0
+		WHERE
+		device_id = #{deviceID} AND user_id = #{userID}
+	</update>
 	
 	<insert id="insertDeviceName" parameterType="bean.DeviceName">
 		INSERT INTO
@@ -129,7 +147,8 @@
 	<insert id="insertDeviceShareCode" parameterType="bean.DeviceShareCode">
 		INSERT INTO
 		deviceShareCode(token, device_id, owner_id, role, expire_time)
-		VALUES(token, deviceID, ownerID, role, expireTime)
+		VALUES
+		(#{token}, #{deviceID}, #{ownerID}, #{role}, #{expireTime})
 	</insert>
 	
 	<update id="updateDeviceShareCode" parameterType="bean.DeviceShareCode">
@@ -137,9 +156,6 @@
 		deviceShareCode
 		SET
 		token = #{token}
-		<if test="auth_id != null">
-			
-		</if>
 		<if test="status >= 0">
 			,status = #{status}
 			,auth_id = #{authID}

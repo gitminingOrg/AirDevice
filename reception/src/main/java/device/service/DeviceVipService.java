@@ -62,10 +62,18 @@ public class DeviceVipService {
 		if (deviceShareCode == null) {
 			return ReturnCode.FAILURE;
 		}else{
+			String deviceID = deviceShareCode.getDeviceID();
 			//check expire
 			String current = TimeUtil.getCurrentTime();
 			if (deviceShareCode.getExpireTime() == null || current.compareTo(deviceShareCode.getExpireTime()) > 0) {
 				return ReturnCode.FAILURE;
+			}
+			//get user device auth
+			UserDevice originUserDevice = deviceVipDao.getUserDeviceRole(userID, deviceID);
+			if (originUserDevice != null && originUserDevice.getRole() <= deviceShareCode.getRole()) {
+				return ReturnCode.FORBIDDEN;
+			}else if(originUserDevice != null){
+				deviceVipDao.disableUserDevice(userID, deviceID);
 			}
 			//update auth
 			deviceShareCode.setAuthID(userID);
@@ -75,7 +83,6 @@ public class DeviceVipService {
 				return ReturnCode.FAILURE;
 			}
 			//insert user device
-			String deviceID = deviceShareCode.getDeviceID();
 			int role = deviceShareCode.getRole();
 			UserDevice userDevice = new UserDevice();
 			userDevice.setUserID(userID);
@@ -130,7 +137,6 @@ public class DeviceVipService {
 	 */
 	public ReturnCode configDeviceName(String userID, DeviceName deviceName){
 		//check privilege
-		System.out.println(deviceName.getName().equals("啊啊啊"));
 		//update deviceName
 		boolean result = deviceVipDao.updateDeviceName(deviceName);
 		if (result) {
