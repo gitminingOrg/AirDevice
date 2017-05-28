@@ -84,4 +84,35 @@ public class DeviceStatusDao extends BaseDaoImpl{
 	public List<CityList> getAllCities(){
 		return sqlSession.selectList("selectAllCities");
 	}
+	
+	public boolean insertDeviceAir(DeviceAir deviceAir){
+		return sqlSession.insert("insertDeviceAir", deviceAir) > 0;
+	}
+	
+	public boolean findDeviceAir(String device_id, String time){
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("device_id", device_id);
+		params.put("time", time);
+		return sqlSession.selectList("findDeviceAir", params).size() > 0;
+	}
+	
+	public HashMap<String, Integer> getAverageInside(String time){
+		HashMap<String, Integer> result = new HashMap<String, Integer>();
+		List<DeviceAir> list = sqlSession.selectList("getAverageInside", time);
+		
+		for(int i = 0 ; i < list.size() ; i ++){
+			result.put(list.get(i).getDeviceID(), list.get(i).getInsideAir());
+		}
+		return result;
+	}
+	
+	public HashMap<String, Integer> getAverageOutside(String time){
+		HashMap<String, Integer> result = new HashMap<String, Integer>();
+		List<DeviceAir> list = sqlSession.selectList("getAverageOutside", time);
+		
+		for(int i = 0 ; i < list.size() ; i ++){
+			result.put(list.get(i).getDeviceID(), list.get(i).getOutsideAir());
+		}
+		return result;
+	}
 }

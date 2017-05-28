@@ -152,4 +152,43 @@
 		IN 
 		(SELECT DISTINCT date FROM deviceAir WHERE device_id = #{deviceID} ORDER BY date DESC);
 	</select>
+	
+	<insert id="insertDeviceAir" parameterType="bean.DeviceAir">
+		INSERT INTO
+		deviceAir (device_id,inside_air,outside_air,date)
+		VALUES
+		(#{deviceID},#{insideAir},#{outsideAir},#{date})
+	</insert>
+	
+	<select id="findDeviceAir" resultMap="deviceAir">
+		SELECT *
+		FROM deviceAir
+		WHERE device_id=#{device_id} and date=#{time}
+	</select>
+	
+	<select id="getAverageInside" resultMap="deviceAir">
+		SELECT device_id,AVG(pm25) AS inside_air,0,"0"
+		FROM deviceStatus
+		WHERE device_id IN (
+			SELECT device_id
+			FROM device_city
+			WHERE status = 1
+		) AND time LIKE #{time}
+		GROUP BY device_id
+	</select>
+	
+	<select id="getAverageOutside" resultMap="deviceAir">
+		SELECT device_id,0,outside_air,"0"
+		FROM device_city,(
+			SELECT city_pinyin,AVG(aqi_data) AS outside_air
+			FROM city_aqi
+			WHERE city_pinyin in (
+				SELECT city
+				FROM device_city
+				WHERE status = 1
+			) AND time LIKE #{time}
+			GROUP BY city_pinyin
+		) AS a
+		WHERE device_city.city = a.city_pinyin
+	</select>
 </mapper>
