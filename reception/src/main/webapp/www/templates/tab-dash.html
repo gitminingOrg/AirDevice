@@ -1,5 +1,6 @@
 ﻿<ion-view view-title="QAir新风净化">
   <ion-content class="padding" style="background-color:#FAFAFA">
+  <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
 	<div class="list card">
 		<div class="item">
 			<button class="button button-small button-light"  ng-click="modal.show()"><i class="icon ion-location"></i> {{location}} <i class="icon ion-ios-arrow-down"></i></button>

@@ -17,4 +17,6 @@ app.controller('LoginCtrl',function($state,$http,$scope) {
 		    	
 		    })
 	};
+	
+	$scope.register = function(){} 
 })

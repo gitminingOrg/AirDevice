@@ -1,5 +1,9 @@
 app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $http, $timeout, $stateParams) {
 	$scope.deviceID = $stateParams.deviceID;
+	$scope.doRefresh = function(){
+		$scope.init();
+		$scope.$broadcast('scroll.refreshComplete');
+		}
     $scope.gaugeChart = {
       credits: {
             enabled: false
@@ -68,60 +72,67 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
             }
         }] 
     }
-	$http.get("/reception/status/device/"+$stateParams.deviceID).then(
-			function success(response) {
-				if(response.data.status == 1){
-					$scope.cleanerStatus = response.data.contents.cleanerStatus;
-					//电源打开
-					if(response.data.contents.cleanerStatus.power == 0){
-						$scope.power = false
-						$('#dash_power').attr("checked", false)
-					}else{
-						$scope.power = true
-						$('#dash_power').attr("checked", true)
-					}
-					//辅热打开
-					if(response.data.contents.cleanerStatus.heat == 0){
-						$scope.heat = false
-						$('#dash_heat').attr("checked", false)
-					}else{
-						$scope.heat = true
-						$('#dash_heat').attr("checked", true)
-					}
-					//杀菌打开
-					if(response.data.contents.cleanerStatus.uv == 0){
-						$scope.uv = false
-						$('#dash_uv').attr("checked", false)
-					}else{
-						$scope.uv = true
-						$('#dash_uv').attr("checked", true)
-					}
-					$scope.mode = response.data.contents.cleanerStatus.workMode
-				}
-		    }, function error(response) {
-		        // 请求失败执行代码
-		});
+    
+    $scope.init = function(){
+    	$http.get("/reception/status/device/"+$stateParams.deviceID).then(
+    			function success(response) {
+    				if(response.data.status == 1){
+    					$scope.cleanerStatus = response.data.contents.cleanerStatus;
+    					//电源打开
+    					if(response.data.contents.cleanerStatus.power == 0){
+    						$scope.power = false
+    						$('#dash_power').attr("checked", false)
+    					}else{
+    						$scope.power = true
+    						$('#dash_power').attr("checked", true)
+    					}
+    					//辅热打开
+    					if(response.data.contents.cleanerStatus.heat == 0){
+    						$scope.heat = false
+    						$('#dash_heat').attr("checked", false)
+    					}else{
+    						$scope.heat = true
+    						$('#dash_heat').attr("checked", true)
+    					}
+    					//杀菌打开
+    					if(response.data.contents.cleanerStatus.uv == 0){
+    						$scope.uv = false
+    						$('#dash_uv').attr("checked", false)
+    					}else{
+    						$scope.uv = true
+    						$('#dash_uv').attr("checked", true)
+    					}
+    					$scope.mode = response.data.contents.cleanerStatus.workMode
+    				}
+    		    }, function error(response) {
+    		        // 请求失败执行代码
+    		});  
+    	
+    	$http.get("/reception/status/city/info/"+$stateParams.deviceID).success(function(response){
+        	if(response.status == 1){
+        		
+        		var data = { city : response.contents.deviceCity.city}
+        		$http({  
+    		        url    : '/reception/status/city/aqi',  
+    		        method : "post",  
+    		        params   : data,  
+    		    }).success(function(response){
+    		    	if(response.status == 1){
+    		    		$scope.airQuality = response.contents.cityAqi.aqiGrade
+    		    		$scope.aqiData = response.contents.cityAqi.aqiData
+    		    		$scope.location = response.contents.cityAqi.cityName;
+    		            var point = Highcharts.charts[0].series[0].points[0];
+    		            point.update(parseInt($scope.aqiData));
+    		    	}
+    		    });
+        	}
+        });
+    	
+    }
+
     $scope.location = "北京"
     $scope.airQuality = "优"
-    $http.get("/reception/status/city/info/"+$stateParams.deviceID).success(function(response){
-    	if(response.status == 1){
-    		
-    		var data = { city : response.contents.deviceCity.city}
-    		$http({  
-		        url    : '/reception/status/city/aqi',  
-		        method : "post",  
-		        params   : data,  
-		    }).success(function(response){
-		    	if(response.status == 1){
-		    		$scope.airQuality = response.contents.cityAqi.aqiGrade
-		    		$scope.aqiData = response.contents.cityAqi.aqiData
-		    		$scope.location = response.contents.cityAqi.cityName;
-		            var point = Highcharts.charts[0].series[0].points[0];
-		            point.update(parseInt($scope.aqiData));
-		    	}
-		    });
-    	}
-    });
+    $scope.init()
     
     $scope.showAlert = function popup() {
         var alertPopup = $ionicPopup.alert({

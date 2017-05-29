@@ -1,4 +1,12 @@
 app.controller('DeviceShareCtrl',function($stateParams,$http,$scope) {
 	$scope.deviceID = $stateParams.deviceID;
-	$("#QRscan").attr("src","/reception/own/share/15CD11111122000022000001/1")
+	$scope.mode = 0;
+	$scope.controlQR = function(){
+		$("#QRscan").attr("src","/reception/own/share/"+$scope.deviceID+"/0")
+		$scope.mode = 1
+	}
+	$scope.readonlyQR = function(){
+		$("#QRscan").attr("src","/reception/own/share/"+$scope.deviceID+"/1")
+		$scope.mode = 2
+	}	
 })
