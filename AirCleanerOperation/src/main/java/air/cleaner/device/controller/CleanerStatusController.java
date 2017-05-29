@@ -51,7 +51,7 @@ public class CleanerStatusController {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.setInfo("更新状态成功");
 		}else{
-			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("更新状态失败");
 		}
 		return resultMap;
@@ -66,7 +66,7 @@ public class CleanerStatusController {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.setInfo("更新状态成功");
 		}else{
-			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("更新状态失败");
 		}
 		return resultMap;
@@ -81,7 +81,7 @@ public class CleanerStatusController {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.setInfo("更新状态成功");
 		}else{
-			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("更新状态失败");
 		}
 		return resultMap;
@@ -96,7 +96,7 @@ public class CleanerStatusController {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.setInfo("更新状态成功");
 		}else{
-			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("更新状态失败");
 		}
 		return resultMap;
@@ -111,7 +111,7 @@ public class CleanerStatusController {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.setInfo("更新状态成功");
 		}else{
-			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("更新状态失败");
 		}
 		return resultMap;
@@ -126,7 +126,7 @@ public class CleanerStatusController {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.setInfo("更新状态成功");
 		}else{
-			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("更新状态失败");
 		}
 		return resultMap;
