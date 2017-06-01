@@ -6,6 +6,9 @@ import model.CleanerStatus;
 import model.ResultMap;
 import model.ReturnCode;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import util.ReceptionConstant;
 import utils.Constant;
+import vo.vip.ConsumerVo;
 import auth.UserComponent;
 import bean.AirCompareVO;
 import bean.CityAqi;
@@ -32,6 +36,7 @@ public class DeviceStatusController {
 		this.deviceStatusService = deviceStatusService;
 	}
 
+	@RequiresAuthentication
 	@RequestMapping("/device/{deviceID}")
 	public ResultMap getDeviceStatus(@PathVariable("deviceID")String device){
 		ResultMap resultMap = new ResultMap();
@@ -46,11 +51,14 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping("/{deviceID}/power/{power}")
 	public ResultMap powerControl(@PathVariable("deviceID")String deviceID, @PathVariable("power")String power){
 		ResultMap resultMap = new ResultMap();
 		int data = Integer.parseInt(power);
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.POWER);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
@@ -64,11 +72,14 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping("/{deviceID}/velocity/{velocity}")
 	public ResultMap velocityControl(@PathVariable("deviceID")String deviceID, @PathVariable("velocity")String velocity){
 		ResultMap resultMap = new ResultMap();
 		int data = Integer.parseInt(velocity);
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.VELOCITY);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
@@ -82,11 +93,14 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping("/{deviceID}/heat/{heat}")
 	public ResultMap heatControl(@PathVariable("deviceID")String deviceID, @PathVariable("heat")String heat){
 		ResultMap resultMap = new ResultMap();
 		int data = Integer.parseInt(heat);
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.HEAT);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
@@ -100,11 +114,14 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping("/{deviceID}/workmode/{mode}")
 	public ResultMap workmodeControl(@PathVariable("deviceID")String deviceID, @PathVariable("mode")String mode){
 		ResultMap resultMap = new ResultMap();
 		int data = Integer.parseInt(mode);
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.WORKMODE);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
@@ -118,11 +135,14 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping("/{deviceID}/cycle/{cycle}")
 	public ResultMap cycleControl(@PathVariable("deviceID")String deviceID, @PathVariable("cycle")String cycle){
 		ResultMap resultMap = new ResultMap();
 		int data = Integer.parseInt(cycle);
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.CYCLE);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
@@ -136,11 +156,14 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping("/{deviceID}/light/{light}")
 	public ResultMap lightControl(@PathVariable("deviceID")String deviceID, @PathVariable("light")String light){
 		ResultMap resultMap = new ResultMap();
 		int data = Integer.parseInt(light);
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.LIGHT);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
@@ -154,11 +177,14 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping("/{deviceID}/uv/{uv}")
 	public ResultMap uvControl(@PathVariable("deviceID")String deviceID, @PathVariable("uv")String uv){
 		ResultMap resultMap = new ResultMap();
 		int data = Integer.parseInt(uv);
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.UV);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
@@ -172,10 +198,13 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping("/city/info/{deviceID}")
 	public ResultMap getDeviceCity(@PathVariable("deviceID")String deviceID){
 		ResultMap resultMap = new ResultMap();
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		DeviceCity deviceCity = deviceStatusService.getDeviceCity(userID, deviceID);
 		if(deviceCity == null){
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
@@ -187,10 +216,13 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping(value= "/city/config/{deviceID}/{city}", method= RequestMethod.POST)
 	public ResultMap configDeviceCity(@PathVariable("deviceID")String deviceID, @PathVariable("city")String city){
 		ResultMap resultMap = new ResultMap();
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.setDeviceCity(userID, deviceID, city);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
@@ -204,6 +236,7 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping(value= "/city/aqi", method= RequestMethod.POST)
 	public ResultMap getCityCurrentAqi(HttpServletRequest request){
 		ResultMap resultMap = new ResultMap();
@@ -219,6 +252,7 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping(value= "/{deviceID}/aqi/compare")
 	public ResultMap getAirCompareVO(@PathVariable("deviceID") String deviceID){
 		ResultMap resultMap = new ResultMap();
@@ -232,10 +266,14 @@ public class DeviceStatusController {
 		}
 		return resultMap;
 	}
+	
+	@RequiresAuthentication
 	@RequestMapping(value= "/{deviceID}/aqi/current")
 	public ResultMap currentAqiCompare(@PathVariable("deviceID") String deviceID){
 		ResultMap resultMap = new ResultMap();
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		DeviceCity deviceCity =  deviceStatusService.getDeviceCity(userID, deviceID);
 		CityAqi cityAqi = deviceStatusService.getCityCurrentAqi(deviceCity.getCity());
 		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(deviceID);

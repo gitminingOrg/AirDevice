@@ -9,6 +9,9 @@ import model.DeviceInfo;
 import model.ResultMap;
 import model.ReturnCode;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import util.ReceptionConstant;
 import utils.QRCodeGenerator;
+import vo.vip.ConsumerVo;
 import auth.UserComponent;
 import bean.CityList;
 import bean.DeviceName;
@@ -36,10 +40,13 @@ public class DeviceVipController {
 		this.deviceVipService = deviceVipService;
 	}
 
+	@RequiresAuthentication
 	@RequestMapping("/device")
 	public ResultMap getUserDevice(){
 		ResultMap resultMap = new ResultMap();
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		List<DeviceStatus> deviceStatus = deviceVipService.getUserCleaner(userID);
 		if (deviceStatus == null || deviceStatus.size() == 0) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
@@ -51,10 +58,13 @@ public class DeviceVipController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping("/share/{deviceID}/{role}")
 	public ResultMap shareDevice(@PathVariable("deviceID") String deviceID, @PathVariable("role") int role, HttpServletResponse response){
 		ResultMap resultMap = new ResultMap();
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		DeviceShareCode deviceShareCode = deviceVipService.generateShareCode(userID, deviceID, role, ReceptionConstant.DEFAULT_EXPIRE_DAYS);
 		try {
 			QRCodeGenerator.createQRCode(deviceShareCode.getToken(), ReceptionConstant.DEFAULT_QR_LENGTH, ReceptionConstant.DEFAULT_QR_LENGTH, response.getOutputStream());
@@ -64,10 +74,13 @@ public class DeviceVipController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping("/authorize/{token}")
 	public ResultMap authorizeUser(@PathVariable("token") String token){
 		ResultMap resultMap = new ResultMap();
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceVipService.authorizeDevice(token, userID);
 		if(returnCode.equals(ReturnCode.SUCCESS)){
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
@@ -81,10 +94,13 @@ public class DeviceVipController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping(value = "/config/name", method= RequestMethod.POST)
 	public ResultMap configName(DeviceName deviceName){
 		ResultMap resultMap = new ResultMap();
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceVipService.configDeviceName(userID, deviceName);
 		if (returnCode.equals(ReturnCode.SUCCESS)) {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
@@ -99,6 +115,7 @@ public class DeviceVipController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping(value = "/info/name/{deviceID}")
 	public ResultMap getDeviceName(@PathVariable("deviceID") String deviceID){
 		ResultMap resultMap = new ResultMap();
@@ -112,10 +129,13 @@ public class DeviceVipController {
 		return resultMap;
 	}
 	
+	@RequiresAuthentication
 	@RequestMapping("/info/{deviceID}")
 	public ResultMap getDeviceInfo(@PathVariable("deviceID") String deviceID){
 		ResultMap resultMap = new ResultMap();
-		String userID = UserComponent.getUserID();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		String userID = current.getCustomerId();
 		DeviceInfo deviceInfo = deviceVipService.getDeviceInfo(userID, deviceID);
 		if (deviceInfo == null) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);

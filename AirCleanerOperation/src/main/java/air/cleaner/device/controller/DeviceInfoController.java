@@ -1,5 +1,6 @@
 package air.cleaner.device.controller;
 
+import javax.resource.spi.AuthenticationMechanism;
 import javax.servlet.http.HttpServletRequest;
 
 import model.DeviceInfo;

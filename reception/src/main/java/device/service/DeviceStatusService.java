@@ -80,7 +80,7 @@ public class DeviceStatusService {
 			LOG.warn("unknown command type");
 			return ReturnCode.FAILURE;
 		}
-		ResultMap result = JsonResponseConverter.getDefaultResultMapWithParams(ReceptionConstant.powerControlPath, Integer.toString(data), deviceID);
+		ResultMap result = JsonResponseConverter.getDefaultResultMapWithParams(urlPath, Integer.toString(data), deviceID);
 		if(result.getStatus() != ResultMap.STATUS_SUCCESS){
 			LOG.warn("user : "+userID + " operate device : " + deviceID + " power failed");
 			return ReturnCode.FAILURE;
