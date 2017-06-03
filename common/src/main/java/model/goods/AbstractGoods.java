@@ -11,6 +11,10 @@ public abstract class AbstractGoods extends Entity{
 	
 	protected double goodsPrice;
 	
+	protected int bonus;
+	
+	protected Type type;
+	
 	public AbstractGoods() {
 		super();
 	}
@@ -45,5 +49,21 @@ public abstract class AbstractGoods extends Entity{
 
 	public void setGoodsPrice(double goodsPrice) {
 		this.goodsPrice = goodsPrice;
+	}
+	
+	public int getBonus() {
+		return bonus;
+	}
+
+	public void setBonus(int bonus) {
+		this.bonus = bonus;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
 	}
 }
