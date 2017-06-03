@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import dao.BaseDaoImpl;
 import dao.ThumbnailDao;
@@ -13,6 +14,7 @@ import model.goods.Thumbnail;
 import utils.IDGenerator;
 import vo.goods.ThumbnailVo;
 
+@Repository
 public class ThumbnailDaoImpl extends BaseDaoImpl implements ThumbnailDao {
 	private Logger logger = LoggerFactory.getLogger(ThumbnailDaoImpl.class);
 

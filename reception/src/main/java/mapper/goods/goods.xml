@@ -11,7 +11,7 @@
 		<result property="createAt" column="create_time" />
 	</resultMap>
 	
-	<select id="query4consumer">
+	<select id="query4consumer" parameterType="java.util.Map" resultMap="consumerGoodsVo">
 		select goods_id, goods_name, goods_price, goods_type, goods_bonus, block_flag, create_time
 		from goods
 		where 1 = 1

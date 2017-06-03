@@ -12,6 +12,7 @@
         <module>common</module>
     <module>AirCleanerOperation</module>
     <module>reception</module>
+    <module>menu</module>
   </modules>
 
 

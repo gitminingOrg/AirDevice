@@ -10,10 +10,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.mail.iap.Argument;
-
 import model.goods.ThumbnailType;
-import model.goods.Type;
 
 public class ThumbnailTypeHandler extends BaseTypeHandler<ThumbnailType>{
 	private Logger logger = LoggerFactory.getLogger(ThumbnailTypeHandler.class);

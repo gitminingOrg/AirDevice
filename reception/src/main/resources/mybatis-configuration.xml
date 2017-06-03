@@ -6,5 +6,7 @@
 		<mapper resource="mapper/userVip.xml" />
 		<mapper resource="mapper/aqiData.xml" />
 		<mapper resource="mapper/vip/consumer.xml" />
+		<mapper resource="mapper/goods/goods.xml" />
+		<mapper resource="mapper/goods/thumbnail.xml" />
 	</mappers>
 </configuration>

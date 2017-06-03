@@ -29,7 +29,7 @@ public class GoodsController {
 	@Autowired
 	private GoodsService goodsService;
 
-	@RequestMapping("/consumer/list")
+	@RequestMapping(method = RequestMethod.GET, value="/consumer/list")
 	public ResultMap list() {
 		ResultMap result = new ResultMap();
 		Map<String, Object> condition = new HashMap<>();
