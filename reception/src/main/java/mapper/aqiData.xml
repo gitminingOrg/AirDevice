@@ -150,7 +150,7 @@
 		WHERE device_id = #{deviceID} 
 		AND date 
 		IN 
-		(SELECT DISTINCT date FROM deviceAir WHERE device_id = #{deviceID} ORDER BY date DESC);
+		(SELECT t.date FROM (SELECT * FROM deviceAir WHERE device_id = #{deviceID} ORDER BY date DESC LIMIT 7) AS t);
 	</select>
 	
 	<insert id="insertDeviceAir" parameterType="bean.DeviceAir">

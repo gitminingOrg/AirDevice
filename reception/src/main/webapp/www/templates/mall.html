@@ -3,7 +3,27 @@
 
   <ion-content style="background-color:#FAFAFA">
   	<div class="padding"><p style="color:#888888">商品列表</p></div>
-	<div class="card">
+  	<div ng-repeat="goods in goodsList track by $index " style="padding:0px; margin:0px">
+  			<div style="width:50%;float:left; padding:0px; margin:0px">
+				      <div class="card" style="margin-top:0px;">
+				        <div class="item item-image">
+				          <img src="http://www.runoob.com/try/demo_source/41D5vU4I1NL.jpg" alt="图片加载" ng-click="goodsDetail()">
+				        </div>
+				
+				        <div class="item"  style="border: 0px" href="#">
+				        <p>QAir新风01Start{{$index}}QAir新风01Start{{$index}}QAir新风01Start{{$index}}</p>
+			        	<div style="width:70%; float:left">
+			          		<p style="color:#ff6600">￥8898</p>
+			        	</div>
+			          
+			          	<div style="width:20%; float:right">
+			          		<a style="font-size:14px" ng-click="goodsDetail()">详情</a>
+			          	</div>
+				        </div>
+				      </div>				
+  			</div>
+  	</div>
+	<div class="card" >
 	  <div class="item item-thumbnail-left">
 	    <img src="img/ionic.png">
 	    <h2>QAir新风01</h2>
