@@ -54,6 +54,7 @@ public class WechatController {
 			return result;
 		}
 		Configuration configuration = WechatConfig.config(url);
+		result.setStatus(ResultMap.STATUS_SUCCESS);
 		result.addContent("configuration", configuration);
 		return result;
 	}
