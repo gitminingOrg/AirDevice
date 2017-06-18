@@ -15,7 +15,7 @@
 	<select id="select" parameterType="java.util.Map" resultMap="thumbnailVo">
 		select thumbnail_id, goods_id, thumbnail_path
 		from goods_thumbnail
-		where 1 = 1
+		where block_flag = false
 		<if test="thumbnailId != null">
 			and thumbnail_id = #{thumbnailId}
 		</if>
@@ -24,9 +24,6 @@
 		</if>
 		<if test="type != null">
 			and cover_flag = #{type}
-		</if>
-		<if test="blockFlag != null">
-			and block_flag = #{blockFlag}
 		</if>
 	</select>
 	
