@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="lib/jquery-1.8.2.js"></script>
+</head>
+<body>
+
+  <div class="pic">
+    <div class="wifi"></div>
+  </div>
+  <a id="action" href="">bbbbbbbbbbb</a>
+
+  <script>
+  	$.post('/reception/wechat/init',{url : self.location.href}, function(response){
+  		if(response.status == 1){
+  			alert(" appId  " + response.contents.configuration.appId   +" timestamp   " + response.contents.configuration.timestamp + " nonceStr    " +response.contents.configuration.nonceStr +" signature   " + response.contents.configuration.signature)
+  		    wx.config({
+  		      debug: true,
+  		      beta: true,
+	  		  appId: response.contents.configuration.appId, // 必填，公众号的唯一标识
+			  timestamp: response.contents.configuration.timestamp, // 必填，生成签名的时间戳
+			  nonceStr: response.contents.configuration.nonceStr, // 必填，生成签名的随机串
+			  signature: response.contents.configuration.signature,// 必填，签名，见附录1
+  		      jsApiList: [
+  		        'configWXDeviceWiFi',
+  		        'scanQRCode'
+  		      ]
+  		    });
+  		}
+  	})
+
+    wx.error(function (res) {
+  
+    });
+  </script>
+
+    <script src="js/wxinitial.js"></script>
+    <div class="ui-blocker" style="display:none">
+      <div class="ui-blocker-wrapper">
+        <div class="ui-blocker-spinner"></div>
+      </div>
+    </div>
+</body>
+</html>

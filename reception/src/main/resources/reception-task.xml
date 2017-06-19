@@ -38,6 +38,7 @@
 				<ref bean="cronTrigger" />
 				<ref bean="aqiTrigger" />
 				<ref bean="deviceAirTrigger" />
+				<ref bean="configTrigger" />
 			</list>
 		</property>
 		<property name="taskExecutor" ref="executor" />
@@ -77,5 +78,24 @@
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="aqiDataUpdateService" />
 		<property name="targetMethod" value="updateDeviceAir" />
+	</bean>
+	
+	
+	<!-- reception config quartz -->
+	<bean id="configTrigger" class=" org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="configJob" />
+		<property name="cronExpression" value="0 0 * * * ?" />
+	</bean>
+	
+	<bean id="configTask" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="configJob" />
+		<property name="startDelay" value="10000" />
+		<property name="repeatInterval" value="60000" />
+	</bean>
+	
+	<bean id="configJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="receptionConfig" />
+		<property name="targetMethod" value="schedule" />
 	</bean>
 </beans>

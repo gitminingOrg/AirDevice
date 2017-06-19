@@ -12,6 +12,7 @@
 	<context:annotation-config />
 	<context:component-scan base-package="device.controller"></context:component-scan>
 	<context:component-scan base-package="vip.controller"></context:component-scan>
+	<context:component-scan base-package="wechat.controller"></context:component-scan>
 	<mvc:resources location="/www/" mapping="/www/**" />
 	
 	<bean
