@@ -6,6 +6,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,5 +116,11 @@ public class WechatUtil {
 			}
 			return out.toString();
 		}
+	}
+
+	public static boolean isWechat(HttpServletRequest request) {
+		if (request.getHeader("user-agent").toLowerCase().contains("micromessenger"))
+			return true;
+		return false;
 	}
 }

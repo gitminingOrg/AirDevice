@@ -1,8 +1,12 @@
 package device.controller;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
+import javax.enterprise.event.Reception;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.DeviceInfo;
@@ -15,12 +19,14 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import util.ReceptionConstant;
+import util.WechatUtil;
 import utils.QRCodeGenerator;
 import vo.vip.ConsumerVo;
 import auth.UserComponent;
@@ -28,6 +34,7 @@ import bean.CityList;
 import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;
+import config.ReceptionConfig;
 import device.service.DeviceVipService;
 
 @RequestMapping("/own")
@@ -42,13 +49,22 @@ public class DeviceVipController {
 
 	@RequiresAuthentication
 	@RequestMapping("/device")
-	public ResultMap getUserDevice(){
+	public ResultMap getUserDevice(String code, HttpServletRequest request, HttpServletResponse response) throws IOException{
 		ResultMap resultMap = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(StringUtils.isEmpty(current)) {
+			if(WechatUtil.isWechat(request) && StringUtils.isEmpty(code)) {
+				String targetUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + ReceptionConfig.getValue("wechat_appid") + "&redirect_uri=" + URLEncoder.encode("http://" + ReceptionConfig.getValue("domain_url") + ReceptionConfig.getValue("mine_device"), "utf-8") + "&response_type=code&scope=snsapi_base&state=view#wechat_redirect";
+				response.sendRedirect(targetUrl);
+			}
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo("请先登录再查看");
+			return resultMap;
+		}
 		String userID = current.getCustomerId();
 		List<DeviceStatus> deviceStatus = deviceVipService.getUserCleaner(userID);
-		if (deviceStatus == null || deviceStatus.size() == 0) {
+		if (deviceStatus == null) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo(ResultMap.EMPTY_INFO);
 		}else {
