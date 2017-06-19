@@ -5,15 +5,15 @@
   	<div class="padding"><p style="color:#888888">商品列表</p></div>
   	<div ng-repeat="goods in goodsList track by $index " style="padding:0px; margin:0px">
   			<div style="width:50%;float:left; padding:0px; margin:0px">
-				      <div class="card" style="margin-top:0px;">
+				      <div class="card" style="margin-top:0px;" ng-click="goodsDetail()">
 				        <div class="item item-image">
-				          <img src="http://www.runoob.com/try/demo_source/41D5vU4I1NL.jpg" alt="图片加载" ng-click="goodsDetail()">
+				          <img ng-src="{{coverList[$index]}}" alt="图片加载">
 				        </div>
 				
 				        <div class="item"  style="border: 0px" href="#">
-				        <p>QAir新风01Start{{$index}}QAir新风01Start{{$index}}QAir新风01Start{{$index}}</p>
+				        <p>{{goods.goodsName}}</p>
 			        	<div style="width:70%; float:left">
-			          		<p style="color:#ff6600">￥8898</p>
+			          		<p style="color:#ff6600">￥{{goods.goodsPrice}}</p>
 			        	</div>
 			          
 			          	<div style="width:20%; float:right">
@@ -23,32 +23,6 @@
 				      </div>				
   			</div>
   	</div>
-	<div class="card" >
-	  <div class="item item-thumbnail-left">
-	    <img src="img/ionic.png">
-	    <h2>QAir新风01</h2>
-	    <p style="color:#ff6600">￥ 8898</p>
-	    <a style="position:absolute;right:5%;bottom:5%;color:#222222"><i class="icon ion-bag"></i></a>
-	  </div>
-	</div>
-
-	<div class="card">
-	  <div class="item item-thumbnail-left">
-	    <img src="img/ionic.png">
-	    <h2>玻纤滤网</h2>
-	    <p style="color:#ff6600">￥ 399</p>
-	    <a style="position:absolute;right:5%;bottom:5%;color:#222222"><i class="icon ion-bag"></i></a>
-	  </div>
-	</div>
-
-	<div class="card">
-	  <div class="item item-thumbnail-left">
-	    <img src="img/ionic.png">
-	    <h2>活性炭滤网</h2>
-	    <p style="color:#ff6600">￥ 199</p>
-	    <a style="position:absolute;right:5%;bottom:5%;color:#222222"><i class="icon ion-bag"></i></a>
-	  </div>
-	</div>
   </ion-content>
 
      
