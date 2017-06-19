@@ -59,7 +59,7 @@ public class DeviceVipController {
 				response.sendRedirect(targetUrl);
 			}
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
-			resultMap.setInfo("请先登录再查看");
+			resultMap.setInfo("No user authenticated, please login first.");
 			return resultMap;
 		}
 		String userID = current.getCustomerId();

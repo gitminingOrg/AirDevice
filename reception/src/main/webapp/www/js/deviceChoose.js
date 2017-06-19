@@ -7,7 +7,7 @@ app.controller( 'DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicMod
 				$state.go('login');
 			}
 	    }, function error(response) {
-	        // 请求失败执行代码
+	    	$state.go('login');
 	    });
     $scope.scanBarcode = function() {
         $cordovaBarcodeScanner.scan().then(function(imageData) {
