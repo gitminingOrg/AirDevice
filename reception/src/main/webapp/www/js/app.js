@@ -122,6 +122,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
 	    url: '/device/share/:deviceID',
 	    templateUrl: 'templates/device-share.html',
 	    controller: 'DeviceShareCtrl'         
+  })
+  .state('wxInit', {
+    url: '/wxinit',
+    templateUrl: 'templates/wxinit.html',
+    controller: 'WxinitCtrl'         
   });
 
   // if none of the above states are matched, use this as the fallback

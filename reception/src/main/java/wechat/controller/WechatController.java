@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
+
 import config.ReceptionConfig;
 import config.WechatConfig;
 import model.ResultMap;
@@ -47,13 +49,16 @@ public class WechatController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/wechat/init")
 	public ResultMap init(String url) {
+		url = url.split("#")[0];
 		ResultMap result = new ResultMap();
 		if(StringUtils.isEmpty(url)) {
 			result.setStatus(ResultMap.STATUS_FAILURE);
 			result.setInfo("请传入当前页面的完整URL");
 			return result;
 		}
+		logger.info(url + "   urllruhahahah");
 		Configuration configuration = WechatConfig.config(url);
+		logger.info(JSONObject.toJSONString(configuration));
 		result.setStatus(ResultMap.STATUS_SUCCESS);
 		result.addContent("configuration", configuration);
 		return result;

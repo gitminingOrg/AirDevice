@@ -5,10 +5,11 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import util.WechatUtil;
-
+@Component
 public class ReceptionConfig {
 	private Logger logger = LoggerFactory.getLogger(ReceptionConfig.class);
 	
