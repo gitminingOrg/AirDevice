@@ -13,6 +13,7 @@
     <module>AirCleanerOperation</module>
     <module>reception</module>
     <module>menu</module>
+    <module>management</module>
   </modules>
 
 
