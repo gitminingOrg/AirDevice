@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import config.ReceptionConfig;
 import util.ReceptionConstant;
 import utils.QRCodeGenerator;
 import vo.vip.ConsumerVo;
@@ -67,7 +68,8 @@ public class DeviceVipController {
 		String userID = current.getCustomerId();
 		DeviceShareCode deviceShareCode = deviceVipService.generateShareCode(userID, deviceID, role, ReceptionConstant.DEFAULT_EXPIRE_DAYS);
 		try {
-			QRCodeGenerator.createQRCode(deviceShareCode.getToken(), ReceptionConstant.DEFAULT_QR_LENGTH, ReceptionConstant.DEFAULT_QR_LENGTH, response.getOutputStream());
+			String url = "http://" + ReceptionConfig.getValue("domain_url") + "/reception/own/authorize/" + deviceShareCode.getToken();
+			QRCodeGenerator.createQRCode(url , ReceptionConstant.DEFAULT_QR_LENGTH, ReceptionConstant.DEFAULT_QR_LENGTH, response.getOutputStream());
 		} catch (IOException e) {
 			LOG.error("write QR code failed", e);
 		}

@@ -14,6 +14,7 @@
 	<context:component-scan base-package="vip.controller"></context:component-scan>
 	<context:component-scan base-package="wechat.controller"></context:component-scan>
 	<mvc:resources location="/www/" mapping="/www/**" />
+	<mvc:resources location="/material/" mapping="/material/**" />
 	
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
