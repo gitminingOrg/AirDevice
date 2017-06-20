@@ -1,5 +1,7 @@
 package air.cleaner.mina;
 
+import java.net.InetSocketAddress;
+
 import model.HeartbeatMCPPacket;
 import model.MCPPacket;
 
@@ -90,6 +92,13 @@ public class MCPPacketHandler extends IoHandlerAdapter{
 		});
 	}
 	
+	@Override
+	public void sessionCreated(IoSession session) throws Exception {
+		super.sessionCreated(session);
+		String clientIP = ((InetSocketAddress)session.getRemoteAddress()).getAddress().getHostAddress();
+	    session.setAttribute("KEY_SESSION_CLIENT_IP", clientIP);
+	    LOG.debug("sessionCreated, client IP: " + clientIP);
+	}
 	@Override
 	public void exceptionCaught(IoSession session, Throwable cause)
 			throws Exception {
