@@ -2,6 +2,7 @@
 
   function configWiFi(){
     wx.invoke('configWXDeviceWiFi', {}, function(res){
+    alert(JSON.Stringify(res))
       if(res.err_msg == 'configWXDeviceWiFi:ok'){
         alert('配置成功!');
         wx.closeWindow();
@@ -13,7 +14,6 @@
 
   wx.ready(function(){
     $('#action').click(function(){
-      alert('aaaa')
       configWiFi();
     });
   });
