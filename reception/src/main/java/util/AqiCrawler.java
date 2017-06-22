@@ -27,25 +27,40 @@ public class AqiCrawler {
 		List<CityList> cityList = deviceStatusDao.getAllCities();
 		
 		try {
-			for(int i = 0 ; i < cityList.size() ; i ++) {
-				String city_pinyin = cityList.get(i).getCityPinyin();
-				Document detail_doc = Jsoup.connect("http://air-level.com/air/" + city_pinyin).timeout(90000).get();
-				//some cities have no aqi data,the webpage may redirect,need skip
-				if(detail_doc.getElementsByClass("aqi-bg").size() > 0){
-					Element data_element = detail_doc.getElementsByClass("aqi-bg").get(0);
-					int aqi_value = Integer.parseInt(data_element.html().split(" ")[0]);
-					String aqi_grade = data_element.html().split(" ")[1];
-					System.out.println(cityList.get(i).getCityName() + ":" + data_element.html());
-					//each hour period can only have one aqi record
-					if(!deviceStatusDao.findCityAqi(cityList.get(i).getCityName(), time)){
-						CityAqi cityAqi = new CityAqi();
-						cityAqi.setCityName(cityList.get(i).getCityName());
-						cityAqi.setCityPinyin(city_pinyin);
-						cityAqi.setTime(time);
-						cityAqi.setAqiData(aqi_value);
-						cityAqi.setAqiGrade(aqi_grade);
-						deviceStatusDao.insertCityAqi(cityAqi);
-					}
+			Document detail_doc = Jsoup.connect("http://pm25.in/rank").timeout(90000).get();
+			Elements data_element = detail_doc.getElementsByTag("tr");
+			for(int i = 1 ; i < data_element.size() ; i ++){
+				Elements tdElements = data_element.get(i).children();
+				String city_name = tdElements.get(1).html().split(">")[1].split("<")[0];
+				String city_pinyin = tdElements.get(1).html().split("/")[1].split("\"")[0];
+				int city_aqi = Integer.parseInt(tdElements.get(2).html());
+				String aqi_category = tdElements.get(3).html();
+				String primary_pollutant = tdElements.get(4).html();
+				int pm25 = tdElements.get(5).html().equals("_") ? 0 : Integer.parseInt(tdElements.get(5).html());
+				int pm10 = tdElements.get(6).html().equals("_") ? 0 : Integer.parseInt(tdElements.get(6).html());
+				double co = tdElements.get(7).html().equals("_") ? 0.0 : Double.parseDouble(tdElements.get(7).html());
+				int no2 = tdElements.get(8).html().equals("_") ? 0 : Integer.parseInt(tdElements.get(8).html());
+				int o3 = tdElements.get(9).html().equals("_") ? 0 : Integer.parseInt(tdElements.get(9).html());
+				int o3_8h = tdElements.get(10).html().equals("_") ? 0 : Integer.parseInt(tdElements.get(10).html());
+				int so2 = tdElements.get(11).html().equals("_") ? 0 : Integer.parseInt(tdElements.get(11).html());
+				
+				CityAqi cityAqi = new CityAqi();
+				cityAqi.setCityName(city_name);
+				cityAqi.setCityPinyin(city_pinyin);
+				cityAqi.setTime(time);
+				cityAqi.setCityAqi(city_aqi);
+				cityAqi.setAqiCategory(aqi_category);
+				cityAqi.setPrimaryPollutant(primary_pollutant);
+				cityAqi.setPm25(pm25);
+				cityAqi.setPm10(pm10);
+				cityAqi.setCo(co);
+				cityAqi.setNo2(no2);
+				cityAqi.setO3(o3);
+				cityAqi.setO3_8h(o3_8h);
+				cityAqi.setSo2(so2);
+				
+				if(!deviceStatusDao.findCityAqi(city_name, time)){
+					deviceStatusDao.insertCityAqi(cityAqi);
 				}
 			}
 		} catch (IOException e) {

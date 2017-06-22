@@ -5,8 +5,16 @@
 		<result property="cityName" column="city_name" />
 		<result property="cityPinyin" column="city_pinyin" />
 		<result property="time" column="time" />
-		<result property="aqiData" column="aqi_data" />
-		<result property="aqiGrade" column="aqi_grade" />
+		<result property="cityAqi" column="city_aqi" />
+		<result property="aqiCategory" column="aqi_category" />
+		<result property="primaryPollutant" column="primary_pollutant" />
+		<result property="pm25" column="pm25" />
+		<result property="pm10" column="pm10" />
+		<result property="co" column="co" />
+		<result property="no2" column="no2" />
+		<result property="o3" column="o3" />
+		<result property="o3_8h" column="pm25" />
+		<result property="so2" column="so2" />
 	</resultMap>
 	
 	<resultMap type="bean.DeviceCity" id="deviceCity">
@@ -48,9 +56,9 @@
 	
 	<insert id="insertCityAqi" parameterType="bean.CityAqi">
 		INSERT INTO
-		city_aqi (city_name,city_pinyin,time,aqi_data,aqi_grade)
+		city_aqi (city_name,city_pinyin,time,city_aqi,aqi_category,primary_pollutant,pm25,pm10,co,no2,o3,o3_8h,so2)
 		VALUES
-		(#{cityName},#{cityPinyin},#{time},#{aqiData},#{aqiGrade})
+		(#{cityName},#{cityPinyin},#{time},#{cityAqi},#{aqiCategory},#{primaryPollutant},#{pm25},#{pm10},#{co},#{no2},#{o3},#{o3_8h},#{so2})
 	</insert>
 	
 	<select id="findCityAqi" resultMap="cityAqi">
@@ -181,7 +189,7 @@
 	<select id="getAverageOutside" resultMap="deviceAir">
 		SELECT device_id,0,outside_air,"0"
 		FROM device_city,(
-			SELECT city_pinyin,AVG(aqi_data) AS outside_air
+			SELECT city_pinyin,AVG(city_aqi) AS outside_air
 			FROM city_aqi
 			WHERE city_pinyin in (
 				SELECT city
