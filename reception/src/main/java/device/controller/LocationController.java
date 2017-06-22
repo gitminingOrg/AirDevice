@@ -19,6 +19,6 @@ public class LocationController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/init")
 	public void location() {
-		locationService.province();
+		locationService.init();
 	}
 }

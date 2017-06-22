@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import config.ReceptionConfig;
@@ -19,7 +20,7 @@ import config.ReceptionConfig;
 public class LocationService {
 	private Logger logger = LoggerFactory.getLogger(LocationService.class);
 	
-	public void province() {
+	public void init() {
 		CloseableHttpClient client = HttpClients.createDefault();
 		HttpGet request = new HttpGet("http://apis.map.qq.com/ws/district/v1/list?key=" + ReceptionConfig.getValue("map_key"));
 		CloseableHttpResponse response = null;
@@ -28,7 +29,9 @@ public class LocationService {
 			if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				String result = EntityUtils.toString(response.getEntity());
 				JSONObject json = JSONObject.parseObject(result);
-				logger.info(json.toJSONString());
+				JSONArray list = json.getJSONArray("result");
+				logger.info("list: " + JSON.toJSONString(list));
+				logger.info(JSON.toJSONString(list.get(0)));
 			}
 			logger.error(response.getStatusLine().getStatusCode() + "获取接口数据失败");
 		}catch (Exception e) {
