@@ -39,7 +39,7 @@ public class CleanerStatus implements Serializable{
 	
 	@Command(id=0x07,length=1,name=Constant.UV)
 	@AQIData(start=0x0C,length=1,name=Constant.UV)
-	private int UV;
+	private int uv;
 	
 	@Command(id=0x08,length=1,name=Constant.HEAT)
 	@AQIData(start=0x0D,length=1,name=Constant.HEAT)
@@ -124,13 +124,14 @@ public class CleanerStatus implements Serializable{
 	public void setPower(int power) {
 		this.power = power;
 	}
+	
 
-	public int getUV() {
-		return UV;
+	public int getUv() {
+		return uv;
 	}
 
-	public void setUV(int uV) {
-		UV = uV;
+	public void setUv(int uv) {
+		this.uv = uv;
 	}
 
 	public int getHeat() {

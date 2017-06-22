@@ -72,7 +72,7 @@ public class CleanerStatusController {
 		return resultMap;
 	}
 	
-	@RequestMapping(value="/UV/{mode}")
+	@RequestMapping(value="/uv/{mode}")
 	public ResultMap uvControl(@PathVariable("mode")int mode, HttpServletRequest request){
 		ResultMap resultMap = new ResultMap();
 		String device = request.getParameter("token");
@@ -122,6 +122,21 @@ public class CleanerStatusController {
 		ResultMap resultMap = new ResultMap();
 		String device = request.getParameter("token");
 		boolean result = deviceControlService.statusControl(Constant.CYCLE, cycle, device);
+		if (result) {
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.setInfo("更新状态成功");
+		}else{
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo("更新状态失败");
+		}
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/light/{light}")
+	public ResultMap lightControl(@PathVariable("light")int light, HttpServletRequest request){
+		ResultMap resultMap = new ResultMap();
+		String device = request.getParameter("token");
+		boolean result = deviceControlService.statusControl(Constant.LIGHT, light, device);
 		if (result) {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.setInfo("更新状态成功");

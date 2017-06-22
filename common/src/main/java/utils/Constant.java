@@ -20,7 +20,7 @@ public class Constant {
 	public static final String VELOCITY = "velocity";
 	public static final String POWER = "power";
 	public static final String WORKMODE = "workMode";
-	public static final String UV = "UV";
+	public static final String UV = "uv";
 	public static final String HEAT = "heat";
 	public static final String LIGHT = "light";
 	

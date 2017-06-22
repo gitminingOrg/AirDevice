@@ -4,11 +4,16 @@
     <button class="button button-clear" ng-click="modal.hide()">取消</button>
   </ion-header-bar>
   <ion-content>
+  	
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" ng-repeat="city in cities" type="item-text-wrap" href="" ng-click="choose(city.cityPinyin)">
+	  <input style="padding:20px" type="text" ng-model="pinyin" placeholder="城市名称或拼音">
+	  <div ng-repeat="city in cities| filter:pinyin  track by $index">
+	  <p ng-if="($index == 0 || city.initial != cities[$index-1].initial) && !pinyin" style="background-color:#EEEEEE;margin:0; padding:0; padding-left:20px"> {{city.initial}} </p>
+      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="" ng-click="choose(city.cityPinyin)">
         <h2>{{city.cityName}}</h2>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>
+      </div>
     </ion-list>
   </ion-content>
 </ion-modal-view>

@@ -31,7 +31,7 @@
 		<result property="velocity" column="velocity"/>
 		<result property="power" column="power"/>
 		<result property="workMode" column="workmode"/>
-		<result property="UV" column="uv"/>
+		<result property="uv" column="uv"/>
 		<result property="heat" column="heat"/>
 		<result property="light" column="light"/>
 		<result property="cycle" column="cycle"/>
@@ -93,7 +93,7 @@
 		FROM
 		city_aqi
 		WHERE
-		city_pinyin=#{city} AND time in (select max(time) from city_aqi where city_pinyin=#{city})
+		city_pinyin=#{city} AND time in (select max(time) from city_aqi where city_pinyin=#{city}) LIMIT 1
 	</select>
 	
 	<select id="selectAllCityAvgAqi" resultMap="cityAqi">
