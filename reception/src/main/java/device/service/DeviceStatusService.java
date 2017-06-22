@@ -62,6 +62,7 @@ public class DeviceStatusService {
 			Object obj = result.getContents().get("status");
 			Gson gson = new Gson();
 			String cleanerJson = gson.toJson(obj);
+			LOG.info(cleanerJson);
 			CleanerStatus cleanerStatus = gson.fromJson(cleanerJson, CleanerStatus.class);
 			return cleanerStatus;
 		}
@@ -208,7 +209,9 @@ public class DeviceStatusService {
 			Method method;
 			try {
 				method = cleanerStatus.getClass().getDeclaredMethod(MethodUtil.getFieldGetMethod(field));
+				
 				int actual = (int) method.invoke(cleanerStatus);
+				LOG.info(method.getName() + actual  + "  " + expect);
 				if (actual == expect) {
 					return true;
 				}

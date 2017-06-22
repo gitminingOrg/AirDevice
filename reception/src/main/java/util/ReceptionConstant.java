@@ -6,7 +6,7 @@ public class ReceptionConstant {
 	public static final String deviceStatusPath = "/AirCleanerOperation/device/status/device?token=%s";
 	public static final String powerControlPath = "/AirCleanerOperation/device/status/power/%s?token=%s";
 	public static final String heatControlPath = "/AirCleanerOperation/device/status/heat/%s?token=%s";
-	public static final String uvControlPath = "/AirCleanerOperation/device/status/UV/%s?token=%s";
+	public static final String uvControlPath = "/AirCleanerOperation/device/status/uv/%s?token=%s";
 	public static final String modeControlPath = "/AirCleanerOperation/device/status/mode/%s?token=%s";
 	public static final String velocityControlPath = "/AirCleanerOperation/device/status/velocity/%s?token=%s";
 	public static final String cycleControlPath = "/AirCleanerOperation/device/status/cycle/%s?token=%s";
