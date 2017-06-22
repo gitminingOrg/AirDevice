@@ -12,6 +12,7 @@
 	<context:annotation-config />
 	<context:component-scan base-package="device.service"></context:component-scan>
 	<context:component-scan base-package="vip.service"></context:component-scan>
+	<context:component-scan base-package="location.service"></context:component-scan>
 	<context:component-scan base-package="config"></context:component-scan>
 	<context:component-scan base-package="dao"></context:component-scan>
 	<context:property-placeholder location="classpath:config.properties" />	

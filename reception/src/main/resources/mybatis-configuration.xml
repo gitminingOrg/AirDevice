@@ -8,5 +8,6 @@
 		<mapper resource="mapper/vip/consumer.xml" />
 		<mapper resource="mapper/goods/goods.xml" />
 		<mapper resource="mapper/goods/thumbnail.xml" />
+		<mapper resource="mapper/location/province.xml" />
 	</mappers>
 </configuration>
