@@ -64,7 +64,8 @@ public class LocationService {
 	private void province(JSONArray provinces, JSONArray cities) {
 		for (int i = 0; i < provinces.size(); i++) {
 			JSONObject current = provinces.getJSONObject(i);
-			String pinyin = current.getString("pinyin");
+			String temp = current.getString("pinyin");
+			String pinyin = pinyin(temp);
 			String name = current.getString("name");
 			String id = current.getString("id");
 			String fullname = current.getString("fullname");
@@ -86,7 +87,8 @@ public class LocationService {
 	private void city(Province province, JSONArray list, int start, int end) {
 		for(int i = 0; i < list.size(); i ++) {
 			JSONObject current = list.getJSONObject(i);
-			String pinyin = current.getString("pinyin");
+			String temp = current.getString("pinyin");
+			String pinyin = pinyin(temp);
 			String name = current.getString("name");
 			String id = current.getString("id");
 			String fullname = current.getString("fullname");
@@ -94,5 +96,10 @@ public class LocationService {
 			boolean status = locationDao.insertCity(city);
 			logger.info("插入" + fullname + "数据" + ((status == true) ? "成功" : "失败"));
 		}
+	}
+	
+	private String pinyin(String input) {
+		String pinyin = input.substring(1, input.length()).replaceAll("\"", "").replaceAll(",", "");
+		return pinyin;
 	}
 }

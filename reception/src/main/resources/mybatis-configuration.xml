@@ -9,5 +9,6 @@
 		<mapper resource="mapper/goods/goods.xml" />
 		<mapper resource="mapper/goods/thumbnail.xml" />
 		<mapper resource="mapper/location/province.xml" />
+		<mapper resource="mapper/location/city.xml" />
 	</mappers>
 </configuration>
