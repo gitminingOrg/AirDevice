@@ -25,7 +25,7 @@ public class LocationService {
 
 	@Autowired
 	private LocationDao locationDao;
-	
+
 	public void init() {
 		CloseableHttpClient client = HttpClients.createDefault();
 		HttpGet request = new HttpGet(
@@ -85,7 +85,7 @@ public class LocationService {
 	 * @param list
 	 */
 	private void city(Province province, JSONArray list, int start, int end) {
-		for(int i = 0; i < list.size(); i ++) {
+		for (int i = start; i <= end; i++) {
 			JSONObject current = list.getJSONObject(i);
 			String temp = current.getString("pinyin");
 			String pinyin = pinyin(temp);
@@ -97,9 +97,9 @@ public class LocationService {
 			logger.info("插入" + fullname + "数据" + ((status == true) ? "成功" : "失败"));
 		}
 	}
-	
+
 	private String pinyin(String input) {
-		String pinyin = input.substring(1, input.length()).replaceAll("\"", "").replaceAll(",", "");
+		String pinyin = input.substring(1, input.length() - 1).replaceAll("\"", "").replaceAll(",", "");
 		return pinyin;
 	}
 }
