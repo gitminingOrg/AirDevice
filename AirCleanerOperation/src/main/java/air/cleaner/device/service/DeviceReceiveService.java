@@ -58,8 +58,9 @@ public class DeviceReceiveService {
 	 * update cleaner status in cache
 	 * @param packet MCPPacket from device
 	 */
-	public void updateCacheCleanerStatus(HeartbeatMCPPacket packet){
+	public void updateCacheCleanerStatus(HeartbeatMCPPacket packet, String ip){
 		CleanerStatus cleanerStatus = packet.packetToCleanerStatus();
+		cleanerStatus.setIp(ip);
 		boolean update = cleanerStatusCacheManager.updateCleanerStatus(cleanerStatus);
 		if (!update) {
 			LOG.warn("update cleaner status cache failed");

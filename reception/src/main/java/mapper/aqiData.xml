@@ -35,6 +35,7 @@
 		<result property="heat" column="heat"/>
 		<result property="light" column="light"/>
 		<result property="cycle" column="cycle"/>
+		<result property="ip" column="ip"/>
 		<result property="time" column="time"/>
 	</resultMap>
 	
@@ -136,11 +137,11 @@
 	<insert id="insertCleanerStatusList" parameterType="java.util.List">
 		INSERT INTO
 		deviceStatus
-		(device_id, pm25, temperature, humidity, hcho, co2, velocity, power, workmode, uv, heat, light, cycle)
+		(device_id, pm25, temperature, humidity, hcho, co2, velocity, power, workmode, uv, heat, light, cycle, ip)
 		VALUES
 		<foreach collection="list" item="item" index="index" separator=",">
 		(#{item.deviceID},#{item.pm25},#{item.temperature},#{item.humidity},#{item.HCHO}
-		,#{item.CO2},#{item.velocity},#{item.power},#{item.workMode},#{item.UV},#{item.heat},#{item.light},#{item.cycle})
+		,#{item.CO2},#{item.velocity},#{item.power},#{item.workMode},#{item.uv},#{item.heat},#{item.light},#{item.cycle},#{item.ip})
 		</foreach>
 	</insert>
 	

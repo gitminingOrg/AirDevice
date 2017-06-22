@@ -44,6 +44,7 @@
 		<result property="heat" column="heat"/>
 		<result property="light" column="light"/>
 		<result property="cycle" column="cycle"/>
+		<result property="ip" column="ip"/>
 		<result property="time" column="time"/>
 	</resultMap>
 	

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import utils.ByteUtil;
 import utils.Constant;
+import utils.IPUtil;
 import air.cleaner.cache.SessionCacheManager;
 import air.cleaner.device.service.DeviceReceiveService;
 
@@ -40,10 +41,11 @@ public class MCPPacketHandler extends IoHandlerAdapter{
 			sessionCacheManager.updateSession(deviceID, session);
 			
 			if (message instanceof HeartbeatMCPPacket) {
+				String ip = IPUtil.tell(session);
 				//receive heartbeat, update status
 				LOG.info("heartbeat message received:"+message);
 				HeartbeatMCPPacket packet = (HeartbeatMCPPacket) message;
-				deviceReceiveService.updateCacheCleanerStatus(packet);
+				deviceReceiveService.updateCacheCleanerStatus(packet, ip);
 				//send return packet
 				packet.setLEN(new byte[]{0x01});
 				packet.setDATA(new byte[]{0x00});

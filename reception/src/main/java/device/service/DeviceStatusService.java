@@ -114,7 +114,9 @@ public class DeviceStatusService {
 		List<CleanerStatus> cleanerStatusList = new ArrayList<CleanerStatus>();
 		for (String deviceID : devices) {
 			CleanerStatus cleanerStatus = getCleanerStatus(deviceID);
-			cleanerStatusList.add(cleanerStatus);
+			if(cleanerStatus != null){
+				cleanerStatusList.add(cleanerStatus);
+			}
 		}
 		//insert device aqi data
 		boolean update = deviceStatusDao.insertDeviceStatus(cleanerStatusList);

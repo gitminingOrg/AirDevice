@@ -52,6 +52,8 @@ public class CleanerStatus implements Serializable{
 	@Command(id=0x09, name=Constant.CYCLE,length=0x01)
 	@AQIData(start=0x0F,length=1,name=Constant.CYCLE)
 	private int cycle;   //0 内循环, 1 外循环
+	
+	private String ip;
 
 	public String getDeviceID() {
 		return deviceID;
@@ -154,6 +156,14 @@ public class CleanerStatus implements Serializable{
 
 	public void setCycle(int cycle) {
 		this.cycle = cycle;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 	/**
