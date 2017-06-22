@@ -1,19 +1,19 @@
 package model.location;
 
 public abstract class Location {
-	private int locationId;
+	protected String locationId;
 	
-	private String locationName;
+	protected String locationName;
 	
-	private String nickname;
+	protected String nickname;
 	
-	private String locationPinyin;
+	protected String locationPinyin;
 
-	public int getLocationId() {
+	public String getLocationId() {
 		return locationId;
 	}
 
-	public void setLocationId(int locationId) {
+	public void setLocationId(String locationId) {
 		this.locationId = locationId;
 	}
 
