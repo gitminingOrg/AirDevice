@@ -1,17 +1,13 @@
 package device.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.enterprise.event.Reception;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import model.DeviceInfo;
-import model.ResultMap;
-import model.ReturnCode;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -25,18 +21,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import config.ReceptionConfig;
-import util.ReceptionConstant;
-import util.WechatUtil;
-import utils.QRCodeGenerator;
-import vo.vip.ConsumerVo;
-import auth.UserComponent;
 import bean.CityList;
 import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;
 import config.ReceptionConfig;
 import device.service.DeviceVipService;
+import location.service.LocationService;
+import model.DeviceInfo;
+import model.ResultMap;
+import model.ReturnCode;
+import util.ReceptionConstant;
+import util.WechatUtil;
+import utils.QRCodeGenerator;
+import vo.location.DeviceCityVo;
+import vo.vip.ConsumerVo;
 
 @RequestMapping("/own")
 @RestController
@@ -44,6 +43,10 @@ public class DeviceVipController {
 	private static Logger LOG = LoggerFactory.getLogger(DeviceVipController.class);
 	@Autowired
 	private DeviceVipService deviceVipService;
+	
+	@Autowired
+	private LocationService locationService;
+	
 	public void setDeviceVipService(DeviceVipService deviceVipService) {
 		this.deviceVipService = deviceVipService;
 	}
@@ -168,9 +171,18 @@ public class DeviceVipController {
 	@RequestMapping("/all/cities")
 	public ResultMap getAllCities(){
 		ResultMap resultMap = new ResultMap();
-		List<CityList> cityList = deviceVipService.getAllCities();
+		Map<String, Object> condition = new HashMap<>();
+		List<DeviceCityVo> list = locationService.fetch(condition);
+		if(list.isEmpty()) {
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo("no city record");
+			return resultMap;
+		}
+		for(DeviceCityVo item : list) {
+			item.setInitial((item.getCityPinyin().charAt(0) + "").toUpperCase());
+		}
 		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
-		resultMap.addContent(ReceptionConstant.CITY_LIST, cityList);
+		resultMap.addContent(ReceptionConstant.CITY_LIST, list);
 		return resultMap;
 	}
 }
