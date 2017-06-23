@@ -65,7 +65,7 @@
 	<!-- deviceAir quartz -->
 	<bean id="deviceAirTrigger" class=" org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="deviceAirJob" />
-		<property name="cronExpression" value="0 0 0 * * ?" />
+		<property name="cronExpression" value="20 05 16 * * ?" />
 	</bean>
 	
 	<bean id="deviceAirTask" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">

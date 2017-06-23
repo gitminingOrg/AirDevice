@@ -26,6 +26,7 @@ import bean.DeviceAir;
 import bean.DeviceCity;
 import bean.UserAction;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 
 import dao.DeviceStatusDao;
@@ -136,9 +137,16 @@ public class DeviceStatusService {
 	}
 	
 	public ReturnCode setDeviceCity(String userID, String deviceID, String cityName){
+		if(Strings.isNullOrEmpty(cityName)){
+			return ReturnCode.FAILURE;
+		}
 		DeviceCity deviceCity = new DeviceCity();
 		deviceCity.setCity(cityName);
 		deviceCity.setDeviceID(deviceID);
+		DeviceCity origin = deviceStatusDao.getDeviceCity(deviceID);
+		if(origin.getCity().equals(cityName)){
+			return ReturnCode.SUCCESS;
+		}
 		boolean disable = deviceStatusDao.disableDeviceCity(deviceID);
 		boolean insert = deviceStatusDao.insertDeviceCity(deviceCity);
 		if (insert) {

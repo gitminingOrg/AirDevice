@@ -29,7 +29,6 @@ public class AqiDataUpdateService {
 	}
 	
 	public void updateDeviceAir(){
-		System.out.println("sadsadas");
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, -1);
 		Date date = calendar.getTime();
@@ -43,6 +42,9 @@ public class AqiDataUpdateService {
 			DeviceAir deviceAir = new DeviceAir();
 			deviceAir.setDeviceID(device_id);
 			deviceAir.setInsideAir(insideMap.get(device_id));
+			if(!outsideMap.containsKey(device_id)){
+				continue;
+			}
 			deviceAir.setOutsideAir(outsideMap.get(device_id));
 			deviceAir.setDate(time);
 			deviceStatusDao.insertDeviceAir(deviceAir);

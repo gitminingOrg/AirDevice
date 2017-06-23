@@ -176,9 +176,9 @@
 	</select>
 	
 	<select id="getAverageInside" resultMap="deviceAir">
-		SELECT device_id,AVG(pm25) AS inside_air,0,"0"
-		FROM deviceStatus
-		WHERE device_id IN (
+		SELECT dc.device_id,AVG(ds.pm25) AS inside_air,0,"0"
+		FROM deviceStatus ds, device_chip dc
+		WHERE ds.device_id = dc.chip_id AND dc.device_id IN (
 			SELECT device_id
 			FROM device_city
 			WHERE status = 1
@@ -189,7 +189,7 @@
 	<select id="getAverageOutside" resultMap="deviceAir">
 		SELECT device_id,0,outside_air,"0"
 		FROM device_city,(
-			SELECT city_pinyin,AVG(city_aqi) AS outside_air
+			SELECT city_pinyin,AVG(pm25) AS outside_air
 			FROM city_aqi
 			WHERE city_pinyin in (
 				SELECT city

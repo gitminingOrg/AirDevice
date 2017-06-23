@@ -125,6 +125,10 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
     		            point.update(parseInt($scope.aqiData));
     		    	}
     		    });
+        		
+        		$http.post('/reception/status/city/config/'+$scope.deviceID+'/'+response.contents.location.cityPinyin).success(function(data){
+        			
+        		});
         	}
         });
     	
