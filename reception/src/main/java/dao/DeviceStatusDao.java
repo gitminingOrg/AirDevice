@@ -115,4 +115,13 @@ public class DeviceStatusDao extends BaseDaoImpl{
 		}
 		return result;
 	}
+	
+	public String getChipIDByDeviceID(String deviceID){
+		List<String> chips = sqlSession.selectList("selectChipID", deviceID);
+		if(chips == null || chips.size() == 0){
+			return null;
+		}else{
+			return chips.get(0);
+		}
+	}
 }

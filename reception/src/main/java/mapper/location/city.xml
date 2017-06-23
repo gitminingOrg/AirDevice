@@ -15,10 +15,12 @@
 	
 	<select id="query4device" parameterType="java.util.Map" resultMap="deviceCityVo">
 		select c.city_id as city_id, c.city_nickname as city_name, c.city_pinyin as city_pinyin, p.province_nickname as province_name
-		from city c, province p
+		from location_city c, location_province p
 		where c.province_id = p.province_id
 		<if test="cityId != null">
 			and c.city_id = #{cityId}
 		</if>
+		ORDER BY
+		c.city_pinyin asc
 	</select>
 </mapper>

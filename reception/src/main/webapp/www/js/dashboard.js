@@ -108,19 +108,19 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
     		        // 请求失败执行代码
     		});  
     	
-    	$http.get("/reception/status/city/info/"+$stateParams.deviceID).success(function(response){
+    	$http.get("/reception/location/"+$stateParams.deviceID).success(function(response){
         	if(response.status == 1){
         		
-        		var data = { city : response.contents.deviceCity.city}
+        		var data = { city : response.contents.location.cityPinyin}
         		$http({  
     		        url    : '/reception/status/city/aqi',  
     		        method : "post",  
     		        params   : data,  
     		    }).success(function(response){
     		    	if(response.status == 1){
-    		    		$scope.airQuality = response.contents.cityAqi.aqiGrade
-    		    		$scope.aqiData = response.contents.cityAqi.aqiData
-    		    		$scope.location = response.contents.cityAqi.cityName;
+    		    		$scope.airQuality = response.contents.cityAqi.aqiCategory
+    		    		$scope.aqiData = response.contents.cityAqi.cityAqi
+    		    		$scope.location = response.contents.cityAqi.cityName
     		            var point = Highcharts.charts[0].series[0].points[0];
     		            point.update(parseInt($scope.aqiData));
     		    	}
@@ -129,10 +129,6 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
         });
     	
     }
-
-    $scope.location = "北京"
-    $scope.airQuality = "优"
-    $scope.init()
     
     $scope.showAlert = function popup() {
         var alertPopup = $ionicPopup.alert({
@@ -286,10 +282,10 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
     	  			        params   : data,  
     	  			    }).success(function(response){
     	  			    	if(response.status == 1){
-    	  			    		$scope.airQuality = response.contents.cityAqi.aqiGrade
-    	  			    		$scope.aqiData = response.contents.cityAqi.aqiData
-    	  			    		$scope.location = response.contents.cityAqi.cityName;
-    	  			            var point = Highcharts.charts[0].series[0].points[0];
+    	  			    		$scope.airQuality = response.contents.cityAqi.aqiCategory
+    	  			    		$scope.aqiData = response.contents.cityAqi.cityAqi
+    	  			    		$scope.location = response.contents.cityAqi.cityName
+    	  			    		var point = Highcharts.charts[0].series[0].points[0];
     	  			            point.update(parseInt($scope.aqiData));
     	  			    	}
     	  			    });

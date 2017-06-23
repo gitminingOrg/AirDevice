@@ -3,7 +3,7 @@
   <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
 	<div class="list card">
 		<div class="item">
-			<button class="button button-small button-light"  ng-click="modal.show()"><i class="icon ion-location"></i> {{location}} <i class="icon ion-ios-arrow-down"></i></button>
+			<button class="button button-small button-light"  ng-click="modal.show()"><i class="icon ion-location"></i> {{location}}<i class="icon ion-ios-arrow-down"></i></button>
 			<highchart style="width:85%;height:35%" id="gaugeChart" config="gaugeChart"></highchart>
 			<h2>空气质量: <span style="color:green">{{airQuality}}</span></h2>
 			<p>低污染，低PM2.5，对健康危害极小或无危害</p>
@@ -70,7 +70,7 @@
 		  </div>
 
 		  
-		  <div ng-if="mode == 3" class="range range-positive">
+		  <div ng-if="mode == 2" class="range range-positive">
 		  	<p>风量</p>
             <i class="icon ion-ios-minus-empty"></i>
             <input type="range" on-release="velocityControl(velocity)" ng-model="velocity" name="volume" min="0" max="5" value="2">

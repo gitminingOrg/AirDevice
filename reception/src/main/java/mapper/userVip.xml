@@ -82,6 +82,12 @@
 		NOT EXISTS (SELECT * FROM deviceStatus ds2 WHERE ds2.time > ds.time AND ds2.device_id = ds.device_id)
 	</select>
 	
+	<select id="selectChipID" resultType="string">
+		SELECT chip_id 
+		FROM device_chip
+		WHERE status = 1 AND device_id = #{deviceID};
+	</select>
+	
 	<insert id="insertNewUserDevice" parameterType="bean.UserDevice">
 		INSERT INTO
 		userDevice(user_id, device_id, role)

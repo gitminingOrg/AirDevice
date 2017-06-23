@@ -55,7 +55,11 @@ public class DeviceStatusService {
 	 * @return
 	 */
 	public CleanerStatus getCleanerStatus(String deviceID){
-		ResultMap result = JsonResponseConverter.getDefaultResultMapWithParams(ReceptionConstant.deviceStatusPath, deviceID);
+		String chipID = deviceIDToChipID(deviceID);
+		if(chipID == null){
+			return null;
+		}
+		ResultMap result = JsonResponseConverter.getDefaultResultMapWithParams(ReceptionConstant.deviceStatusPath, chipID);
 		if(result.getStatus() != ResultMap.STATUS_SUCCESS){
 			return null;
 		}else{
@@ -81,7 +85,11 @@ public class DeviceStatusService {
 			LOG.warn("unknown command type");
 			return ReturnCode.FAILURE;
 		}
-		ResultMap result = JsonResponseConverter.getDefaultResultMapWithParams(urlPath, Integer.toString(data), deviceID);
+		String chipID = deviceIDToChipID(deviceID);
+		if(chipID == null){
+			return ReturnCode.FAILURE;
+		}
+		ResultMap result = JsonResponseConverter.getDefaultResultMapWithParams(urlPath, Integer.toString(data), chipID);
 		if(result.getStatus() != ResultMap.STATUS_SUCCESS){
 			LOG.warn("user : "+userID + " operate device : " + deviceID + " power failed");
 			return ReturnCode.FAILURE;
@@ -228,5 +236,9 @@ public class DeviceStatusService {
 			}
 		}
 		return false;
+	}
+	
+	private String deviceIDToChipID(String deviceID){
+		return deviceStatusDao.getChipIDByDeviceID(deviceID);
 	}
 }

@@ -1,5 +1,7 @@
 package util;
 
+import java.lang.reflect.Array;
+
 import com.google.gson.Gson;
 
 import model.ResultMap;
