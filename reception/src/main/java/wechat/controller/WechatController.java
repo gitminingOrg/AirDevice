@@ -1,11 +1,16 @@
 package wechat.controller;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Init;
+import javax.enterprise.event.Reception;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,12 +51,12 @@ public class WechatController {
 		}
 		return "";
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/wechat/init")
 	public ResultMap init(String url) {
 		url = url.split("#")[0];
 		ResultMap result = new ResultMap();
-		if(StringUtils.isEmpty(url)) {
+		if (StringUtils.isEmpty(url)) {
 			result.setStatus(ResultMap.STATUS_FAILURE);
 			result.setInfo("请传入当前页面的完整URL");
 			return result;
@@ -67,5 +72,33 @@ public class WechatController {
 	@RequestMapping(method = RequestMethod.GET, value = "/token")
 	public String token() {
 		return ReceptionConfig.getAccessToken();
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/user")
+	public ResultMap user(String serial, String code, HttpServletRequest request, HttpServletResponse response) {
+		ResultMap result = new ResultMap();
+		// identify the request origin
+		if (WechatUtil.isWechat(request)) {
+			if (StringUtils.isEmpty(code)) {
+				try {
+					String link = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
+							+ ReceptionConfig.getValue("wechat_appid") + "&redirect_uri="
+							+ URLEncoder.encode("http://" + ReceptionConfig.getValue("domain_url")
+									+ ReceptionConfig.getValue("bind_device") + "/" + serial, "utf-8")
+							+ "&response_type=code&scope=snsapi_base&state=view#wechat_redirect";
+					response.sendRedirect(link);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					logger.error(e.getMessage());
+				}
+			} else {
+				String openId = WechatUtil.queryOauthOpenId(ReceptionConfig.getValue("wechat_appid"), ReceptionConfig.getValue("wechat_secret"), code);
+				result.setStatus(ResultMap.STATUS_SUCCESS);
+				result.addContent("openId", openId);
+				return result;
+			}
+		}
+		return result;
 	}
 }

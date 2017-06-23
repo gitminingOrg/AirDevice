@@ -72,9 +72,8 @@ public class WechatUtil {
 			result = object.getString("openid");
 		} catch (MalformedURLException e) {
 		} catch (IOException e) {
-		} finally {
-			return result;
 		}
+		return result;
 	}
 
 	public static String queryJsApiTicket(String token) {
