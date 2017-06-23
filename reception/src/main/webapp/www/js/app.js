@@ -123,6 +123,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
 	    templateUrl: 'templates/device-share.html',
 	    controller: 'DeviceShareCtrl'         
   })
+  .state('deviceBind', {
+	    url: '/device/bind/:serial',
+	    templateUrl: 'templates/device-bind.html',
+	    controller: 'DeviceBindCtrl'         
+  })
   .state('wxInit', {
     url: '/wxinit',
     templateUrl: 'templates/wxinit.html',

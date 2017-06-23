@@ -73,7 +73,7 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
         }] 
     }
     
-    $scope.init = function(){
+    $scope.init = function dashInit(){
     	$http.get("/reception/status/device/"+$stateParams.deviceID).then(
     			function success(response) {
     				if(response.data.status == 1){
