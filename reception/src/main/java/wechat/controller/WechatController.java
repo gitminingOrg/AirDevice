@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.ejb.Init;
-import javax.enterprise.event.Reception;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -69,12 +67,12 @@ public class WechatController {
 		return result;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/token")
+	@RequestMapping(method = RequestMethod.GET, value = "/wechat/token")
 	public String token() {
 		return ReceptionConfig.getAccessToken();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/user")
+	@RequestMapping(method = RequestMethod.GET, value = "/wechat/user")
 	public ResultMap user(String serial, String code, HttpServletRequest request, HttpServletResponse response) {
 		ResultMap result = new ResultMap();
 		// identify the request origin
