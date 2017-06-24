@@ -77,20 +77,23 @@ public class WechatController {
 		ResultMap result = new ResultMap();
 		// identify the request origin
 		if (WechatUtil.isWechat(request)) {
+			logger.info("request from wechat");
 			if (StringUtils.isEmpty(code)) {
+				logger.info("redirect 1st");
 				try {
 					String link = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
 							+ ReceptionConfig.getValue("wechat_appid") + "&redirect_uri="
 							+ URLEncoder.encode("http://" + ReceptionConfig.getValue("domain_url")
 									+ ReceptionConfig.getValue("bind_device") + "/" + serial, "utf-8")
-							+ "&response_type=code&scope=snsapi_base&state=view#wechat_redirect";
-					response.sendRedirect(link);
+							+ "?response_type=code&scope=snsapi_base&state=view#wechat_redirect";
+					result.setStatus(ResultMap.STATUS_SUCCESS);
+					result.addContent("redirect_url", link);
+					return result;
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
-				} catch (IOException e) {
-					logger.error(e.getMessage());
 				}
 			} else {
+				logger.info("request 2nd");
 				String openId = WechatUtil.queryOauthOpenId(ReceptionConfig.getValue("wechat_appid"), ReceptionConfig.getValue("wechat_secret"), code);
 				result.setStatus(ResultMap.STATUS_SUCCESS);
 				result.addContent("openId", openId);
