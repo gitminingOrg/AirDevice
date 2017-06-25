@@ -3,6 +3,8 @@ package bean;
 public class DeviceName {
 	private String deviceID;
 	private String name;
+	private String phone;
+	private String address;
 	private int version;
 	public String getDeviceID() {
 		return deviceID;
@@ -21,6 +23,18 @@ public class DeviceName {
 	}
 	public void setVersion(int version) {
 		this.version = version;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 }

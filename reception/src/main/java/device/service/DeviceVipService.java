@@ -146,6 +146,18 @@ public class DeviceVipService {
 		}
 	}
 	
+	public ReturnCode insertDeviceName(DeviceName deviceName){
+		//check privilege
+		//update deviceName
+		boolean result = deviceVipDao.insertDeviceName(deviceName);
+		if (result) {
+			return ReturnCode.SUCCESS;
+		}else {
+			return ReturnCode.FAILURE;
+		}
+	}
+	
+	
 	/**
 	 * get device name by device id
 	 * @param deviceID

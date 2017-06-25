@@ -281,7 +281,7 @@ public class DeviceStatusController {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			return resultMap;
 		}
-		int cityData = cityAqi.getCityAqi();
+		int cityData = cityAqi.getPm25();
 		int deviceData = cleanerStatus.getPm25();
 		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 		resultMap.addContent("cityData", cityData);

@@ -33,23 +33,28 @@ public class LocationController {
 	@RequestMapping(method = RequestMethod.GET, value = "/{deviceId}")
 	public ResultMap location(@PathVariable("deviceId") String deviceId) {
 		ResultMap result = new ResultMap();
-		if(StringUtils.isEmpty(deviceId)) {
-			result.setStatus(ResultMap.STATUS_FAILURE);
-			result.setInfo("You must have a legal device serial number");
-			return result;
-		}
-		CleanerStatus status = deviceStatusService.getCleanerStatus(deviceId);
-		String ip = status.getIp();
-		String adcode = locationService.locateByIp(ip);
-		Map<String, Object> condition = new HashMap<>();
-		condition.put("cityId", adcode);
-		List<DeviceCityVo> list = locationService.fetch(condition);
-		if(list.isEmpty()) {
-			result.setStatus(ResultMap.STATUS_FAILURE);
-			result.setInfo("未能定位到设备ip: " + ip + "所对应的地区");
-			return result;
-		}
-		DeviceCityVo location = list.get(0);
+//		if(StringUtils.isEmpty(deviceId)) {
+//			result.setStatus(ResultMap.STATUS_FAILURE);
+//			result.setInfo("You must have a legal device serial number");
+//			return result;
+//		}
+//		CleanerStatus status = deviceStatusService.getCleanerStatus(deviceId);
+//		String ip = status.getIp();
+//		String adcode = locationService.locateByIp(ip);
+//		Map<String, Object> condition = new HashMap<>();
+//		condition.put("cityId", adcode);
+//		List<DeviceCityVo> list = locationService.fetch(condition);
+//		if(list.isEmpty()) {
+//			result.setStatus(ResultMap.STATUS_FAILURE);
+//			result.setInfo("未能定位到设备ip: " + ip + "所对应的地区");
+//			return result;
+//		}
+//		DeviceCityVo location = list.get(0);
+		DeviceCityVo location = new DeviceCityVo();
+		location.setCityId("10284");
+		location.setCityName("北京");
+		location.setCityPinyin("beijing");
+		location.setProvinceName("北京");
 		result.setStatus(ResultMap.STATUS_SUCCESS);
 		result.addContent("location", location);
 		return result;

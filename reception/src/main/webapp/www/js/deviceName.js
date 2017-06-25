@@ -1,10 +1,13 @@
 app.controller('DeviceNameCtrl',function($stateParams,$http,$scope,$ionicPopup,$state) {
 	$scope.deviceID = $stateParams.deviceID;
-	$http.get('/reception/own/info/name/'+$scope.deviceID).success(function(response){
-		if(response.status == 1){
-			$scope.deviceName = response.contents.deviceName;
-		}
-	});
+	$scope.init = function(){
+		$http.get('/reception/own/info/name/'+$scope.deviceID).success(function(response){
+			if(response.status == 1){
+				$scope.deviceName = response.contents.deviceName;
+			}
+		});
+	}
+	$scope.init()
 	$scope.configName = function(deviceName){
 		var data = { deviceName : deviceName }
 		$http({  
@@ -28,6 +31,7 @@ app.controller('DeviceNameCtrl',function($stateParams,$http,$scope,$ionicPopup,$
           template: '修改成功'
         });
         alertPopup.then(function(res) {
+        	$scope.init()
         	$state.go('tab.account',{deviceID : $scope.deviceID});
         });
       };
@@ -38,6 +42,7 @@ app.controller('DeviceNameCtrl',function($stateParams,$http,$scope,$ionicPopup,$
           template: '修改失败'
         });
         alertPopup.then(function(res) {
+        	$scope.init()
         	console.log('config name failed');
         });
       };

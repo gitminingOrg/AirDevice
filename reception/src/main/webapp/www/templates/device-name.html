@@ -7,8 +7,16 @@
     <div class="content has-header">
       <div class="list">
         <label class="item item-input">
+          <span class="input-label">设备名称：</span>
           <input type="text" ng-model="deviceName.name" placeholder="设备名称">
         </label>
+        <label class="item item-input">
+          <span class="input-label">联系电话：</span>
+          <input type="text" ng-model="deviceName.phone" placeholder="联系电话">
+        </label>
+        <label style="height:40%" class="item item-input">
+	      <textarea style="height:100px" placeholder="填写设备所在地址，以便维护" ng-model="deviceName.address"></textarea>
+	    </label>
       </div>
       <div class="padding">
         <button class="button button-block button-calm" ng-click="configName(deviceName)">提交</button>
