@@ -20,7 +20,7 @@
 	  </div>
 	  <div>
 	  	<p ng-if="!(deviceID && phone && address && deviceName)" style="color:red;float:right">请填写完整</p>
-        <button ng-if="deviceID && phone && address && deviceName" class="button button-block button-calm">下一步</button>
+        <button ng-if="deviceID && phone && address && deviceName" class="button button-block button-calm" ng-click="bindDevice(deviceID,deviceName,phone,address)">下一步</button>
       </div>
   </ion-content>
 </ion-view>
