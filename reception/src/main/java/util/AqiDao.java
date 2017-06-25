@@ -94,4 +94,29 @@ public class AqiDao extends BasicDao{
 		
 		return result;
 	}
+	
+	public void insertAqiMeta(String city_name, String city_pinyin, String time, int city_aqi, String aqi_category, String primary_pollutant, int pm25, int pm10, double co, int no2, int o3, int o3_8h, int so2){
+		try {
+			PreparedStatement ps = conn.prepareStatement("insert into city_aqi(city_name,city_pinyin,time,city_aqi,aqi_category,primary_pollutant,pm25,pm10,co,no2,o3,o3_8h,so2) values(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			ps.setString(1, city_name);
+			ps.setString(2, city_pinyin);
+			ps.setString(3, time);
+			ps.setInt(4, city_aqi);
+			ps.setString(5, aqi_category);
+			ps.setString(6, primary_pollutant);
+			ps.setInt(7, pm25);
+			ps.setInt(8, pm10);
+			ps.setDouble(9, co);
+			ps.setInt(10, no2);
+			ps.setInt(11, o3);
+			ps.setInt(12, o3_8h);
+			ps.setInt(13, so2);
+			ps.execute();
+			
+			ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	} 
 }
