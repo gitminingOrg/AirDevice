@@ -1,9 +1,6 @@
 app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $http, $timeout, $stateParams) {
 	$scope.deviceID = $stateParams.deviceID;
-	$scope.doRefresh = function(){
-		$scope.init();
-		$scope.$broadcast('scroll.refreshComplete');
-		}
+
     $scope.gaugeChart = {
       credits: {
             enabled: false
@@ -110,26 +107,34 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
     	
     	$http.get("/reception/location/"+$stateParams.deviceID).success(function(response){
         	if(response.status == 1){	
-        		
-        		$http.get("/reception/status/city/info/"+$stateParams.deviceID).success(function(response){
+        		$http.get("/reception/status/city/info/"+$stateParams.deviceID).success(function(data){
         			if(response.status == 1){
-        				var hisCity = response.contents.deviceCity.city
+        				var hisCity = data.contents.deviceCity.city
         				if(hisCity == response.contents.location.cityPinyin){
-        	        		
+        					$scope.updateCityAir(hisCity);
         				}else{
-        					
+        					$scope.gps = response.contents.location
+        					$scope.hisCity = hisCity
+        					$scope.showConfirm();
         				}
         			}
         		});
-
-        		
-        		$http.post('/reception/status/city/config/'+$scope.deviceID+'/'+response.contents.location.cityPinyin).success(function(data){
-        			
+        	}else{
+        		$http.get("/reception/status/city/info/"+$stateParams.deviceID).success(function(response){
+        			if(response.status == 1){
+        				var hisCity = response.contents.deviceCity.city
+        				$scope.updateCityAir(hisCity);
+        			}
         		});
         	}
         });
     	
     }
+    $scope.init();
+	$scope.doRefresh = function(){
+		$scope.init();
+		$scope.$broadcast('scroll.refreshComplete');
+		}
     
     $scope.updateCityAir = function updateAir(city){
     	var data = { city : city }
@@ -147,6 +152,25 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
 	    	}
 	    });
     }
+    
+    //  confirm 对话框
+    $scope.showConfirm = function() {
+      var confirmPopup = $ionicPopup.confirm({
+        title: '定位切换',
+        template: '检测到机器目前处于'+$scope.gps.cityName+'，是否切换到该地区?'
+      });
+      confirmPopup.then(function(res) {
+        if(res) {
+          console.log('You are sure');
+  		  $http.post('/reception/status/city/config/'+$scope.deviceID+'/'+$scope.gps.cityPinyin).success(function(data){
+  		  $scope.updateCityAir($scope.gps.cityPinyin);
+  		  });
+        } else {
+          $scope.updateCityAir($scope.hisCity);
+          console.log('You are not sure');
+        }
+      });
+    };
     
     $scope.showAlert = function popup() {
         var alertPopup = $ionicPopup.alert({
