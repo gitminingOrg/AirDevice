@@ -58,7 +58,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
       views: {
         'tab-chats': {
           templateUrl: 'templates/tab-status.html',
-          controller: 'StatusCtrl'
+          controller: 'StatusCtrl',
+          reload: true,
+          cache: false
         }
       }
     })
@@ -67,7 +69,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
     views: {
       'tab-account': {
         templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
+        controller: 'AccountCtrl',
+        reload: true,
+        cache: false
       }
     }
   })
@@ -81,7 +85,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
     views: {
       'home-device': {
         templateUrl: 'templates/device-choose.html',
-        controller: 'DeviceCtrl'         
+        controller: 'DeviceCtrl',
+        reload: true,
+        cache: false        
       }
     }
   })
@@ -90,7 +96,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
     views: {
       'home-about': {
         templateUrl: 'templates/about.html',
-        controller: 'AboutCtrl'         
+        controller: 'AboutCtrl' ,
+        reload: true,
+        cache: false        
       }
     }
   })
@@ -99,34 +107,46 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
     views: {
       'home-vip': {
         templateUrl: 'templates/vip-info.html',
-        controller: 'VipCtrl'         
+        controller: 'VipCtrl',
+        reload: true,
+        cache: false     
       }
     }
   })
   .state('mall', {
     url: '/mall',
     templateUrl: 'templates/mall.html',
-    controller: 'MallCtrl'         
+    controller: 'MallCtrl',
+    reload: true,
+    cache: false         
   })
   .state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',
-    controller: 'LoginCtrl'         
+    controller: 'LoginCtrl' ,
+    reload: true,
+    cache: false        
   })
   .state('deviceName', {
     url: '/device/name/:deviceID',
     templateUrl: 'templates/device-name.html',
-    controller: 'DeviceNameCtrl'         
+    controller: 'DeviceNameCtrl',
+    reload: true,
+    cache: false         
   })
   .state('deviceShare', {
 	    url: '/device/share/:deviceID',
 	    templateUrl: 'templates/device-share.html',
-	    controller: 'DeviceShareCtrl'         
+	    controller: 'DeviceShareCtrl',
+        reload: true,
+        cache: false         
   })
   .state('deviceBind', {
 	    url: '/device/bind/:serial',
 	    templateUrl: 'templates/device-bind.html',
-	    controller: 'DeviceBindCtrl'         
+	    controller: 'DeviceBindCtrl',
+        reload: true,
+        cache: false         
   });
 
   // if none of the above states are matched, use this as the fallback

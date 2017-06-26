@@ -27,8 +27,7 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 	//绑定设备
 	$scope.bindDevice = function(deviceName){
 		//bind user & device
-		//deviceName.openId = $scope.openID
-		deviceName.openId = "12377"
+		deviceName.openId = $scope.openID
 		var toDo = function(){
 			var serial = deviceName.serial
     		$http({
@@ -48,6 +47,7 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 	        method : "post",  
 	        params   : deviceName
 	    }).success(function(data) { 
+	    	alert('aaa')
 	    	if(data.status == 1){
 	    		  // Setup the loader
 	    		  $ionicLoading.show({
