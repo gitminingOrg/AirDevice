@@ -27,7 +27,7 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 	//绑定设备
 	$scope.bindDevice = function(deviceName){
 		//bind user & device
-		deviceName.openId = $scope.openID
+		deviceName.openId = $scope.openId
 		var toDo = function(){
 			var serial = deviceName.serial
     		$http({
