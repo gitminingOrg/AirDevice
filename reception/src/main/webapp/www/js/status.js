@@ -7,7 +7,10 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, Chats
   
   $scope.init = function(){
 	  $http.get('/reception/status/device/'+$stateParams.deviceID).success(function(response){
-		  if(response.status == 1){
+		  if(response.status == 2){
+				$state.go('login')
+			}
+		  else if(response.status == 1){
 			  $scope.cleanerStatus = response.contents.cleanerStatus;
 		  }
 		  $http.get('/reception/status/'+$stateParams.deviceID+'/aqi/current').success(function(response){

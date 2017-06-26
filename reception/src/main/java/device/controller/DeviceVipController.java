@@ -88,9 +88,9 @@ public class DeviceVipController {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value="/register/available")
-	public ResultMap available(String deviceId) {
+	public ResultMap available(String serial) {
 		ResultMap result = new ResultMap();
-		if(deviceId.equals(waiting.peek())) {
+		if(serial.equals(waiting.peek())) {
 			result.setStatus(ResultMap.STATUS_SUCCESS);
 		}
 		return result;

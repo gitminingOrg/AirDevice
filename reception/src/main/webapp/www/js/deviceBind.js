@@ -1,4 +1,4 @@
-app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams) {
+app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, $interval) {
 	$scope.deviceName =new Object();
 	$scope.deviceName.serial = $stateParams.serial;
 	var code = GetQueryString("code")
@@ -27,16 +27,31 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams) 
 	//绑定设备
 	$scope.bindDevice = function(deviceName){
 		//bind user & device
-		var data = {open_id : $scope.openID, deviceForm : deviceName}
+		//deviceName.openId = $scope.openID
+		deviceName.openId = "12377"
+		var toDo = function(){
+			var serial = deviceName.serial
+    		$http({
+    			url : '/reception/own/register/available',
+    			method : "get",
+    			params : {serial : serial}
+    		}).success(function(availResponse){
+    			if(availResponse.status == 1){
+    				window.location.href= "wxinitial.html"
+    			}
+    		})
+		}
+		
 		$http({  
 	        url    : '/reception/own/register',  
 	        method : "post",  
-	        data   : data
+	        params   : deviceName
 	    }).success(function(data) { 
 	    	if(data.status == 1){
-	    		window.location.href= "templates/wxinit.html"
+	    		$interval(toDo, 3000, 10);
 	    	}
-	    })
+	    });
+		
 	}
 
 })

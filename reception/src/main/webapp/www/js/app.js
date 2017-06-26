@@ -127,11 +127,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
 	    url: '/device/bind/:serial',
 	    templateUrl: 'templates/device-bind.html',
 	    controller: 'DeviceBindCtrl'         
-  })
-  .state('wxInit', {
-    url: '/wxinit',
-    templateUrl: 'templates/wxinit.html',
-    controller: 'WxinitCtrl'         
   });
 
   // if none of the above states are matched, use this as the fallback
