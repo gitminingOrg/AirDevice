@@ -1,6 +1,6 @@
 app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams) {
-	$scope.deviceID = $stateParams.serial;
-	$scope.serial = $stateParams.serial;
+	$scope.deviceName =new Object();
+	$scope.deviceName.serial = $stateParams.serial;
 	var code = GetQueryString("code")
 	var url =document.location.href.toString()
 	//get open id	
@@ -16,8 +16,7 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams) 
 				location.href = response.contents.redirect_url
 			}else if(typeof(response.contents.openId) !=undefined && response.contents.openId != null){
 				$scope.openId = response.contents.openId
-				$scope.deviceName = response.contents.openId
-				alert($scope.openId)
+				$scope.deviceName.alias = response.contents.openId
 			}else{
 				alert("sth wrong")
 			}
@@ -26,22 +25,18 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams) 
 	});
 	
 	//绑定设备
-	$scope.bindDevice = function(deviceID,deviceName,phone,address){
-		alert($scope.openId)
+	$scope.bindDevice = function(deviceName){
 		//bind user & device
-		//	var data = {serail : $scope.serial, open_id : $scope.openID}
-		//	$http({  
-		//        url    : '',  
-		//        method : "post",  
-		//        data   : $.param(data),  
-		//        headers: {  
-		//            'Content-Type': 'application/x-www-form-urlencoded'  
-		//        },  
-		//    }).success(function(data) { 
-		//    	if(data.status == 1){
-		//    		$state.go('home.device');
-		//    	}
-		//    })
+		var data = {open_id : $scope.openID, deviceForm : deviceName}
+		$http({  
+	        url    : '/reception/own/register',  
+	        method : "post",  
+	        data   : data
+	    }).success(function(data) { 
+	    	if(data.status == 1){
+	    		window.location.href= "templates/wxinit.html"
+	    	}
+	    })
 	}
 
 })

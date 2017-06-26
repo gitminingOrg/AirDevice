@@ -176,14 +176,14 @@
 	</select>
 	
 	<select id="getAverageInside" resultMap="deviceAir">
-		SELECT device_id,AVG(pm25) AS inside_air,0,"0"
-		FROM deviceStatus
-		WHERE device_id IN (
-			SELECT device_chip.chip_id
-			FROM device_city,device_chip
-			WHERE device_city.status = 1 AND device_chip.status = 1 AND device_city.device_id = device_chip.device_id
-		) AND time LIKE #{time}
-		GROUP BY device_id
+			SELECT device_chip.device_id,AVG(pm25) AS inside_air,0,"0"
+			  FROM deviceStatus,device_chip
+			  WHERE deviceStatus.device_id IN (
+			   SELECT device_chip.chip_id
+			   FROM device_city,device_chip
+			   WHERE device_city.status = 1 AND device_chip.status = 1 AND device_city.device_id = device_chip.device_id
+			  ) AND time LIKE #{time} AND deviceStatus.device_id = device_chip.chip_id
+			  GROUP BY device_id
 	</select>
 	
 	<select id="getAverageOutside" resultMap="deviceAir">

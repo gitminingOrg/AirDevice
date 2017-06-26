@@ -1,4 +1,4 @@
-app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $http, $timeout, $stateParams) {
+app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $http, $timeout, $stateParams, $state) {
 	$scope.deviceID = $stateParams.deviceID;
 
     $scope.gaugeChart = {
@@ -73,7 +73,10 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
     $scope.init = function dashInit(){
     	$http.get("/reception/status/device/"+$stateParams.deviceID).then(
     			function success(response) {
-    				if(response.data.status == 1){
+    				if(response.data.status == 2){
+    					$state.go('login')
+    				}
+    				else if(response.data.status == 1){
     					$scope.cleanerStatus = response.data.contents.cleanerStatus;
     					//电源打开
     					if(response.data.contents.cleanerStatus.power == 0){
@@ -106,9 +109,15 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
     		});  
     	
     	$http.get("/reception/location/"+$stateParams.deviceID).success(function(response){
-        	if(response.status == 1){	
+    		if(response.status == 2){
+				$state.go('login')
+			}
+    		else if(response.status == 1){	
         		$http.get("/reception/status/city/info/"+$stateParams.deviceID).success(function(data){
-        			if(response.status == 1){
+        			if(response.status == 2){
+    					$state.go('login')
+    				}
+        			else if(response.status == 1){
         				var hisCity = data.contents.deviceCity.city
         				if(hisCity == response.contents.location.cityPinyin){
         					$scope.updateCityAir(hisCity);
@@ -143,8 +152,12 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
 	        method : "post",  
 	        params   : data,  
 	    }).success(function(response){
-	    	if(response.status == 1){
+	    	if(response.status == 2){
+				$state.go('login')
+			}
+	    	else if(response.status == 1){
 	    		$scope.airQuality = response.contents.cityAqi.aqiCategory
+	    		$scope.pm25 = response.contents.cityAqi.pm25
 	    		$scope.aqiData = response.contents.cityAqi.cityAqi
 	    		$scope.location = response.contents.cityAqi.cityName
 	            var point = Highcharts.charts[0].series[0].points[0];
@@ -209,7 +222,10 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
         $http.get("/reception/status/"+$stateParams.deviceID+"/heat/"+heatInt).then(
     		function success(response) {
     			$scope.heatRequest = false;
-    			if(response.data.status != 1){
+    			if(response.data.status == 2){
+					$state.go('login')
+				}
+    			else if(response.data.status != 1){
     				$scope.showAlert();
     				//$scope.heat = !$scope.heat;
     			}
@@ -229,7 +245,10 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
         $http.get("/reception/status/"+$stateParams.deviceID+"/uv/"+uvInt).then(
     		function success(response) {
     			$scope.uvRequest = false;
-    			if(response.data.status != 1){
+    			if(response.data.status == 2){
+					$state.go('login')
+				}
+    			else if(response.data.status != 1){
     				$scope.showAlert();
     				//$scope.uv = !$scope.uv;
     			}
@@ -244,7 +263,10 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
     	$http.get("/reception/status/"+$stateParams.deviceID+"/light/"+light).then(
         		function success(response) {
         			$scope.lightRequest = false;
-        			if(response.data.status != 1){
+        			if(response.data.status == 2){
+    					$state.go('login')
+    				}
+        			else if(response.data.status != 1){
         				$scope.showAlert();
         				//$scope.uv = !$scope.uv;
         			}
@@ -258,7 +280,10 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
     	$http.get("/reception/status/"+$stateParams.deviceID+"/cycle/"+cycle).then(
         		function success(response) {
         			$scope.cycleRequest = false;
-        			if(response.data.status != 1){
+        			if(response.data.status == 2){
+    					$state.go('login')
+    				}
+        			else if(response.data.status != 1){
         				$scope.showAlert();
         				//$scope.uv = !$scope.uv;
         			}
@@ -273,7 +298,10 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
     	$http.get("/reception/status/"+$stateParams.deviceID+"/velocity/"+value).then(
         		function success(response) {
         			$scope.velocityRequest = false;
-        			if(response.data.status != 1){
+        			if(response.data.status == 2){
+    					$state.go('login')
+    				}
+        			else if(response.data.status != 1){
         				$scope.showAlert();
         				//$scope.uv = !$scope.uv;
         			}
@@ -288,7 +316,10 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
         $http.get("/reception/status/"+$stateParams.deviceID+"/workmode/"+mode).then(
         		function success(response) {
         			$scope.velocityRequest = false;
-        			if(response.data.status != 1){
+        			if(response.data.status == 2){
+    					$state.go('login')
+    				}
+        			else if(response.data.status != 1){
         				$scope.showAlert();
         				//$scope.uv = !$scope.uv;
         			}
@@ -310,12 +341,18 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
       });
       $scope.choose = function(city){
     	  	$http.post('/reception/status/city/config/'+$scope.deviceID+'/'+city).success(function(data){
-    	  		if(data.status != 1){
+    	  		if(response.status == 2){
+					$state.go('login')
+				}
+    	  		else if(data.status != 1){
     	  			console.log('set device city failed');
     	  			return;
     	  		}
     	  	    $http.get("/reception/status/city/info/"+$stateParams.deviceID).success(function(response){
-    	  	    	if(response.status == 1){
+    	  	    	if(response.status == 2){
+    					$state.go('login')
+    				}
+    	  	    	else if(response.status == 1){
     	  	    		
     	  	    		var data = { city : response.contents.deviceCity.city}
     	  	    		$http({  
@@ -325,6 +362,7 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
     	  			    }).success(function(response){
     	  			    	if(response.status == 1){
     	  			    		$scope.airQuality = response.contents.cityAqi.aqiCategory
+    	  			    		$scope.pm25 = response.contents.cityAqi.pm25
     	  			    		$scope.aqiData = response.contents.cityAqi.cityAqi
     	  			    		$scope.location = response.contents.cityAqi.cityName
     	  			    		var point = Highcharts.charts[0].series[0].points[0];

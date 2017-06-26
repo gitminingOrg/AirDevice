@@ -58,6 +58,10 @@ public class DeviceStatusController {
 		int data = Integer.parseInt(power);
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null || current.getCustomerId() == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
 		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.POWER);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
@@ -79,6 +83,10 @@ public class DeviceStatusController {
 		int data = Integer.parseInt(velocity);
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null || current.getCustomerId() == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
 		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.VELOCITY);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
@@ -100,6 +108,10 @@ public class DeviceStatusController {
 		int data = Integer.parseInt(heat);
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null || current.getCustomerId() == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
 		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.HEAT);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
@@ -121,6 +133,10 @@ public class DeviceStatusController {
 		int data = Integer.parseInt(mode);
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null || current.getCustomerId() == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
 		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.WORKMODE);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
@@ -142,6 +158,10 @@ public class DeviceStatusController {
 		int data = Integer.parseInt(cycle);
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null || current.getCustomerId() == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
 		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.CYCLE);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
@@ -163,6 +183,10 @@ public class DeviceStatusController {
 		int data = Integer.parseInt(light);
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null || current.getCustomerId() == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
 		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.LIGHT);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
@@ -184,6 +208,10 @@ public class DeviceStatusController {
 		int data = Integer.parseInt(uv);
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null || current.getCustomerId() == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
 		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.deviceControl(data, deviceID, userID, Constant.UV);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
@@ -204,6 +232,10 @@ public class DeviceStatusController {
 		ResultMap resultMap = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null || current.getCustomerId() == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
 		String userID = current.getCustomerId();
 		DeviceCity deviceCity = deviceStatusService.getDeviceCity(userID, deviceID);
 		if(deviceCity == null){
@@ -222,6 +254,10 @@ public class DeviceStatusController {
 		ResultMap resultMap = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null || current.getCustomerId() == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
 		String userID = current.getCustomerId();
 		ReturnCode returnCode = deviceStatusService.setDeviceCity(userID, deviceID, city);
 		if (returnCode.equals(ReturnCode.FAILURE)) {
