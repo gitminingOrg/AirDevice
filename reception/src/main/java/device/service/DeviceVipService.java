@@ -208,4 +208,8 @@ public class DeviceVipService {
 		
 		return sb.toString();
 	}
+	
+	public boolean bind(UserDevice ud) {
+		return deviceVipDao.insertUserDevice(ud);
+	}
 }

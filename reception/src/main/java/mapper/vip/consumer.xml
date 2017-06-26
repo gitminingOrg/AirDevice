@@ -17,8 +17,16 @@
 		<if test="customerId != null">
 			and consumer_id = #{customerId}
 		</if>
+		<if test="wechat != null">
+			and consumer_wechat = #{#wechat}
+		</if>
 		<if test="customerPhone != null">
 			and consumer_phone = #{customerPhone} 
 		</if>
 	</select>
+	
+	<insert id="insert" parameterType="java.util.Map" useGeneratedKeys="false">
+		insert into consumer_info(consumer_id, consumer_name, consumer_wechat, block_flag, create_time)
+		values(#{consumerId}, #{name}, #{wechat}, #{blockFlag}, #{createAt})
+	</insert>
 </mapper>

@@ -25,15 +25,19 @@ import bean.CityList;
 import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;
+import bean.UserDevice;
 import config.ReceptionConfig;
 import device.service.DeviceVipService;
+import form.BindDeviceForm;
 import location.service.LocationService;
 import model.DeviceInfo;
 import model.ResultMap;
 import model.ReturnCode;
+import model.vip.Consumer;
 import util.ReceptionConstant;
 import util.WechatUtil;
 import utils.QRCodeGenerator;
+import vip.service.ConsumerSerivce;
 import vo.location.DeviceCityVo;
 import vo.vip.ConsumerVo;
 
@@ -47,10 +51,36 @@ public class DeviceVipController {
 	@Autowired
 	private LocationService locationService;
 	
+	@Autowired
+	private ConsumerSerivce consumerSerivce;
+	
 	public void setDeviceVipService(DeviceVipService deviceVipService) {
 		this.deviceVipService = deviceVipService;
 	}
 
+	@RequestMapping(method = RequestMethod.POST, value="/register")
+	public ResultMap register(String openId, BindDeviceForm form) {
+		ResultMap result = new ResultMap();
+		if(!StringUtils.isEmpty(openId)) {
+			ConsumerVo vo = consumerSerivce.login(openId);
+			if(StringUtils.isEmpty(vo)) {
+				LOG.info("No user with open_id: " + openId + "found, create a new user...");
+				Consumer consumer = new Consumer(openId);
+				consumerSerivce.create(consumer);
+				vo = consumerSerivce.login(openId);
+			}
+			UserDevice ud = new UserDevice(vo.getCustomerId(), form.getSerial());
+			deviceVipService.bind(ud);
+			deviceVipService.insertDeviceName(new DeviceName(form.getSerial(), form.getAlias(), form.getMobile(), form.getLocation()));
+		} else {
+			result.setStatus(ResultMap.STATUS_FAILURE);
+			result.setInfo("当前只支持微信扫码绑定");
+			return result;
+		}
+		
+		return result;
+	}
+	
 	@RequiresAuthentication
 	@RequestMapping("/device")
 	public ResultMap getUserDevice(String code, HttpServletRequest request, HttpServletResponse response) throws IOException{

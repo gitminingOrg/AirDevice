@@ -6,6 +6,19 @@ public class DeviceName {
 	private String phone;
 	private String address;
 	private int version;
+	
+	public DeviceName() {
+		super();
+	}
+	
+	public DeviceName(String deviceId, String name, String phone, String address) {
+		this();
+		this.deviceID = deviceId;
+		this.name = name;
+		this.phone = phone;
+		this.address = address;
+	}
+	
 	public String getDeviceID() {
 		return deviceID;
 	}

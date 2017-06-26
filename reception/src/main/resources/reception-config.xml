@@ -63,10 +63,13 @@
     
     <bean id="mobileRealm" class="security.MobileRealm"></bean>
     
+    <bean id="wechatRealm" class="security.WechatRealm"></bean>
+    
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realms">
             <list>
             	<ref bean="mobileRealm" />
+            	<ref bean="wechatRealm" />
             </list>
         </property>
         <property name="cacheManager" ref="shiroEhcacheManager"/>

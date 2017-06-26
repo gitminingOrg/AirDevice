@@ -9,31 +9,34 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import vip.service.ConsumerSerivce;
 import vo.vip.ConsumerVo;
 
-public class MobileRealm extends AuthorizingRealm {
+public class WechatRealm extends AuthorizingRealm {
+	private Logger logger = LoggerFactory.getLogger(WechatRealm.class);
 
 	@Autowired
 	private ConsumerSerivce consumerSerivce;
-	
+
 	@Override
-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection arg0) {
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		return info;
 	}
 
 	@Override
-	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken arg0) throws AuthenticationException {
-		UsernamePasswordToken token = (UsernamePasswordToken) arg0;
-		String mobile = token.getUsername();
-		ConsumerVo consumer = consumerSerivce.login(mobile, "");
+	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+		UsernamePasswordToken up = (UsernamePasswordToken) token;
+		String wechat = up.getUsername();
+		ConsumerVo consumer = consumerSerivce.login(wechat);
 		if(StringUtils.isEmpty(consumer)) {
 			return null;
 		}
-		return new SimpleAuthenticationInfo(consumer, token.getPassword(), getName());
+		return new SimpleAuthenticationInfo(consumer, up.getPassword(), getName());
 	}
 }

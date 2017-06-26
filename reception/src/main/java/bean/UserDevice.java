@@ -4,6 +4,17 @@ public class UserDevice {
 	private String userID;
 	private String deviceID;
 	private int role;
+	
+	public UserDevice() {
+		super();
+	}
+	
+	public UserDevice(String userId, String deviceId) {
+		this();
+		this.userID = userId;
+		this.deviceID = deviceId;
+	}
+	
 	public String getUserID() {
 		return userID;
 	}

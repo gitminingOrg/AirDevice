@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dao.ConsumerDao;
+import model.vip.Consumer;
 import vip.service.ConsumerSerivce;
 import vo.vip.ConsumerVo;
 
@@ -21,24 +22,39 @@ public class ConsumerServiceImpl implements ConsumerSerivce{
 	private ConsumerDao consumerDao;
 	
 	@Override
-	public ConsumerVo login(String phone) {
-		ConsumerVo result = new ConsumerVo();
+	public ConsumerVo login(String phone, String password) {
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("customerPhone", phone);
 		List<ConsumerVo> list = consumerDao.query(condition);
 		if(list.isEmpty()) {
 			return null;
 		}
-		result = list.get(0);
-		result.setCustomerId("uid3618");
-		return result;
+		return list.get(0); 
 	}
 	
 	@Override
-	public ConsumerVo fetch(Map<String, Object> condition) {
-		ConsumerVo result = new ConsumerVo();
-		result.setCustomerId("uid3618");
-		return result;
+	public ConsumerVo login(String wechat) {
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("wechat", wechat);
+		List<ConsumerVo> list = consumerDao.query(condition);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return list.get(0);
 	}
 	
+	@Override
+	public List<ConsumerVo> fetch(Map<String, Object> condition) {
+		List<ConsumerVo> list = consumerDao.query(condition);
+		if(list.isEmpty()) {
+			return null;
+		}
+		return list;
+	}
+
+	@Override
+	public ConsumerVo create(Consumer consumer) {
+		
+		return null;
+	}
 }
