@@ -1,4 +1,4 @@
-app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, $interval) {
+app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, $interval, $ionicLoading) {
 	$scope.deviceName =new Object();
 	$scope.deviceName.serial = $stateParams.serial;
 	var code = GetQueryString("code")
@@ -37,7 +37,8 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
     			params : {serial : serial}
     		}).success(function(availResponse){
     			if(availResponse.status == 1){
-    				window.location.href= "wxinitial.html"
+    				window.location.href= "wxinitial.html?serial="+serial
+    				$ionicLoading.hide();
     			}
     		})
 		}
@@ -48,6 +49,14 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 	        params   : deviceName
 	    }).success(function(data) { 
 	    	if(data.status == 1){
+	    		  // Setup the loader
+	    		  $ionicLoading.show({
+	    		    content: 'Loading',
+	    		    animation: 'fade-in',
+	    		    showBackdrop: true,
+	    		    maxWidth: 200,
+	    		    showDelay: 0
+	    		  });
 	    		$interval(toDo, 3000, 10);
 	    	}
 	    });

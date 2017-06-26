@@ -208,6 +208,9 @@ public class DeviceVipService {
 		
 		return sb.toString();
 	}
+	public String getNewChip(String ip){
+		return "123123132";
+	}
 	
 	public boolean bind(UserDevice ud) {
 		return deviceVipDao.insertUserDevice(ud);
