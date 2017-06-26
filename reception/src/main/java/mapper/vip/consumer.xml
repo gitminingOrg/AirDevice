@@ -18,7 +18,7 @@
 			and consumer_id = #{customerId}
 		</if>
 		<if test="wechat != null">
-			and consumer_wechat = #{#wechat}
+			and consumer_wechat = #{wechat}
 		</if>
 		<if test="customerPhone != null">
 			and consumer_phone = #{customerPhone} 
