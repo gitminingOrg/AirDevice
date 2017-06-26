@@ -3,8 +3,10 @@ package device.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,6 +56,8 @@ public class DeviceVipController {
 	@Autowired
 	private ConsumerSerivce consumerSerivce;
 	
+	Queue<String> waiting = new LinkedList<>();
+	
 	public void setDeviceVipService(DeviceVipService deviceVipService) {
 		this.deviceVipService = deviceVipService;
 	}
@@ -72,6 +76,7 @@ public class DeviceVipController {
 			UserDevice ud = new UserDevice(vo.getCustomerId(), form.getSerial());
 			deviceVipService.bind(ud);
 			deviceVipService.insertDeviceName(new DeviceName(form.getSerial(), form.getAlias(), form.getMobile(), form.getLocation()));
+			waiting.offer(form.getSerial());
 			result.setStatus(ResultMap.STATUS_SUCCESS);
 		} else {
 			result.setStatus(ResultMap.STATUS_FAILURE);
@@ -79,6 +84,15 @@ public class DeviceVipController {
 			return result;
 		}
 		
+		return result;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="/register/available")
+	public ResultMap available(String deviceId) {
+		ResultMap result = new ResultMap();
+		if(deviceId.equals(waiting.peek())) {
+			result.setStatus(ResultMap.STATUS_SUCCESS);
+		}
 		return result;
 	}
 	
