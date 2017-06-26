@@ -1,4 +1,4 @@
-app.controller('StatusCtrl', function($http, $scope, $stateParams, Chats) {
+app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, Chats) {
   $scope.deviceID = $stateParams.deviceID;
   $scope.doRefresh = function(){
 	  $scope.init();
@@ -11,7 +11,10 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, Chats) {
 			  $scope.cleanerStatus = response.contents.cleanerStatus;
 		  }
 		  $http.get('/reception/status/'+$stateParams.deviceID+'/aqi/current').success(function(response){
-			  if(response.status == 1){
+			  if(response.status == 2){
+					$state.go('login')
+				}
+			  else if(response.status == 1){
 				  $('#chart1').highcharts({
 					  credits: {
 				            enabled: false
@@ -60,7 +63,10 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, Chats) {
 	  });
 	  
 	  $http.get('/reception/status/'+$stateParams.deviceID+'/aqi/compare').success(function(response){
-		  if(response.status == 1){
+		  if(response.status == 2){
+				$state.go('login')
+			}
+		  else if(response.status == 1){
 			  var airCompare = response.contents.airCompare
 			    $('#chart2').highcharts({
 			        credits: {

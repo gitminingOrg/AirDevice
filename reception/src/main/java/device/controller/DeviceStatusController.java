@@ -309,6 +309,10 @@ public class DeviceStatusController {
 		ResultMap resultMap = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null || current.getCustomerId() == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
 		String userID = current.getCustomerId();
 		DeviceCity deviceCity =  deviceStatusService.getDeviceCity(userID, deviceID);
 		CityAqi cityAqi = deviceStatusService.getCityCurrentAqi(deviceCity.getCity());

@@ -114,10 +114,10 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
 			}
     		else if(response.status == 1){	
         		$http.get("/reception/status/city/info/"+$stateParams.deviceID).success(function(data){
-        			if(response.status == 2){
+        			if(data.status == 2){
     					$state.go('login')
     				}
-        			else if(response.status == 1){
+        			else if(data.status == 1){
         				var hisCity = data.contents.deviceCity.city
         				if(hisCity == response.contents.location.cityPinyin){
         					$scope.updateCityAir(hisCity);
