@@ -72,6 +72,7 @@ public class DeviceVipController {
 			UserDevice ud = new UserDevice(vo.getCustomerId(), form.getSerial());
 			deviceVipService.bind(ud);
 			deviceVipService.insertDeviceName(new DeviceName(form.getSerial(), form.getAlias(), form.getMobile(), form.getLocation()));
+			result.setStatus(ResultMap.STATUS_SUCCESS);
 		} else {
 			result.setStatus(ResultMap.STATUS_FAILURE);
 			result.setInfo("当前只支持微信扫码绑定");
