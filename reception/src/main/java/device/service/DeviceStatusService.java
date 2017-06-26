@@ -4,10 +4,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.CleanerStatus;
-import model.ResultMap;
-import model.ReturnCode;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,21 +11,25 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import util.JsonResponseConverter;
-import util.ReceptionConstant;
-import utils.Constant;
-import utils.MethodUtil;
-import utils.TimeUtil;
+import com.google.common.base.Strings;
+import com.google.gson.Gson;
+
 import bean.AirCompareVO;
 import bean.CityAqi;
 import bean.DeviceAir;
 import bean.DeviceCity;
 import bean.UserAction;
-
-import com.google.common.base.Strings;
-import com.google.gson.Gson;
-
+import dao.DeviceChipDao;
 import dao.DeviceStatusDao;
+import model.CleanerStatus;
+import model.ResultMap;
+import model.ReturnCode;
+import model.device.DeviceChip;
+import util.JsonResponseConverter;
+import util.ReceptionConstant;
+import utils.Constant;
+import utils.MethodUtil;
+import utils.TimeUtil;
 
 @Service
 public class DeviceStatusService {
@@ -42,6 +42,10 @@ public class DeviceStatusService {
 	private ThreadPoolTaskExecutor executor;
 	@Autowired
 	private DeviceStatusDao deviceStatusDao;
+	
+	@Autowired
+	private DeviceChipDao deviceChipDao;
+	
 	public void setExecutor(ThreadPoolTaskExecutor executor) {
 		this.executor = executor;
 	}
@@ -248,5 +252,9 @@ public class DeviceStatusService {
 	
 	private String deviceIDToChipID(String deviceID){
 		return deviceStatusDao.getChipIDByDeviceID(deviceID);
+	}
+	
+	public boolean bindDevice2Chip(DeviceChip dc) {
+		return deviceChipDao.insert(dc);
 	}
 }

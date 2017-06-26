@@ -30,12 +30,14 @@ import bean.DeviceShareCode;
 import bean.DeviceStatus;
 import bean.UserDevice;
 import config.ReceptionConfig;
+import device.service.DeviceStatusService;
 import device.service.DeviceVipService;
 import form.BindDeviceForm;
 import location.service.LocationService;
 import model.DeviceInfo;
 import model.ResultMap;
 import model.ReturnCode;
+import model.device.DeviceChip;
 import model.vip.Consumer;
 import util.ReceptionConstant;
 import util.WechatUtil;
@@ -57,6 +59,9 @@ public class DeviceVipController {
 
 	@Autowired
 	private ConsumerSerivce consumerSerivce;
+	
+	@Autowired
+	private DeviceStatusService deviceStatusService;
 
 	Queue<String> waiting = new LinkedList<>();
 
@@ -124,7 +129,8 @@ public class DeviceVipController {
 		String ip = IPUtil.tell(request);
 		LOG.info("mobile request ip: " + ip);
 		String chipId = deviceVipService.getNewChip(ip);
-		
+		DeviceChip dc = new DeviceChip(serial, chipId);
+		deviceStatusService.bindDevice2Chip(dc);
 		return result;
 	}
 
