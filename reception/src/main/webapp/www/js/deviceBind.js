@@ -47,7 +47,7 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 	        method : "post",  
 	        params   : deviceName
 	    }).success(function(data) { 
-	    	alert('aaa')
+	    	alert(data.info)
 	    	if(data.status == 1){
 	    		  // Setup the loader
 	    		  $ionicLoading.show({
