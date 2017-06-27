@@ -231,9 +231,7 @@ public class DeviceVipService {
 		for(String sessionId : sessionIds){
 			String chipID = sessionId.split("\\.")[0];
 			CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(chipID);
-			if(! Strings.isNullOrEmpty(cleanerStatus.getIp()) && cleanerStatus.getIp().equals(ip)){
-				return chipID;
-			}
+			return chipID;
 		}
 		return null;
 	}
