@@ -126,12 +126,14 @@ public class DeviceVipController {
 			result.setInfo(StringUtils.isEmpty(serial) ? "The device serial could not be empty." : "The serial code: " + serial + "does not match.");
 			return result;
 		}
-		waiting.poll();
+		
 		String ip = IPUtil.tell(request);
 		LOG.info("mobile request ip: " + ip);
 		String chipId = deviceVipService.getNewChip(ip);
 		DeviceChip dc = new DeviceChip(serial, chipId);
 		deviceStatusService.bindDevice2Chip(dc);
+		waiting.poll();
+		result.setStatus(ResultMap.STATUS_SUCCESS);
 		return result;
 	}
 

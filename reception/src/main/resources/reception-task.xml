@@ -20,10 +20,10 @@
 		<property name="targetMethod" value="updateAirCondition" />
 	</bean>
 
-<!-- 	<bean id="cronTrigger" class=" org.springframework.scheduling.quartz.CronTriggerFactoryBean"> -->
-<!-- 		<property name="jobDetail" ref="jobDetail" /> -->
-<!-- 		<property name="cronExpression" value="0 0/5 * * * ?" /> -->
-<!-- 	</bean> -->
+	<bean id="cronTrigger" class=" org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail" />
+		<property name="cronExpression" value="30 3/5 * * * ?" />
+	</bean>
 
 	<bean id="taskTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
 		<property name="jobDetail" ref="jobDetail" />

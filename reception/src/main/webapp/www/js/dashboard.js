@@ -126,6 +126,11 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
         					$scope.hisCity = hisCity
         					$scope.showConfirm();
         				}
+        			}else{
+        				$scope.gps = response.contents.location
+        				$http.post('/reception/status/city/config/'+$scope.deviceID+'/'+$scope.gps.cityPinyin).success(function(data){
+        					$scope.updateCityAir($scope.gps.cityPinyin);
+        				})
         			}
         		});
         	}else{
@@ -341,7 +346,7 @@ app.controller('DashCtrl', function($scope, $ionicPopup,$ionicModal, Chats, $htt
       });
       $scope.choose = function(city){
     	  	$http.post('/reception/status/city/config/'+$scope.deviceID+'/'+city).success(function(data){
-    	  		if(response.status == 2){
+    	  		if(data.status == 2){
 					$state.go('login')
 				}
     	  		else if(data.status != 1){

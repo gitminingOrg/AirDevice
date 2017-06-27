@@ -328,4 +328,10 @@ public class DeviceStatusController {
 		resultMap.addContent("deviceData", deviceData);
 		return resultMap;
 	}
+	
+	@RequestMapping(value= "/test")
+	public String test(){
+		deviceStatusService.updateAirCondition();
+		return "";
+	}
 }

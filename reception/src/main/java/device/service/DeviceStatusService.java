@@ -61,6 +61,10 @@ public class DeviceStatusService {
 	 */
 	public CleanerStatus getCleanerStatus(String deviceID){
 		String chipID = deviceIDToChipID(deviceID);
+		return getCleanerStatusByChip(chipID);
+	}
+	
+	public CleanerStatus getCleanerStatusByChip(String chipID){
 		if(chipID == null){
 			return null;
 		}
@@ -126,8 +130,7 @@ public class DeviceStatusService {
 		//get device aqi data
 		List<CleanerStatus> cleanerStatusList = new ArrayList<CleanerStatus>();
 		for (String deviceID : devices) {
-			String chipID = deviceIDToChipID(deviceID);
-			CleanerStatus cleanerStatus = getCleanerStatus(chipID);
+			CleanerStatus cleanerStatus = getCleanerStatus(deviceID);
 			if(cleanerStatus != null && cleanerStatus.getDeviceID() != null){
 				cleanerStatusList.add(cleanerStatus);
 			}
@@ -149,7 +152,7 @@ public class DeviceStatusService {
 		deviceCity.setCity(cityName);
 		deviceCity.setDeviceID(deviceID);
 		DeviceCity origin = deviceStatusDao.getDeviceCity(deviceID);
-		if(origin.getCity().equals(cityName)){
+		if(origin != null && origin.getCity().equals(cityName)){
 			return ReturnCode.SUCCESS;
 		}
 		boolean disable = deviceStatusDao.disableDeviceCity(deviceID);
