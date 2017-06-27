@@ -71,6 +71,7 @@ public class DeviceVipController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/register")
 	public ResultMap register(String openId, BindDeviceForm form) {
+		LOG.info("openId: " + openId);
 		ResultMap result = new ResultMap();
 		if (!StringUtils.isEmpty(openId)) {
 			ConsumerVo vo = consumerSerivce.login(openId);
