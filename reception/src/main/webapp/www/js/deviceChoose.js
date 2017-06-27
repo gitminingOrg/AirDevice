@@ -1,4 +1,4 @@
-app.controller( 'DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicModal, $http, $state) {
+app.controller( 'DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicModal, $http, $state, $ionicPopup) {
 	$http.get("/reception/own/device").then(
 		function success(response) {
 			if(response.data.status == 1){
@@ -21,6 +21,21 @@ app.controller( 'DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicMod
         }, function(error) {
             console.log("An error happened -> " + error);
         });
+    };
+    
+    //  confirm 对话框
+    $scope.showConfirm = function(deviceID) {
+      var confirmPopup = $ionicPopup.confirm({
+        title: '设备绑定',
+        template: '请确保手机与设备处于同一无线网环境下'
+      });
+      confirmPopup.then(function(res) {
+        if(res) {
+          console.log('You are sure');
+        } else {
+          console.log('You are not sure');
+        }
+      });
     };
 
     $scope.broadcastWifi = function(ssid,password) {

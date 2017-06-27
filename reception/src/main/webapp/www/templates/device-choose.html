@@ -1,5 +1,6 @@
 ﻿<ion-view view-title="QAir新风净化">
   <ion-content style="background-color:#FAFAFA">
+  	 <div class="padding"><a href="" style="float:right" ng-click="showConfirm(device.deviceID)">设备未正常绑定？</a></div>
      <div ng-repeat="device in deviceList" class="card">
 		<a class="item item-icon-left" href="#tab/{{ device.deviceID}}/dash">
 			<i class="icon ion-cube"></i>
@@ -14,6 +15,7 @@
 			<div class="col">二氧化碳: {{ device.cleanerStatus.co2 }}</div>
 		</div>     
      </div> 
+     
   </ion-content>
 
      
