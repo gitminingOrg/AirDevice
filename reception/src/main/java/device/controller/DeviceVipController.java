@@ -277,4 +277,9 @@ public class DeviceVipController {
 		resultMap.addContent(ReceptionConstant.CITY_LIST, list);
 		return resultMap;
 	}
+	@RequestMapping("test")
+	public String test(){
+		deviceVipService.getNewChip("");
+		return "1";
+	}
 }

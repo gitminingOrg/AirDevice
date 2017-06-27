@@ -5,4 +5,9 @@
 		insert into device_chip(id, device_id, chip_id, status, update_time)
 		values(#{bindId}, #{deviceId}, #{chipId}, #{status}, #{updateAt})
 	</insert>
+	
+	<select id="bindChips" resultType="string">
+		SELECT distinct chip_id 
+		FROM device_chip
+	</select>
 </mapper>

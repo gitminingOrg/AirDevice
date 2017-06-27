@@ -126,8 +126,9 @@ public class DeviceStatusService {
 		//get device aqi data
 		List<CleanerStatus> cleanerStatusList = new ArrayList<CleanerStatus>();
 		for (String deviceID : devices) {
-			CleanerStatus cleanerStatus = getCleanerStatus(deviceID);
-			if(cleanerStatus != null){
+			String chipID = deviceIDToChipID(deviceID);
+			CleanerStatus cleanerStatus = getCleanerStatus(chipID);
+			if(cleanerStatus != null && cleanerStatus.getDeviceID() != null){
 				cleanerStatusList.add(cleanerStatus);
 			}
 		}

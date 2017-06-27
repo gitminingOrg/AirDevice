@@ -24,8 +24,10 @@ import bean.DeviceShareCode;
 import bean.DeviceStatus;
 import bean.UserDevice;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 
+import dao.DeviceChipDao;
 import dao.DeviceVipDao;
 
 @Service
@@ -40,6 +42,12 @@ public class DeviceVipService {
 	private DeviceStatusService deviceStatusService;
 	public void setDeviceStatusService(DeviceStatusService deviceStatusService) {
 		this.deviceStatusService = deviceStatusService;
+	}
+	
+	@Autowired
+	private DeviceChipDao deviceChipDao;
+	public void setDeviceChipDao(DeviceChipDao deviceChipDao) {
+		this.deviceChipDao = deviceChipDao;
 	}
 
 	/**
@@ -209,7 +217,25 @@ public class DeviceVipService {
 		return sb.toString();
 	}
 	public String getNewChip(String ip){
-		return "123123132";
+		ResultMap result = JsonResponseConverter.getDefaultResultMapWithParams(ReceptionConstant.chipIDPath);
+		Gson gson = new Gson();
+		String idsJson = gson.toJson(result.getContents().get("devices"));
+		List<String> sessionIds = gson.fromJson(idsJson, List.class);
+		List<String> bindChips = deviceChipDao.getBindedChips();
+		for (String chipID : bindChips) {
+			String sessionId = "session." + chipID;
+			if(sessionIds.contains(sessionId)){
+				sessionIds.remove(sessionId);
+			}
+		}
+		for(String sessionId : sessionIds){
+			String chipID = sessionId.split("\\.")[0];
+			CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(chipID);
+			if(! Strings.isNullOrEmpty(cleanerStatus.getIp()) && cleanerStatus.getIp().equals(ip)){
+				return chipID;
+			}
+		}
+		return null;
 	}
 	
 	public boolean bind(UserDevice ud) {

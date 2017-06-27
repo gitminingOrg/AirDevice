@@ -100,6 +100,8 @@ public class WechatController {
 				return result;
 			}
 		}
+		result.setStatus(ResultMap.STATUS_SUCCESS);
+		result.addContent("openId", "123");
 		return result;
 	}
 }

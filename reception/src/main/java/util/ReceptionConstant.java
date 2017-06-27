@@ -12,6 +12,7 @@ public class ReceptionConstant {
 	public static final String cycleControlPath = "/AirCleanerOperation/device/status/cycle/%s?token=%s";
 	public static final String lightControlPath = "/AirCleanerOperation/device/status/light/%s?token=%s";
 	public static final String deviceInfoPath = "/AirCleanerOperation/device/info/device?token=%s";
+	public static final String chipIDPath = "/AirCleanerOperation/device/all";
 	
 	public static final String STATUS_LIST = "statusList";
 	public static final String DEVICE_NAME = "deviceName";
