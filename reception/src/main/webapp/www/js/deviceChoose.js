@@ -31,6 +31,17 @@ app.controller( 'DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicMod
       });
       confirmPopup.then(function(res) {
         if(res) {
+        	$http({  
+                url    : '/reception/own/register/complete',  
+                method : "get",  
+                params   : { serial : deviceID} 
+            }).success(function(response){
+        	  if(response.status == 1){
+        		  alert("绑定成功！请下拉刷新")
+        	  }else{
+        		  alert("未搜索到相同局域网下的设备")
+        	  }
+          })
           console.log('You are sure');
         } else {
           console.log('You are not sure');
