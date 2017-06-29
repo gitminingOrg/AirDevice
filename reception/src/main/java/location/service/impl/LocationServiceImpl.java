@@ -1,5 +1,6 @@
 package location.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,8 +20,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import config.ReceptionConfig;
+import dao.DeviceStatusDao;
 import dao.LocationDao;
+import device.service.DeviceStatusService;
 import location.service.LocationService;
+import model.CleanerStatus;
 import model.location.City;
 import model.location.Province;
 import vo.location.DeviceCityVo;
@@ -31,6 +35,8 @@ public class LocationServiceImpl implements LocationService{
 
 	@Autowired
 	private LocationDao locationDao;
+	@Autowired
+	private DeviceStatusService deviceStatusService;
 
 	public String locateByIp(String ip) {
 		CloseableHttpClient client = HttpClients.createDefault();
@@ -143,5 +149,25 @@ public class LocationServiceImpl implements LocationService{
 	public List<DeviceCityVo> fetch(Map<String, Object> condition) {
 		List<DeviceCityVo> list = locationDao.query4Device(condition);
 		return list;
+	}
+
+	@Override
+	public DeviceCityVo getDeviceLocation(String deviceId) {
+		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(deviceId);
+		if(cleanerStatus == null){
+			return null;
+		}
+		String ip = cleanerStatus.getIp();
+		if(ip == null){
+			return null;
+		}
+		String adcode = locateByIp(ip);
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("cityId", adcode);
+		List<DeviceCityVo> list = fetch(condition);
+		DeviceCityVo deviceCityVo = new DeviceCityVo();
+		deviceCityVo.setCityPinyin("beijing");
+		list.add(deviceCityVo);
+		return list.get(0);
 	}
 }

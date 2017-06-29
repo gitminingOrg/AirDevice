@@ -31,29 +31,49 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
   // Each state's controller can be found in controllers.js
   $stateProvider
 
-  // Each tab has its own nav history stack:
-
-  .state('dash', {
-    url: '/tab/:deviceID/dash',
-    templateUrl: 'templates/tab-dash.html',
-    controller: 'DashCtrl',
-    reload: true,
-    cache: false
+  // setup an abstract state for the tabs directive
+  .state('tab', {
+    url: '/tab/:deviceID',
+    abstract: true,
+    controller: 'TabCtrl',
+    templateUrl: 'templates/tabs.html'
   })
 
-  .state('chats', {
-      url: '/tab/:deviceID/chats',
-      templateUrl: 'templates/tab-status.html',
-      controller: 'StatusCtrl',
-      reload: true,
-      cache: false
+  // Each tab has its own nav history stack:
+
+  .state('tab.dash', {
+    url: '/dash',
+    views: {
+      'tab-dash': {
+        templateUrl: 'templates/tab-dash.html',
+        controller: 'DashCtrl',
+        reload: true,
+        cache: false
+      }
+    }
+  })
+
+  .state('tab.chats', {
+      url: '/chats',
+      views: {
+        'tab-chats': {
+          templateUrl: 'templates/tab-status.html',
+          controller: 'StatusCtrl',
+          reload: true,
+          cache: false
+        }
+      }
     })
-  .state('account', {
-    url: '/tab/:deviceID/account',
-    templateUrl: 'templates/tab-account.html',
-    controller: 'AccountCtrl',
-    reload: true,
-    cache: false
+  .state('tab.account', {
+    url: '/account',
+    views: {
+      'tab-account': {
+        templateUrl: 'templates/tab-account.html',
+        controller: 'AccountCtrl',
+        reload: true,
+        cache: false
+      }
+    }
   })
   .state('home', {
     url: '/home',

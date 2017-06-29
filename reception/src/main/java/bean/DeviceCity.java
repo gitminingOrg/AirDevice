@@ -22,5 +22,14 @@ public class DeviceCity {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+	public DeviceCity() {
+		super();
+	}
+	public DeviceCity(String deviceID, String city, int status) {
+		super();
+		this.deviceID = deviceID;
+		this.city = city;
+		this.status = status;
+	}
 	
 }

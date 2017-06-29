@@ -1,6 +1,13 @@
-﻿<ion-view view-title="QAir新风净化">
-  <ion-content class="padding" style="background-color:#FAFAFA">
+﻿  <ion-content style="background-color:#FAFAFA">
   <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
+  <div style="background: url(img/background.png); background-size: 100% 180px; height: 180px">
+	 <button class="button button-calm" style="font-size:12px" ng-click="modal.show()"><i class="icon ion-location"></i> {{location}} <i class="icon ion-ios-arrow-down"></i></button>
+	 <img alt="" src="img/logo.png" height="40" width="100" style="float:right;margin-top:2px;margin-right:10px">
+	 <p style="color:white;text-align:center">28 June</p>
+	 <p style="color:white;text-align:center;margin-top:0 px;font-size:36px; font-wight: bold">{{aqiData}} <span style="font-size:14px">AQI</span></p>
+	 <p style="color:white;text-align:center">pm2.5: {{ pm25 }} ug/m<sup>3</sup></p>
+	 <p style="color:white;text-align:center"><label class="button button-energized button-small">{{ airQuality }}</label></p>
+   </div>
 	<div class="list card">
 		<div class="item">
 			<button class="button button-small button-light"  ng-click="modal.show()"><i class="icon ion-location"></i> {{location}}<i class="icon ion-ios-arrow-down"></i></button>
@@ -80,4 +87,3 @@
 	</div>
 
   </ion-content>
-</ion-view>

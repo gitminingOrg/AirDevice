@@ -98,7 +98,7 @@ public class DeviceStatusDao extends BaseDaoImpl{
 	
 	public HashMap<String, Integer> getAverageInside(String time){
 		HashMap<String, Integer> result = new HashMap<String, Integer>();
-		List<DeviceAir> list = sqlSession.selectList("getAverageInside", time);
+		List<DeviceAir> list = sqlSession.selectList("aqiData.getAverageInside", time);
 		
 		for(int i = 0 ; i < list.size() ; i ++){
 			result.put(list.get(i).getDeviceID(), list.get(i).getInsideAir());
@@ -108,7 +108,7 @@ public class DeviceStatusDao extends BaseDaoImpl{
 	
 	public HashMap<String, Integer> getAverageOutside(String time){
 		HashMap<String, Integer> result = new HashMap<String, Integer>();
-		List<DeviceAir> list = sqlSession.selectList("getAverageOutside", time);
+		List<DeviceAir> list = sqlSession.selectList("aqiData.getAverageOutside", time);
 		
 		for(int i = 0 ; i < list.size() ; i ++){
 			result.put(list.get(i).getDeviceID(), list.get(i).getOutsideAir());
@@ -123,5 +123,16 @@ public class DeviceStatusDao extends BaseDaoImpl{
 		}else{
 			return chips.get(0);
 		}
+	}
+	
+	public boolean disableAllDiviceCity(){
+		return sqlSession.update("aqiData.disableAllDeviceCity") >= 0;
+	}
+	
+	public boolean inserDiviceCityList(List<DeviceCity> deviceCities){
+		if(deviceCities == null || deviceCities.size() == 0){
+			return true;
+		}
+		return sqlSession.insert("aqiData.insertDeviceCityList", deviceCities) == deviceCities.size();
 	}
 }

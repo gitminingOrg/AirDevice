@@ -32,7 +32,7 @@ app.controller('DeviceNameCtrl',function($stateParams,$http,$scope,$ionicPopup,$
         });
         alertPopup.then(function(res) {
         	$scope.init()
-        	$state.go('tab.account',{deviceID : $scope.deviceID});
+        	$state.go('chats',{deviceID : $scope.deviceID});
         });
       };
       

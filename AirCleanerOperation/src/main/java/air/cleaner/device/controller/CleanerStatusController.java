@@ -32,6 +32,10 @@ public class CleanerStatusController {
 	public ResultMap getCleanerStatus(HttpServletRequest request){
 		ResultMap resultMap = new ResultMap();
 		String device = request.getParameter("token");
+		if(!deviceReceiveService.checkSessionAlive(device)){
+			resultMap.setInfo("设备离线");
+			return resultMap;
+		}
 		CleanerStatus cleanerStatus = deviceReceiveService.getCleanerStatus(device);
 		if (cleanerStatus == null) {
 			resultMap.setInfo("没有找到相应的设备");;

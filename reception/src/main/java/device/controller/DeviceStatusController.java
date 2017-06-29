@@ -1,7 +1,12 @@
 package device.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
+import location.service.LocationService;
 import model.CleanerStatus;
 import model.ResultMap;
 import model.ReturnCode;
@@ -19,11 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import util.ReceptionConstant;
 import utils.Constant;
+import vo.location.DeviceCityVo;
 import vo.vip.ConsumerVo;
 import auth.UserComponent;
 import bean.AirCompareVO;
 import bean.CityAqi;
 import bean.DeviceCity;
+import device.service.AqiDataUpdateService;
 import device.service.DeviceStatusService;
 
 @RequestMapping("/status")
@@ -35,6 +42,14 @@ public class DeviceStatusController {
 	public void setDeviceStatusService(DeviceStatusService deviceStatusService) {
 		this.deviceStatusService = deviceStatusService;
 	}
+	
+	@Autowired
+	private AqiDataUpdateService aqiDataUpdateService;
+	public void setAqiDataUpdateService(AqiDataUpdateService aqiDataUpdateService) {
+		this.aqiDataUpdateService = aqiDataUpdateService;
+	}
+	@Autowired
+	private LocationService locationService;
 
 	@RequiresAuthentication
 	@RequestMapping("/device/{deviceID}")
@@ -314,15 +329,23 @@ public class DeviceStatusController {
 			return resultMap;
 		}
 		String userID = current.getCustomerId();
-		DeviceCity deviceCity =  deviceStatusService.getDeviceCity(userID, deviceID);
-		CityAqi cityAqi = deviceStatusService.getCityCurrentAqi(deviceCity.getCity());
+		
+		//get device pm2.5
+		int deviceData = 0;
 		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(deviceID);
-		if(cityAqi == null || cleanerStatus == null){
-			resultMap.setStatus(ResultMap.STATUS_FAILURE);
-			return resultMap;
+		if(cleanerStatus != null){
+			deviceData = cleanerStatus.getPm25();
 		}
-		int cityData = cityAqi.getPm25();
-		int deviceData = cleanerStatus.getPm25();
+		//get city pm2.5
+		int cityData = 0;
+		DeviceCityVo location = locationService.getDeviceLocation(deviceID);
+		if(location != null) {
+			String cityPinyin = location.getCityPinyin();
+			CityAqi cityAqi = deviceStatusService.getCityCurrentAqi(cityPinyin);
+			if(cityAqi != null){
+				cityData = cityAqi.getPm25();
+			}
+		}
 		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 		resultMap.addContent("cityData", cityData);
 		resultMap.addContent("deviceData", deviceData);
@@ -331,7 +354,7 @@ public class DeviceStatusController {
 	
 	@RequestMapping(value= "/test")
 	public String test(){
-		deviceStatusService.updateAirCondition();
+		aqiDataUpdateService.updateDeviceAir();
 		return "";
 	}
 }

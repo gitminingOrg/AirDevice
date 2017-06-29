@@ -142,6 +142,23 @@
 		device_id = #{deviceID}
 	</update>
 	
+	<update id="disableAllDeviceCity">
+		UPDATE
+		device_city
+		SET
+		status = 0
+	</update>
+	
+	<insert id="insertDeviceCityList" parameterType="java.util.List">
+		INSERT INTO
+		device_city
+		(device_id, city, status)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+		(#{item.deviceID},#{item.city},#{item.status})
+		</foreach>
+	</insert>
+	
 	<insert id="insertCleanerStatusList" parameterType="java.util.List">
 		INSERT INTO
 		deviceStatus

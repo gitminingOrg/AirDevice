@@ -204,4 +204,12 @@ public class DeviceReceiveService {
 		}
 		return result;
 	}
+	
+	public boolean checkSessionAlive(String deviceID){
+		IoSession session = sessionCacheManager.getSession(deviceID);
+		if(session == null || !session.isConnected()){
+			return false;
+		}
+		return true;
+	}
 }

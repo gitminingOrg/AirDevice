@@ -39,6 +39,8 @@
 		<property name="maxIdle" value="30" />
 		<property name="maxWait" value="500" />
 		<property name="defaultAutoCommit" value="true" />
+		<property name="removeAbandoned"><value>true</value></property>  
+        <property name="removeAbandonedTimeout"><value>180</value></property>
 	</bean>
  	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

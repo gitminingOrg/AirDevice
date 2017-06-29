@@ -31,44 +31,5 @@
 		<property name="locatorType" value="CONSISTENT" />
 		<property name="failureMode" value="Redistribute" />
 		<property name="useNagleAlgorithm" value="false" />
-	</bean>
-	
-	<!-- 	mybatis config -->	
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName">
-			<value>${jdbc.driverClassName}</value>
-		</property>
-
-		<property name="url">
-			<value>${jdbc.url}</value>
-		</property>
-
-		<property name="username">
-			<value>${jdbc.username}</value>
-		</property>
-		<property name="password">
-			<value>${jdbc.password}</value>
-		</property>
-		<property name="maxActive" value="100" />
-		<property name="maxIdle" value="30" />
-		<property name="maxWait" value="500" />
-		<property name="defaultAutoCommit" value="true" />
-	</bean>
- 	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="configLocation" value="classpath:mybatis-configuration.xml" />
-		<property name="dataSource" ref="dataSource" />
-<!-- 		<property name="transactionFactory"> -->
-<!-- 			<bean -->
-<!-- 				class="org.apache.ibatis.transaction.managed.ManagedTransactionFactory" /> -->
-<!-- 		</property> -->
-	</bean>
-
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg index="0" ref="sqlSessionFactory" />
-		<constructor-arg index="1" value="BATCH" />
-	</bean>    
+	</bean>   
 </beans>

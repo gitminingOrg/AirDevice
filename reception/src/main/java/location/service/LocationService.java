@@ -11,4 +11,6 @@ public interface LocationService {
 	void init();
 	
 	List<DeviceCityVo> fetch(Map<String, Object> condition);
+	
+	DeviceCityVo getDeviceLocation(String deviceId);
 }

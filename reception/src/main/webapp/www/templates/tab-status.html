@@ -1,30 +1,89 @@
-﻿<ion-view view-title="QAir新风净化">
-  <ion-content style="background-color:#FAFAFA">
+﻿  <ion-content style="background-color:#FAFAFA">
   <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
+  <div style="background: url(img/background.png); background-size: 100% 180px; height: 180px">
+	 <a class="button button-calm" href="#/device/name/{{deviceID}}"> {{deviceName.name}} <i class="icon ion-settings"></i></a>
+	 <img alt="" src="img/logo.png" height="40" width="100" style="float:right;margin-top:2px;margin-right:10px">
+	 <p style="color:white;text-align:center;margin-top:20px;font-size:40px; font-wight: bold">{{ cleanerStatus.pm25 }} </p>
+	 <p style="color:white;text-align:center;margin-top:20px;font-wight: bold">ug/m<sup>3</sup></p>
+	 
+   </div>
      <div class="card">
 	     <!-- <div class="item item-divider" style="font-size:12px"><i class="icon ion-android-home"></i> 室内环境</div> -->
 	     <div class="row">
-	     <div class="col col-20" style="text-align:center;color:#666666"><i class="icon ion-cloud"></i><br/>PM2.5<br/> {{ cleanerStatus.pm25 }}</div>
-	     <div class="col col-20" style="text-align:center;color:#666666"><i class="icon ion-speedometer assertive"></i><br/>温度<br/> {{ cleanerStatus.temperature }} <sup>o</sup>C</div>
-	     <div class="col col-20" style="text-align:center;color:#666666"><i class="icon ion-waterdrop calm"></i><br/>湿度<br/> {{ cleanerStatus.humidity }}%</div>
-	     <div class="col col-20" style="text-align:center;color:#666666"><i class="icon ion-erlenmeyer-flask dark"></i><br/>甲醛<br/> {{ cleanerStatus.hcho }}</div>
-	     <div class="col col-20" style="text-align:center;color:#666666"><i class="icon ion-leaf balanced"></i><br/>二氧化碳<br/> {{ cleanerStatus.co2 }}</div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-speedometer assertive"></i><br/>温度<br/> {{ cleanerStatus.temperature }} <sup>o</sup>C</div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-waterdrop calm"></i><br/>湿度<br/> {{ cleanerStatus.humidity }}%</div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-erlenmeyer-flask dark"></i><br/>甲醛<br/> {{ cleanerStatus.hcho }}</div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-leaf balanced"></i><br/>二氧化碳<br/> {{ cleanerStatus.co2 }}</div>
 	     </div>
      </div>  
-
-     <div class="card" style="display:none">
-	     <div class="item item-divider"  style="font-size:12px"><i class="icon ion-cube"></i> 设备状态</div>
-	     <div class="row">
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-power"></i><br/>电源<br/> {{ cleanerStatus.power == 1 ? 'On' : 'Off' }}</div>
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-closed-captioning"></i><br/>工作模式<br/> {{ cleanerStatus.workMode == 1 ? '自动' : cleanerStatus.workMode == 2 ? '睡眠' : '手动' }} </div>
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-flame assertive"></i><br/>辅热<br/> {{ cleanerStatus.heat == 1 ? 'On' : 'Off' }}</div>
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-lightbulb energized"></i><br/>背光<br/>{{ cleanerStatus.light }}</div>
+	<div class="card">
+		<div class="row" >
+	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button button-small button-calm' : tab == 1, 'button button-small  button-light' : tab != 1}" ng-click="tabChange(1)">分享</button></div>
+	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button button-small button-calm' : tab == 2, 'button button-small  button-light' : tab != 2}" ng-click="tabChange(2)">风量</button> </div>
+	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button button-small button-calm' : tab == 3, 'button button-small  button-light' : tab != 3}" ng-click="tabChange(3)">辅热</button></div>
+	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button button-small button-calm' : tab == 4, 'button button-small  button-light' : tab != 4}" ng-click="tabChange(4)">高级</button> 
+	     <ion-spinner ng-if="request" icon="bubbles" class="spinner-calm"></ion-spinner>
 	     </div>
-	     <div class="row">
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-ionic"></i><br/>循环方式<br/> {{ cleanerStatus.cycle == 0 ? '内循环' : '外循环' }}</div>
-	     <div class="col col-25" style="text-align:center;color:#666666"><i class="icon ion-paper-airplane"></i><br/>风量<br/>{{ cleanerStatus.velocity }} m<sup>3</sup>/h</div>
-	     </div>
-     </div>  
+	    </div>
+	    
+	    <div ng-if="tab == 1" id="share"></div>
+	    
+	    <div ng-if="tab == 2" id="velocity" class="padding">
+	    <div class="row">
+		  <div class="col"><button ng-click="setMode(0)" ng-class="{'button button-outline button-calm' : cleanerStatus.workMode == 0, 'button button-outline button-stable':cleanerStatus.workMode != 0}">自动模式</button></div>
+		  <div class="col"><button ng-click="setMode(1)" ng-class="{'button button-outline button-calm' : cleanerStatus.workMode == 1, 'button button-outline button-stable':cleanerStatus.workMode != 1}">睡眠模式</button></div>
+		  <div class="col"><button ng-click="setMode(2)" ng-class="{'button button-outline button-calm' : cleanerStatus.workMode == 2, 'button button-outline button-stable':cleanerStatus.workMode != 2}">手动模式</button></div>
+		</div>
+		
+		<div ng-if="cleanerStatus.workMode == 2" class="range range-positive">
+		  	<p>风量</p>
+            <i class="icon ion-ios-minus-empty"></i>
+            <input type="range" on-release="velocityControl(velocity)" ng-model="velocity" name="volume" min="0" max="5" value="2">
+            <i class="icon ion-ios-plus-empty"></i>
+        </div>
+	    <button ng-if="cleanerStatus.power == 0" class="button button-block button-calm" ng-click="start(1)">打开设备</button>
+	    <button ng-if="cleanerStatus.power == 1" class="button button-block button-assertive" ng-click="start(0)">关闭设备</button>
+	    </div>
+	    
+	    <div ng-if="tab == 3" id="heat" class="padding">
+	    <button ng-if="cleanerStatus.heat == 0" class="button button-block button-calm" ng-click="heatControl(1)">打开辅热</button>
+	    <button ng-if="cleanerStatus.heat == 1" class="button button-block button-assertive" ng-click="heatControl(0)">关闭辅热</button>
+	    </div>
+	    
+	    <div ng-if="tab == 4" id="more">
+		    <div class="item item-toggle">
+		     紫外
+		     <label class="toggle toggle-calm">
+		       <input type="checkbox" ng-click="uvControl()" id="dash_uv">
+		       <div class="track">
+		         <div class="handle"></div>
+		       </div>
+		       <ion-spinner ng-if="uvRequest" icon="bubbles" class="spinner-calm"></ion-spinner>
+		     </label>			
+			</div>
+	
+			<div class="item">
+			背光 <ion-spinner ng-if="lightRequest" style="float:right" icon="bubbles" class="spinner-calm"></ion-spinner>
+			<div class="range range-positive">
+				
+				<i class="icon ion-ios-minus-empty"></i>
+				<input type="range" on-release="lightControl(light)" ng-model="light" name="volume" min="0" max="100" value="30">
+				<i class="icon ion-ios-plus-empty"></i>
+			</div>
+			</div>
+			
+			<div class="item">
+			循环
+			<div class="range range-positive">
+				<span style="color:#666; font-size:14px">内循环</span>
+				<input type="range"  on-release="cycleControl(cycle)" ng-model="cycle" name="volume" min="0" max="1" value="0">
+				<span style="color:#666; font-size:14px">外循环</span>
+			</div>
+			</div>
+	    </div>
+	    
+	    </div>
+    </div>
      
 	<div class="card">
 		<div style="height:250px" id="chart1"></div>
@@ -34,4 +93,3 @@
 		<div style="height:250px" id="chart2"></div>
 	</div>
   </ion-content>
-</ion-view>
