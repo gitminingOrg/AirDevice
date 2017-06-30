@@ -18,6 +18,8 @@
 		<result property="deviceID" column="device_id" />
 		<result property="name" column="name" />
 		<result property="phone" column="phone" />
+		<result property="provinceID" column="province_id" />
+		<result property="cityID" column="city_id" />
 		<result property="address" column="address" />
 		<result property="version" column="version" />
 	</resultMap>
@@ -107,7 +109,7 @@
 	
 	<select id="selectDeviceName" resultMap="deviceName">
 		SELECT 
-		device_id, name, phone, address, version
+		device_id, name, phone, address, province_id, city_id, version
 		FROM
 		deviceName
 		WHERE
@@ -125,8 +127,8 @@
 	
 	<insert id="insertDeviceName" parameterType="bean.DeviceName">
 		INSERT INTO
-		deviceName(device_id, name, phone, address)
-		VALUES(#{deviceID}, #{name}, #{phone}, #{address})
+		deviceName(device_id, name, phone, province_id, city_id, address)
+		VALUES(#{deviceID}, #{name}, #{phone}, #{provinceID}, #{cityID} #{address})
 	</insert>
 	
 	<update id="updateDeviceName" parameterType="bean.DeviceName">
@@ -139,6 +141,12 @@
 		</if>
 		<if test="phone != null">
 			,phone = #{phone}
+		</if>
+		<if test="provinceID != null">
+			,province_id = #{provinceID}
+		</if>
+		<if test="cityID != null">
+			,city_id = #{cityID}
 		</if>
 		<if test="address != null">
 			,address = #{address}

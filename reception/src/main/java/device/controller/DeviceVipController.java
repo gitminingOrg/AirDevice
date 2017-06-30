@@ -38,6 +38,8 @@ import model.DeviceInfo;
 import model.ResultMap;
 import model.ReturnCode;
 import model.device.DeviceChip;
+import model.location.City;
+import model.location.Province;
 import model.vip.Consumer;
 import util.ReceptionConstant;
 import util.WechatUtil;
@@ -90,7 +92,7 @@ public class DeviceVipController {
 			UserDevice ud = new UserDevice(vo.getCustomerId(), form.getSerial());
 			deviceVipService.bind(ud);
 			deviceVipService.insertDeviceName(
-					new DeviceName(form.getSerial(), form.getAlias(), form.getMobile(), form.getLocation()));
+					new DeviceName(form.getSerial(), form.getAlias(), form.getMobile(),form.getProvinceID(), form.getCityID(), form.getLocation(), 1));
 			waiting.offer(form.getSerial());
 			result.setStatus(ResultMap.STATUS_SUCCESS);
 		} else {
@@ -170,8 +172,8 @@ public class DeviceVipController {
 	}
 
 	@RequiresAuthentication
-	@RequestMapping("/share/{deviceID}/{role}")
-	public ResultMap shareDevice(@PathVariable("deviceID") String deviceID, @PathVariable("role") int role,
+	@RequestMapping("/share/{deviceID}/{role}/{length}")
+	public ResultMap shareDevice(@PathVariable("deviceID") String deviceID, @PathVariable("role") int role,@PathVariable("length") int length,
 			HttpServletResponse response) {
 		ResultMap resultMap = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
@@ -180,9 +182,10 @@ public class DeviceVipController {
 		DeviceShareCode deviceShareCode = deviceVipService.generateShareCode(userID, deviceID, role,
 				ReceptionConstant.DEFAULT_EXPIRE_DAYS);
 		try {
-			String url = "http://" + ReceptionConfig.getValue("domain_url") + "/reception/own/authorize/"
+			String url = "http://" + ReceptionConfig.getValue("domain_url") + "/reception/www/index.html#/device/auth/"
 					+ deviceShareCode.getToken();
-			QRCodeGenerator.createQRCode(url, ReceptionConstant.DEFAULT_QR_LENGTH, ReceptionConstant.DEFAULT_QR_LENGTH,
+			int imgLength = length;
+			QRCodeGenerator.createQRCode(url, imgLength, imgLength,
 					response.getOutputStream());
 		} catch (IOException e) {
 			LOG.error("write QR code failed", e);
@@ -207,6 +210,45 @@ public class DeviceVipController {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("授权失败");
 		}
+		return resultMap;
+	}
+	
+	@RequiresAuthentication
+	@RequestMapping("/wx/authorize")
+	public ResultMap wxAuthorizeUser(String openId, String token) {
+		ResultMap resultMap = new ResultMap();
+		if (!StringUtils.isEmpty(openId)) {
+			ConsumerVo vo = consumerSerivce.login(openId);
+			if (StringUtils.isEmpty(vo)) {
+				LOG.info("No user with open_id: " + openId + "found, create a new user...");
+				Consumer consumer = new Consumer(openId);
+				consumerSerivce.create(consumer);
+				try {
+					Subject subject = SecurityUtils.getSubject();
+					subject.login(new UsernamePasswordToken(openId, ""));
+					vo = (ConsumerVo) subject.getPrincipal();
+				} catch (Exception e) {
+					LOG.error(e.getMessage());
+				}
+			}
+
+			ReturnCode returnCode = deviceVipService.authorizeDevice(token, vo.getCustomerId());
+			if (returnCode.equals(ReturnCode.SUCCESS)) {
+				resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			} else if (returnCode.equals(ReturnCode.FORBIDDEN)) {
+				resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+				resultMap.setInfo("无授权权限或您已经拥有此权限");
+			} else {
+				resultMap.setStatus(ResultMap.STATUS_FAILURE);
+				resultMap.setInfo("授权失败");
+			}
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		} else {
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo("当前只支持微信扫码绑定");
+			return resultMap;
+		}
+
 		return resultMap;
 	}
 
@@ -236,11 +278,17 @@ public class DeviceVipController {
 	public ResultMap getDeviceName(@PathVariable("deviceID") String deviceID) {
 		ResultMap resultMap = new ResultMap();
 		DeviceName deviceName = deviceVipService.getDeviceName(deviceID);
+
 		if (deviceName == null) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 		} else {
+			Province province = locationService.getProvinceByID(deviceName.getProvinceID());
+			City city = locationService.getCityByID(deviceName.getCityID());
+			city.setProvince(province);
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.addContent(ReceptionConstant.DEVICE_NAME, deviceName);
+			resultMap.addContent("city", city);
+			resultMap.addContent("province", province);
 		}
 		return resultMap;
 	}

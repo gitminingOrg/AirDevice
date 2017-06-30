@@ -14,13 +14,18 @@
 	    <span class="input-label">手机号码：</span>
 	    <input type="number" placeholder="填写手机号码" ng-model="deviceName.mobile">
 	  </label>
+	  <label class="item item-input">
+          <span class="input-label">省、市：</span>
+          <select ng-change="cityRequest(selectedProvince)" ng-model="selectedProvince" ng-options="province.locationName for province in provinces"></select>
+          <select ng-model="selectedCity" ng-options="city.locationName for city in cities"></select>
+      </label>
 	  <label style="height:40%" class="item item-input">
 	    <textarea style="height:100px" placeholder="填写设备所在地址，以便维护" ng-model="deviceName.location"></textarea>
 	  </label>
 	  </div>
 	  <div>
 	  	<p ng-if="!(deviceName.serial && deviceName.alias && deviceName.mobile && deviceName.location)" style="color:red;float:right">请填写完整</p>
-        <button ng-if="deviceName.serial && deviceName.alias && deviceName.mobile && deviceName.location" class="button button-block button-calm" ng-click="bindDevice(deviceName)">下一步</button>
+        <button ng-if="deviceName.serial && deviceName.alias && deviceName.mobile && deviceName.location" class="button button-block button-calm" ng-click="bindDevice(deviceName, selectedProvince, selectedCity)">下一步</button>
       </div>
   </ion-content>
 </ion-view>

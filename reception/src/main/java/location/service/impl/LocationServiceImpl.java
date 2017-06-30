@@ -170,4 +170,36 @@ public class LocationServiceImpl implements LocationService{
 		list.add(deviceCityVo);
 		return list.get(0);
 	}
+
+	@Override
+	public List<Province> getAllProvinces() {
+		return locationDao.getAllProvince();
+	}
+
+	@Override
+	public List<City> getProvinceCity(Province province) {
+		if(province == null){
+			return null;
+		}else{
+			String provinceId = province.getLocationId();
+			List<City> cities = locationDao.getAllProvinceCity(provinceId);
+			if(cities == null){
+				return null;
+			}
+			for (City city : cities) {
+				city.setProvince(province);
+			}
+			return cities;
+		}
+	}
+
+	@Override
+	public City getCityByID(String cityID) {
+		return locationDao.getCityByID(cityID);
+	}
+
+	@Override
+	public Province getProvinceByID(String provinceID) {
+		return locationDao.getProvinceByID(provinceID);
+	}
 }

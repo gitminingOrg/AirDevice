@@ -163,9 +163,10 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, Chats
   }
   
   $scope.uvControl = function(){
-      $scope.cleanerStatus.uv = !$scope.cleanerStatus.uv;
+      $scope.cleanerStatus.uv = 1- $scope.cleanerStatus.uv;
+      alert($scope.cleanerStatus.uv)
       var uvInt = 0
-      if($scope.uv){
+      if($scope.cleanerStatus.uv){
       	uvInt = 1
       }
       $scope.uvRequest = true;
@@ -237,6 +238,11 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, Chats
       	        // 请求失败执行代码
       	});
   }
+  
+  $scope.deviceShare = function(mode){
+	  $state.go('deviceShare', {deviceID: $scope.deviceID , mode: mode})
+  }
+  
   $scope.setMode = function(mode){
   	$scope.request = true;
       

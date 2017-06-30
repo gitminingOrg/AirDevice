@@ -8,6 +8,13 @@
 		<result property="provinceName" column="province_name" />
 	</resultMap>
 	
+	<resultMap id="city" type="model.location.City">
+		<result property="locationId" column="city_id" />
+		<result property="locationName" column="city_name" />
+		<result property="nickname" column="city_nickname" />
+		<result property="locationPinyin" column="city_pinyin" />
+	</resultMap>
+	
 	<insert id="insert" parameterType="model.location.City" useGeneratedKeys="false">
 		insert into location_city(city_id, province_id, city_name, city_nickname, city_pinyin)
 		values (#{locationId}, #{province.locationId}, #{locationName}, #{nickname}, #{locationPinyin})
@@ -22,5 +29,17 @@
 		</if>
 		ORDER BY
 		c.city_pinyin asc
+	</select>
+	
+	<select id="cityOfProvince" resultMap="city">
+		select city_id, city_name, city_pinyin, city_nickname
+		from location_city
+		where province_id = #{provinceID}
+	</select>
+	
+	<select id="cityById" resultMap="city">
+		select city_id, city_name, city_pinyin, city_nickname
+		from location_city
+		where city_id = #{cityID}
 	</select>
 </mapper>

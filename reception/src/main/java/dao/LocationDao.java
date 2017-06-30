@@ -16,4 +16,12 @@ public interface LocationDao {
 	boolean insertDistrict(District district);
 	
 	List<DeviceCityVo> query4Device(Map<String, Object> condition);
+	
+	List<Province> getAllProvince();
+	
+	List<City> getAllProvinceCity(String provinceID);
+	
+	City getCityByID(String cityID);
+	
+	Province getProvinceByID(String provinceID);
 }

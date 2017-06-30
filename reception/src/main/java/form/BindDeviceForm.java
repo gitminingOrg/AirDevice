@@ -13,6 +13,10 @@ public class BindDeviceForm {
 	private String mobile;
 	
 	private String location;
+	
+	private String provinceID;
+	
+	private String cityID;
 
 	public String getSerial() {
 		return serial;
@@ -45,4 +49,21 @@ public class BindDeviceForm {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+
+	public String getProvinceID() {
+		return provinceID;
+	}
+
+	public void setProvinceID(String provinceID) {
+		this.provinceID = provinceID;
+	}
+
+	public String getCityID() {
+		return cityID;
+	}
+
+	public void setCityID(String cityID) {
+		this.cityID = cityID;
+	}
+	
 }

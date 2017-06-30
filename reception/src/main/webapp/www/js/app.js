@@ -115,7 +115,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
     cache: false         
   })
   .state('deviceShare', {
-	    url: '/device/share/:deviceID',
+	    url: '/device/share/:deviceID/:mode',
 	    templateUrl: 'templates/device-share.html',
 	    controller: 'DeviceShareCtrl',
         reload: true,
@@ -125,6 +125,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
 	    url: '/device/bind/:serial',
 	    templateUrl: 'templates/device-bind.html',
 	    controller: 'DeviceBindCtrl',
+        reload: true,
+        cache: false         
+  })
+  .state('deviceAuth', {
+	    url: '/device/auth/:token',
+	    templateUrl: 'templates/auth-device.html',
+	    controller: 'DeviceAuthCtrl',
         reload: true,
         cache: false         
   });

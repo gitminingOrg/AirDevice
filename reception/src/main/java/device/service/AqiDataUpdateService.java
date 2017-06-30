@@ -39,7 +39,7 @@ public class AqiDataUpdateService {
 	
 	public void updateDeviceAir(){
 		//update device cities
-		updateDeviceCity();
+		//updateDeviceCity();
 		
 		//get last date
 		Calendar calendar = Calendar.getInstance();

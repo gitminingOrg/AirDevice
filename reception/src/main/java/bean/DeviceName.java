@@ -4,6 +4,8 @@ public class DeviceName {
 	private String deviceID;
 	private String name;
 	private String phone;
+	private String provinceID;
+	private String cityID;
 	private String address;
 	private int version;
 	
@@ -11,14 +13,22 @@ public class DeviceName {
 		super();
 	}
 	
-	public DeviceName(String deviceId, String name, String phone, String address) {
-		this();
-		this.deviceID = deviceId;
+	
+	
+	public DeviceName(String deviceID, String name, String phone,
+			String provinceID, String cityID, String address, int version) {
+		super();
+		this.deviceID = deviceID;
 		this.name = name;
 		this.phone = phone;
+		this.provinceID = provinceID;
+		this.cityID = cityID;
 		this.address = address;
+		this.version = version;
 	}
-	
+
+
+
 	public String getDeviceID() {
 		return deviceID;
 	}
@@ -48,6 +58,22 @@ public class DeviceName {
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getProvinceID() {
+		return provinceID;
+	}
+
+	public void setProvinceID(String provinceID) {
+		this.provinceID = provinceID;
+	}
+
+	public String getCityID() {
+		return cityID;
+	}
+
+	public void setCityID(String cityID) {
+		this.cityID = cityID;
 	}
 	
 }

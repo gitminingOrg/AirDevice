@@ -12,11 +12,16 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 		if(response.status == 0){
 			alert("诶哟卧槽。。。我这没取到儿openID嗬")
 		}else{
-			 if(typeof(response.contents.redirect_url)==undefined || response.contents.openId == null){
+			 if(typeof(response.contents.redirect_url) !=undefined && response.contents.openId == null){
 				location.href = response.contents.redirect_url
 			}else if(typeof(response.contents.openId) !=undefined && response.contents.openId != null){
 				$scope.openId = response.contents.openId
-				$scope.deviceName.alias = response.contents.openId
+				$http.get('/reception/location/province').success(function(response){
+					if(response.status == 1){
+						$scope.provinces = response.contents.provinces;
+						$scope.selectedProvince = $scope.provinces[0]
+					}
+				})
 			}else{
 				alert("sth wrong")
 			}
@@ -25,10 +30,11 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 	});
 	
 	//绑定设备
-	$scope.bindDevice = function(deviceName){
+	$scope.bindDevice = function(deviceName, province, city){
 		//bind user & device
 		deviceName.openId = $scope.openId
-		alert(deviceName.openId)
+		deviceName.cityID = city.locationId
+		deviceName.provinceID = province.locationId
 		var toDo = function(){
 			var serial = deviceName.serial
     		$http({
@@ -61,8 +67,32 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 	    		$interval(toDo, 3000, 10);
 	    	}
 	    });
+		var cityPinyin = city.locationPinyin
+		if(province.locationPinyin == 'beijing' || province.locationPinyin == 'tianjin' || province.locationPinyin == 'shanghai' || province.locationPinyin == 'chongqin'){
+			cityPinyin = province.locationPinyin
+		}
+		$http.post('/reception/status/city/config/'+deviceName.deviceID+'/'+ cityPinyin).success(function(response){
+			if(response.status != 1){
+				$scope.showFailure();
+			}
+		})
 		
 	}
+	
+	$scope.cityRequest = function(province){
+    	$http({  
+	        url    : '/reception/location/city',  
+	        method : "get",  
+	        params   : province 
+	    }).success(function(response){
+	    	if(response.status == 1){
+	    		$scope.cities = response.contents.cities;
+	    		$scope.selectedCity = $scope.cities[0]
+	    	}else{
+	    		$scope.showFailure();
+	    	}
+	    });
+    }
 
 })
 

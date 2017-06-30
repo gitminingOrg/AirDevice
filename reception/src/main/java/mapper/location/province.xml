@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="province">	
+	<resultMap id="province" type="model.location.Province">
+		<result property="locationId" column="province_id" />
+		<result property="locationName" column="province_name" />
+		<result property="nickname" column="province_nickname" />
+		<result property="locationPinyin" column="province_pinyin" />
+	</resultMap>
 	<insert id="insert" parameterType="model.location.Province" useGeneratedKeys="false">
 		insert into location_province(province_id, province_name, province_nickname, province_pinyin)
 		values (#{locationId}, #{locationName}, #{nickname}, #{locationPinyin})
 	</insert>
+	
+	<select id="selectAll" resultMap="province">
+		select province_id,province_name,province_nickname,province_pinyin from location_province;
+	</select>
+	
+	<select id="provinceByID" resultMap="province">
+		select province_id,province_name,province_nickname,province_pinyin from location_province 
+		where province_id = #{provinceID};
+	</select>
 </mapper>

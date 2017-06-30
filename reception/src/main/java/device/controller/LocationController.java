@@ -19,6 +19,8 @@ import device.service.DeviceStatusService;
 import location.service.impl.LocationServiceImpl;
 import model.CleanerStatus;
 import model.ResultMap;
+import model.location.City;
+import model.location.Province;
 import utils.IPUtil;
 import vo.location.DeviceCityVo;
 
@@ -85,5 +87,23 @@ public class LocationController {
 		result.setStatus(ResultMap.STATUS_SUCCESS);
 		result.addContent("location", location);
 		return result;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/province")
+	public ResultMap allProvince(){
+		ResultMap resultMap = new ResultMap();
+		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		List<Province> provinces = locationService.getAllProvinces();
+		resultMap.addContent("provinces", provinces);
+		return resultMap;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/city")
+	public ResultMap provinceCity(Province province){
+		ResultMap resultMap = new ResultMap();
+		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		List<City> cities = locationService.getProvinceCity(province);
+		resultMap.addContent("cities", cities);
+		return resultMap;
 	}
 }
