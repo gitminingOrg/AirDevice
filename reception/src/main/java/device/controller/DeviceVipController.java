@@ -2,6 +2,7 @@ package device.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +11,15 @@ import java.util.Queue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import location.service.LocationService;
+import model.DeviceInfo;
+import model.ResultMap;
+import model.ReturnCode;
+import model.device.DeviceChip;
+import model.location.City;
+import model.location.Province;
+import model.vip.Consumer;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -24,23 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import bean.CityList;
-import bean.DeviceName;
-import bean.DeviceShareCode;
-import bean.DeviceStatus;
-import bean.UserDevice;
-import config.ReceptionConfig;
-import device.service.DeviceStatusService;
-import device.service.DeviceVipService;
-import form.BindDeviceForm;
-import location.service.LocationService;
-import model.DeviceInfo;
-import model.ResultMap;
-import model.ReturnCode;
-import model.device.DeviceChip;
-import model.location.City;
-import model.location.Province;
-import model.vip.Consumer;
 import util.ReceptionConstant;
 import util.WechatUtil;
 import utils.IPUtil;
@@ -48,6 +41,15 @@ import utils.QRCodeGenerator;
 import vip.service.ConsumerSerivce;
 import vo.location.DeviceCityVo;
 import vo.vip.ConsumerVo;
+import bean.DeviceName;
+import bean.DeviceShareCode;
+import bean.DeviceStatus;
+import bean.UserDevice;
+import bean.WechatUser;
+import config.ReceptionConfig;
+import device.service.DeviceStatusService;
+import device.service.DeviceVipService;
+import form.BindDeviceForm;
 
 @RequestMapping("/own")
 @RestController
@@ -209,6 +211,36 @@ public class DeviceVipController {
 		} else {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("授权失败");
+		}
+		return resultMap;
+	}
+	
+	@RequiresAuthentication
+	@RequestMapping("/device/users/{deviceID}")
+	public ResultMap getDeviceUsers(@PathVariable("deviceID")String deviceID){
+		ResultMap resultMap = new ResultMap();
+		List<WechatUser> wechatUsers = deviceVipService.getDeviceWechatUser(deviceID);
+		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		resultMap.addContent("wechatUsers", wechatUsers);
+		return resultMap;
+	}
+	
+	@RequiresAuthentication
+	@RequestMapping(method = RequestMethod.POST, value = "/device/user/cancel")
+	public ResultMap cancelUserPrivilege(String userID, String deviceID){
+		ResultMap resultMap = new ResultMap();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
+		String ownerID = current.getCustomerId();
+		boolean result = deviceVipService.disableUserDevice(deviceID, userID, ownerID);
+		if(result){
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		}else{
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 		}
 		return resultMap;
 	}

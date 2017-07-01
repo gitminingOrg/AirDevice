@@ -1,6 +1,7 @@
 package device.service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
@@ -17,16 +18,21 @@ import org.springframework.stereotype.Service;
 
 import util.JsonResponseConverter;
 import util.ReceptionConstant;
+import utils.HttpDeal;
 import utils.TimeUtil;
 import bean.CityList;
 import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;
 import bean.UserDevice;
+import bean.Wechat2Device;
+import bean.WechatUser;
 
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import config.ReceptionConfig;
 import dao.DeviceChipDao;
 import dao.DeviceVipDao;
 
@@ -77,7 +83,7 @@ public class DeviceVipService {
 				return ReturnCode.FAILURE;
 			}
 			//get user device auth
-			UserDevice originUserDevice = deviceVipDao.getUserDeviceRole(userID, deviceID);
+			UserDevice originUserDevice = deviceVipDao.getUserDevice(userID, deviceID);
 			if (originUserDevice != null && originUserDevice.getRole() <= deviceShareCode.getRole()) {
 				return ReturnCode.FORBIDDEN;
 			}else if(originUserDevice != null){
@@ -240,5 +246,49 @@ public class DeviceVipService {
 	
 	public boolean bind(UserDevice ud) {
 		return deviceVipDao.insertUserDevice(ud);
+	}
+	
+	public List<WechatUser> getDeviceWechatUser(String deviceID){
+		List<WechatUser> result = new ArrayList<WechatUser>();
+		//get wechat user id from db
+		List<Wechat2Device> wechat2Devices = deviceVipDao.deviceWechat(deviceID);
+		if(wechat2Devices == null || wechat2Devices.size() == 0){
+			return result;
+		}
+		//query wechat server for each user's info
+		for (Wechat2Device wechat2Device : wechat2Devices) {
+			String wechatID = wechat2Device.getWechatID();
+			WechatUser wechatUser = getWechatUserByOpenID(wechatID);
+			if(wechatUser == null || wechatUser.getOpenid() == null || wechatUser.getErrcode() != null){
+				continue;
+			}
+			wechatUser.setCustomerID(wechat2Device.getCustomerID());
+			wechatUser.setPrivilege(wechat2Device.getPrivilege());
+			result.add(wechatUser);
+		}
+		//enrich user
+		return result;
+	}
+	
+	public boolean disableUserDevice(String deviceID, String userID, String ownerID){
+		//check owner privilege
+		UserDevice userDevice = deviceVipDao.getUserDevice(ownerID, deviceID);
+		if(userDevice == null){
+			return false;
+		}
+		if(userDevice.getRole() >= 1){
+			return false;
+		}
+		//diable user
+		return deviceVipDao.disableUserDevice(userID, deviceID);
+	}
+	
+	private WechatUser getWechatUserByOpenID(String openID){
+		String accessToken = ReceptionConfig.getAccessToken();
+		String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+accessToken+"&openid="+openID+"&lang=zh_CN";
+		String result = HttpDeal.getResponse(url);
+		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+		WechatUser wechatUser = gson.fromJson(result, WechatUser.class);
+		return wechatUser;
 	}
 }

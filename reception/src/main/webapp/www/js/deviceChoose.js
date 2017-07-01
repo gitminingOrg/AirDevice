@@ -1,11 +1,15 @@
-app.controller( 'DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicModal, $http, $state, $ionicPopup) {
-
+app.controller( 'DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicModal, $http, $state, $ionicPopup, $interval) {
+	$scope.airWaiting = true
+	$scope.deviceWaiting = true
 	
 	$scope.init = function(){
+		$scope.airWaiting = true
+		$scope.deviceWaiting = true
 		$http.get("/reception/own/device").then(
 			function success(response) {
 				if(response.data.status == 1){
 					$scope.deviceList = response.data.contents.statusList;
+					$scope.deviceWaiting = false
 				}else {
 					$state.go('login');
 				}
@@ -20,7 +24,7 @@ app.controller( 'DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicMod
 				$scope.gps = response.contents.location
 				$scope.updateCityAir($scope.gps.cityPinyin);
         	}else{
-        		$scope.updateCityAir('bejing');
+        		$scope.updateCityAir('beijing');
         	}
         });
 	}
@@ -46,6 +50,7 @@ app.controller( 'DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicMod
 	    		$scope.pm25 = response.contents.cityAqi.pm25
 	    		$scope.aqiData = response.contents.cityAqi.cityAqi
 	    		$scope.location = response.contents.cityAqi.cityName
+	    		$scope.airWaiting = false
 	    	}
 	    });
     }
@@ -102,4 +107,8 @@ app.controller( 'DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicMod
 		  
 	        $scope.modal.hide();
       }
+//      $scope.$on('$destroy',function(){
+//    	  $interval.cancel($scope.timer);
+//      })      
+//      $scope.timer = $interval($scope.init, 20 * 1000)
 })

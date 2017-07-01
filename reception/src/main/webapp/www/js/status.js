@@ -1,11 +1,13 @@
-app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, Chats, $ionicPopup,$ionicModal) {
+app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ionicPopup,$ionicModal, $interval) {
   $scope.deviceID = $stateParams.deviceID;
+  $scope.waiting = true
   $scope.doRefresh = function(){
 	  $scope.init();
 	  $scope.$broadcast('scroll.refreshComplete');
-	  }
+  }
   
   $scope.init = function(){
+	  $scope.waiting = true
 	  $scope.tab = 2
 	  $http.get('/reception/own/info/name/'+$stateParams.deviceID).success(function(response){
 		  if(response.status != 1){
@@ -20,6 +22,7 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, Chats
 				$state.go('login')
 			}
 		  else if(response.status == 1){
+			  $scope.waiting = false
 			  $scope.cleanerStatus = response.contents.cleanerStatus;
 		  }
 		  $http.get('/reception/status/'+$stateParams.deviceID+'/aqi/current').success(function(response){
@@ -164,7 +167,6 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, Chats
   
   $scope.uvControl = function(){
       $scope.cleanerStatus.uv = 1- $scope.cleanerStatus.uv;
-      alert($scope.cleanerStatus.uv)
       var uvInt = 0
       if($scope.cleanerStatus.uv){
       	uvInt = 1
@@ -273,4 +275,13 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, Chats
   $scope.tabChange = function(tab){
 	  $scope.tab = tab
   }
+  
+  $scope.userManage = function(deviceID){
+	  $state.go('privilege',{deviceID : deviceID})
+  }
+//  $scope.$on('$destroy',function(){
+//	  alert('aaa')
+//	  $interval.cancel($scope.timer);
+//  })
+//  $scope.timer = $interval($scope.init, 20 * 1000)
 })

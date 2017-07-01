@@ -14,6 +14,13 @@
 		<result property="role" column="role" />
 	</resultMap>
 	
+	<resultMap type="bean.Wechat2Device" id="wechatDevice">
+		<result property="wechatID" column="consumer_wechat" />
+		<result property="deviceID" column="device_id" />
+		<result property="customerID" column="consumer_id" />
+		<result property="privilege" column="role" />
+	</resultMap>
+	
 	<resultMap type="bean.DeviceName" id="deviceName">
 		<result property="deviceID" column="device_id" />
 		<result property="name" column="name" />
@@ -69,7 +76,7 @@
 		FROM 
 		userDevice ud, deviceName dn, deviceStatus ds
 		WHERE
-		user_id = #{userID} AND ud.device_id = dn.device_id AND ud.device_id = ds.device_id
+		user_id = #{userID} AND ud.device_id = dn.device_id AND ud.device_id = ds.device_id AND ud.status = 1
 	</select>
 	
 	<select id="selectRecentCleanerStatus" resultMap="cleanerStatus">
@@ -128,7 +135,7 @@
 	<insert id="insertDeviceName" parameterType="bean.DeviceName">
 		INSERT INTO
 		deviceName(device_id, name, phone, province_id, city_id, address)
-		VALUES(#{deviceID}, #{name}, #{phone}, #{provinceID}, #{cityID} #{address})
+		VALUES(#{deviceID}, #{name}, #{phone}, #{provinceID}, #{cityID}, #{address})
 	</insert>
 	
 	<update id="updateDeviceName" parameterType="bean.DeviceName">
@@ -186,4 +193,17 @@
 		WHERE
 		token = #{token} AND status = 1
 	</update>
+	
+	<select id="deviceWechat" resultMap="wechatDevice">
+		SELECT
+		ci.consumer_wechat AS consumer_wechat, ud.device_id AS device_id, ci.consumer_id AS consumer_id, ud.role AS role
+		FROM 
+		consumer_info ci, userDevice ud
+		WHERE
+		ud.device_id = #{deviceID}
+		AND 
+		ud.user_id = ci.consumer_id
+		AND 
+		ud.status = 1
+	</select>
 </mapper>

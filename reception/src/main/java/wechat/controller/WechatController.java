@@ -1,6 +1,5 @@
 package wechat.controller;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -10,22 +9,29 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.ResultMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONObject;
-
-import config.ReceptionConfig;
-import config.WechatConfig;
-import model.ResultMap;
 import util.Configuration;
 import util.WechatUtil;
 import utils.Encryption;
+import utils.HttpDeal;
+import bean.WechatUser;
+
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import config.ReceptionConfig;
+import config.WechatConfig;
 
 @RestController
 public class WechatController {
@@ -133,8 +139,26 @@ public class WechatController {
 				return result;
 			}
 		}
-		result.setStatus(ResultMap.STATUS_SUCCESS);
-		result.addContent("openId", "123");
 		return result;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/wechat/info/{openId}")
+	public ResultMap getWechatUserInfo(@PathVariable("openId")String openId){
+		ResultMap resultMap = new ResultMap();
+		try{
+			String accessToken = ReceptionConfig.getAccessToken();
+			String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+accessToken+"&openid="+openId+"&lang=zh_CN";
+			String result = HttpDeal.getResponse(url);
+			Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+			WechatUser wechatUser = gson.fromJson(result, WechatUser.class);
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.addContent("wechatUser", wechatUser);
+		}catch(Exception e){
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			logger.error("get wechat user info failed",e);
+		}
+		
+		return resultMap;
+		
 	}
 }

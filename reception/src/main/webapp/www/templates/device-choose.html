@@ -5,11 +5,14 @@
 	 <button class="button button-calm" style="font-size:12px" ng-click="modal.show()"><i class="icon ion-location"></i> {{location}} <i class="icon ion-ios-arrow-down"></i></button>
 	 <img alt="" src="img/logo.png" height="40" width="100" style="float:right;margin-top:2px;margin-right:10px">
 	 <p style="color:white;text-align:center">28 June</p>
-	 <p style="color:white;text-align:center;margin-top:0 px;font-size:36px; font-wight: bold">{{aqiData}} <span style="font-size:14px">AQI</span></p>
+	 <center><ion-spinner ng-if="airWaiting || deviceWaiting" icon="bubbles" class="spinner-light"></ion-spinner></center>
+	 <p ng-if="!(airWaiting || deviceWaiting)" style="color:white;text-align:center;margin-top:0 px;font-size:36px; font-wight: bold">{{aqiData}} <span style="font-size:14px">AQI</span></p>
 	 <p style="color:white;text-align:center">pm2.5: {{ pm25 }} ug/m<sup>3</sup></p>
-	 <p style="color:white;text-align:center"><label class="button button-energized button-small">{{ airQuality }}</label></p>
+	 <p style="color:white;text-align:center">
+	 <label ng-class="{'button button-balanced button-small' : airQuality == '优' , 'button button-energized button-small' : airQuality == '良' , 'button button-assertive button-small' : (airQuality != '优' && airQuality != '良')}">{{ airQuality }}</label>
+	 </p>
 	 </div>
-     <div ng-repeat="device in deviceList" class="card">
+     <div ng-if="!deviceWaiting" ng-repeat="device in deviceList" class="card">
  		<div ng-if="device.cleanerStatus">
 		    <div class="item item-divider">
 		        <a href="" style="float:right;font-size:10px" ng-click="showConfirm(device.deviceID)">该设备未正常绑定？</a>

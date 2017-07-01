@@ -3,9 +3,10 @@
   <div style="background: url(img/background.png); background-size: 100% 180px; height: 180px">
 	 <a class="button button-calm" href="#/device/name/{{deviceID}}"> {{deviceName.name}} <i class="icon ion-settings"></i></a>
 	 <img alt="" src="img/logo.png" height="40" width="100" style="float:right;margin-top:2px;margin-right:10px">
-	 <p style="color:white;text-align:center;margin-top:20px;font-size:40px; font-wight: bold">{{ cleanerStatus.pm25 }} </p>
+	 <center><ion-spinner ng-if="waiting" icon="bubbles" class="spinner-light"></ion-spinner></center>
+	 <p ng-if="!waiting" style="color:white;text-align:center;margin-top:20px;font-size:40px; font-wight: bold">{{ cleanerStatus.pm25 }} </p>
 	 <p style="color:white;text-align:center;margin-top:20px;font-wight: bold">ug/m<sup>3</sup></p>
-	 
+	 <center><a style="color:white;text-align:center" href="#/home/device">返回设备列表</a></center>
    </div>
      <div class="card">
 	     <!-- <div class="item item-divider" style="font-size:12px"><i class="icon ion-android-home"></i> 室内环境</div> -->
@@ -29,10 +30,10 @@
 	    <div ng-if="tab == 1" id="share" class="padding">
 	    <div class="row">
 		  <div class="col"><button ng-click="deviceShare(1)" class="button button-outline button-calm">控制分享</button></div>
-		  <div class="col"><button ng-click="deviceShare(0)" class="button button-outline button-calm">数据分享</button></div>
+		  <div class="col"><button ng-click="deviceShare(2)" class="button button-outline button-calm">数据分享</button></div>
 		  <div class="col"><button ng-click="" class="button button-outline button-calm">分享图片</button></div>
 		</div>
-		<button class="button button-block button-calm" ng-click="start(1)">权限管理</button>
+		<button class="button button-block button-calm" ng-click="userManage(deviceID)">权限管理</button>
 	    </div>
 	    
 	    <div ng-if="tab == 2" id="velocity" class="padding">
@@ -89,8 +90,8 @@
 			</div>
 	    </div>
 	    
-	    </div>
-    </div>
+	</div>
+    
      
 	<div class="card">
 		<div style="height:250px" id="chart1"></div>

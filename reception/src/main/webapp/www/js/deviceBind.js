@@ -71,9 +71,9 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 		if(province.locationPinyin == 'beijing' || province.locationPinyin == 'tianjin' || province.locationPinyin == 'shanghai' || province.locationPinyin == 'chongqin'){
 			cityPinyin = province.locationPinyin
 		}
-		$http.post('/reception/status/city/config/'+deviceName.deviceID+'/'+ cityPinyin).success(function(response){
+		$http.post('/reception/status/city/config/'+$stateParams.serial+'/'+ cityPinyin).success(function(response){
 			if(response.status != 1){
-				$scope.showFailure();
+				alert('城市绑定失败')
 			}
 		})
 		
@@ -89,7 +89,7 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 	    		$scope.cities = response.contents.cities;
 	    		$scope.selectedCity = $scope.cities[0]
 	    	}else{
-	    		$scope.showFailure();
+	    		
 	    	}
 	    });
     }

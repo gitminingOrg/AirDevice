@@ -11,6 +11,7 @@ import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;
 import bean.UserDevice;
+import bean.Wechat2Device;
 
 @Repository
 public class DeviceVipDao extends BaseDaoImpl{
@@ -50,17 +51,26 @@ public class DeviceVipDao extends BaseDaoImpl{
 		return sqlSession.selectList("aqiData.selectAllCities");
 	}
 	
-	public UserDevice getUserDeviceRole(String userID, String deviceID){
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("userID", userID);
-		params.put("deviceID", deviceID);
-		return sqlSession.selectOne("userVip.selectUserDeviceRole", params);
-	}
-	
 	public boolean disableUserDevice(String userID, String deviceID){
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("userID", userID);
 		params.put("deviceID", deviceID);
 		return sqlSession.update("userVip.disableUserDevice", params) >= 0;
+	}
+	
+	public List<Wechat2Device> deviceWechat(String deviceID){
+		return sqlSession.selectList("userVip.deviceWechat",deviceID);
+	}
+	
+	public UserDevice getUserDevice(String userID, String deviceID){
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("userID", userID);
+		params.put("deviceID", deviceID);
+		List<UserDevice> userDevices = sqlSession.selectList("userVip.selectUserDeviceRole",params);
+		if(userDevices == null || userDevices.size() == 0){
+			return null;
+		}else{
+			return userDevices.get(0);
+		}
 	}
 }

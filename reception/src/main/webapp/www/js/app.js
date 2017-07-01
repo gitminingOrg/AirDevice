@@ -58,7 +58,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
   .state('home', {
     url: '/home',
     abstract: true,
-    templateUrl: 'templates/home.html'
+    templateUrl: 'templates/home.html',
+    reload: true,
+    cache: false 
   })
   .state('home.device', {
     url: '/device',
@@ -132,6 +134,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
 	    url: '/device/auth/:token',
 	    templateUrl: 'templates/auth-device.html',
 	    controller: 'DeviceAuthCtrl',
+        reload: true,
+        cache: false         
+  })
+  .state('privilege', {
+	    url: '/device/privilege/:deviceID',
+	    templateUrl: 'templates/privilege.html',
+	    controller: 'PrivilegeCtrl',
         reload: true,
         cache: false         
   });

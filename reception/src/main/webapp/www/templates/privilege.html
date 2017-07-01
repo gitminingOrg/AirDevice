@@ -1,0 +1,23 @@
+﻿<ion-content>
+
+      <!-- The list directive is great, but be sure to also checkout the collection repeat directive when scrolling through large lists -->
+  
+  <ion-list>
+    <ion-item ng-repeat="item in items" 
+              item="item"
+              class="item item-avatar item-remove-animate">
+      <img ng-src="{{ item.headimgurl }}">
+      <h2> {{item.nickname}}</h2>
+      <p ng-if="item.privilege == 1">该用户具有控制权限</p>
+      <p ng-if="item.privilege == 0">该用户具有只读权限</p>
+      <ion-option-button class="button-assertive"
+                         ng-click="remove(item)">
+        删除
+      </ion-option-button>
+    </ion-item>
+  </ion-list>
+  
+  <div class="padding">
+     <a href="#/tab/{{deviceID}}/chats" class="button button-block button-royal">返回</a>
+  </div>
+</ion-content>

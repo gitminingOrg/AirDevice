@@ -8,7 +8,7 @@ app.controller( 'DeviceAuthCtrl', function($scope, $http, $state, $stateParams, 
         params   : { token : $stateParams.token , code : code} 
     }).success(function(response){
 		if(response.status == 0){
-			alert("诶哟卧槽。。。我这没取到儿openID嗬")
+			console.log("诶哟卧槽。。。我这没取到儿openID嗬")
 		}else{
 			if(typeof(response.contents.redirect_url) !=undefined && response.contents.openId == null){
 				location.href = response.contents.redirect_url
