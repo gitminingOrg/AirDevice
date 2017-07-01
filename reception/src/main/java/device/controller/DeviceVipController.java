@@ -2,7 +2,6 @@ package device.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,15 +10,6 @@ import java.util.Queue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import location.service.LocationService;
-import model.DeviceInfo;
-import model.ResultMap;
-import model.ReturnCode;
-import model.device.DeviceChip;
-import model.location.City;
-import model.location.Province;
-import model.vip.Consumer;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -34,13 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import util.ReceptionConstant;
-import util.WechatUtil;
-import utils.IPUtil;
-import utils.QRCodeGenerator;
-import vip.service.ConsumerSerivce;
-import vo.location.DeviceCityVo;
-import vo.vip.ConsumerVo;
 import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;
@@ -50,6 +33,21 @@ import config.ReceptionConfig;
 import device.service.DeviceStatusService;
 import device.service.DeviceVipService;
 import form.BindDeviceForm;
+import location.service.LocationService;
+import model.DeviceInfo;
+import model.ResultMap;
+import model.ReturnCode;
+import model.device.DeviceChip;
+import model.location.City;
+import model.location.Province;
+import model.vip.Consumer;
+import util.ReceptionConstant;
+import util.WechatUtil;
+import utils.IPUtil;
+import utils.QRCodeGenerator;
+import vip.service.ConsumerSerivce;
+import vo.location.DeviceCityVo;
+import vo.vip.ConsumerVo;
 
 @RequestMapping("/own")
 @RestController
@@ -63,7 +61,7 @@ public class DeviceVipController {
 
 	@Autowired
 	private ConsumerSerivce consumerSerivce;
-	
+
 	@Autowired
 	private DeviceStatusService deviceStatusService;
 
@@ -93,8 +91,8 @@ public class DeviceVipController {
 			}
 			UserDevice ud = new UserDevice(vo.getCustomerId(), form.getSerial());
 			deviceVipService.bind(ud);
-			deviceVipService.insertDeviceName(
-					new DeviceName(form.getSerial(), form.getAlias(), form.getMobile(),form.getProvinceID(), form.getCityID(), form.getLocation(), 1));
+			deviceVipService.insertDeviceName(new DeviceName(form.getSerial(), form.getAlias(), form.getMobile(),
+					form.getProvinceID(), form.getCityID(), form.getLocation(), 1));
 			waiting.offer(form.getSerial());
 			result.setStatus(ResultMap.STATUS_SUCCESS);
 		} else {
@@ -104,33 +102,44 @@ public class DeviceVipController {
 		}
 		return result;
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value="/register/available")
+
+	@RequestMapping(method = RequestMethod.GET, value = "/register/available")
 	public ResultMap available(String serial) {
 		ResultMap result = new ResultMap();
-		if(serial.equals(waiting.peek())) {
+		if (serial.equals(waiting.peek())) {
 			result.setStatus(ResultMap.STATUS_SUCCESS);
 		}
 		return result;
 	}
 
-	@RequiresAuthentication
+	@RequestMapping(method = RequestMethod.GET, value = "/register/pop")
+	public ResultMap pop() {
+		ResultMap result = new ResultMap();
+		result.setStatus(ResultMap.STATUS_SUCCESS);
+		result.setInfo("pop top: " + waiting.poll() + ", remaining size: " + waiting.size() + ", current peek: "
+				+ waiting.peek());
+		return result;
+	}
+
 	@RequestMapping(method = RequestMethod.GET, value = "/register/complete")
 	public ResultMap complete(String serial, HttpServletRequest request) {
 		ResultMap result = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo vo = (ConsumerVo) subject.getPrincipal();
-		if(StringUtils.isEmpty(vo)) {
+		if (StringUtils.isEmpty(vo)) {
 			result.setStatus(ResultMap.STATUS_FAILURE);
 			result.setInfo("The current user is not authenticated.");
+			LOG.error(result.getInfo());
 			return result;
 		}
-		if(StringUtils.isEmpty(serial) || !serial.equals(waiting.peek())) {
+		if (StringUtils.isEmpty(serial) || !serial.equals(waiting.peek())) {
 			result.setStatus(ResultMap.STATUS_FAILURE);
-			result.setInfo(StringUtils.isEmpty(serial) ? "The device serial could not be empty." : "The serial code: " + serial + "does not match.");
+			result.setInfo(StringUtils.isEmpty(serial) ? "The device serial could not be empty."
+					: "The serial code: " + serial + " does not match.");
+			LOG.error(result.getInfo());
 			return result;
 		}
-		
+
 		String ip = IPUtil.tell(request);
 		LOG.info("mobile request ip: " + ip);
 		String chipId = deviceVipService.getNewChip(ip);
@@ -175,8 +184,8 @@ public class DeviceVipController {
 
 	@RequiresAuthentication
 	@RequestMapping("/share/{deviceID}/{role}/{length}")
-	public ResultMap shareDevice(@PathVariable("deviceID") String deviceID, @PathVariable("role") int role,@PathVariable("length") int length,
-			HttpServletResponse response) {
+	public ResultMap shareDevice(@PathVariable("deviceID") String deviceID, @PathVariable("role") int role,
+			@PathVariable("length") int length, HttpServletResponse response) {
 		ResultMap resultMap = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
@@ -187,8 +196,7 @@ public class DeviceVipController {
 			String url = "http://" + ReceptionConfig.getValue("domain_url") + "/reception/www/index.html#/device/auth/"
 					+ deviceShareCode.getToken();
 			int imgLength = length;
-			QRCodeGenerator.createQRCode(url, imgLength, imgLength,
-					response.getOutputStream());
+			QRCodeGenerator.createQRCode(url, imgLength, imgLength, response.getOutputStream());
 		} catch (IOException e) {
 			LOG.error("write QR code failed", e);
 		}
@@ -214,37 +222,37 @@ public class DeviceVipController {
 		}
 		return resultMap;
 	}
-	
+
 	@RequiresAuthentication
 	@RequestMapping("/device/users/{deviceID}")
-	public ResultMap getDeviceUsers(@PathVariable("deviceID")String deviceID){
+	public ResultMap getDeviceUsers(@PathVariable("deviceID") String deviceID) {
 		ResultMap resultMap = new ResultMap();
 		List<WechatUser> wechatUsers = deviceVipService.getDeviceWechatUser(deviceID);
 		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 		resultMap.addContent("wechatUsers", wechatUsers);
 		return resultMap;
 	}
-	
+
 	@RequiresAuthentication
 	@RequestMapping(method = RequestMethod.POST, value = "/device/user/cancel")
-	public ResultMap cancelUserPrivilege(String userID, String deviceID){
+	public ResultMap cancelUserPrivilege(String userID, String deviceID) {
 		ResultMap resultMap = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
-		if(current == null){
+		if (current == null) {
 			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
 			return resultMap;
 		}
 		String ownerID = current.getCustomerId();
 		boolean result = deviceVipService.disableUserDevice(deviceID, userID, ownerID);
-		if(result){
+		if (result) {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
-		}else{
+		} else {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 		}
 		return resultMap;
 	}
-	
+
 	@RequiresAuthentication
 	@RequestMapping("/wx/authorize")
 	public ResultMap wxAuthorizeUser(String openId, String token) {
@@ -360,8 +368,9 @@ public class DeviceVipController {
 		resultMap.addContent(ReceptionConstant.CITY_LIST, list);
 		return resultMap;
 	}
+
 	@RequestMapping("test")
-	public String test(){
+	public String test() {
 		deviceVipService.getNewChip("");
 		return "1";
 	}
