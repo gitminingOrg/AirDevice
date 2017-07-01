@@ -342,6 +342,23 @@ public class DeviceVipController {
 		}
 		return resultMap;
 	}
+	
+	@RequiresAuthentication
+	@RequestMapping("/user/role/{deviceID}")
+	public ResultMap getUserRole(@PathVariable("deviceID")String deviceID){
+		ResultMap resultMap = new ResultMap();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
+		String userID = current.getCustomerId();
+		int role = deviceVipService.getUserDeviceRole(userID, deviceID);
+		resultMap.addContent("role", role);
+		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		return resultMap;
+	}
 
 	@RequestMapping("/all/cities")
 	public ResultMap getAllCities() {

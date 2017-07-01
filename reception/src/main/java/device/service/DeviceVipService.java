@@ -248,6 +248,15 @@ public class DeviceVipService {
 		return deviceVipDao.insertUserDevice(ud);
 	}
 	
+	public int getUserDeviceRole(String userID, String deviceID){
+		UserDevice userDevice = deviceVipDao.getUserDevice(userID, deviceID);
+		if(userDevice == null){
+			return 3;
+		}else{
+			return userDevice.getRole();
+		}
+	}
+	
 	public List<WechatUser> getDeviceWechatUser(String deviceID){
 		List<WechatUser> result = new ArrayList<WechatUser>();
 		//get wechat user id from db

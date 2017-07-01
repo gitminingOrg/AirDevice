@@ -1,4 +1,4 @@
-app.controller( 'DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicModal, $http, $state, $ionicPopup, $interval) {
+app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanner, $ionicModal, $http, $state, $ionicPopup, $interval) {
 	$scope.airWaiting = true
 	$scope.deviceWaiting = true
 	
@@ -107,8 +107,9 @@ app.controller( 'DeviceCtrl', function($scope, $cordovaBarcodeScanner, $ionicMod
 		  
 	        $scope.modal.hide();
       }
-//      $scope.$on('$destroy',function(){
-//    	  $interval.cancel($scope.timer);
-//      })      
-//      $scope.timer = $interval($scope.init, 20 * 1000)
+      var timer = $interval($scope.init, 20 * 1000)
+      $scope.$on('$destroy',function(){
+    	  alert('aaa')
+    	  $interval.cancel(timer);
+      })
 })
