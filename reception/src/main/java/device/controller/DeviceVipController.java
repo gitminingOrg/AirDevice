@@ -164,7 +164,31 @@ public class DeviceVipController {
 						+ URLEncoder.encode("http://" + ReceptionConfig.getValue("domain_url")
 								+ ReceptionConfig.getValue("mine_device"), "utf-8")
 						+ "&response_type=code&scope=snsapi_base&state=view#wechat_redirect";
-				response.sendRedirect(targetUrl);
+				resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+				resultMap.addContent("redirect_url", targetUrl);
+				return resultMap;
+			}
+			if (WechatUtil.isWechat(request) && !StringUtils.isEmpty(code)) {
+				String openId = WechatUtil.queryOauthOpenId(ReceptionConfig.getValue("wechat_appid"),
+						ReceptionConfig.getValue("wechat_secret"), code);
+				if (!StringUtils.isEmpty(openId)) {
+					try {
+						subject.login(new UsernamePasswordToken(openId, ""));
+						current = (ConsumerVo) subject.getPrincipal();
+						String userID = current.getCustomerId();
+						List<DeviceStatus> deviceStatus = deviceVipService.getUserCleaner(userID);
+						if (deviceStatus == null) {
+							resultMap.setStatus(ResultMap.STATUS_FAILURE);
+							resultMap.setInfo(ResultMap.EMPTY_INFO);
+						} else {
+							resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+							resultMap.addContent(ReceptionConstant.STATUS_LIST, deviceStatus);
+						}
+						return resultMap;
+					} catch (Exception e) {
+						LOG.error("User " + openId + " login failed.");
+					}
+				}
 			}
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("No user authenticated, please login first.");
@@ -350,14 +374,14 @@ public class DeviceVipController {
 		}
 		return resultMap;
 	}
-	
+
 	@RequiresAuthentication
 	@RequestMapping("/user/role/{deviceID}")
-	public ResultMap getUserRole(@PathVariable("deviceID")String deviceID){
+	public ResultMap getUserRole(@PathVariable("deviceID") String deviceID) {
 		ResultMap resultMap = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
-		if(current == null){
+		if (current == null) {
 			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
 			return resultMap;
 		}
