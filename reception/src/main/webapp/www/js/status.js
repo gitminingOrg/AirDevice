@@ -1,6 +1,7 @@
 app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ionicPopup,$ionicModal, $interval) {
   $scope.deviceID = $stateParams.deviceID;
   $scope.waiting = true
+  $scope.role = 3
   $scope.doRefresh = function(){
 	  $scope.init();
 	  $scope.$broadcast('scroll.refreshComplete');
@@ -9,6 +10,12 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
   $scope.init = function(){
 	  $scope.waiting = true
 	  $scope.tab = 2
+	  $http.get('/reception/own/user/role/'+$stateParams.deviceID).success(function(response){
+		  if(response.status == 1){
+			  $scope.role = response.contents.role
+		  }
+	  })
+	  
 	  $http.get('/reception/own/info/name/'+$stateParams.deviceID).success(function(response){
 		  if(response.status != 1){
 				$state.go('login')
@@ -279,9 +286,10 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
   $scope.userManage = function(deviceID){
 	  $state.go('privilege',{deviceID : deviceID})
   }
-//  $scope.$on('$destroy',function(){
-//	  alert('aaa')
-//	  $interval.cancel($scope.timer);
-//  })
-//  $scope.timer = $interval($scope.init, 20 * 1000)
+  var timer = $interval($scope.init, 20 * 1000)
+  $scope.$on('$destroy',function(){
+	  alert('aaa')
+	  $interval.cancel(timer);
+  })
+  
 })
