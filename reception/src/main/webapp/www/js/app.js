@@ -143,6 +143,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
 	    controller: 'PrivilegeCtrl',
         reload: true,
         cache: false         
+  })
+  .state('devicePair', {
+	    url: '/device/pair/:deviceID',
+	    templateUrl: 'templates/device-pair.html',
+	    controller: 'DevicePairCtrl',
+        reload: true,
+        cache: false         
   });
 
   // if none of the above states are matched, use this as the fallback

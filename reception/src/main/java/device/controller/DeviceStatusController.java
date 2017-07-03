@@ -263,7 +263,6 @@ public class DeviceStatusController {
 		return resultMap;
 	}
 	
-	@RequiresAuthentication
 	@RequestMapping(value= "/city/config/{deviceID}/{city}", method= RequestMethod.POST)
 	public ResultMap configDeviceCity(@PathVariable("deviceID")String deviceID, @PathVariable("city")String city){
 		ResultMap resultMap = new ResultMap();

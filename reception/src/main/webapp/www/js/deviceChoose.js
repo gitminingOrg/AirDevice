@@ -1,15 +1,27 @@
 app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanner, $ionicModal, $http, $state, $ionicPopup, $interval) {
 	$scope.airWaiting = true
 	$scope.deviceWaiting = true
+	var code = GetQueryString("code")
+	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 	
 	$scope.init = function(){
 		$scope.airWaiting = true
 		$scope.deviceWaiting = true
-		$http.get("/reception/own/device").then(
+		$http({  
+	        url    : '/reception/own/device',  
+	        method : "get",  
+	        params   : {code : code} 
+	    }).then(
 			function success(response) {
 				if(response.data.status == 1){
-					$scope.deviceList = response.data.contents.statusList;
-					$scope.deviceWaiting = false
+					if(typeof(response.data.contents.redirect_url) != undefined && response.data.contents.redirect_url != null){
+						location.href = response.data.contents.redirect_url
+					}else{
+						$scope.deviceList = response.data.contents.statusList;
+						$scope.deviceWaiting = false
+						var date = new Date();
+						$scope.today = months[date.getMonth()] +" " + date.getDate()
+					}
 				}else {
 					$state.go('login');
 				}
@@ -18,9 +30,7 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
 		    });
 		
     	$http.get("/reception/location/phone").success(function(response){
-    		if(response.status == 2){
-				$state.go('login')
-			}else if(response.status == 1){	
+    		if(response.status == 1){	
 				$scope.gps = response.contents.location
 				$scope.updateCityAir($scope.gps.cityPinyin);
         	}else{
@@ -108,8 +118,7 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
 	        $scope.modal.hide();
       }
       var timer = $interval($scope.init, 20 * 1000)
-      $scope.$on('$destroy',function(){
-    	  alert('aaa')
+      $scope.$on('$ionicView.beforeLeave',function(){
     	  $interval.cancel(timer);
       })
 })

@@ -65,7 +65,7 @@ public class DeviceVipController {
 	@Autowired
 	private DeviceStatusService deviceStatusService;
 
-	Queue<String> waiting = new LinkedList<>();
+	//Queue<String> waiting = new LinkedList<>();
 
 	public void setDeviceVipService(DeviceVipService deviceVipService) {
 		this.deviceVipService = deviceVipService;
@@ -93,7 +93,7 @@ public class DeviceVipController {
 			deviceVipService.bind(ud);
 			deviceVipService.insertDeviceName(new DeviceName(form.getSerial(), form.getAlias(), form.getMobile(),
 					form.getProvinceID(), form.getCityID(), form.getLocation(), 1));
-			waiting.offer(form.getSerial());
+			//waiting.offer(form.getSerial());
 			result.setStatus(ResultMap.STATUS_SUCCESS);
 		} else {
 			result.setStatus(ResultMap.STATUS_FAILURE);
@@ -106,9 +106,9 @@ public class DeviceVipController {
 	@RequestMapping(method = RequestMethod.GET, value = "/register/available")
 	public ResultMap available(String serial) {
 		ResultMap result = new ResultMap();
-		if (serial.equals(waiting.peek())) {
+		//if (serial.equals(waiting.peek())) {
 			result.setStatus(ResultMap.STATUS_SUCCESS);
-		}
+		//}
 		return result;
 	}
 
@@ -116,8 +116,7 @@ public class DeviceVipController {
 	public ResultMap pop() {
 		ResultMap result = new ResultMap();
 		result.setStatus(ResultMap.STATUS_SUCCESS);
-		result.setInfo("pop top: " + waiting.poll() + ", remaining size: " + waiting.size() + ", current peek: "
-				+ waiting.peek());
+		//result.setInfo("pop top: " + waiting.poll() + ", remaining size: " + waiting.size() + ", current peek: "+ waiting.peek());
 		return result;
 	}
 
@@ -132,7 +131,7 @@ public class DeviceVipController {
 			LOG.error(result.getInfo());
 			return result;
 		}
-		if (StringUtils.isEmpty(serial) || !serial.equals(waiting.peek())) {
+		if (StringUtils.isEmpty(serial)) {
 			result.setStatus(ResultMap.STATUS_FAILURE);
 			result.setInfo(StringUtils.isEmpty(serial) ? "The device serial could not be empty."
 					: "The serial code: " + serial + " does not match.");
@@ -143,9 +142,14 @@ public class DeviceVipController {
 		String ip = IPUtil.tell(request);
 		LOG.info("mobile request ip: " + ip);
 		String chipId = deviceVipService.getNewChip(ip);
+		if(chipId == null){
+			result.setStatus(ResultMap.STATUS_FAILURE);
+			result.setInfo("当前局域网下无可绑定的设备");
+			return result;
+		}
 		DeviceChip dc = new DeviceChip(serial, chipId);
 		deviceStatusService.bindDevice2Chip(dc);
-		waiting.poll();
+		//waiting.poll();
 		result.setStatus(ResultMap.STATUS_SUCCESS);
 		return result;
 	}
@@ -206,7 +210,6 @@ public class DeviceVipController {
 		return resultMap;
 	}
 
-	@RequiresAuthentication
 	@RequestMapping("/share/{deviceID}/{role}/{length}")
 	public ResultMap shareDevice(@PathVariable("deviceID") String deviceID, @PathVariable("role") int role,
 			@PathVariable("length") int length, HttpServletResponse response) {
@@ -277,7 +280,6 @@ public class DeviceVipController {
 		return resultMap;
 	}
 
-	@RequiresAuthentication
 	@RequestMapping("/wx/authorize")
 	public ResultMap wxAuthorizeUser(String openId, String token) {
 		ResultMap resultMap = new ResultMap();

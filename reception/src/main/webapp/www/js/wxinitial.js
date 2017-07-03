@@ -1,19 +1,22 @@
 !function(){
   function configWiFi(){
 	var serial = GetQueryString("serial")
-	alert("serial : " + serial)
     wx.invoke('configWXDeviceWiFi', {}, function(res){
       if(res.err_msg == 'configWXDeviceWiFi:ok'){
-        alert('配置成功!');
-        $.ajax({
-            type: "GET",
-            url: "/reception/own/register/complete",
-            data: { serial : serial},
-            dataType: "json",
-            success: function(data){
-            }
-        });
-        window.location.href = "/reception/www/index.html#/home/device"
+        
+//        $.ajax({
+//            type: "GET",
+//            url: "/reception/own/register/complete",
+//            data: { serial : serial},
+//            dataType: "json",
+//            success: function(data){
+//            	if(data.status == 1){
+//            		alert('配置成功!');
+//            	}
+//            }
+//        });
+//        window.location.href = "/reception/www/index.html#/home/device"
+    	  window.location.href = "/reception/www/index.html#/device/pair/"+serial
       } else {
         alert('配置失败！请重试');
         window.location.href = "/reception/www/index.html#/home/device"
@@ -27,6 +30,9 @@
     });
   });
 }();
+
+
+
 
 function GetQueryString(name)
 {

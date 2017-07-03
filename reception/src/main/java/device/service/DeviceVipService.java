@@ -1,5 +1,6 @@
 package device.service;
 
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -162,6 +163,10 @@ public class DeviceVipService {
 	
 	public ReturnCode insertDeviceName(DeviceName deviceName){
 		//check privilege
+		DeviceName origin = deviceVipDao.getDeviceName(deviceName.getDeviceID());
+		if(origin != null){
+			return ReturnCode.SUCCESS;
+		}
 		//update deviceName
 		boolean result = deviceVipDao.insertDeviceName(deviceName);
 		if (result) {
@@ -245,6 +250,10 @@ public class DeviceVipService {
 	}
 	
 	public boolean bind(UserDevice ud) {
+		UserDevice userDevice =deviceVipDao.getUserDevice(ud.getUserID(), ud.getDeviceID());
+		if(userDevice != null){
+			return true;
+		}
 		return deviceVipDao.insertUserDevice(ud);
 	}
 	
@@ -296,8 +305,14 @@ public class DeviceVipService {
 		String accessToken = ReceptionConfig.getAccessToken();
 		String url = "https://api.weixin.qq.com/cgi-bin/user/info?access_token="+accessToken+"&openid="+openID+"&lang=zh_CN";
 		String result = HttpDeal.getResponse(url);
-		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-		WechatUser wechatUser = gson.fromJson(result, WechatUser.class);
+		String json = result;
+		try {
+			json = new String(result.getBytes("ISO-8859-1"), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			LOG.error("charset transfer error");
+		}
+		Gson gson = new GsonBuilder().create();
+		WechatUser wechatUser = gson.fromJson(json, WechatUser.class);
 		return wechatUser;
 	}
 }

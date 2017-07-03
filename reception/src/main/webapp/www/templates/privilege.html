@@ -8,8 +8,9 @@
               class="item item-avatar item-remove-animate">
       <img ng-src="{{ item.headimgurl }}">
       <h2> {{item.nickname}}</h2>
+      <p ng-if="item.privilege == 0">该用户设备所有者</p>
       <p ng-if="item.privilege == 1">该用户具有控制权限</p>
-      <p ng-if="item.privilege == 0">该用户具有只读权限</p>
+      <p ng-if="item.privilege == 2">该用户具有只读权限</p>
       <ion-option-button class="button-assertive"
                          ng-click="remove(item)">
         删除

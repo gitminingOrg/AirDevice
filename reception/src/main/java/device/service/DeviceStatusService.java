@@ -19,8 +19,10 @@ import bean.CityAqi;
 import bean.DeviceAir;
 import bean.DeviceCity;
 import bean.UserAction;
+import bean.UserDevice;
 import dao.DeviceChipDao;
 import dao.DeviceStatusDao;
+import dao.DeviceVipDao;
 import model.CleanerStatus;
 import model.ResultMap;
 import model.ReturnCode;
@@ -45,6 +47,9 @@ public class DeviceStatusService {
 	
 	@Autowired
 	private DeviceChipDao deviceChipDao;
+	
+	@Autowired
+	private DeviceVipDao deviceVipDao;
 	
 	public void setExecutor(ThreadPoolTaskExecutor executor) {
 		this.executor = executor;
@@ -89,6 +94,10 @@ public class DeviceStatusService {
 	 * @return
 	 */
 	public ReturnCode deviceControl(final int data, final String deviceID, final String userID, final String command){
+		UserDevice userDevice = deviceVipDao.getUserDevice(userID, deviceID);
+		if(userDevice == null || userDevice.getRole() > 1){
+			return ReturnCode.FORBIDDEN;
+		}
 		String urlPath = getMappingUrl(command);
 		if (urlPath == null) {
 			LOG.warn("unknown command type");

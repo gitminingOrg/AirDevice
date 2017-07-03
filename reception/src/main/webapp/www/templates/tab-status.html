@@ -1,67 +1,65 @@
 ﻿  <ion-content style="background-color:#FAFAFA">
   <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
   <div style="background: url(img/background.png); background-size: 100% 180px; height: 180px">
-	 <a ng-if="role <= 1" class="button button-calm" href="#/device/name/{{deviceID}}"> {{deviceName.name}} <i class="icon ion-settings"></i></a>
-	 <a ng-if="role == 2" class="button button-calm" href=""> {{deviceName.name}} <i class="icon ion-settings"></i></a>
-	 <img alt="" src="img/logo.png" height="40" width="100" style="float:right;margin-top:2px;margin-right:10px">
-	 <center><ion-spinner ng-if="waiting" icon="bubbles" class="spinner-light"></ion-spinner></center>
-	 <p ng-if="!waiting" style="color:white;text-align:center;margin-top:20px;font-size:40px; font-wight: bold">{{ cleanerStatus.pm25 }} </p>
+	 <a class="button button-calm" href="#/device/name/{{deviceID}}"> {{deviceName.name}} <i class="icon ion-settings"></i></a>
+	 <img alt="" src="img/logo.png" height="40" width="100" style="float:right;margin-top:2px;margin-right:5px">
+	 <p style="color:white;text-align:center;margin-top:20px;font-size:40px; font-wight: bold">{{ cleanerStatus.pm25 }} </p>
 	 <p style="color:white;text-align:center;margin-top:20px;font-wight: bold">ug/m<sup>3</sup></p>
 	 <center><a style="color:white;text-align:center" href="#/home/device">返回设备列表</a></center>
    </div>
      <div class="card">
 	     <!-- <div class="item item-divider" style="font-size:12px"><i class="icon ion-android-home"></i> 室内环境</div> -->
 	     <div class="row">
-	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-speedometer assertive"></i><br/>温度<br/> {{ cleanerStatus.temperature }} <sup>o</sup>C</div>
-	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-waterdrop calm"></i><br/>湿度<br/> {{ cleanerStatus.humidity }}%</div>
-	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-erlenmeyer-flask dark"></i><br/>甲醛<br/> {{ cleanerStatus.hcho }}</div>
-	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-leaf balanced"></i><br/>二氧化碳<br/> {{ cleanerStatus.co2 }}</div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-speedometer assertive"></i><br/>温度<br/><p style="margin-top:5px; margin-bottom:0px"> <span style="color:#00c0f5">{{ cleanerStatus.temperature }} <sup>o</sup>C</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-waterdrop calm"></i><br/>湿度<br/> <p style="margin-top:5px; margin-bottom:0px"> <span style="color:#00c0f5">{{ cleanerStatus.humidity }}%</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-erlenmeyer-flask dark"></i><br/>甲醛<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.hcho }}</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-leaf balanced"></i><br/>二氧化碳<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.co2 }}</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-flag energized"></i><br/>风量<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.velocity }}</span></p></div>
 	     </div>
      </div>  
 	<div ng-if="role <= 1" class="card">
-		<div class="row" >
-	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button button-small button-calm' : tab == 1, 'button button-small  button-light' : tab != 1}" ng-click="tabChange(1)">分享</button></div>
-	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button button-small button-calm' : tab == 2, 'button button-small  button-light' : tab != 2}" ng-click="tabChange(2)">风量</button> </div>
-	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button button-small button-calm' : tab == 3, 'button button-small  button-light' : tab != 3}" ng-click="tabChange(3)">辅热</button></div>
-	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button button-small button-calm' : tab == 4, 'button button-small  button-light' : tab != 4}" ng-click="tabChange(4)">高级</button> 
+		<div class="row" style="margin-bottom:0px" >
+	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button button-calm button-gm' : tab == 1, 'button   button-gm button-light' : tab != 1}" ng-click="tabChange(1)">分享</button></div>
+	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 2, 'button   button-gm button-light' : tab != 2}" ng-click="tabChange(2)">风量</button> </div>
+	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 3, 'button   button-gm button-light' : tab != 3}" ng-click="tabChange(3)">辅热</button></div>
+	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 4, 'button   button-gm button-light' : tab != 4}" ng-click="tabChange(4)">高级</button> 
 	     <ion-spinner ng-if="request" icon="bubbles" class="spinner-calm"></ion-spinner>
 	     </div>
 	    </div>
 	    
-	    <div ng-if="tab == 1" id="share" class="padding">
+	    <div class="padding">
+	    <div ng-if="tab == 1" id="share">
 	    <div class="row">
-		  <div ng-if="role == 0" class="col"><button ng-click="deviceShare(1)" class="button button-outline button-calm">控制分享</button></div>
-		  <div ng-if="role == 0" class="col"><button ng-click="deviceShare(2)" class="button button-outline button-calm">数据分享</button></div>
-		  <div ng-if="role <= 1" class="col"><button ng-click="" class="button button-outline button-calm">分享图片</button></div>
+		  <div ng-if="role == 0" class="col"><button ng-click="deviceShare(1)" class="button button-gm button-outline button-calm">控制分享</button></div>
+		  <div ng-if="role == 0" class="col"><button ng-click="deviceShare(2)" class="button button-gm button-outline button-calm">数据分享</button></div>
+		  <div ng-if="role <= 1" class="col"><button ng-click="" class="button button-gm button-outline button-calm">分享图片</button></div>
 		</div>
-		<button ng-if="role == 0" class="button button-block button-calm" ng-click="userManage(deviceID)">权限管理</button>
+		<button ng-if="role == 0" class="button button-gm button-block button-calm" ng-click="userManage(deviceID)">权限管理</button>
 	    </div>
 	    
-	    <div ng-if="tab == 2" id="velocity" class="padding">
+	    <div ng-if="tab == 2" id="velocity">
 	    <div class="row">
-		  <div class="col"><button ng-click="setMode(0)" ng-class="{'button button-outline button-calm' : cleanerStatus.workMode == 0, 'button button-outline button-stable':cleanerStatus.workMode != 0}">自动模式</button></div>
-		  <div class="col"><button ng-click="setMode(1)" ng-class="{'button button-outline button-calm' : cleanerStatus.workMode == 1, 'button button-outline button-stable':cleanerStatus.workMode != 1}">睡眠模式</button></div>
-		  <div class="col"><button ng-click="setMode(2)" ng-class="{'button button-outline button-calm' : cleanerStatus.workMode == 2, 'button button-outline button-stable':cleanerStatus.workMode != 2}">手动模式</button></div>
+		  <div class="col"><button ng-click="setMode(0)" ng-class="{'button button-gm button-outline button-calm' : cleanerStatus.workMode == 0, 'button button-gm button-outline button-stable':cleanerStatus.workMode != 0}">自动模式</button></div>
+		  <div class="col"><button ng-click="setMode(1)" ng-class="{'button button-gm button-outline button-calm' : cleanerStatus.workMode == 1, 'button button-gm button-outline button-stable':cleanerStatus.workMode != 1}">睡眠模式</button></div>
+		  <div class="col"><button ng-click="setMode(2)" ng-class="{'button button-gm button-outline button-calm' : cleanerStatus.workMode == 2, 'button button-gm button-outline button-stable':cleanerStatus.workMode != 2}">手动模式</button></div>
 		</div>
 		
 		<div ng-if="cleanerStatus.workMode == 2" class="range range-positive">
-		  	<p>风量</p>
-            <i class="icon ion-ios-minus-empty"></i>
-            <input type="range" on-release="velocityControl(velocity)" ng-model="velocity" name="volume" min="0" max="5" value="2">
-            <i class="icon ion-ios-plus-empty"></i>
+		  	风量 {{cleanerStatus.velocity}}
+            <input type="range" on-release="velocityControl(cleanerStatus.velocity)" ng-model="cleanerStatus.velocity" name="volume" min="0" max="500" value="{{cleanerStatus.velocity}}">
         </div>
-	    <button ng-if="cleanerStatus.power == 0" class="button button-block button-calm" ng-click="start(1)">打开设备</button>
-	    <button ng-if="cleanerStatus.power == 1" class="button button-block button-assertive" ng-click="start(0)">关闭设备</button>
+	    <button ng-if="cleanerStatus.power == 0" class="button button-gm button-block button-calm" ng-click="start(1)">打开设备</button>
+	    <button ng-if="cleanerStatus.power == 1" class="button button-gm button-block button-assertive" ng-click="start(0)">关闭设备</button>
 	    </div>
 	    
-	    <div ng-if="tab == 3" id="heat" class="padding">
-	    <button ng-if="cleanerStatus.heat == 0" class="button button-block button-calm" ng-click="heatControl(1)">打开辅热</button>
-	    <button ng-if="cleanerStatus.heat == 1" class="button button-block button-assertive" ng-click="heatControl(0)">关闭辅热</button>
+	    <div ng-if="tab == 3" id="heat" >
+	    <button ng-if="cleanerStatus.heat == 0" class="button button-gm button-block button-calm" ng-click="heatControl(1)">打开辅热</button>
+	    <button ng-if="cleanerStatus.heat == 1" class="button button-gm button-block button-assertive" ng-click="heatControl(0)">关闭辅热</button>
 	    </div>
 	    
 	    <div ng-if="tab == 4" id="more">
 		    <div class="item item-toggle">
-		     紫外
+		     紫&nbsp;&nbsp;&nbsp;&nbsp;外
 		     <label class="toggle toggle-calm">
 		       <input type="checkbox" ng-click="uvControl()" id="dash_uv">
 		       <div class="track">
@@ -70,34 +68,51 @@
 		       <ion-spinner ng-if="uvRequest" icon="bubbles" class="spinner-calm"></ion-spinner>
 		     </label>			
 			</div>
-	
-			<div class="item">
-			背光 <ion-spinner ng-if="lightRequest" style="float:right" icon="bubbles" class="spinner-calm"></ion-spinner>
-			<div class="range range-positive">
-				
-				<i class="icon ion-ios-minus-empty"></i>
-				<input type="range" on-release="lightControl(light)" ng-model="light" name="volume" min="0" max="100" value="30">
-				<i class="icon ion-ios-plus-empty"></i>
-			</div>
+
+			<div class="item item-toggle">
+			内循环
+			<label class="toggle toggle-calm">
+		       <input type="checkbox" ng-click="cycleControl()" id="dash_uv">
+		       <div class="track">
+		         <div class="handle"></div>
+		       </div>
+		       <ion-spinner ng-if="cycleRequest" icon="bubbles" class="spinner-calm"></ion-spinner>
+		     </label>			
 			</div>
 			
 			<div class="item">
-			循环
-			<div class="range range-positive">
-				<span style="color:#666; font-size:14px">内循环</span>
-				<input type="range"  on-release="cycleControl(cycle)" ng-model="cycle" name="volume" min="0" max="1" value="0">
-				<span style="color:#666; font-size:14px">外循环</span>
+			<ion-spinner ng-if="lightRequest" style="float:right" icon="bubbles" class="spinner-calm"></ion-spinner>
+			<div style="padding:0px" class="range range-positive">
+				背&nbsp;&nbsp;&nbsp;&nbsp;光 &nbsp;&nbsp;{{ cleanerStatus.light }}
+				<input type="range" on-release="lightControl(cleanerStatus.light)" ng-model="cleanerStatus.light" style="margin-right:0px" name="volume" min="0" max="100" value="30">
 			</div>
+			</div>
+			
 			</div>
 	    </div>
-	    
+	    </div>
 	</div>
     
+    <div class="card" >
+	    <div class="padding" style="color:#333333">空气质量对比</div>
+	    
+	    <div class="padding">
+		    <div class="barContainer">
+			    <p class="barFont">室内 <span style="color:#11c1f3"> {{ indoor }}</span> </p>
+			    <div class="barContent">
+			    	<label class="button statBar button-calm" style="width:{{ inPercent }}%"></label>
+			    </div>
+		    </div>
+		    <div style="height:2px"></div>
+		    <div class="barContainer">
+			    <p class="barFont">室外 <span style="color:#ef473a"> {{ outdoor }}</span></p>
+			    <div class="barContent">
+			    	<label class="button statBar button-assertive" style="width:{{outPercent}}%"></label>
+			    </div>
+		    </div>
+	    </div>
+    </div>
      
-	<div class="card">
-		<div style="height:250px" id="chart1"></div>
-	</div>
-
 	<div style="height:30%" class="card">
 		<div style="height:250px" id="chart2"></div>
 	</div>
