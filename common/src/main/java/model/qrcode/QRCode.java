@@ -10,6 +10,8 @@ public class QRCode extends Entity{
     
 	private String codeId;
 	
+	private String batchNo;
+	
     private AbstractGoods goods;
     
     private String value;
@@ -26,18 +28,19 @@ public class QRCode extends Entity{
     	this.occupied = false;
     }
     
-    public QRCode(String value) {
+    public QRCode(String batchNo, String value) {
     	this();
+    	this.batchNo = batchNo;
     	this.value = value;
     }
     
-    public QRCode(String value, AbstractGoods goods) {
-    	this(value);
+    public QRCode(String batchNo, String value, AbstractGoods goods) {
+    	this(batchNo, value);
     	this.goods = goods;
     }
     
-    public QRCode(String value, String path, String url, AbstractGoods goods) {
-        this(value, goods);
+    public QRCode(String batchNo, String value, String path, String url, AbstractGoods goods) {
+        this(batchNo, value, goods);
         this.path = path;
         this.url = url;
     }
@@ -48,6 +51,15 @@ public class QRCode extends Entity{
 
 	public void setCodeId(String codeId) {
 		this.codeId = codeId;
+	}
+	
+
+	public String getBatchNo() {
+		return batchNo;
+	}
+
+	public void setBatchNo(String batchNo) {
+		this.batchNo = batchNo;
 	}
 
 	public AbstractGoods getGoods() {
