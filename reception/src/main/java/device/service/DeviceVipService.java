@@ -11,6 +11,7 @@ import model.CleanerStatus;
 import model.DeviceInfo;
 import model.ResultMap;
 import model.ReturnCode;
+import model.SupportForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,6 +73,24 @@ public class DeviceVipService {
 		return userDevices;
 	}
 	
+	public ReturnCode checkDeviceShareCode(String token, String deviceID){
+		DeviceShareCode deviceShareCode =  deviceVipDao.getDeviceShareCode(token);
+		if(deviceShareCode == null){
+			return ReturnCode.FAILURE;
+		}else if(!deviceShareCode.getDeviceID().equals(deviceID)){
+			return ReturnCode.FAILURE;
+		}else{
+			String current = TimeUtil.getCurrentTime();
+			if (deviceShareCode.getExpireTime() == null || current.compareTo(deviceShareCode.getExpireTime()) > 0) {
+				return ReturnCode.FAILURE;
+			}else if(deviceShareCode.getStatus() != 1){
+				return ReturnCode.FAILURE;
+			}else{
+				return ReturnCode.SUCCESS;
+			}
+		}
+	}
+	
 	public ReturnCode authorizeDevice(String token, String userID){
 		DeviceShareCode deviceShareCode = deviceVipDao.getDeviceShareCode(token);
 		if (deviceShareCode == null) {
@@ -92,7 +111,7 @@ public class DeviceVipService {
 			}
 			//update auth
 			deviceShareCode.setAuthID(userID);
-			deviceShareCode.setStatus(0);
+			//deviceShareCode.setStatus(0);
 			boolean result = deviceVipDao.updateDeviceShareCode(deviceShareCode);
 			if (! result) {
 				return ReturnCode.FAILURE;
@@ -299,6 +318,13 @@ public class DeviceVipService {
 		}
 		//diable user
 		return deviceVipDao.disableUserDevice(userID, deviceID);
+	}
+	
+	public boolean submitSupportForm(SupportForm supportForm){
+		if(supportForm == null){
+			return false;
+		}
+		return deviceVipDao.insertSupportForm(supportForm);
 	}
 	
 	private WechatUser getWechatUserByOpenID(String openID){

@@ -73,12 +73,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
       }
     }
   })
-  .state('home.about', {
-    url: '/about',
+  .state('home.support', {
+    url: '/support',
     views: {
-      'home-about': {
-        templateUrl: 'templates/about.html',
-        controller: 'AboutCtrl' ,
+      'home-support': {
+        templateUrl: 'templates/home-support.html',
+        controller: 'SupportCtrl' ,
+        reload: true,
+        cache: false        
+      }
+    }
+  })
+  .state('home.wifi', {
+    url: '/wifi',
+    views: {
+      'home-wifi': {
+        templateUrl: 'templates/home-wifi.html',
+        controller: 'WifiCtrl' ,
         reload: true,
         cache: false        
       }
@@ -117,7 +128,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
     cache: false         
   })
   .state('deviceShare', {
-	    url: '/device/share/:deviceID/:mode',
+	    url: '/device/share/:deviceID/:token',
 	    templateUrl: 'templates/device-share.html',
 	    controller: 'DeviceShareCtrl',
         reload: true,
@@ -153,6 +164,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/home.device');
 
 });

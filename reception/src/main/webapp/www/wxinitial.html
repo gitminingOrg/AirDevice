@@ -28,7 +28,6 @@
   <script>
   	$.post('/reception/wechat/init',{url : self.location.href}, function(response){
   		if(response.status == 1){
-  			alert(" appId  " + response.contents.configuration.appId   +" timestamp   " + response.contents.configuration.timestamp + " nonceStr    " +response.contents.configuration.nonceStr +" signature   " + response.contents.configuration.signature)
   		    wx.config({
   		      debug: false,
   		      beta: true,

@@ -59,6 +59,17 @@
 		<result property="time" column="time"/>
 	</resultMap>
 	
+	<resultMap type="model.SupportForm" id="supportForm">
+		<result property="name" column="name"/>
+		<result property="phone" column="phone"/>
+		<result property="problem" column="problem"/>
+		<result property="status" column="status"/>
+	</resultMap>
+	
+	<insert id="insertSupportForm" parameterType="model.SupportForm">
+		INSERT INTO support_form(name, phone, problem, status) VALUES(#{name}, #{phone}, #{problem}, #{status})
+	</insert>
+	
 	<select id="getUserDevice" resultMap="deviceStatus">
 		SELECT
 		ud.user_id AS user_id, ud.device_id AS device_id, dn.name AS device_name, ud.role AS role

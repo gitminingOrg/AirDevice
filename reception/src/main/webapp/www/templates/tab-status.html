@@ -30,26 +30,30 @@
 	    <div class="padding">
 	    <div ng-if="tab == 1" id="share">
 	    <div class="row">
-		  <div ng-if="role == 0" class="col"><button ng-click="deviceShare(1)" class="button button-gm button-outline button-calm">控制分享</button></div>
-		  <div ng-if="role == 0" class="col"><button ng-click="deviceShare(2)" class="button button-gm button-outline button-calm">数据分享</button></div>
-		  <div ng-if="role <= 1" class="col"><button ng-click="" class="button button-gm button-outline button-calm">分享图片</button></div>
+	      <div ng-if="role <= 1" class="col"><button ng-click="" class="button button-gm button-outline button-calm">分享图片</button></div>
+		  <div ng-if="role == 0" class="col"><center><button ng-click="deviceShare(1)" class="button button-gm button-outline button-calm">控制分享</button></center></div>
+		  <div ng-if="role == 0" class="col"><button style="float:right" ng-click="deviceShare(2)" class="button button-gm button-outline button-calm">数据分享</button></div>
 		</div>
-		<button ng-if="role == 0" class="button button-gm button-block button-calm" ng-click="userManage(deviceID)">权限管理</button>
+		<div class="padding"><button ng-if="role == 0" class="button button-gm button-block button-calm" ng-click="userManage(deviceID)">权限管理</button></div>
 	    </div>
 	    
 	    <div ng-if="tab == 2" id="velocity">
 	    <div class="row">
 		  <div class="col"><button ng-click="setMode(0)" ng-class="{'button button-gm button-outline button-calm' : cleanerStatus.workMode == 0, 'button button-gm button-outline button-stable':cleanerStatus.workMode != 0}">自动模式</button></div>
-		  <div class="col"><button ng-click="setMode(1)" ng-class="{'button button-gm button-outline button-calm' : cleanerStatus.workMode == 1, 'button button-gm button-outline button-stable':cleanerStatus.workMode != 1}">睡眠模式</button></div>
-		  <div class="col"><button ng-click="setMode(2)" ng-class="{'button button-gm button-outline button-calm' : cleanerStatus.workMode == 2, 'button button-gm button-outline button-stable':cleanerStatus.workMode != 2}">手动模式</button></div>
+		  <div class="col"><center><button ng-click="setMode(1)" ng-class="{'button button-gm button-outline button-calm' : cleanerStatus.workMode == 1, 'button button-gm button-outline button-stable':cleanerStatus.workMode != 1}">睡眠模式</button></center></div>
+		  <div class="col"><button ng-click="setMode(2)" style="float:right" ng-class="{'button button-gm button-outline button-calm' : cleanerStatus.workMode == 2, 'button button-gm button-outline button-stable':cleanerStatus.workMode != 2}">手动模式</button></div>
 		</div>
 		
 		<div ng-if="cleanerStatus.workMode == 2" class="range range-positive">
 		  	风量 {{cleanerStatus.velocity}}
-            <input type="range" on-release="velocityControl(cleanerStatus.velocity)" ng-model="cleanerStatus.velocity" name="volume" min="0" max="500" value="{{cleanerStatus.velocity}}">
+            <input type="range" style="margin-right:0" on-release="velocityControl(cleanerStatus.velocity)" ng-model="cleanerStatus.velocity" name="volume" min="0" max="500" value="{{cleanerStatus.velocity}}">
         </div>
+        
+        <div class="padding">
 	    <button ng-if="cleanerStatus.power == 0" class="button button-gm button-block button-calm" ng-click="start(1)">打开设备</button>
 	    <button ng-if="cleanerStatus.power == 1" class="button button-gm button-block button-assertive" ng-click="start(0)">关闭设备</button>
+	    </div>
+	    
 	    </div>
 	    
 	    <div ng-if="tab == 3" id="heat" >

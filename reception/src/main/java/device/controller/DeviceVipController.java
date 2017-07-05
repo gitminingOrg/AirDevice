@@ -3,13 +3,21 @@ package device.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import location.service.LocationService;
+import model.DeviceInfo;
+import model.ResultMap;
+import model.ReturnCode;
+import model.SupportForm;
+import model.device.DeviceChip;
+import model.location.City;
+import model.location.Province;
+import model.vip.Consumer;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -24,6 +32,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import util.ReceptionConstant;
+import util.WechatUtil;
+import utils.IPUtil;
+import utils.QRCodeGenerator;
+import vip.service.ConsumerSerivce;
+import vo.location.DeviceCityVo;
+import vo.vip.ConsumerVo;
 import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;
@@ -33,21 +48,6 @@ import config.ReceptionConfig;
 import device.service.DeviceStatusService;
 import device.service.DeviceVipService;
 import form.BindDeviceForm;
-import location.service.LocationService;
-import model.DeviceInfo;
-import model.ResultMap;
-import model.ReturnCode;
-import model.device.DeviceChip;
-import model.location.City;
-import model.location.Province;
-import model.vip.Consumer;
-import util.ReceptionConstant;
-import util.WechatUtil;
-import utils.IPUtil;
-import utils.QRCodeGenerator;
-import vip.service.ConsumerSerivce;
-import vo.location.DeviceCityVo;
-import vo.vip.ConsumerVo;
 
 @RequestMapping("/own")
 @RestController
@@ -210,18 +210,37 @@ public class DeviceVipController {
 		return resultMap;
 	}
 
-	@RequestMapping("/share/{deviceID}/{role}/{length}")
-	public ResultMap shareDevice(@PathVariable("deviceID") String deviceID, @PathVariable("role") int role,
-			@PathVariable("length") int length, HttpServletResponse response) {
+	@RequiresAuthentication
+	@RequestMapping("/share/{deviceID}/{role}")
+	public ResultMap shareDevice(@PathVariable("deviceID") String deviceID, @PathVariable("role") int role, HttpServletResponse response) {
 		ResultMap resultMap = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
 		String userID = current.getCustomerId();
 		DeviceShareCode deviceShareCode = deviceVipService.generateShareCode(userID, deviceID, role,
 				ReceptionConstant.DEFAULT_EXPIRE_DAYS);
+		
+		if(deviceShareCode != null){
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.addContent("token", deviceShareCode.getToken());
+			resultMap.addContent("deviceID", deviceShareCode.getDeviceID());
+		}
+		return resultMap;
+	}
+	
+	@RequestMapping("/share/token/{token}/{deviceID}/{length}")
+	public ResultMap shareQR(@PathVariable("deviceID") String deviceID, @PathVariable("token") String token, @PathVariable("length") int length,HttpServletResponse response) {
+		ResultMap resultMap = new ResultMap();
+		//check token
+		ReturnCode tokenValid = deviceVipService.checkDeviceShareCode(token, deviceID);
+		if(!tokenValid.equals(ReturnCode.SUCCESS)){
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo("二维码无效或已过期");
+		}
+		//write QR code
 		try {
 			String url = "http://" + ReceptionConfig.getValue("domain_url") + "/reception/www/index.html#/device/auth/"
-					+ deviceShareCode.getToken();
+					+ token;
 			int imgLength = length;
 			QRCodeGenerator.createQRCode(url, imgLength, imgLength, response.getOutputStream());
 		} catch (IOException e) {
@@ -409,6 +428,19 @@ public class DeviceVipController {
 		}
 		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 		resultMap.addContent(ReceptionConstant.CITY_LIST, list);
+		return resultMap;
+	}
+	
+	@RequiresAuthentication
+	@RequestMapping("/support")
+	public ResultMap support(SupportForm supportForm){
+		ResultMap resultMap = new ResultMap();
+		boolean result = deviceVipService.submitSupportForm(supportForm);
+		if(result){
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		}else{
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+		}
 		return resultMap;
 	}
 

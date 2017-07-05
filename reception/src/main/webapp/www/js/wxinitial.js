@@ -16,7 +16,13 @@
 //            }
 //        });
 //        window.location.href = "/reception/www/index.html#/home/device"
-    	  window.location.href = "/reception/www/index.html#/device/pair/"+serial
+    	  alert('配置成功!');
+    	  if(typeof(serial) != undefined && serial != null){
+    		  window.location.href = "/reception/www/index.html#/device/pair/"+serial
+    	  }else{
+    		  window.location.href = "/reception/www/index.html#/home/device"
+    	  }
+    	  
       } else {
         alert('配置失败！请重试');
         window.location.href = "/reception/www/index.html#/home/device"

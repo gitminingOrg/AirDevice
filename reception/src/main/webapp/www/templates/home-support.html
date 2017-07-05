@@ -1,0 +1,21 @@
+﻿<ion-content>
+    <div class="list">
+		<label class="item item-input">
+			<span class="input-label">姓名：</span>
+			<input type="text" ng-model="supportForm.name" placeholder="用户姓名">
+		</label>
+		
+		<label class="item item-input">
+			<span class="input-label">联系电话：</span>
+			<input type="text" ng-model="supportForm.phone" placeholder="联系电话">
+		</label>
+		
+		<label style="height:40%" class="item item-input">
+			<textarea style="height:100px" placeholder="问题描述" ng-model="supportForm.problem"></textarea>
+		</label>
+    </div>
+    <div class="padding">
+	  	<p ng-if="!(supportForm.name && supportForm.phone && supportForm.problem)" style="color:red;float:right">请填写完整</p>
+        <button ng-if="supportForm.name && supportForm.phone && supportForm.problem" class="button button-gm button-block button-calm" ng-click="support(supportForm)">提交</button>
+    </div>
+</ion-content>

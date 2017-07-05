@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import model.SupportForm;
+
 import org.springframework.stereotype.Repository;
 
 import bean.CityList;
@@ -56,6 +58,10 @@ public class DeviceVipDao extends BaseDaoImpl{
 		params.put("userID", userID);
 		params.put("deviceID", deviceID);
 		return sqlSession.update("userVip.disableUserDevice", params) >= 0;
+	}
+	
+	public boolean insertSupportForm(SupportForm supportForm){
+		return sqlSession.insert("userVip.insertSupportForm", supportForm) > 0;
 	}
 	
 	public List<Wechat2Device> deviceWechat(String deviceID){

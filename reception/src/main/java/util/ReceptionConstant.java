@@ -25,7 +25,7 @@ public class ReceptionConstant {
 	public static final String AIR_COMPARE = "airCompare";
 	
 	public static final int TOKEN_LENGTH = 40;
-	public static final int DEFAULT_EXPIRE_DAYS = 1;
+	public static final int DEFAULT_EXPIRE_DAYS = 3;
 	public static final int DEFAULT_QR_LENGTH = 200;
 	public static final int DEFAULT_TOP_DAY = 7;
 }

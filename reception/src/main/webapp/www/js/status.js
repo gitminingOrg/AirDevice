@@ -218,7 +218,14 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
   }
   
   $scope.deviceShare = function(mode){
-	  $state.go('deviceShare', {deviceID: $scope.deviceID , mode: mode})
+	  $http.get("/reception/own/share/"+$scope.deviceID+"/"+mode).success(function(response){
+		  if(response.status == 1){
+			  $state.go('deviceShare', {deviceID: response.contents.deviceID , token: response.contents.token})
+		  }else{
+			  $scope.showAlert();
+		  }
+	  })
+	  
   }
   
   $scope.setMode = function(mode){
