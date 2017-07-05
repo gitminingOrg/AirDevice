@@ -184,7 +184,7 @@ public class DeviceVipService {
 		//check privilege
 		DeviceName origin = deviceVipDao.getDeviceName(deviceName.getDeviceID());
 		if(origin != null){
-			return ReturnCode.SUCCESS;
+			return ReturnCode.FORBIDDEN;
 		}
 		//update deviceName
 		boolean result = deviceVipDao.insertDeviceName(deviceName);
@@ -268,12 +268,16 @@ public class DeviceVipService {
 		return null;
 	}
 	
-	public boolean bind(UserDevice ud) {
+	public ReturnCode bind(UserDevice ud) {
 		UserDevice userDevice =deviceVipDao.getUserDevice(ud.getUserID(), ud.getDeviceID());
 		if(userDevice != null){
-			return true;
+			return ReturnCode.FORBIDDEN;
 		}
-		return deviceVipDao.insertUserDevice(ud);
+		boolean insert =deviceVipDao.insertUserDevice(ud);
+		if(insert){
+			return ReturnCode.SUCCESS;
+		}
+		return ReturnCode.FAILURE;
 	}
 	
 	public int getUserDeviceRole(String userID, String deviceID){

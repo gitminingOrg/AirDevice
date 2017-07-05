@@ -23,7 +23,7 @@
 	    </label>
       </div>
       <div class="padding">
-        <button class="button button-gm button-block button-calm" ng-click="configName(deviceName, selectedProvince, selectedCity)">提交</button>
+        <button ng-if="deviceName.name && deviceName.phone && deviceName.address && selectedProvince && selectedCity" class="button button-gm button-block button-calm" ng-click="configName(deviceName, selectedProvince, selectedCity)">提交</button>
       </div>
       
       <div class="padding">

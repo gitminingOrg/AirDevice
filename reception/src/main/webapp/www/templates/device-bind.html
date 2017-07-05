@@ -24,8 +24,8 @@
 	  </label>
 	  </div>
 	  <div>
-	  	<p ng-if="!(deviceName.serial && deviceName.alias && deviceName.mobile && deviceName.location)" style="color:red;float:right">请填写完整</p>
-        <button ng-if="deviceName.serial && deviceName.alias && deviceName.mobile && deviceName.location" class="button button-gm button-block button-calm" ng-click="bindDevice(deviceName, selectedProvince, selectedCity)">下一步</button>
+	  	<p ng-if="!(deviceName.serial && deviceName.alias && deviceName.mobile && deviceName.location && selectedProvince && selectedCity)" style="color:red;float:right">请填写完整</p>
+        <button ng-if="deviceName.serial && deviceName.alias && deviceName.mobile && deviceName.location && selectedProvince && selectedCity" class="button button-gm button-block button-calm" ng-click="bindDevice(deviceName, selectedProvince, selectedCity)">下一步</button>
       </div>
   </ion-content>
 </ion-view>

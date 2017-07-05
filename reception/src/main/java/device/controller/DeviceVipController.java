@@ -89,11 +89,32 @@ public class DeviceVipController {
 					LOG.error(e.getMessage());
 				}
 			}
+			
+			//绑定用户与设备
 			UserDevice ud = new UserDevice(vo.getCustomerId(), form.getSerial());
-			deviceVipService.bind(ud);
-			deviceVipService.insertDeviceName(new DeviceName(form.getSerial(), form.getAlias(), form.getMobile(),
+			ReturnCode returnCode = deviceVipService.bind(ud);
+			if(returnCode == ReturnCode.FORBIDDEN){
+				result.setStatus(ResultMap.STATUS_FORBIDDEN);
+				result.setInfo("此二维码已被注册");
+				return result;
+			}else if(returnCode == ReturnCode.FAILURE){
+				result.setStatus(ResultMap.STATUS_FAILURE);
+				result.setInfo("绑定失败");
+				return result;
+			}
+			
+			//设置设备名称
+			ReturnCode insert = deviceVipService.insertDeviceName(new DeviceName(form.getSerial(), form.getAlias(), form.getMobile(),
 					form.getProvinceID(), form.getCityID(), form.getLocation(), 1));
-			//waiting.offer(form.getSerial());
+			if(insert == ReturnCode.FORBIDDEN){
+				result.setStatus(ResultMap.STATUS_FORBIDDEN);
+				result.setInfo("此二维码已被注册");
+				return result;
+			}else if(insert == ReturnCode.FAILURE){
+				result.setStatus(ResultMap.STATUS_FAILURE);
+				result.setInfo("绑定失败");
+				return result;
+			}
 			result.setStatus(ResultMap.STATUS_SUCCESS);
 		} else {
 			result.setStatus(ResultMap.STATUS_FAILURE);

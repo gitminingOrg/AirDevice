@@ -1,4 +1,4 @@
-app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, $interval, $ionicLoading) {
+app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, $interval, $ionicLoading, $ionicPopup) {
 	$scope.deviceName =new Object();
 	$scope.deviceName.serial = $stateParams.serial;
 	var code = GetQueryString("code")
@@ -19,7 +19,6 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 				$http.get('/reception/location/province').success(function(response){
 					if(response.status == 1){
 						$scope.provinces = response.contents.provinces;
-						$scope.selectedProvince = $scope.provinces[0]
 					}
 				})
 			}else{
@@ -55,26 +54,29 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 	        params   : deviceName
 	    }).success(function(data) { 
 	    	if(data.status == 1){
-	    		  // Setup the loader
-	    		  $ionicLoading.show({
+	    		var cityPinyin = city.locationPinyin
+	    		if(province.locationPinyin == 'beijing' || province.locationPinyin == 'tianjin' || province.locationPinyin == 'shanghai' || province.locationPinyin == 'chongqin'){
+	    			cityPinyin = province.locationPinyin
+	    		}
+	    		$http.post('/reception/status/city/config/'+$stateParams.serial+'/'+ cityPinyin).success(function(response){
+	    			if(response.status != 1){
+	    				$scope.showAlert('城市绑定失败','城市绑定失败')
+	    			}
+	    		})
+	    		// Setup the loader
+	    		$ionicLoading.show({
 	    		    content: 'Loading',
 	    		    animation: 'fade-in',
 	    		    showBackdrop: true,
 	    		    maxWidth: 200,
 	    		    showDelay: 0
-	    		  });
+	    		});
 	    		$interval(toDo, 3000, 10);
+	    	}else if(data.status == 2){
+	    		$scope.showAlert('绑定失败','该二维码已被注册')
 	    	}
 	    });
-		var cityPinyin = city.locationPinyin
-		if(province.locationPinyin == 'beijing' || province.locationPinyin == 'tianjin' || province.locationPinyin == 'shanghai' || province.locationPinyin == 'chongqin'){
-			cityPinyin = province.locationPinyin
-		}
-		$http.post('/reception/status/city/config/'+$stateParams.serial+'/'+ cityPinyin).success(function(response){
-			if(response.status != 1){
-				alert('城市绑定失败')
-			}
-		})
+
 		
 	}
 	
@@ -92,6 +94,13 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 	    	}
 	    });
     }
+	
+	$scope.showAlert = function popup(title, content) {
+	      var alertPopup = $ionicPopup.alert({
+	        title: title,
+	        template: content
+	      });
+	    };
 
 })
 
