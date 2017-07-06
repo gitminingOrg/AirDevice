@@ -329,6 +329,15 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.9</version>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/net.sf.cssbox/cssbox -->
+		<dependency>
+		    <groupId>net.sf.cssbox</groupId>
+		    <artifactId>cssbox</artifactId>
+		    <version>4.4</version>
+		</dependency>
+
+
 	</dependencies>
 	<build>
 		<plugins>

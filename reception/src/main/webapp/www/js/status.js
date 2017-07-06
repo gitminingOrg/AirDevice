@@ -267,4 +267,39 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 	  $interval.cancel(timer);
   })
   
+	$.post('/reception/wechat/init',{url : self.location.href}, function(response){
+  		if(response.status == 1){
+  		    wx.config({
+  		      debug: false,
+  		      beta: true,
+	  		  appId: response.contents.configuration.appId, // 必填，公众号的唯一标识
+			  timestamp: response.contents.configuration.timestamp, // 必填，生成签名的时间戳
+			  nonceStr: response.contents.configuration.nonceStr, // 必填，生成签名的随机串
+			  signature: response.contents.configuration.signature,// 必填，签名，见附录1
+  		      jsApiList: ['onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ']
+  		    });
+  		}
+  	})
+
+    wx.error(function (res) {
+  
+    });
+  
+  wx.ready(function () {
+	    alert('aaaa')
+	    wx.onMenuShareAppMessage({              //配置分享给朋友接口
+	        title: '分享的标题', // 分享标题
+	        desc: '这是一个测试分享', // 分享描述
+	        link: location.href, // 分享链接
+	        imgUrl: '', // 分享图标
+	        type: '', // 分享类型,music、video或link，不填默认为link
+	        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+	        success: function () { 
+	            // 用户确认分享后执行的回调函数
+	        },
+	        cancel: function () { 
+	            // 用户取消分享后执行的回调函数
+	        }
+	    })
+	 });
 })
