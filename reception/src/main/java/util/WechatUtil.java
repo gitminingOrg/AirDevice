@@ -118,6 +118,7 @@ public class WechatUtil {
 	}
 
 	public static boolean isWechat(HttpServletRequest request) {
+		logger.info("user-agent     ccccccccccc  " + request.getHeader("user-agent").toLowerCase());
 		if (request.getHeader("user-agent").toLowerCase().contains("micromessenger"))
 			return true;
 		return false;

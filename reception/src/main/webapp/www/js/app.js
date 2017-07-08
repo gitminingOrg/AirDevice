@@ -46,13 +46,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
 
   // Each tab has its own nav history stack:
 
-  .state('dash', {
-    url: '/tab/:deviceID/dash',
-    templateUrl: 'templates/tab-dash.html',
-    controller: 'DashCtrl',
-    reload: true,
-    cache: false
-  })
+//  .state('dash', {
+//    url: '/tab/:deviceID/dash',
+//    templateUrl: 'templates/tab-dash.html',
+//    controller: 'DashCtrl',
+//    reload: true,
+//    cache: false
+//  })
 
   .state('chats', {
       url: '/tab/:deviceID/chats',
@@ -172,6 +172,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
 	    url: '/device/pair/:deviceID',
 	    templateUrl: 'templates/device-pair.html',
 	    controller: 'DevicePairCtrl',
+        reload: true,
+        cache: false         
+  })
+  .state('read', {
+	    url: '/read/:token',
+	    templateUrl: 'templates/read.html',
+	    controller: 'ReadCtrl',
         reload: true,
         cache: false         
   });

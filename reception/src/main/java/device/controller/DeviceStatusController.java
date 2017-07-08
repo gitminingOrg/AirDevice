@@ -1,9 +1,5 @@
 package device.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import location.service.LocationService;
@@ -26,7 +22,6 @@ import util.ReceptionConstant;
 import utils.Constant;
 import vo.location.DeviceCityVo;
 import vo.vip.ConsumerVo;
-import auth.UserComponent;
 import bean.AirCompareVO;
 import bean.CityAqi;
 import bean.DeviceCity;
@@ -313,6 +308,64 @@ public class DeviceStatusController {
 		}else{
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.addContent(ReceptionConstant.AIR_COMPARE, airCompareVO);
+		}
+		return resultMap;
+	}
+	
+	@RequestMapping(value="/data/{token}")
+	public ResultMap getShareData(@PathVariable("token")String token){
+		ResultMap resultMap = new ResultMap();
+		String deviceID = deviceStatusService.getDeviceIDByToken(token);
+		if(deviceID == null){
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			return resultMap;
+		}else{
+			try{
+				int cityData = 0;
+				int deviceData = 0;
+				CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(deviceID);
+				AirCompareVO airCompareVO = deviceStatusService.getAirCompareVO(deviceID);
+				DeviceCityVo location = locationService.getDeviceLocation(deviceID);
+				if(cleanerStatus.getPm25() != 0){
+					deviceData = cleanerStatus.getPm25();
+				}
+				if(location != null) {
+					String cityPinyin = location.getCityPinyin();
+					CityAqi cityAqi = deviceStatusService.getCityCurrentAqi(cityPinyin);
+					if(cityAqi != null){
+						cityData = cityAqi.getPm25();
+					}
+				}
+				resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+				resultMap.addContent(ReceptionConstant.CLEANER_STATUS, cleanerStatus);
+				resultMap.addContent(ReceptionConstant.AIR_COMPARE, airCompareVO);
+				resultMap.addContent("cityData", cityData);
+				resultMap.addContent("deviceData", deviceData);
+			}catch(Exception e){
+				LOG.error("get device status failed",e);
+			}
+
+		}
+		
+		return resultMap;
+	}
+	
+	@RequiresAuthentication
+	@RequestMapping(value="/data/share", method = RequestMethod.POST)
+	public ResultMap shareData(String deviceID){
+		ResultMap resultMap = new ResultMap();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if(current == null || current.getCustomerId() == null){
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
+		String token = deviceStatusService.generateDeviceReadToken(deviceID);
+		if(token != null){
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.addContent("token", token);
+		}else{
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 		}
 		return resultMap;
 	}

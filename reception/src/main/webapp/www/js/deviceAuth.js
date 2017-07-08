@@ -20,7 +20,7 @@ app.controller( 'DeviceAuthCtrl', function($scope, $http, $state, $stateParams, 
 			        params   : { token : $stateParams.token , openId : $scope.openId} 
 			    }).success(function(response){
 			    	if(response.status == 1){
-			    		$state.go('home.device')
+			    		window.location.href = '/reception/www/index.html#home/device'
 			    	}else{
 			    		alert(response.info)
 			    	}

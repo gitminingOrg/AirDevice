@@ -19,7 +19,7 @@ public class DeviceChipDaoImpl extends BaseDaoImpl implements DeviceChipDao{
 	public boolean insert(DeviceChip dc) {
 		dc.setBindId(IDGenerator.generate("DEC"));
 		try {
-			sqlSession.insert("device_chip.insert", dc);
+			return sqlSession.insert("device_chip.insert", dc) >= 0;
 		}catch (Exception e) {
 			logger.error(e.getMessage());
 		}

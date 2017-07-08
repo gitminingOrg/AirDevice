@@ -1,6 +1,7 @@
 app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, $interval, $ionicLoading, $ionicPopup) {
 	$scope.deviceName =new Object();
 	$scope.deviceName.serial = $stateParams.serial;
+	$scope.visible = 0;
 	var code = GetQueryString("code")
 	var url =document.location.href.toString()
 	//get open id	
@@ -16,11 +17,29 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 				location.href = response.contents.redirect_url
 			}else if(typeof(response.contents.openId) !=undefined && response.contents.openId != null){
 				$scope.openId = response.contents.openId
-				$http.get('/reception/location/province').success(function(response){
-					if(response.status == 1){
-						$scope.provinces = response.contents.provinces;
-					}
-				})
+				$http({  
+			        url    : '/reception/own/wx/bind/step',  
+			        method : "get",  
+			        params   : { serial : $stateParams.serial , openId : $scope.openId} 
+			    }).success(function(response){
+			    	if(response.status == 0){
+			    		$scope.showAlert("初始化失败",response.info)
+			    	}else if(response.status == 1){
+			    		if(response.contents.step == 3){
+			    			$scope.showAlert("成功",response.info)
+			    			window.location.href= "index.html#/home/device"
+			    		}else if(response.contents.step == 2){
+			    			window.location.href= "wxinitial.html?serial="+$stateParams.serial
+			    		}else if(response.contents.step == 1){
+			    			$http.get('/reception/location/province').success(function(response){
+								if(response.status == 1){
+									$scope.provinces = response.contents.provinces;
+								}
+							})
+			    			$scope.visible = 1;
+			    		}
+			    	}
+			    });
 			}else{
 				alert("sth wrong")
 			}

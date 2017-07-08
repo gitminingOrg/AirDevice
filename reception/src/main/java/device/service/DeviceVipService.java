@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
 import model.CleanerStatus;
 import model.DeviceInfo;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import util.JsonResponseConverter;
 import util.ReceptionConstant;
+import util.TokenGenerator;
 import utils.HttpDeal;
 import utils.TimeUtil;
 import bean.CityList;
@@ -35,6 +35,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import config.ReceptionConfig;
+import dao.DeviceAttributeDao;
 import dao.DeviceChipDao;
 import dao.DeviceVipDao;
 
@@ -43,20 +44,12 @@ public class DeviceVipService {
 	private static Logger LOG = LoggerFactory.getLogger(DeviceVipService.class);
 	@Autowired
 	private DeviceVipDao deviceVipDao;
-	public void setDeviceVipDao(DeviceVipDao deviceVipDao) {
-		this.deviceVipDao = deviceVipDao;
-	}
+	@Autowired
+	private DeviceAttributeDao deviceAttributeDao;
 	@Autowired
 	private DeviceStatusService deviceStatusService;
-	public void setDeviceStatusService(DeviceStatusService deviceStatusService) {
-		this.deviceStatusService = deviceStatusService;
-	}
-	
 	@Autowired
 	private DeviceChipDao deviceChipDao;
-	public void setDeviceChipDao(DeviceChipDao deviceChipDao) {
-		this.deviceChipDao = deviceChipDao;
-	}
 
 	/**
 	 * get the status of a user's all devices
@@ -146,10 +139,10 @@ public class DeviceVipService {
 		String expireTime = sdf.format(calendar.getTime());
 		
 		//generate code
-		String token = generateNCharString(ReceptionConstant.TOKEN_LENGTH);
+		String token = TokenGenerator.generateNCharString(ReceptionConstant.TOKEN_LENGTH);
 		DeviceShareCode deviceShareCode = deviceVipDao.getDeviceShareCode(token);
 		while(deviceShareCode != null){
-			token = generateNCharString(ReceptionConstant.TOKEN_LENGTH);
+			token = TokenGenerator.generateNCharString(ReceptionConstant.TOKEN_LENGTH);
 			deviceShareCode = deviceVipDao.getDeviceShareCode(token);
 		}
 		
@@ -229,23 +222,7 @@ public class DeviceVipService {
 		return deviceVipDao.getAllCityList();
 	}
 	
-	private String generateNCharString(int length){
-		Random random = new Random();
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < length; i++) {
-			char next = 'a';
-			int offset = random.nextInt(26);
-			next+=offset;
-			boolean capital = random.nextBoolean();
-			if (capital) {
-				next = (char) (next - 'a' + 'A');
-			}
-			sb.append(next);
-			
-		}
-		
-		return sb.toString();
-	}
+
 	public String getNewChip(String ip){
 		ResultMap result = JsonResponseConverter.getDefaultResultMapWithParams(ReceptionConstant.chipIDPath);
 		Gson gson = new Gson();
@@ -261,6 +238,9 @@ public class DeviceVipService {
 		for(String sessionId : sessionIds){
 			String chipID = sessionId.split("\\.")[1];
 			CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatusByChip(chipID);
+			if(cleanerStatus == null){
+				continue;
+			}
 			if(! Strings.isNullOrEmpty(cleanerStatus.getIp()) && cleanerStatus.getIp().equals(ip)){
 				return chipID;
 			}

@@ -15,8 +15,8 @@
         </label>
         <label class="item item-input">
           <span class="input-label">省、市：</span>
-          <select ng-change="cityRequest(selectedProvince)" ng-model="selectedProvince" ng-options="province.locationName for province in provinces"></select>
-          <select ng-model="selectedCity" ng-options="city.locationName for city in cities"></select>
+          <select style="width:25%" ng-change="cityRequest(selectedProvince)" ng-model="selectedProvince" ng-options="province.locationName for province in provinces"></select>
+          <select style="width:25%" ng-model="selectedCity" ng-options="city.locationName for city in cities"></select>
         </label>
         <label style="height:40%" class="item item-input">
 	      <textarea style="height:100px" placeholder="填写设备所在地址，以便维护" ng-model="deviceName.address"></textarea>

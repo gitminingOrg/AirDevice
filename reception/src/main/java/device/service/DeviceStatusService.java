@@ -3,6 +3,16 @@ package device.service;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
+
+import model.CleanerStatus;
+import model.ResultMap;
+import model.ReturnCode;
+import model.device.DeviceChip;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,33 +21,45 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Strings;
-import com.google.gson.Gson;
-
+import util.JsonResponseConverter;
+import util.ReceptionConstant;
+import util.TokenGenerator;
+import utils.Constant;
+import utils.MethodUtil;
+import utils.TimeUtil;
 import bean.AirCompareVO;
 import bean.CityAqi;
 import bean.DeviceAir;
 import bean.DeviceCity;
 import bean.UserAction;
 import bean.UserDevice;
+
+import com.google.common.base.Strings;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.gson.Gson;
+
 import dao.DeviceChipDao;
 import dao.DeviceStatusDao;
 import dao.DeviceVipDao;
-import model.CleanerStatus;
-import model.ResultMap;
-import model.ReturnCode;
-import model.device.DeviceChip;
-import util.JsonResponseConverter;
-import util.ReceptionConstant;
-import utils.Constant;
-import utils.MethodUtil;
-import utils.TimeUtil;
 
 @Service
 public class DeviceStatusService {
 	private static final Logger LOG = LoggerFactory.getLogger(DeviceStatusService.class);
 	private static final int DEFAULT_TIMES = 5;
 	private static final int DEFAULT_PERIOD = 1000;
+	@NotNull
+	LoadingCache<String, String> cache;
+	@PostConstruct
+	public void initCache(){
+		cache = CacheBuilder.newBuilder().
+				expireAfterWrite(2, TimeUnit.HOURS).maximumSize(100000).build(new CacheLoader<String, String>(){
+					@Override
+					public String load(String key) throws Exception {
+						return null;
+				}});
+	}
 
 	@Autowired
 	@Qualifier("executor")
@@ -83,6 +105,33 @@ public class DeviceStatusService {
 			LOG.info(cleanerJson);
 			CleanerStatus cleanerStatus = gson.fromJson(cleanerJson, CleanerStatus.class);
 			return cleanerStatus;
+		}
+	}
+	
+	public String generateDeviceReadToken(String deviceID){
+		String token = TokenGenerator.generateNCharString(ReceptionConstant.TOKEN_LENGTH);
+		cache.put(token, deviceID);
+		return token;
+	}
+	
+	
+	public String getDeviceIDByToken(String token){
+		if(token == null){
+			return null;
+		}
+		if(cache == null){
+			cache = CacheBuilder.newBuilder().
+					expireAfterWrite(2, TimeUnit.HOURS).maximumSize(100000).build(new CacheLoader<String, String>(){
+						@Override
+						public String load(String key) throws Exception {
+							return null;
+					}});
+		}
+		try {
+			return cache.get(token);
+		} catch (ExecutionException e) {
+			LOG.error("get device by token failed",e);
+			return null;
 		}
 	}
 	
@@ -263,7 +312,7 @@ public class DeviceStatusService {
 		return false;
 	}
 	
-	private String deviceIDToChipID(String deviceID){
+	public String deviceIDToChipID(String deviceID){
 		return deviceStatusDao.getChipIDByDeviceID(deviceID);
 	}
 	

@@ -1,8 +1,8 @@
 ﻿  <ion-content style="background-color:#FAFAFA">
   <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
-  <div style="background: url(img/background.png); background-size: 100% 180px; height: 180px">
+  <div style="background: url(img/background.png?762048); background-size: 100% 180px; height: 180px">
 	 <a class="button button-calm" href="#/device/name/{{deviceID}}"> {{deviceName.name}} <i class="icon ion-settings"></i></a>
-	 <img alt="" src="img/logo.png" height="40" width="100" style="float:right;margin-top:2px;margin-right:5px">
+	 <img alt="" src="img/logo.png?762048" height="40" width="100" style="float:right;margin-top:2px;margin-right:5px">
 	 <p style="color:white;text-align:center;margin-top:20px;font-size:40px; font-wight: bold">{{ cleanerStatus.pm25 }} </p>
 	 <p style="color:white;text-align:center;margin-top:20px;font-wight: bold">ug/m<sup>3</sup></p>
 	 <center><a style="color:white;text-align:center" href="#/home/device">返回设备列表</a></center>
@@ -10,11 +10,12 @@
      <div class="card">
 	     <!-- <div class="item item-divider" style="font-size:12px"><i class="icon ion-android-home"></i> 室内环境</div> -->
 	     <div class="row">
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-nuclear energized"></i><br/>风量<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.velocity }}</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-flame assertive"></i><br/>辅热<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.heat == 1 ? '开' : '关' }}</span></p></div>
 	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-thermometer assertive"></i><br/>温度<br/><p style="margin-top:5px; margin-bottom:0px"> <span style="color:#00c0f5">{{ cleanerStatus.temperature }} <sup>o</sup>C</span></p></div>
 	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-waterdrop calm"></i><br/>湿度<br/> <p style="margin-top:5px; margin-bottom:0px"> <span style="color:#00c0f5">{{ cleanerStatus.humidity }}%</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-leaf balanced"></i><br/>CO<sub>2</sub><br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.co2 }}</span></p></div>
 	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-erlenmeyer-flask dark"></i><br/>甲醛<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.hcho }}</span></p></div>
-	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-leaf balanced"></i><br/>二氧化碳<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.co2 }}</span></p></div>
-	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-nuclear energized"></i><br/>风量<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.velocity }}</span></p></div>
 	     </div>
      </div>  
 	<div ng-if="role <= 1" class="card">
@@ -30,7 +31,7 @@
 	    <div class="padding">
 	    <div ng-if="tab == 1" id="share">
 	    <div class="row">
-	      <div ng-if="role <= 1" class="col"><button ng-click="" class="button button-gm button-outline button-calm">分享状态</button></div>
+	      <div ng-if="role <= 1" class="col"><button ng-click="shareStatus()" class="button button-gm button-outline button-calm">分享状态</button></div>
 		  <div ng-if="role == 0" class="col"><center><button ng-click="deviceShare(1)" class="button button-gm button-outline button-calm">控制分享</button></center></div>
 		  <div ng-if="role == 0" class="col"><button style="float:right" ng-click="deviceShare(2)" class="button button-gm button-outline button-calm">只读分享</button></div>
 		</div>
@@ -120,4 +121,6 @@
 	<div style="height:30%" class="card">
 		<div style="height:300px" id="chart2"></div>
 	</div>
+	
+	<div ng-if="shareGuide" class="popoverGuide">点击右上角“ <i class="icon ion-more"></i> ”按钮进行分享 &nbsp;&nbsp;&nbsp;<i class="icon ion-navigate"></i></div>
   </ion-content>

@@ -57,6 +57,8 @@ import bean.DeviceStatus;
 import bean.UserDevice;
 import bean.WechatUser;
 import config.ReceptionConfig;
+import dao.DeviceAttributeDao;
+import device.service.DeviceAttributeService;
 import device.service.DeviceStatusService;
 import device.service.DeviceVipService;
 import form.BindDeviceForm;
@@ -64,7 +66,8 @@ import form.BindDeviceForm;
 @RequestMapping("/own")
 @RestController
 public class DeviceVipController {
-	private static Logger LOG = LoggerFactory.getLogger(DeviceVipController.class);
+	private static Logger LOG = LoggerFactory
+			.getLogger(DeviceVipController.class);
 	@Autowired
 	private DeviceVipService deviceVipService;
 
@@ -76,8 +79,11 @@ public class DeviceVipController {
 
 	@Autowired
 	private DeviceStatusService deviceStatusService;
+	
+	@Autowired
+	private DeviceAttributeService deviceAttributeService;
 
-	//Queue<String> waiting = new LinkedList<>();
+	// Queue<String> waiting = new LinkedList<>();
 
 	public void setDeviceVipService(DeviceVipService deviceVipService) {
 		this.deviceVipService = deviceVipService;
@@ -90,7 +96,8 @@ public class DeviceVipController {
 		if (!StringUtils.isEmpty(openId)) {
 			ConsumerVo vo = consumerSerivce.login(openId);
 			if (StringUtils.isEmpty(vo)) {
-				LOG.info("No user with open_id: " + openId + "found, create a new user...");
+				LOG.info("No user with open_id: " + openId
+						+ "found, create a new user...");
 				Consumer consumer = new Consumer(openId);
 				consumerSerivce.create(consumer);
 				try {
@@ -101,32 +108,35 @@ public class DeviceVipController {
 					LOG.error(e.getMessage());
 				}
 			}
-			
-			//绑定用户与设备
+			// 绑定用户与设备
 			UserDevice ud = new UserDevice(vo.getCustomerId(), form.getSerial());
 			ReturnCode returnCode = deviceVipService.bind(ud);
-			if(returnCode == ReturnCode.FORBIDDEN){
+			if (returnCode == ReturnCode.FORBIDDEN) {
 				result.setStatus(ResultMap.STATUS_FORBIDDEN);
 				result.setInfo("此二维码已被注册");
 				return result;
-			}else if(returnCode == ReturnCode.FAILURE){
+			} else if (returnCode == ReturnCode.FAILURE) {
 				result.setStatus(ResultMap.STATUS_FAILURE);
 				result.setInfo("绑定失败");
 				return result;
 			}
-			
-			//设置设备名称
-			ReturnCode insert = deviceVipService.insertDeviceName(new DeviceName(form.getSerial(), form.getAlias(), form.getMobile(),
-					form.getProvinceID(), form.getCityID(), form.getLocation(), 1));
-			if(insert == ReturnCode.FORBIDDEN){
+
+			// 设置设备名称
+			ReturnCode insert = deviceVipService
+					.insertDeviceName(new DeviceName(form.getSerial(), form
+							.getAlias(), form.getMobile(),
+							form.getProvinceID(), form.getCityID(), form
+									.getLocation(), 1));
+			if (insert == ReturnCode.FORBIDDEN) {
 				result.setStatus(ResultMap.STATUS_FORBIDDEN);
 				result.setInfo("此二维码已被注册");
 				return result;
-			}else if(insert == ReturnCode.FAILURE){
+			} else if (insert == ReturnCode.FAILURE) {
 				result.setStatus(ResultMap.STATUS_FAILURE);
 				result.setInfo("绑定失败");
 				return result;
 			}
+			deviceAttributeService.occupyQRCode(form.getSerial());
 			result.setStatus(ResultMap.STATUS_SUCCESS);
 		} else {
 			result.setStatus(ResultMap.STATUS_FAILURE);
@@ -139,9 +149,9 @@ public class DeviceVipController {
 	@RequestMapping(method = RequestMethod.GET, value = "/register/available")
 	public ResultMap available(String serial) {
 		ResultMap result = new ResultMap();
-		//if (serial.equals(waiting.peek())) {
-			result.setStatus(ResultMap.STATUS_SUCCESS);
-		//}
+		// if (serial.equals(waiting.peek())) {
+		result.setStatus(ResultMap.STATUS_SUCCESS);
+		// }
 		return result;
 	}
 
@@ -149,7 +159,8 @@ public class DeviceVipController {
 	public ResultMap pop() {
 		ResultMap result = new ResultMap();
 		result.setStatus(ResultMap.STATUS_SUCCESS);
-		//result.setInfo("pop top: " + waiting.poll() + ", remaining size: " + waiting.size() + ", current peek: "+ waiting.peek());
+		// result.setInfo("pop top: " + waiting.poll() + ", remaining size: " +
+		// waiting.size() + ", current peek: "+ waiting.peek());
 		return result;
 	}
 
@@ -175,51 +186,62 @@ public class DeviceVipController {
 		String ip = IPUtil.tell(request);
 		LOG.info("mobile request ip: " + ip);
 		String chipId = deviceVipService.getNewChip(ip);
-		if(chipId == null){
+		if (chipId == null) {
 			result.setStatus(ResultMap.STATUS_FAILURE);
 			result.setInfo("当前局域网下无可绑定的设备");
 			return result;
 		}
 		DeviceChip dc = new DeviceChip(serial, chipId);
 		deviceStatusService.bindDevice2Chip(dc);
-		//waiting.poll();
+		// waiting.poll();
 		result.setStatus(ResultMap.STATUS_SUCCESS);
 		return result;
 	}
 
 	@RequiresAuthentication
 	@RequestMapping("/device")
-	public ResultMap getUserDevice(String code, HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+	public ResultMap getUserDevice(String code, HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
 		ResultMap resultMap = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
 		if (StringUtils.isEmpty(current)) {
 			if (WechatUtil.isWechat(request) && StringUtils.isEmpty(code)) {
 				String targetUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
-						+ ReceptionConfig.getValue("wechat_appid") + "&redirect_uri="
-						+ URLEncoder.encode("http://" + ReceptionConfig.getValue("domain_url")
-								+ ReceptionConfig.getValue("mine_device"), "utf-8")
+						+ ReceptionConfig.getValue("wechat_appid")
+						+ "&redirect_uri="
+						+ URLEncoder.encode(
+								"http://"
+										+ ReceptionConfig
+												.getValue("domain_url")
+										+ ReceptionConfig
+												.getValue("mine_device"),
+								"utf-8")
 						+ "&response_type=code&scope=snsapi_base&state=view#wechat_redirect";
 				resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 				resultMap.addContent("redirect_url", targetUrl);
 				return resultMap;
 			}
 			if (WechatUtil.isWechat(request) && !StringUtils.isEmpty(code)) {
-				String openId = WechatUtil.queryOauthOpenId(ReceptionConfig.getValue("wechat_appid"),
+				String openId = WechatUtil.queryOauthOpenId(
+						ReceptionConfig.getValue("wechat_appid"),
 						ReceptionConfig.getValue("wechat_secret"), code);
+				LOG.info("code: " + code + "openID" + openId
+						+ "       xxxxxxxxxxxxxxxxxxxxxxx");
 				if (!StringUtils.isEmpty(openId)) {
 					try {
 						subject.login(new UsernamePasswordToken(openId, ""));
 						current = (ConsumerVo) subject.getPrincipal();
 						String userID = current.getCustomerId();
-						List<DeviceStatus> deviceStatus = deviceVipService.getUserCleaner(userID);
+						List<DeviceStatus> deviceStatus = deviceVipService
+								.getUserCleaner(userID);
 						if (deviceStatus == null) {
 							resultMap.setStatus(ResultMap.STATUS_FAILURE);
 							resultMap.setInfo(ResultMap.EMPTY_INFO);
 						} else {
 							resultMap.setStatus(ResultMap.STATUS_SUCCESS);
-							resultMap.addContent(ReceptionConstant.STATUS_LIST, deviceStatus);
+							resultMap.addContent(ReceptionConstant.STATUS_LIST,
+									deviceStatus);
 						}
 						return resultMap;
 					} catch (Exception e) {
@@ -232,7 +254,8 @@ public class DeviceVipController {
 			return resultMap;
 		}
 		String userID = current.getCustomerId();
-		List<DeviceStatus> deviceStatus = deviceVipService.getUserCleaner(userID);
+		List<DeviceStatus> deviceStatus = deviceVipService
+				.getUserCleaner(userID);
 		if (deviceStatus == null) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo(ResultMap.EMPTY_INFO);
@@ -245,37 +268,42 @@ public class DeviceVipController {
 
 	@RequiresAuthentication
 	@RequestMapping("/share/{deviceID}/{role}")
-	public ResultMap shareDevice(@PathVariable("deviceID") String deviceID, @PathVariable("role") int role, HttpServletResponse response) {
+	public ResultMap shareDevice(@PathVariable("deviceID") String deviceID,
+			@PathVariable("role") int role, HttpServletResponse response) {
 		ResultMap resultMap = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
 		String userID = current.getCustomerId();
-		DeviceShareCode deviceShareCode = deviceVipService.generateShareCode(userID, deviceID, role,
-				ReceptionConstant.DEFAULT_EXPIRE_DAYS);
-		
-		if(deviceShareCode != null){
+		DeviceShareCode deviceShareCode = deviceVipService.generateShareCode(
+				userID, deviceID, role, ReceptionConstant.DEFAULT_EXPIRE_DAYS);
+
+		if (deviceShareCode != null) {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.addContent("token", deviceShareCode.getToken());
 			resultMap.addContent("deviceID", deviceShareCode.getDeviceID());
 		}
 		return resultMap;
 	}
-	
+
 	@RequestMapping("/share/token/{token}/{deviceID}/{length}")
-	public ResultMap shareQR(@PathVariable("deviceID") String deviceID, @PathVariable("token") String token, @PathVariable("length") int length,HttpServletResponse response) {
+	public ResultMap shareQR(@PathVariable("deviceID") String deviceID,
+			@PathVariable("token") String token,
+			@PathVariable("length") int length, HttpServletResponse response) {
 		ResultMap resultMap = new ResultMap();
-		//check token
-		ReturnCode tokenValid = deviceVipService.checkDeviceShareCode(token, deviceID);
-		if(!tokenValid.equals(ReturnCode.SUCCESS)){
+		// check token
+		ReturnCode tokenValid = deviceVipService.checkDeviceShareCode(token,
+				deviceID);
+		if (!tokenValid.equals(ReturnCode.SUCCESS)) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("二维码无效或已过期");
 		}
-		//write QR code
+		// write QR code
 		try {
-			String url = "http://" + ReceptionConfig.getValue("domain_url") + "/reception/www/index.html#/device/auth/"
-					+ token;
+			String url = "http://" + ReceptionConfig.getValue("domain_url")
+					+ "/reception/www/index.html#/device/auth/" + token;
 			int imgLength = length;
-			QRCodeGenerator.createQRCode(url, imgLength, imgLength, response.getOutputStream());
+			QRCodeGenerator.createQRCode(url, imgLength, imgLength,
+					response.getOutputStream());
 		} catch (IOException e) {
 			LOG.error("write QR code failed", e);
 		}
@@ -306,7 +334,8 @@ public class DeviceVipController {
 	@RequestMapping("/device/users/{deviceID}")
 	public ResultMap getDeviceUsers(@PathVariable("deviceID") String deviceID) {
 		ResultMap resultMap = new ResultMap();
-		List<WechatUser> wechatUsers = deviceVipService.getDeviceWechatUser(deviceID);
+		List<WechatUser> wechatUsers = deviceVipService
+				.getDeviceWechatUser(deviceID);
 		resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 		resultMap.addContent("wechatUsers", wechatUsers);
 		return resultMap;
@@ -323,7 +352,8 @@ public class DeviceVipController {
 			return resultMap;
 		}
 		String ownerID = current.getCustomerId();
-		boolean result = deviceVipService.disableUserDevice(deviceID, userID, ownerID);
+		boolean result = deviceVipService.disableUserDevice(deviceID, userID,
+				ownerID);
 		if (result) {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 		} else {
@@ -338,7 +368,8 @@ public class DeviceVipController {
 		if (!StringUtils.isEmpty(openId)) {
 			ConsumerVo vo = consumerSerivce.login(openId);
 			if (StringUtils.isEmpty(vo)) {
-				LOG.info("No user with open_id: " + openId + "found, create a new user...");
+				LOG.info("No user with open_id: " + openId
+						+ "found, create a new user...");
 				Consumer consumer = new Consumer(openId);
 				consumerSerivce.create(consumer);
 				try {
@@ -350,7 +381,8 @@ public class DeviceVipController {
 				}
 			}
 
-			ReturnCode returnCode = deviceVipService.authorizeDevice(token, vo.getCustomerId());
+			ReturnCode returnCode = deviceVipService.authorizeDevice(token,
+					vo.getCustomerId());
 			if (returnCode.equals(ReturnCode.SUCCESS)) {
 				resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			} else if (returnCode.equals(ReturnCode.FORBIDDEN)) {
@@ -377,7 +409,8 @@ public class DeviceVipController {
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
 		String userID = current.getCustomerId();
-		ReturnCode returnCode = deviceVipService.configDeviceName(userID, deviceName);
+		ReturnCode returnCode = deviceVipService.configDeviceName(userID,
+				deviceName);
 		if (returnCode.equals(ReturnCode.SUCCESS)) {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.addContent(ReceptionConstant.DEVICE_NAME, deviceName);
@@ -400,7 +433,8 @@ public class DeviceVipController {
 		if (deviceName == null) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 		} else {
-			Province province = locationService.getProvinceByID(deviceName.getProvinceID());
+			Province province = locationService.getProvinceByID(deviceName
+					.getProvinceID());
 			City city = locationService.getCityByID(deviceName.getCityID());
 			city.setProvince(province);
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
@@ -418,7 +452,8 @@ public class DeviceVipController {
 		Subject subject = SecurityUtils.getSubject();
 		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
 		String userID = current.getCustomerId();
-		DeviceInfo deviceInfo = deviceVipService.getDeviceInfo(userID, deviceID);
+		DeviceInfo deviceInfo = deviceVipService
+				.getDeviceInfo(userID, deviceID);
 		if (deviceInfo == null) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("无法查询到设备");
@@ -446,6 +481,75 @@ public class DeviceVipController {
 		return resultMap;
 	}
 
+	@RequestMapping(value = "/wx/bind/step", method = RequestMethod.GET)
+	public ResultMap checkDeviceBindStep(String openId, String serial,
+			HttpServletRequest request) {
+		ResultMap resultMap = new ResultMap();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo vo = (ConsumerVo) subject.getPrincipal();
+		if (StringUtils.isEmpty(vo)) {
+			// not login yets
+			// check whether a user with the openid already exist in databse
+			vo = consumerSerivce.login(openId);
+			if (StringUtils.isEmpty(vo)) {
+				LOG.info("No user with open_id: " + openId + "found, create a new user...");
+				Consumer consumer = new Consumer(openId);
+				consumerSerivce.create(consumer);
+			}
+			try {
+				subject.login(new UsernamePasswordToken(openId, ""));
+				vo = (ConsumerVo) subject.getPrincipal();
+			} catch (Exception e) {
+				LOG.error(e.getMessage());
+			}
+		}
+		//检验二维码是否存在
+		boolean qrValid =deviceAttributeService.qrcodeExist(serial);
+		if(!qrValid){
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo("无效的二维码链接");
+			return resultMap;
+		}
+		String userID = vo.getCustomerId();
+		int role = deviceVipService.getUserDeviceRole(userID, serial);
+		DeviceName deviceName = deviceVipService.getDeviceName(serial);
+		if (deviceName == null) {
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			// 绑定设备名称步骤
+			resultMap.addContent("step", 1);
+			return resultMap;
+		} else if (role == 0) {
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			String chipID = deviceStatusService.deviceIDToChipID(serial);
+			if (chipID == null) {
+				chipID = deviceVipService.getNewChip(IPUtil.tell(request));
+				if (chipID != null) {
+					boolean result = deviceStatusService
+							.bindDevice2Chip(new DeviceChip(serial, chipID));
+					if (result) {
+						resultMap.addContent("step", 3);
+						resultMap.setInfo("初始化设备成功");
+						return resultMap;
+					} else {
+						resultMap.setStatus(ResultMap.STATUS_FAILURE);
+						resultMap.setInfo("初始化设备失败");
+						return resultMap;
+					}
+				}
+				// wifi初始化步骤
+				resultMap.addContent("step", 2);
+				return resultMap;
+			} else {
+				resultMap.setStatus(ResultMap.STATUS_FAILURE);
+				resultMap.setInfo("您已经初始化过该设备");
+				return resultMap;
+			}
+		}
+		resultMap.setStatus(ResultMap.STATUS_FAILURE);
+		resultMap.setInfo("该二维码已被注册");
+		return resultMap;
+	}
+
 	@RequestMapping("/all/cities")
 	public ResultMap getAllCities() {
 		ResultMap resultMap = new ResultMap();
@@ -463,40 +567,39 @@ public class DeviceVipController {
 		resultMap.addContent(ReceptionConstant.CITY_LIST, list);
 		return resultMap;
 	}
-	
+
 	@RequiresAuthentication
 	@RequestMapping("/support")
-	public ResultMap support(SupportForm supportForm){
+	public ResultMap support(SupportForm supportForm) {
 		ResultMap resultMap = new ResultMap();
 		boolean result = deviceVipService.submitSupportForm(supportForm);
-		if(result){
+		if (result) {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
-		}else{
+		} else {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 		}
 		return resultMap;
 	}
 
 	@RequestMapping("test")
-	public String test() throws Exception{
-        Desktop.getDesktop().browse(  
-                new URL("http://www.baidu.com").toURI());  
-        Robot robot = new Robot();  
-        robot.delay(10000);  
-        Dimension d = new Dimension(Toolkit.getDefaultToolkit().getScreenSize());  
-        int width = (int) d.getWidth();  
-        int height = (int) d.getHeight();  
-        //最大化浏览器  
-        robot.keyRelease(KeyEvent.VK_F11);  
-        robot.delay(2000);  
-        Image image = robot.createScreenCapture(new Rectangle(0, 0, width,  
-                height));  
-        BufferedImage bi = new BufferedImage(width, height,  
-                BufferedImage.TYPE_INT_RGB);  
-        Graphics g = bi.createGraphics();  
-        g.drawImage(image, 0, 0, width, height, null);  
-        //保存图片  
-        ImageIO.write(bi, "jpg", new File("/Users/owenchen/Downloads/111.jpg"));  
+	public String test() throws Exception {
+		Desktop.getDesktop().browse(new URL("http://www.baidu.com").toURI());
+		Robot robot = new Robot();
+		robot.delay(10000);
+		Dimension d = new Dimension(Toolkit.getDefaultToolkit().getScreenSize());
+		int width = (int) d.getWidth();
+		int height = (int) d.getHeight();
+		// 最大化浏览器
+		robot.keyRelease(KeyEvent.VK_F11);
+		robot.delay(2000);
+		Image image = robot.createScreenCapture(new Rectangle(0, 0, width,
+				height));
+		BufferedImage bi = new BufferedImage(width, height,
+				BufferedImage.TYPE_INT_RGB);
+		Graphics g = bi.createGraphics();
+		g.drawImage(image, 0, 0, width, height, null);
+		// 保存图片
+		ImageIO.write(bi, "jpg", new File("/Users/owenchen/Downloads/111.jpg"));
 		return "1";
 	}
 }

@@ -1,9 +1,9 @@
 ﻿
   <ion-content style="background-color:#FAFAFA">
      <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
-  	 <div style="background: url(img/background.png); background-size: 100% 180px; height: 180px">
+  	 <div style="background: url(img/background.png?762048); background-size: 100% 180px; height: 180px">
 	 <button class="button button-calm" ng-click="modal.show()"><i class="icon ion-location"></i> {{location}} <i class="icon ion-ios-arrow-down"></i></button>
-	 <img alt="" src="img/logo.png" height="40" width="100" style="float:right;margin-top:2px;margin-right:5px">
+	 <img alt="" src="img/logo.png?762048" height="40" width="100" style="float:right;margin-top:2px;margin-right:5px">
 	 <p style="color:white;text-align:center">{{ today }}</p>
 	 <center><ion-spinner ng-if="airWaiting || deviceWaiting" icon="bubbles" class="spinner-light"></ion-spinner></center>
 	 <p ng-if="!(airWaiting || deviceWaiting)" style="color:white;text-align:center;margin-top:0 px;font-size:36px; font-wight: bold">{{aqiData}} <span style="font-size:14px">AQI</span></p>
@@ -14,18 +14,18 @@
 	 </div>
      <div ng-if="!deviceWaiting" ng-repeat="device in deviceList" class="card">
  		<div ng-if="device.cleanerStatus">
-		    <div class="item item-divider">
-		        <a href="" style="float:right;font-size:10px" ng-click="showConfirm(device.deviceID)">该设备未正常绑定？</a>
-		  	</div>
+<!-- 		    <div class="item item-divider"> -->
+<!-- 		        <a href="" style="float:right;font-size:10px" ng-click="showConfirm(device.deviceID)">该设备未正常绑定？</a> -->
+<!-- 		  	</div> -->
 	       
 			<a class="item" href="#tab/{{ device.deviceID}}/chats">
 				<div style="width: 60%;float:left">
 				<div style="margin-bottom:5px"><span style="font-size:20px; color:#666666">{{ device.deviceName }}</span></div>
-				<div style="font-size:16 px;color:#888888"> &nbsp;<i class="icon ion-flag"></i><span style="color:#00c0f5"> &nbsp;&nbsp;{{ device.cleanerStatus.velocity }}</span></div>
+				<div style="font-size:16 px;color:#888888"> &nbsp;<i class="icon ion-nuclear"></i><span style="color:#00c0f5"> &nbsp;&nbsp;{{ device.cleanerStatus.velocity }}</span></div>
 				</div>
 				
 				<div style="width: 40%; float:right">
-				<div style="float:right"><span style="font-size:36px; color:#00c0f5">{{ device.cleanerStatus.pm25 }}</span> <span style="color:#00c0f5">ug/m<sup>3</sup></span> </div>
+				<div style="float:right;padding-top:10px"><span style="font-size:36px; color:#00c0f5">{{ device.cleanerStatus.pm25 }}</span> <span style="color:#00c0f5">ug/m<sup>3</sup></span> </div>
 				</div>
 			</a>	
 	
@@ -38,18 +38,18 @@
 		</div> 
 		
  		<div ng-if="!device.cleanerStatus">
-		    <div class="item item-divider">
-		        <a href="" style="float:right;font-size:10px" ng-click="showConfirm(device.deviceID)">该设备未正常绑定？</a>
-		  	</div>
+<!-- 		    <div class="item item-divider"> -->
+<!-- 		        <a href="" style="float:right;font-size:10px" ng-click="showConfirm(device.deviceID)">该设备未正常绑定？</a> -->
+<!-- 		  	</div> -->
 	       
-			<a class="item" href="#tab/{{ device.deviceID}}/dash">
+			<a class="item" href="">
 				<div style="width: 60%;float:left">
 				<div style="margin-bottom:5px"><span style="font-size:20px; color:#666666">{{ device.deviceName }}</span></div>
-				<div style="font-size:16 px;color:#888888"> &nbsp;<i class="icon ion-flag"></i><span style="color:#00c0f5"> &nbsp;&nbsp; --</span></div>
+				<div style="font-size:16 px;color:#888888"> &nbsp;<i class="icon ion-nuclear"></i><span style="color:#00c0f5"> &nbsp;&nbsp; --</span></div>
 				</div>
 				
 				<div style="width: 40%; float:right">
-				<div style="float:right"><span style="font-size:36px; color:#00c0f5">离线</span> </div>
+				<div style="float:right;padding-top:10px"><span style="font-size:36px; color:#00c0f5">离线</span> </div>
 				</div>
 			</a>	
 	

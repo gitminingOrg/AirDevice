@@ -1,0 +1,43 @@
+﻿  <ion-content style="background-color:#FAFAFA">
+  <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
+  <div style="background: url(img/background.png?762048); background-size: 100% 180px; height: 180px">
+	 <img alt="" src="img/GMQR.png?762048" height="70" width="70" style="margin-left:5px;margin-top:10px">
+	 <img alt="" src="img/logo.png?762048" height="40" width="100" style="float:right;margin-top:2px;margin-right:5px">
+	 <p style="color:white;text-align:center;margin-top:20px;font-size:40px; font-wight: bold">{{ cleanerStatus.pm25 }} </p>
+	 <p style="color:white;text-align:center;margin-top:20px;font-wight: bold">ug/m<sup>3</sup></p>
+   </div>
+     <div class="card">
+	     <!-- <div class="item item-divider" style="font-size:12px"><i class="icon ion-android-home"></i> 室内环境</div> -->
+	     <div class="row">
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-thermometer assertive"></i><br/>温度<br/><p style="margin-top:5px; margin-bottom:0px"> <span style="color:#00c0f5">{{ cleanerStatus.temperature }} <sup>o</sup>C</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-waterdrop calm"></i><br/>湿度<br/> <p style="margin-top:5px; margin-bottom:0px"> <span style="color:#00c0f5">{{ cleanerStatus.humidity }}%</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-erlenmeyer-flask dark"></i><br/>甲醛<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.hcho }}</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-leaf balanced"></i><br/>二氧化碳<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.co2 }}</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-nuclear energized"></i><br/>风量<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.velocity }}</span></p></div>
+	     </div>
+     </div>  
+
+    <div class="card" >
+	    <div class="padding" style="color:#333333">空气质量对比</div>
+	    
+	    <div class="padding">
+		    <div class="barContainer">
+			    <p class="barFont">室内 <span style="color:#11c1f3"> {{ indoor }}</span> </p>
+			    <div class="barContent">
+			    	<label class="button statBar button-calm" style="width:{{ inPercent }}%"></label>
+			    </div>
+		    </div>
+		    <div style="height:2px"></div>
+		    <div class="barContainer">
+			    <p class="barFont">室外 <span style="color:#ef473a"> {{ outdoor }}</span></p>
+			    <div class="barContent">
+			    	<label class="button statBar button-assertive" style="width:{{outPercent}}%"></label>
+			    </div>
+		    </div>
+	    </div>
+    </div>
+     
+	<div style="height:30%" class="card">
+		<div style="height:300px" id="chartRead"></div>
+	</div>
+  </ion-content>

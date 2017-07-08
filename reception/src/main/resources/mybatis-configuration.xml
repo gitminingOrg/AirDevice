@@ -5,6 +5,7 @@
 		<mapper resource="mapper/userAction.xml" />
 		<mapper resource="mapper/userVip.xml" />
 		<mapper resource="mapper/aqiData.xml" />
+		<mapper resource="mapper/deviceAttribute.xml" />
 		<mapper resource="mapper/vip/consumer.xml" />
 		<mapper resource="mapper/goods/goods.xml" />
 		<mapper resource="mapper/goods/thumbnail.xml" />

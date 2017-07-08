@@ -29,3 +29,14 @@
     color: #929292;
     margin: -2px 0 0 0;
 }
+
+.popoverGuide {
+    position: fixed;
+    top: 10px;
+    right: 35px;
+    padding: 10px 10px 10px;
+    color: #fff;
+    background-color: #000;
+    border-radius: 3px;
+    filter:alpha(opacity:80); opacity:0.8;-moz-opacity:0.8;-khtml-opacity: 0.8
+}

@@ -78,9 +78,9 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
                 params   : { serial : deviceID} 
             }).success(function(response){
         	  if(response.status == 1){
-        		  alert("绑定成功！请下拉刷新")
+        		  $scope.showAlert("设备绑定","绑定成功！请下拉刷新")
         	  }else{
-        		  alert("未搜索到相同局域网下的设备")
+        		  $scope.showAlert("设备绑定","未搜索到相同局域网下的设备")
         	  }
           })
           console.log('You are sure');
@@ -121,4 +121,11 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
       $scope.$on('$ionicView.beforeLeave',function(){
     	  $interval.cancel(timer);
       })
+      
+      $scope.showAlert = function popup(title, content) {
+	      var alertPopup = $ionicPopup.alert({
+	        title: title,
+	        template: content
+	      });
+	    };
 })

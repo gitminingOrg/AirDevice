@@ -55,6 +55,9 @@ public class DeviceStatusDao extends BaseDaoImpl{
 	}
 	
 	public boolean insertDeviceStatus(List<CleanerStatus> list){
+		if(list == null || list.size() == 0){
+			return true;
+		}
 		return sqlSession.insert("aqiData.insertCleanerStatusList", list) == list.size();
 	}
 	

@@ -1,10 +1,12 @@
-app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ionicPopup,$ionicModal, $interval) {
+app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ionicPopup,$ionicModal, $interval,$timeout) {
   $scope.percent = 90;
   $scope.deviceID = $stateParams.deviceID;
   $scope.role = 3
   $scope.tab = 2
+  $scope.shareGuide = false
   $scope.doRefresh = function(){
 	  $scope.init();
+	  $scope.cityAir();
 	  $scope.$broadcast('scroll.refreshComplete');
   }
   
@@ -49,7 +51,10 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 		  
 		  
 	  });
-	  
+  }
+  $scope.init();
+  
+  $scope.cityAir = function(){
 	  $http.get('/reception/status/'+$stateParams.deviceID+'/aqi/compare').success(function(response){
 		  if(response.status == 2){
 				$state.go('login')
@@ -98,8 +103,7 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 		  }
 	  });
   }
-  $scope.init();
-  
+  $scope.cityAir()
   $scope.start = function(number){
       var powerInt = number
       $scope.request = true;
@@ -285,21 +289,41 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
   
     });
   
-  wx.ready(function () {
-	    alert('aaaa')
-	    wx.onMenuShareAppMessage({              //配置分享给朋友接口
-	        title: '分享的标题', // 分享标题
-	        desc: '这是一个测试分享', // 分享描述
-	        link: location.href, // 分享链接
-	        imgUrl: '', // 分享图标
-	        type: '', // 分享类型,music、video或link，不填默认为link
-	        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-	        success: function () { 
-	            // 用户确认分享后执行的回调函数
-	        },
-	        cancel: function () { 
-	            // 用户取消分享后执行的回调函数
-	        }
+  $scope.shareStatus = function(){
+	  $http({  
+	        url    : '/reception/status/data/share',  
+	        method : "post",  
+	        params   : {deviceID : $scope.deviceID} 
+	    }).success(function(response){
+	    	if(response.status == 1){
+	    		  wx.ready(function () {
+	    			    wx.onMenuShareAppMessage({              //配置分享给朋友接口
+	    			        title: '果麦新风', // 分享标题
+	    			        desc: '分享我的果麦新风机', // 分享描述
+	    			        link: 'http://commander.qingair.net/reception/www/index.html#/read/'+response.contents.token, // 分享链接
+	    			        imgUrl: 'http://commander.qingair.net/reception/www/img/GMQR.png', // 分享图标
+	    			        type: '', // 分享类型,music、video或link，不填默认为link
+	    			        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+	    			        success: function () { 
+	    			            // 用户确认分享后执行的回调函数
+	    			        },
+	    			        cancel: function () { 
+	    			            // 用户取消分享后执行的回调函数
+	    			        }
+	    			    })
+	    			 });
+	    		  $scope.shareGuide = true
+	    		  $timeout(function(){$scope.shareGuide = false},5000)
+	    	}else{
+	    		$scope.showPopup('数据分享','分享失败，请重试！')
+	    	}
 	    })
-	 });
+  }
+  
+  $scope.showPopup = function popup(title, content) {
+      var alertPopup = $ionicPopup.alert({
+        title: title,
+        template: content
+      });
+    };
 })
