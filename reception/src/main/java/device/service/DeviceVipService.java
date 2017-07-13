@@ -23,6 +23,7 @@ import util.TokenGenerator;
 import utils.HttpDeal;
 import utils.TimeUtil;
 import bean.CityList;
+import bean.DeviceCity;
 import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;
@@ -37,6 +38,7 @@ import com.google.gson.GsonBuilder;
 import config.ReceptionConfig;
 import dao.DeviceAttributeDao;
 import dao.DeviceChipDao;
+import dao.DeviceStatusDao;
 import dao.DeviceVipDao;
 
 @Service
@@ -116,6 +118,14 @@ public class DeviceVipService {
 			userDevice.setDeviceID(deviceID);
 			userDevice.setRole(role);
 			result = deviceVipDao.insertUserDevice(userDevice);
+			
+			//update user location
+			DeviceCity deviceCity = deviceStatusService.getDeviceCity(userID, deviceID);
+			if(deviceCity != null){
+				String city = deviceCity.getCity();
+				updateUserLocation(userID, city);
+			}
+			
 			if (! result) {
 				return ReturnCode.FAILURE;
 			}
@@ -324,5 +334,14 @@ public class DeviceVipService {
 		Gson gson = new GsonBuilder().create();
 		WechatUser wechatUser = gson.fromJson(json, WechatUser.class);
 		return wechatUser;
+	}
+	
+	public boolean updateUserLocation(String userID, String cityPinyin){
+		deviceVipDao.disableUserLocation(userID);
+		return deviceVipDao.addUserLocation(userID, cityPinyin);
+	}
+	
+	public String getUserCity(String userID){
+		return deviceVipDao.getUserCity(userID);
 	}
 }

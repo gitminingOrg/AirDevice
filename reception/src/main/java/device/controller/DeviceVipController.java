@@ -136,6 +136,7 @@ public class DeviceVipController {
 				result.setInfo("绑定失败");
 				return result;
 			}
+			
 			deviceAttributeService.occupyQRCode(form.getSerial());
 			result.setStatus(ResultMap.STATUS_SUCCESS);
 		} else {
@@ -577,6 +578,45 @@ public class DeviceVipController {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 		} else {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+		}
+		return resultMap;
+	}
+	
+	@RequiresAuthentication
+	@RequestMapping("/user/location/{cityPinyin}")
+	public ResultMap userLocation(@PathVariable("cityPinyin")String cityPinyin){
+		ResultMap resultMap = new ResultMap();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if (current == null) {
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
+		boolean update = deviceVipService.updateUserLocation(current.getCustomerId(), cityPinyin);
+		if(!update){
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+		}else{
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		}
+		return resultMap;
+	}
+	
+	@RequiresAuthentication
+	@RequestMapping("/user/city")
+	public ResultMap userCity(){
+		ResultMap resultMap = new ResultMap();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if (current == null) {
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
+		String city = deviceVipService.getUserCity(current.getCustomerId());
+		if(city == null){
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+		}else {
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.addContent("city", city);
 		}
 		return resultMap;
 	}

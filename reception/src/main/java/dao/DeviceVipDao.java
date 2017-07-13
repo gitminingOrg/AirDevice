@@ -8,6 +8,8 @@ import model.SupportForm;
 
 import org.springframework.stereotype.Repository;
 
+import com.google.common.base.Strings;
+
 import bean.CityList;
 import bean.DeviceName;
 import bean.DeviceShareCode;
@@ -77,6 +79,35 @@ public class DeviceVipDao extends BaseDaoImpl{
 			return null;
 		}else{
 			return userDevices.get(0);
+		}
+	}
+	
+	public boolean addUserLocation(String userID, String cityPinyin){
+		if(Strings.isNullOrEmpty(userID) || Strings.isNullOrEmpty(cityPinyin)){
+			return false;
+		}
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("userID", userID);
+		params.put("cityPinyin", cityPinyin);
+		return sqlSession.insert("userVip.insertUserLocation", params) > 0;
+	}
+	
+	public boolean disableUserLocation(String userID){
+		if(Strings.isNullOrEmpty(userID)){
+			return false;
+		}
+		return sqlSession.update("userVip.disableUserLocation", userID) >= 0;
+	}
+	
+	public String getUserCity(String userID){
+		if(Strings.isNullOrEmpty(userID)){
+			return null;
+		}
+		List<String> cityList =  sqlSession.selectList("userVip.selectUserLocation",userID);
+		if(cityList == null || cityList.size() == 0){
+			return null;
+		}else{
+			return cityList.get(0);
 		}
 	}
 }

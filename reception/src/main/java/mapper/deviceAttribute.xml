@@ -20,7 +20,7 @@
 		FROM
 		qrcode
 		WHERE
-		code_id = #{codeID}
+		code_value = #{codeValue}
 	</select>
 	
 	<update id="occupyQRCode" >
@@ -29,6 +29,6 @@
 		SET
 		code_occupied = 1
 		WHERE
-		code_id = #{codeID}
+		code_value = #{codeValue}
 	</update>
 </mapper>

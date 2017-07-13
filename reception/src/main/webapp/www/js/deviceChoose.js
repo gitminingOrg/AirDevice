@@ -29,10 +29,19 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
 		    	$state.go('login');
 		    });
 		
-    	$http.get("/reception/location/phone").success(function(response){
+//    	$http.get("/reception/location/phone").success(function(response){
+//    		if(response.status == 1){	
+//				$scope.gps = response.contents.location
+//				$scope.updateCityAir($scope.gps.cityPinyin);
+//        	}else{
+//        		$scope.updateCityAir('beijing');
+//        	}
+//        });
+    	
+		
+    	$http.get("/reception/own/user/city").success(function(response){
     		if(response.status == 1){	
-				$scope.gps = response.contents.location
-				$scope.updateCityAir($scope.gps.cityPinyin);
+				$scope.updateCityAir(response.contents.city);
         	}else{
         		$scope.updateCityAir('beijing');
         	}
@@ -100,8 +109,18 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
     		  $scope.cities = response.contents.cityList;
     	  }
       });
-      $scope.choose = function(city){
-			var data = { city : city}
+      $scope.choose = function(city, provinceName){
+    	    var cityPinyin = city
+    	  	if(provinceName == '北京'){
+    	  		cityPinyin = 'beijing'
+    	  	}else if(provinceName == '上海'){
+    	  		cityPinyin = 'shanghai'
+    	  	}else if(provinceName == '天津'){
+    	  		cityPinyin = 'tianjin'
+    	  	}else if(provinceName == '重庆'){
+    	  		cityPinyin = 'chongqin'
+    	  	}
+			var data = { city : cityPinyin}
 			$http({  
 		        url    : '/reception/status/city/aqi',  
 		        method : "post",  
@@ -112,8 +131,15 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
 		    		$scope.pm25 = response.contents.cityAqi.pm25
 		    		$scope.aqiData = response.contents.cityAqi.cityAqi
 		    		$scope.location = response.contents.cityAqi.cityName
+		    		$http.get('/reception/own/user/location/'+cityPinyin).success(function(response){
+						
+					})
+		    	}else{
+		    		$scope.showAlert('城市选择','该城市无相关空气质量数据')
 		    	}
 		    });
+			
+			
 		  
 	        $scope.modal.hide();
       }
