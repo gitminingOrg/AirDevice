@@ -32,7 +32,7 @@
 		<if test="search != null">
 			and (model_id like #{search} or code_value like #{search} or batch_no like #{search})
 		</if>
-		order by create_time desc, batch_no asc, code_delivered asc, code_value asc
+		order by batch_no asc, code_delivered asc, code_value asc
 	</select>
 
 	<insert id="insert" parameterType="model.qrcode.QRCode"
