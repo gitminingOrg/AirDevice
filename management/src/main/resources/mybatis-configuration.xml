@@ -10,5 +10,6 @@
 		<mapper resource="mapper/qrcode/qrcodebatch.xml" />
 		<mapper resource="mapper/goods/component.xml" />
 		<mapper resource="mapper/goods/modelcomponent.xml" />
+		<mapper resource="mapper/consumer/consumergoods.xml" />
 	</mappers>
 </configuration>
