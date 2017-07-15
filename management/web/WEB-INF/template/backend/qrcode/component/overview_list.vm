@@ -35,31 +35,55 @@
             </div>
         </div>
         <div id="page-content">
-            <h4>已有二维码列表</h4>
+            <h4>批量出库</h4>
             <div class="col-md-10 center-margin">
                 <div class="form-row">
                     <div class="form-input">
                         <div class="row">
                             <div class="col-md-2">
+                                <label>起始编号:</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input placeholder="请输入起始编号" type="text">
+                            </div>
+                            <div class="col-md-2">
+                                <label>截止编号:</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input placeholder="请输入截止编号" type="text">
+                            </div>
+                            <div class="col-md-2">
+                                <button class='btn large bg-blue'>
+                                    <span clas='button-content'>批量出库</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <h4>已有二维码列表</h4>
+            <div class="col-md-10 center-margin">
+                <div class="form-row">
+                    <div class="form-input">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <select id="goods_list">
                                     <option>---请选择产品---</option>
                                 </select>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <select id="model_list">
                                     <option>---请选择型号---</option>
                                 </select>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <select id="batch_list">
                                     <option></option>
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <input placeholder="型号或批号查询" type="text" name="" id="">
-                            </div>
-                            <div class="col-md-3">
-                                <button type="button" data-loading-text="查询中" class="btn large loading-button bg-blue">
+                                <button id="search_btn" type="button" data-loading-text="查询中" class="btn large loading-button bg-blue">
                                     查询
                                 </button>
                             </div>
@@ -72,6 +96,7 @@
 	</div>
 </div>
 <script>
+    var param = {};
     function batch_reset(goodsId, modelId) {
         $("#batch_list").empty();
         var param = {};
@@ -88,7 +113,7 @@
                 var data = result.data;
                 for(index in data) {
                     var item = $("<option></option>").text(data[index].batchNo);
-                    item.attr("value", data[index].batchId);
+                    item.attr("value", data[index].batchNo);
                     $("#batch_list").append(item);
                 }
             }
@@ -149,6 +174,10 @@
         model_reset("");
         batch_reset("", "");
 
+        $("#search_btn").on('click', function() {
+            table.draw(false);
+        })
+
         var table = $("#component-list-table").DataTable({
             searching: true,
             ordering: false,
@@ -172,7 +201,29 @@
                 $("#component-list-table").removeClass('no-footer');
             },
             "fnServerParams": function (aoData) {
-                
+                delete aoData.params;
+                var goodsId = $("#goods_list").val();
+                if(param.goodsId != goodsId) {
+                    param.goodsId = goodsId;
+                    if(!not_null(goodsId)) {
+                        delete param.goodsId;
+                    }
+                }
+                var modelId = $("#model_list").val();
+                if(param.modelId != modelId) {
+                    param.modelId = modelId;
+                    if(!not_null(modelId)) {
+                        delete param.modelId;
+                    }
+                }
+                var batchNo = $("#batch_list").val();
+                if(param.batchNo != batchNo) {
+                    param.batchNo = batchNo;
+                    if(!not_null(batchNo)) {
+                        delete param.batchNo;
+                    }
+                }
+                aoData.push({"name": "params", "value": JSON.stringify(param)});
             },
             "fnServerData": function (sSource, aoData, fnCallback) {
                 $.ajax({
@@ -184,15 +235,18 @@
                 })
             },
             columns: [
+                {title: "创建日期", "mRender": function(data, type, full) {
+                    return ((new Date(full.createAt)).format("yyyy-MM-dd"));
+                }},
                 {title: "批号", "mData": "batchNo"},
                 {title: "序列号", "mData": "value"},
                 {title: "操作", "mRender": function(data, type, full) {
                     var operation = "";
                     if(full.codeDelivered == false) {
-                        var deliver = "<a id='" + full.codeId + "' href='javascript:;'' class='btn small bg-blue-alt tooltip-button' data-placement='top'><span>出库</span></a>&nbsp;";
+                        var deliver = "<a id='" + full.codeId + "' href='javascript:;'' class='btn small bg-blue-alt tooltip-button outstore' data-placement='top'><span>出库</span></a>&nbsp;";
                         operation += deliver;
                     }
-                    $(".btn").on('click', function() {
+                    $(".outstore").on('click', function() {
                         var id = $(this).attr("id");
                         var url = "${path.concat('/qrcode/deliver')}"
                         $.post(url, {codeId: id}, function(result) {

@@ -13,6 +13,9 @@
 		<if test="batchNo != null">
 			and batch_no = #{batchNo}
 		</if>
+		<if test="modelId != null">
+			and model_id = #{modelId}
+		</if>
 		group by batch_no
 	</select>
 </mapper>

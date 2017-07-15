@@ -8,7 +8,10 @@ import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import dao.BaseDao;
@@ -84,6 +87,19 @@ public class QRCodeDaoImpl extends BaseDao implements QRCodeDao {
 	public ResultData query(Map<String, Object> condition, DataTableParam param) {
 		ResultData result = new ResultData();
 		DataTablePage<QRCodeVo> page = new DataTablePage<>(param);
+		JSONObject appendix = JSON.parseObject(param.getParams());
+		if (!StringUtils.isEmpty(appendix.get("goodsId"))) {
+			condition.put("goodsId", appendix.get("goodsId"));
+		}
+		if (!StringUtils.isEmpty(appendix.get("modelId"))) {
+			condition.put("modelId", appendix.get("modelId"));
+		}
+		if (!StringUtils.isEmpty("batchNo")) {
+			condition.put("batchNo", appendix.get("batchNo"));
+		}
+		if (!StringUtils.isEmpty(param.getsSearch())) {
+			condition.put("search", param.getsSearch());
+		}
 		ResultData total = query(condition);
 		if (total.getResponseCode() != ResponseCode.RESPONSE_OK) {
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);

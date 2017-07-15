@@ -27,6 +27,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import form.QRCodeGenerateForm;
 import model.qrcode.QRCode;
 import pagination.DataTablePage;
@@ -69,7 +72,8 @@ public class QRCodeController {
 			Calendar current = Calendar.getInstance();
 			form.setBatchNo(sdf.format(current.getTime()));
 		}
-		ResultData response = qRCodeService.create(form.getGoodsId(), form.getModelId(), form.getBatchNo(), form.getNum());
+		ResultData response = qRCodeService.create(form.getGoodsId(), form.getModelId(), form.getBatchNo(),
+				form.getNum());
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			String filename = generateZip(form.getBatchNo());
 			result.setData(filename);
@@ -177,10 +181,10 @@ public class QRCodeController {
 	public ResultData batch(String goodsId, String modelId) {
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
-		if(!StringUtils.isEmpty(goodsId)) {
+		if (!StringUtils.isEmpty(goodsId)) {
 			condition.put("goodsId", goodsId);
 		}
-		if(!StringUtils.isEmpty(modelId)) {
+		if (!StringUtils.isEmpty(modelId)) {
 			condition.put("modelId", modelId);
 		}
 		ResultData response = qRCodeService.fetchByBatch(condition);
@@ -192,33 +196,33 @@ public class QRCodeController {
 		}
 		return result;
 	}
-	
-	@RequestMapping(method = RequestMethod.GET, value="/overview")
+
+	@RequestMapping(method = RequestMethod.GET, value = "/overview")
 	public ModelAndView overview() {
 		ModelAndView view = new ModelAndView();
 		view.setViewName("/backend/qrcode/overview");
 		return view;
 	}
-	
+
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.POST, value="/list")
+	@RequestMapping(method = RequestMethod.POST, value = "/list")
 	public DataTablePage<QRCodeVo> list(DataTableParam param) {
 		DataTablePage<QRCodeVo> result = new DataTablePage<>(param);
-		if(StringUtils.isEmpty(param)) {
+		if (StringUtils.isEmpty(param)) {
 			return result;
 		}
 		Map<String, Object> condition = new HashMap<>();
 		ResultData response = qRCodeService.fetch(condition, param);
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-            result = (DataTablePage<QRCodeVo>) response.getData();
-        }
-        return result;
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result = (DataTablePage<QRCodeVo>) response.getData();
+		}
+		return result;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/deliver")
 	public ResultData deliver(String codeId) {
 		ResultData result = new ResultData();
-		if(StringUtils.isEmpty(codeId)) {
+		if (StringUtils.isEmpty(codeId)) {
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
 			result.setDescription("code id is neccessary for deliver action");
 			return result;
@@ -226,7 +230,7 @@ public class QRCodeController {
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("codeId", codeId);
 		ResultData response = qRCodeService.query(condition);
-		if(response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
 			result.setDescription("code id: " + codeId + " is invalid");
 			return result;
@@ -235,7 +239,7 @@ public class QRCodeController {
 		code.setCodeId(codeId);
 		code.setDelivered(true);
 		response = qRCodeService.deliver(code);
-		if(response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
 			result.setDescription("code id: " + codeId + " deliver failed");
 			return result;

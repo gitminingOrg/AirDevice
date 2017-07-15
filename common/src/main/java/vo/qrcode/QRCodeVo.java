@@ -1,5 +1,7 @@
 package vo.qrcode;
 
+import java.sql.Timestamp;
+
 public class QRCodeVo {
 	private String codeId;
 	
@@ -10,6 +12,8 @@ public class QRCodeVo {
 	private String path;
 	
 	private boolean codeDelivered;
+	
+	private Timestamp createAt;
 
 	public String getCodeId() {
 		return codeId;
@@ -49,5 +53,13 @@ public class QRCodeVo {
 
 	public void setCodeDelivered(boolean codeDelivered) {
 		this.codeDelivered = codeDelivered;
+	}
+
+	public Timestamp getCreateAt() {
+		return createAt;
+	}
+
+	public void setCreateAt(Timestamp createAt) {
+		this.createAt = createAt;
 	}
 }

@@ -7,10 +7,11 @@
 		<result property="value" column="code_value" />
 		<result property="path" column="code_path" />
 		<result property="codeDelivered" column="code_delivered" />
+		<result property="createAt" column="create_time" />
 	</resultMap>
 
 	<select id="query" parameterType="java.util.Map" resultMap="qRCodeVo">
-		select code_id, batch_no, code_value, code_path, code_delivered
+		select code_id, batch_no, code_value, code_path, code_delivered, create_time
 		from qrcode
 		where 1 = 1
 		<if test="codeId != null">
@@ -28,7 +29,10 @@
 		<if test="batchNo != null">
 			and batch_no = #{batchNo}
 		</if>
-		order by create_time desc, batch_no, code_delivered asc, code_value
+		<if test="search != null">
+			and (model_id like #{search} or value like #{search} or batchNo like #{search})
+		</if>
+		order by create_time desc, batch_no asc, code_delivered asc, code_value asc
 	</select>
 
 	<insert id="insert" parameterType="model.qrcode.QRCode"
