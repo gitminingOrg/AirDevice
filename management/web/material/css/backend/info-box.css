@@ -1,0 +1,69 @@
+div .info-box {
+  display: block;
+  min-height: 100px;
+  background: #fff;
+  width: 100%;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  margin-bottom: 25px; }
+
+div div .info-box:last-child {
+  margin-bottom: 0; }
+
+div .info-box-icon {
+  border-radius: 2px 0;
+  display: block;
+  float: left;
+  height: 100px;
+  width: 100px;
+  text-align: center;
+  font-size: 50px;
+  line-height: 100px;
+  background: rgba(0, 0, 0, 0.2); }
+
+div .info-box-content {
+  padding: 15px 10px;
+  margin-left: 100px; }
+
+div .info-box-text {
+  display: block;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  margin-bottom: 12px; }
+
+div .info-box-number {
+  display: block;
+  font-weight: bold;
+  font-size: 20px; }
+
+div .alert {
+  padding: 0; }
+
+div span .icon-item {
+  text-align: center;
+  box-sizing: border-box;
+  line-height: 100px; }
+
+div .bg-green {
+  background-color: #00a65a !important; }
+
+div .bg-yellow {
+  background-color: #f39c12 !important; }
+
+div .bg-aqua {
+  background-color: #00c0ef !important; }
+
+div .bg-red {
+  background-color: #dd4b39 !important; }
+
+div .bg-macaron-red {
+  background-color: #d87a80 !important; }
+
+div .bg-macaron-yellow {
+  background-color: #ffb980 !important; }
+
+div .bg-macaron-blue {
+  background-color: #5ab1ef !important; }

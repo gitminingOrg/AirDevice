@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.goods.model">
+	<resultMap id="goodsModelVo" type="vo.goods.GoodsModelVo">
+		<result property="modelId" column="model_id" />
+		<result property="goodsId" column="goods_id" />
+		<result property="goodsName" column="goods_name" />
+		<result property="modelCode" column="model_code" />
+		<result property="modelName" column="model_name" />
+		<result property="modelDescription" column="model_description" />
+	</resultMap>
+	
+	<insert id="insert" parameterType="model.goods.GoodsModel" useGeneratedKeys="false">
+		insert into goods_model(model_id, goods_id, model_code, model_name, model_description, block_flag, create_time)
+		values(#{modelId}, #{goods.goodsId}, #{modelCode}, #{modelName}, #{modelDescription}, #{blockFlag}, #{createAt});
+	</insert>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="goodsModelVo">
+		select goods_id, goods_name, model_id, model_code, model_name, model_description
+		from goods_model_view
+		where 1 = 1
+		<if test="goodsId != null">
+			and goods_id = #{goodsId}
+		</if>
+		<if test="modelId != null">
+			and model_id = #{modelId}
+		</if>
+		<if test="modelCode != null">
+			and model_code = #{modelCode}
+		</if>
+	</select>
+</mapper>

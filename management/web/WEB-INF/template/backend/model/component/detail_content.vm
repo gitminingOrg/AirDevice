@@ -1,0 +1,73 @@
+<div id="page-main">
+	<div id="page-main-wrapper">
+		<div id="page-header" class="clearfix">
+			<div id="page-header-wrapper" class="clearfix">
+				<div id="page-breadcrumb-wrapper">
+                    <div id="page-breadcrumb">
+            	        <a href="javascript:;">
+            	        <i class="glyph-icon icon-dashboard"></i>
+                            首页
+                        </a>
+                        <a href="javascript:;">
+                        <i class="glyph-icon icon-laptop"></i>
+                            型号
+                        </a>
+                        <span class="current">
+                            型号概览
+                        </span>
+                    </div>
+             	</div>
+			</div>
+		</div>
+		<div id="page-breadcrumb-wrapper">
+        	<div id="page-breadcrumb">
+            	<a href="javascript:;">
+                	<i class="glyph-icon icon-dashboard"></i>
+                    	首页
+                </a>
+                <a href="javascript:;">
+                	<i class="glyph-icon icon-laptop"></i>
+                    	型号
+                </a>
+                <span class="current">
+                        型号概览
+                </span>
+            </div>
+       	</div>
+        <div id="page-content">
+            <div class="content-box mrg25B">
+                <h3 class="content-box-header primary-bg">
+                    <span>型号: ${detail.modelCode}</span>
+                </h3>
+                <div class="content-box-wrapper">
+                    <div class="col-md-10 center-margin">
+                        <div class="form-row">
+                            <div class="form-label col-md-2">
+                                <label>
+                                    商品名称
+                                </label>
+                            </div>
+                            <div class="form-input col-md-10">
+                                <input type="text" value="${detail.goodsName}" disabled="disabled">
+                            </div>
+                        </div>
+                        #foreach($item in ${detail.config})
+                        <div class="form-row">
+                            <div class="form-label col-md-2">
+                                <label>
+                                    ${item.componentName}
+                                </label>
+                            </div>
+                            <div class="form-input col-md-10">
+                                <input type="text" value="${item.supplierName}" disabled="disabled">
+                            </div>
+                        </div>
+                        #end
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+<script>
+</script>

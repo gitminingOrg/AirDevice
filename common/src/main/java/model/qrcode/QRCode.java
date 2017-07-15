@@ -14,11 +14,15 @@ public class QRCode extends Entity{
 	
     private AbstractGoods goods;
     
+    private String modelId;
+    
     private String value;
     
     private String path;
     
     private String url;
+    
+    private boolean delivered;
     
     private boolean occupied;
     
@@ -26,6 +30,7 @@ public class QRCode extends Entity{
     	super();
     	this.path = new StringBuffer(DEFAULT_PATH).append(codeId).append(DEFAULT_FORMAT).toString();
     	this.occupied = false;
+    	this.delivered = false;
     }
     
     public QRCode(String batchNo, String value) {
@@ -39,10 +44,11 @@ public class QRCode extends Entity{
     	this.goods = goods;
     }
     
-    public QRCode(String batchNo, String value, String path, String url, AbstractGoods goods) {
+    public QRCode(String batchNo, String value, String path, String url, AbstractGoods goods, String modelId) {
         this(batchNo, value, goods);
         this.path = path;
         this.url = url;
+        this.modelId = modelId;
     }
 
 	public String getCodeId() {
@@ -70,6 +76,14 @@ public class QRCode extends Entity{
 		this.goods = goods;
 	}
 
+	public String getModelId() {
+		return modelId;
+	}
+
+	public void setModelId(String modelId) {
+		this.modelId = modelId;
+	}
+
 	public String getValue() {
 		return value;
 	}
@@ -92,6 +106,14 @@ public class QRCode extends Entity{
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public boolean isDelivered() {
+		return delivered;
+	}
+
+	public void setDelivered(boolean delivered) {
+		this.delivered = delivered;
 	}
 
 	public boolean isOccupied() {

@@ -1,0 +1,171 @@
+<div id="page-main">
+	<div id="page-main-wrapper">
+        <div id="page-header" class="clearfix">
+            <div id="page-header-wrapper" class="clearfix">
+                <div id="page-breadcrumb-wrapper">
+                    <div id="page-breadcrumb">
+                        <a href="javascript:;">
+                        <i class="glyph-icon icon-dashboard"></i>
+                            首页
+                        </a>
+                        <a href="javascript:;">
+                        <i class="glyph-icon icon-laptop"></i>
+                            型号
+                        </a>
+                        <span class="current">
+                            型号概览
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="page-breadcrumb-wrapper">
+            <div id="page-breadcrumb">
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-dashboard"></i>
+                        首页
+                </a>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-laptop"></i>
+                        型号
+                </a>
+                <span class="current">
+                        型号概览
+                </span>
+            </div>
+        </div>
+        <div id="page-content">
+        	<div class="infobox warning-bg">
+                <p><i class="glyph-icon icon-exclamation mrg10R"></i> 若您需要为设备添加新的型号，请单击这里进行添加 <a href="javascript:;" class="white-modal-80" title="添加部件"> 添加型号 </a>.</p>
+            </div>
+            <div class="hide" id="white-modal-80" title="添加型号">
+                <div class="pad10A">
+                    <div class="col-md-12 center-margin">
+                            <div class="form-row">
+                                <div class="form-label col-md-2">
+                                    <label for="goods-name">商品名称</label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                        <select id="goods-name"></select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                            	<div class="form-label col-md-2">
+                                    <label for="model-code">型号代码</label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                        <input id="model-code" type="text" autoCompelete="off"></input>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                            	<div class="form-label col-md-2">
+                                    <label for="model-name">型号名称</label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                        <input id="model-name" type="text" autoCompelete="off"></input>
+                                </div>
+                            </div>
+                            #if(${component})
+                            #foreach($item in ${component})
+                            <div class="form-row">
+                            	<div class="form-label col-md-2">
+                                    <label for="${item.itemId}">${item.itemTitle}</label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                        <input id="${item.itemId}" class="component-config" type="text" autoCompelete="off"></input>
+                                </div>
+                            </div>
+                           	#end
+                            #end
+                            <div class="form-row">
+                                <button class="btn medium bg-blue-alt" id="confirm-add">
+                                    <span class="button-content">添加</span>
+                                </button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+<script>
+	$(document).ready(function() {
+		$("#confirm-add").on('click', function(result) {
+			var param = {};
+			$(".component-config").each(function() {
+				var id = $(this).attr("id");
+				var value = $(this).val();
+				if(not_null(value) && not_null(id)){
+					var express = "param." + id + "='" + value + "'";
+					eval(express);
+				}
+			})
+			var goods_id = $("#goods-name").val();
+			var model_code = $("#model-code").val();
+			var model_name = $("#model-name").val();
+			var url = "${path.concat('/model/create')}";
+			$.post(url, {goodsId: goods_id, modelCode: model_code, modelName: model_name, param: JSON.stringify(param)}, function(result) {
+				if(result.responseCode == "RESPONSE_OK") {
+					window.location.href = "${path.concat('/model/overview')}"
+				}
+			})
+		});
+	})
+
+	url = "${path.concat('/goods/list/all')}";
+	$.get(url, function(result){
+		if(result.responseCode == "RESPONSE_OK") {
+			data = result.data;
+			if(data.length == 1 || data.length == 2) {
+				row = $("<div class='row'></div>");
+				var wrapper = new Array();
+				for(i in data) {
+					var col_md = $("<div class='col-md-6'></div>");
+					var content_box = $("<div class='content-box mrg258'></div>");
+					var content_header = $("<div class='content-box-header primary-bg'></div>");
+					var header_span = $("<span></span>");
+					header_span.text(data[i].goodsName);
+					wrapper[i] = $("<div class='content-box-wrapper'></div>");
+					wrapper[i].attr("id", "wrapper-" + data[i].goodsId);
+					init_model(data[i].goodsId);
+					row.append(col_md.append(content_box.append(content_header.append(header_span)).append(wrapper[i])));
+					var option_item = $("<option></option>").text(data[i].goodsName);
+					option_item.attr("value", data[i].goodsId);
+					$("#goods-name").append(option_item);
+				}
+				$("#page-content").append(row);
+			}
+		}
+	});
+	
+	function init_model(goods_id) {
+		var url = "${path.concat('/goods/')}" + data[i].goodsId + "/model";
+		$.get(url, function(result) {
+			if(result.responseCode == "RESPONSE_OK") {
+				var available_model = result.data;
+				for(index in available_model) {
+					var model = $("<a class='btn medium bg-black'></a>");
+					model.attr("href", "${path.concat('/model/')}" + available_model[index].modelId);
+					var button_content = $("<span class='button-content'></span>").text(available_model[index].modelCode);
+					button_content.attr("data_id", available_model[index].modelId);
+					var id = "wrapper-" + goods_id; 
+					$("#" + id).append(model.append(button_content)).append("&nbsp;");
+					$(".button-content").on("click", function() {
+						var model_id = $(this).attr("data_id");
+					})	
+				}
+			} else {
+				var model = $("<span>暂未设置型号</span>");
+				var id = "wrapper-" + goods_id; 
+				$("#" + id).append(model.append(button_content));	
+			}
+		})
+	}
+
+    function not_null(item) {
+        if (item == null || item == "" || item.length <= 0) {
+            return false;
+        }
+        return true;
+    }
+</script>

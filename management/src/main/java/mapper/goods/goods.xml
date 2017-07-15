@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.goods">
+	<resultMap id="consumerGoodsVo" type="vo.goods.ConsumerGoodsVo">
+		<result property="goodsId" column="goods_id" />
+		<result property="goodsName" column="goods_name" />
+		<result property="goodsPrice" column="goods_price" />
+		<result property="goodsType" column="goods_type" typeHandler="model.handler.goods.TypeHandler" />
+		<result property="bonus" column="goods_bonus" />
+		<result property="blockFlag" column="block_flag" />
+		<result property="createAt" column="create_time" />
+	</resultMap>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="consumerGoodsVo">
+		select goods_id, goods_name, goods_price, goods_type, goods_bonus, block_flag, create_time
+		from goods
+		where 1 = 1
+		<if test="goodsId != null">
+			and goods_id = #{goodsId}
+		</if>
+		<if test="blockFlag != null">
+			and block_flag = #{blockFlag}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="model.goods.RealGoods" useGeneratedKeys="false">
+		insert into goods(goods_id, goods_name, goods_nickname, goods_price, goods_type, goods_bonus, block_flag, create_time)
+		values (#{goodsId}, #{goodsName}, #{goodsNickname}, #{goodsPrice}, #{type, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{bonus}, #{blockFlag}, #{createAt})
+	</insert>
+</mapper>

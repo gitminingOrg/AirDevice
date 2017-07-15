@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.qrcode">
+	<resultMap id="qRCodeVo" type="vo.qrcode.QRCodeVo">
+		<result property="codeId" column="code_id" />
+		<result property="batchNo" column="batch_no" />
+		<result property="value" column="code_value" />
+		<result property="path" column="code_path" />
+		<result property="codeDelivered" column="code_delivered" />
+	</resultMap>
+
+	<select id="query" parameterType="java.util.Map" resultMap="qRCodeVo">
+		select code_id, batch_no, code_value, code_path, code_delivered
+		from qrcode
+		where 1 = 1
+		<if test="codeId != null">
+			and code_id = #{codeId}
+		</if>
+		<if test="value != null">
+			and code_value = #{value}
+		</if>
+		<if test="modelId != null">
+			and model_id = #{modelId}
+		</if>
+		<if test="goodsId != null">
+			and goods_id = #{goodsId}
+		</if>
+		<if test="batchNo != null">
+			and batch_no = #{batchNo}
+		</if>
+		order by create_time desc, batch_no, code_delivered asc, code_value
+	</select>
+
+	<insert id="insert" parameterType="model.qrcode.QRCode"
+		useGeneratedKeys="false">
+		insert into qrcode(code_id, goods_id, model_id, batch_no, code_value, code_path, code_url, code_occupied, block_flag, create_time)
+		values(#{codeId}, #{goods.goodsId}, #{modelId}, #{batchNo}, #{value}, #{path}, #{url}, #{occupied}, #{blockFlag}, #{createAt})
+	</insert>
+	
+	<update id="update" parameterType="model.qrcode.QRCode">
+		update qrcode
+		set code_delivered = true
+		where code_id = #{codeId}
+	</update>
+</mapper>

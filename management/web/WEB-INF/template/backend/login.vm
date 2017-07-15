@@ -1,0 +1,128 @@
+#parse("/common/util.vm")
+<html lang="zh_CN">
+<head>
+    #parse("/backend/init/login_init.vm")
+    <title>登录</title>
+</head>
+<body>
+	<div id="login-page" class="mrg25B">
+        <div id="page-header" class="clearfix">
+        	<div id="page-header-wrapper" class="clearfix">
+            	<div id="header-logo"> 果麦科技 <i class="opacity-80">v0.01</i>
+					<a href="#" class="tooltip-button" data-placement="bottom" id="close-sidebar">
+                    	<i class="glyph-icon icon-align-justify"></i>
+                    </a>
+                    <a href="#" class="tooltip-button hidden" data-placement="bottom" id="rm-close-sidebar">
+                    	<i class="glyph-icon icon-align-justify"></i>
+                    </a>
+                    <a href="#" class="tooltip-button hidden" id="responsive-open-menu">
+                    	<i class="glyph-icon icon-align-justify"></i>
+                    </a>
+                </div>
+			</div>
+        </div>
+        
+        <div class="pad20A">
+            <div class="row">
+                <div class="clear"></div>
+                <form id="login_form" class="col-md-3 center-margin form-vertical mrg25T">
+                    <div id="login-form" class="content-box drop-shadow">
+                        <h3 class="content-box-header ui-state-default">
+                            <div class="glyph-icon icon-separator">
+                                <i class="glyph-icon icon-user"></i>
+                            </div>
+                            <span>后台管理登录</span>
+                        </h3>
+                        <div class="content-box-wrapper pad20A pad0B">
+                            <div class="form-row">
+                                <div class="form-label col-md-2">
+                                    <label for="name">
+                                        用户名:
+                                    </label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                    <div class="form-input-icon">
+                                        <i class="glyph-icon icon-envelope-o ui-state-default"></i>
+                                        <input id="name" name="username" placeholder="请输入您的管理员账号" type="text">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-label col-md-2">
+                                    <label for="password">
+                                        密码:
+                                    </label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                    <div class="form-input-icon">
+                                        <i class="glyph-icon icon-unlock-alt ui-state-default"></i>
+                                        <input id="password" name="password" type="password" placeholder="请输入您的管理员密码" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="button-pane">
+                            <button type="submit" class="btn large primary-bg text-transform-upr font-bold font-size-11 radius-all-4" id="login_btn">
+                                <span class="button-content">
+                                    登录
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="page-footer-wrapper" class="login-footer">
+            <div id="page-footer">
+        	    版权所有 &copy; 江苏果麦环保科技有限公司
+            </div>
+        </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        $("#name").bind("input propertychange", function () {
+            if (login_validate()) {
+                $("#login_btn").removeClass("disabled");
+                $("#login_btn").removeAttr("disabled");
+            } else {
+                $("#login_btn").addClass("disabled");
+                $("#login_btn").attr("disabled", "disabled");
+            }
+        });
+        $("#password").bind("input propertychange", function () {
+            if (login_validate()) {
+                $("#login_btn").removeClass("disabled");
+                $("#login_btn").removeAttr("disabled");
+            } else {
+                $("#login_btn").addClass("disabled");
+                $("#login_btn").attr("disabled", "disabled");
+            }
+        });
+    });
+
+    $("#login_btn").click(function () {
+        $("#login_form").attr("action", "${path.concat('/login')}");
+        $("#login_form").attr("method", "post");
+        $("#login_form").submit();
+    });
+
+    function login_validate() {
+        var username = $("#name").val();
+        var password = $("#password").val();
+        if (not_null(username) && not_null(password)) {
+            return true;
+        }
+        return false;
+    }
+
+    function not_null(item) {
+        if (item == null || item == "" || item.length <= 0) {
+            return false;
+        }
+        return true;
+    }
+</script>
+</html>

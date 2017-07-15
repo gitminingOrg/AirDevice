@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="thumbnail">
+	<resultMap id="thumbnailVo" type="vo.goods.ThumbnailVo">
+		<result property="thumbnailId" column="thumbnail_id"/>
+		<result property="goodsId" column="goods_id"/>
+		<result property="path" column="thumbnail_path"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="model.goods.Thumbnail" useGeneratedKeys="false">
+		insert into goods_thumbnail(thumbnail_id, goods_id, thumbnail_path, block_flag, create_time)
+		values (#{thumbnailId}, #{goodsId}, #{path}, #{blockFlag}, #{createAt})
+	</insert>
+	
+	<select id="select" parameterType="java.util.Map" resultMap="thumbnailVo">
+		select thumbnail_id, goods_id, thumbnail_path
+		from goods_thumbnail
+		where block_flag = false
+		<if test="thumbnailId != null">
+			and thumbnail_id = #{thumbnailId}
+		</if>
+		<if test="goodsId != null">
+			and goods_id = #{goodsId}
+		</if>
+		<if test="type != null">
+			and cover_flag = #{type}
+		</if>
+	</select>
+	
+</mapper>

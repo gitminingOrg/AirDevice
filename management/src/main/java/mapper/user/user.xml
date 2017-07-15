@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.user">
+	<resultMap id="userVo" type="vo.user.UserVo">
+		<result property="userId" column="manager_id" />
+		<result property="username" column="manager_username" />
+		<result property="password" column="manager_password" />
+		<association property="roles" column="userId = manager_id" select="rolequery" />
+	</resultMap>
+	
+	<select id="rolequery" parameterType="java.util.Map" resultType="java.lang.String">
+		select r.role_name
+		from role r, role_assign a
+		where a.user_id = #{userId}
+		and r.role_id = a.role_id
+	</select>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="userVo">
+		select manager_id, manager_username, manager_password
+		from manager
+		where 1 = 1
+		<if test="userId != null">
+			and manager_id = #{userId}
+		</if>
+		<if test="username != null">
+			and manager_username = #{username}
+		</if>
+		<if test="blockFlag != null">
+			and block_flag = #{blockFlag}
+		</if>
+	</select>
+</mapper>

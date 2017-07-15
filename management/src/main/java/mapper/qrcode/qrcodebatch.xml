@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.qrcode.batch">
+	<resultMap id="batchVo" type="vo.goods.BatchVo">
+		<result property="batchNo" column="batch_no" />
+		<result property="num" column="total_num" />
+	</resultMap>
+
+	<select id="query" parameterType="java.util.Map" resultMap="batchVo">
+		select batch_no, sum(code_id)
+		from qrcode
+		where 1 = 1
+		<if test="batchNo != null">
+			and batch_no = #{batchNo}
+		</if>
+		group by batch_no
+	</select>
+</mapper>

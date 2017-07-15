@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.goods.component">
+	<resultMap id="goodsComponentVo" type="vo.goods.GoodsComponentVo">
+		<result property="itemId" column="item_id" />
+		<result property="itemTitle" column="item_title" />
+		<result property="blockFlag" column="block_flag" />
+	</resultMap>
+
+	<select id="query" parameterType="java.util.Map" resultMap="goodsComponentVo">
+		select item_id, item_title, block_flag
+		from component_list
+		where 1 = 1
+		<if test="itemId != null">
+			and item_id = #{itemId}
+		</if>
+		<if test="itemTitle != null">
+			and item_title = #{itemTitle}
+		</if>
+		<if test="blockFlag != null">
+			and block_flag = #{blockFlag}
+		</if>
+	</select>
+	
+	<insert id="insert" parameterType="model.goods.Component" useGeneratedKeys="false">
+		insert into component_list(item_id, item_title, block_flag, create_time)
+		values(#{componentId}, #{componentName}, #{blockFlag}, #{createAt})
+	</insert>
+</mapper>

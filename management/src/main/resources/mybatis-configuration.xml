@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<mappers>
+		<mapper resource="mapper/user/user.xml" />
+		<mapper resource="mapper/goods/goods.xml" />
+		<mapper resource="mapper/goods/thumbnail.xml" />
+		<mapper resource="mapper/goods/goodsmodel.xml" />
+		<mapper resource="mapper/qrcode/qrcode.xml" />
+		<mapper resource="mapper/qrcode/qrcodebatch.xml" />
+		<mapper resource="mapper/goods/component.xml" />
+		<mapper resource="mapper/goods/modelcomponent.xml" />
+	</mappers>
+</configuration>

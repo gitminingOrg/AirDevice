@@ -13,6 +13,19 @@ public class GoodsModel extends Entity{
 	
 	private String modelDescription;
 
+	public GoodsModel() {
+		super();
+	}
+	
+	public GoodsModel(String goodsId, String modelCode, String modelName) {
+		this();
+		AbstractGoods goods = new RealGoods();
+		goods.setGoodsId(goodsId);
+		this.goods = goods;
+		this.modelCode = modelCode;
+		this.modelName = modelName;
+	}
+	
 	public String getModelId() {
 		return modelId;
 	}

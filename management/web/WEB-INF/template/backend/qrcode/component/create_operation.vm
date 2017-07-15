@@ -1,0 +1,171 @@
+<div id="page-main">
+	<div id="page-main-wrapper">
+		<div id="page-header" class="clearfix">
+			<div id="page-header-wrapper" class="clearfix">
+				<div id="page-breadcrumb-wrapper">
+                	<div id="page-breadcrumb">
+                    	<a href="javascript:;">
+                        	<i class="glyph-icon icon-dashboard"></i>
+                                首页
+                        </a>
+                        <a href="javascript:;">
+                            <i class="glyph-icon icon-laptop"></i>
+                            二维码
+                        </a>
+                        <span class="current">
+                            二维码生成
+                        </span>
+                    </div>
+                </div>
+			</div>
+		</div>
+        <div id="page-breadcrumb-wrapper">
+            <div id="page-breadcrumb">
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-dashboard"></i>
+                        首页
+                </a>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-laptop"></i>
+                    二维码
+                </a>
+                <span class="current">
+                    二维码生成
+                </span>
+            </div>
+        </div>
+        <div id="page-content">
+            <div id="qr-generate-form" class="col-md-10 center-margin">
+            <div id="config-part">
+                <div class="form-row">
+                    <div class="form-label col-md-2">
+                        <label for="goods_list">
+                            请选择设备:
+                        </label>
+                    </div>
+                    <div class="form-input col-md-10">
+                        <select id="goods_list" name="goodsId"></select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label col-md-2">
+                        <label for="model_list">
+                            请选择型号:
+                        </label>
+                    </div>
+                    <div class="form-input col-md-10">
+                        <select id="model_list" name="modelId"></select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label col-md-2">
+                        <label for="batch_no">
+                            请输入批号:
+                        </label>
+                    </div>
+                    <div class="form-input col-md-10">
+                        <input placeholder="该批次编号默认为${batchNo}" type="text" value="${batchNo}" name="batchNo" id="batch_no">
+                    </div>
+                </div>
+                <div class="form-row pad0B">
+                    <div class="form-label col-md-2">
+                        <label for="qr_num">
+                            请输入生成数量:
+                        </label>
+                    </div>
+                    <div class="form-input col-md-10">
+                        <input placeholder="该批号中所含二维码的数量" type="text" name="num" id="qr_num">
+                    </div>
+                </div>
+            </div>
+            <div id="success_msg" class="infobox success-bg" style="display:none;">
+                <h4 class="infobox-title"></h4>
+            </div>
+            <div class="content">
+            </div>
+            <div class="actionBar">
+                <div class="msgBox">
+                </div>
+                <div class="loader">Loading</div>
+                <button id="confirm-generate" class="buttonNext btn medium primary-bg">
+                    <span class="button-content">生成</span>
+                </button>
+                <label id="file-generating" class="buttonNext btn medium primary-bg" style="display:none;">
+                    <span class="button-content">文件生成中</span>
+                </label>
+                <a id="confirm-download" class="buttonNext btn medium primary-bg" style="display:none; float:none;">
+                    <span class="button-content">下载</span>
+                </a>
+            </div>
+        </div>
+	</div>
+</div>
+<script>
+    $(document).ready(function() {
+        var list_url = "${path.concat('/goods/list/all')}"
+        $.get(list_url, function(result) {
+            if(result.responseCode == "RESPONSE_OK") {
+                var list = result.data;
+                for(index in list) {
+                    var item = $("<option></option>").text(list[index].goodsName);
+                    item.attr("value", list[index].goodsId);
+                    if(index == 0) {
+                        item.attr("selected", "selected");
+                    }
+                    $("#goods_list").append(item);
+                }
+            }
+            refresh_model();
+        });
+
+        $("#confirm-generate").on('click', function() {
+            var goodsId = $("#goods_list").val();
+            var modelId = $("#model_list").val();
+            var batchNo = $("#batch_no").val();
+            var num = $("#qr_num").val();
+            var url = "${path.concat('/qrcode/create')}";
+            $("#config-part").hide();
+            $("#confirm-generate").hide();
+            $("#file-generating").show();
+            $.post(url, {goodsId: goodsId, modelId: modelId, batchNo: batchNo, num: num}, function(result) {
+                if(result.responseCode == "RESPONSE_OK") {
+                    $("#qr_num").val("");
+                    var title = "批次" + batchNo + "中的" + num + "个二维码生成成功，请点击下方按钮下载";
+                    $(".infobox-title").text(title);
+                    $("#success_msg").show();
+                    $("#file-generating").hide();
+                    $("#confirm-download").show();
+                    $("#confirm-download").attr("href", "${path.concat('/qrcode/download/')}" + result.data);
+                }else {
+                    $("#confirm-generate").show();
+                }
+            })
+        });
+
+        $("#goods_list").on('change', function() {
+            $("#model_list").empty();
+            refresh_model();
+        })
+    })
+
+    function refresh_model() {
+        var goodsId = $("#goods_list").val();
+            var model4goodsurl = "${path.concat('/model/')}" + goodsId + "/list";
+            $.get(model4goodsurl, function(result) {
+                if(result.responseCode == "RESPONSE_OK") {
+                    var model_list = result.data;
+                    for(modelindex in model_list) {
+                        var item = $("<option></option>").text(model_list[modelindex].modelCode + "-" + model_list[modelindex].modelName);
+                        item.attr("value", model_list[modelindex].modelId);
+                        if(index == 0) {
+                            item.attr("selected", "selected");
+                        }
+                        $("#model_list").append(item);
+                    }
+                } else {
+                    var item = $("<option></option>").text("该设备尚未添加任何型号");
+                    $("#model_list").append(item);
+                }
+        });
+    }
+</script>

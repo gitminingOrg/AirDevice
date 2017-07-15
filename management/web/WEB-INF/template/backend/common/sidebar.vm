@@ -1,0 +1,84 @@
+<div id="page-sidebar">
+	<div id="header-logo">
+		果麦科技
+        	<a href="javascript:;" class="tooltip-button" data-placement="bottom" title="Close sidebar" id="close-sidebar">
+            	<i class="glyph-icon icon-align-justify"></i>
+            </a>
+            <a href="javascript:;" class="tooltip-button hidden" data-placement="bottom" title="Open sidebar" id="rm-close-sidebar">
+                <i class="glyph-icon icon-align-justify"></i>
+            </a>
+            <a href="javascript:;" class="tooltip-button hidden" title="Navigation Menu" id="responsive-open-menu">
+                <i class="glyph-icon icon-align-justify"></i>
+            </a>
+    </div>
+	<div id="sidebar-menu" class="scrollable-content">
+    	<ul>
+        	<li>
+	            <a href="${path.concat('/dashboard')}">
+	            	<i class="glyph-icon icon-dashboard"></i>
+	                首页
+	            </a>
+            </li>
+            <li>
+            	<a href="javascript:;">
+                	<i class="glyph-icon icon-code"></i>
+                    二维码
+                </a>
+                <ul>
+                	<li>
+                    	<a href="${path.concat('/qrcode/create')}">
+	                        <i class="glyph-icon icon-chevron-right"></i>
+	                        二维码生成
+                        </a>
+                    </li>
+                    <li>
+                    	<a href="${path.concat('/qrcode/overview')}">
+                        	<i class="glyph-icon icon-chevron-right"></i>
+                           	二维码概览
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+            	<a href="javascript:;">
+                	<i class="glyph-icon icon-tags"></i>
+                    型号
+                </a>
+                <ul>
+                	<li>
+                    	<a href="${path.concat('/model/overview')}">
+	                        <i class="glyph-icon icon-chevron-right"></i>
+	                        型号概览
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${path.concat('/component/overview')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            机器部件
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+            	<a href="javascript:;">
+                	<i class="glyph-icon icon-tags"></i>
+                    设备
+                </a>
+                <ul>
+                	<li>
+                    	<a href="${path.concat('/goods/create')}">
+	                        <i class="glyph-icon icon-chevron-right"></i>
+	                        设备添加
+                        </a>
+                    </li>
+                    <li>
+                    	<a href="${path.concat('/goods/overview')}">
+                        	<i class="glyph-icon icon-chevron-right"></i>
+                           	设备概览
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
