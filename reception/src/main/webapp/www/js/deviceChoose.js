@@ -118,7 +118,7 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
     	  	}else if(provinceName == '天津'){
     	  		cityPinyin = 'tianjin'
     	  	}else if(provinceName == '重庆'){
-    	  		cityPinyin = 'chongqin'
+    	  		cityPinyin = 'chongqing'
     	  	}
 			var data = { city : cityPinyin}
 			$http({  
@@ -134,6 +134,7 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
 		    		$http.get('/reception/own/user/location/'+cityPinyin).success(function(response){
 						
 					})
+					$scope.modal.hide();
 		    	}else{
 		    		$scope.showAlert('城市选择','该城市无相关空气质量数据')
 		    	}
@@ -141,7 +142,7 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
 			
 			
 		  
-	        $scope.modal.hide();
+	        
       }
       var timer = $interval($scope.init, 20 * 1000)
       $scope.$on('$ionicView.beforeLeave',function(){
