@@ -5,6 +5,14 @@ import java.sql.Timestamp;
 import model.goods.Type;
 
 public class ConsumerGoodsVo {
+	private String consumerId;
+	
+	private String consumerName;
+	
+	private String codeId;
+	
+	private String codeValue;
+	
 	private String goodsId;
 	
 	private String goodsName;
@@ -14,8 +22,6 @@ public class ConsumerGoodsVo {
 	private Type goodsType;
 	
 	private int bonus;
-	
-	private boolean blockFlag;
 	
 	private Timestamp createAt;
 
@@ -59,19 +65,43 @@ public class ConsumerGoodsVo {
 		this.bonus = bonus;
 	}
 
-	public boolean isBlockFlag() {
-		return blockFlag;
-	}
-
-	public void setBlockFlag(boolean blockFlag) {
-		this.blockFlag = blockFlag;
-	}
-
 	public Timestamp getCreateAt() {
 		return createAt;
 	}
 
 	public void setCreateAt(Timestamp createAt) {
 		this.createAt = createAt;
+	}
+
+	public String getConsumerId() {
+		return consumerId;
+	}
+
+	public void setConsumerId(String consumerId) {
+		this.consumerId = consumerId;
+	}
+
+	public String getConsumerName() {
+		return consumerName;
+	}
+
+	public void setConsumerName(String consumerName) {
+		this.consumerName = consumerName;
+	}
+
+	public String getCodeId() {
+		return codeId;
+	}
+
+	public void setCodeId(String codeId) {
+		this.codeId = codeId;
+	}
+
+	public String getCodeValue() {
+		return codeValue;
+	}
+
+	public void setCodeValue(String codeValue) {
+		this.codeValue = codeValue;
 	}
 }

@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="management.consumer.consumerGoods">
-	<resultMap id="consumerGoods" type="vo.consumer.ConsumerGoods">
+	<resultMap id="consumerGoods" type="vo.goods.ConsumerGoodsVo">
 		<result property="consumerId" column="consumer_id" />
 		<result property="consumerName" column="consumer_name" />
-		<result property="deviceId" column="device_id" />
+		<result property="codeId" column="code_id" />
+		<result property="codeValue" column="code_value" />
+		<result property="goodsId" column="goods_id" />
 		<result property="goodsName" column="goods_name" />
+		<result property="goodsPrice" column="goods_price" />
+		<result property="bonus" column="goods_bonus" />
+		<result property="createAt" column="create_time" />
 	</resultMap>
 
 	<select id="query" parameterType="java.util.Map" resultMap="consumerGoods">
-		select consumer_id, consumer_name, device_id, goods_name
+		select consumer_id, consumer_name, code_id, code_value, goods_id, goods_name, goods_price, goods_bonus, create_time
 		from consumer_goods_view
 		where 1 = 1
 		<if test="consumerId != null">
@@ -18,11 +23,26 @@
 		<if test="consumerName != null">
 			and consumer_name = #{consumerName}
 		</if>
-		<if test="deviceId != null">
-			and device_id = #{deviceId}
+		<if test="codeId != null">
+			and code_id = #{codeId}
+		</if>
+		<if test="codeValue != null">
+			and code_value = #{codeValue}
+		</if>
+		<if test="goodsId != null">
+			and goods_id = #{goodsId}
 		</if>
 		<if test="goodsName != null">
 			and goods_name = #{goodsName}
+		</if>
+		<if test="goodsPrice != null">
+			and goods_price = #{goodsPrice}
+		</if>
+		<if test="bonus != null">
+			and goods_bonus = #{bonus}
+		</if>
+		<if test="createAt != null">
+			and create_time = #{createAt}
 		</if>
 	</select>
 </mapper>
