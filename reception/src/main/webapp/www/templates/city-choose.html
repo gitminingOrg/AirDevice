@@ -9,7 +9,7 @@
 	  <input style="padding:20px" type="text" ng-model="pinyin" placeholder="城市名称或拼音">
 	  <div ng-repeat="city in cities |filter:pinyin | orderBy: 'cityPinyin' track by $index">
 	  <p ng-if="($index == 0 || city.initial != cities[$index-1].initial) && !pinyin" style="background-color:#EEEEEE;margin:0; padding:0; padding-left:20px"> {{city.initial}}</p>
-      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="" ng-click="choose(city.cityPinyin)">
+      <ion-item class="item-remove-animate item-icon-right" type="item-text-wrap" href="" ng-click="choose(city.cityPinyin,city.provinceName )">
         <h2>{{city.cityName}} <span style="color:#AAAAAA">{{city.provinceName}}</span></h2>
         <i class="icon ion-chevron-right icon-accessory"></i>
       </ion-item>

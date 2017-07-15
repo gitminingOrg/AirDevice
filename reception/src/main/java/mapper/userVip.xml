@@ -217,4 +217,20 @@
 		AND 
 		ud.status = 1
 	</select>
+	
+	<insert id="insertUserLocation" parameterType="java.util.Map">
+		INSERT INTO user_location(user_id, city_pinyin) VALUES(#{userID}, #{cityPinyin})
+	</insert>
+	
+	<update id="disableUserLocation">
+		UPDATE user_location
+		SET status = 0
+		WHERE user_id = #{userID}
+	</update>
+	
+	<select id="selectUserLocation" resultType="String">
+		SELECT city_pinyin 
+		FROM user_location 
+		WHERE user_id = #{userID} AND status = 1
+	</select>
 </mapper>

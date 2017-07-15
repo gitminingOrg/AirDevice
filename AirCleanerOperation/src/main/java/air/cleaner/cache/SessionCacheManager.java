@@ -1,9 +1,11 @@
 package air.cleaner.cache;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.PostConstruct;
+
 import org.apache.mina.core.session.IoSession;
+import org.apache.mina.util.ExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -13,7 +15,11 @@ public class SessionCacheManager {
 	public static final String SESSION_ = "session."; 
 	public static Logger LOG = LoggerFactory.getLogger(SessionCacheManager.class);
 	
-	private Map<String, IoSession> sessionMap = new HashMap<String, IoSession>();
+	private ExpiringMap<String, IoSession> sessionMap = new ExpiringMap<String, IoSession>(10*60);
+	@PostConstruct
+	public void init(){
+		sessionMap.getExpirer().startExpiring();
+	}
 
 	public IoSession getSession(String deviceID){
 		String key = SESSION_+deviceID;

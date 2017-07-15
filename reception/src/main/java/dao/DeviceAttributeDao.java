@@ -8,11 +8,11 @@ import bean.QRCode;
 
 @Repository
 public class DeviceAttributeDao extends BaseDaoImpl{
-	public QRCode getQRCode(String codeID){
-		if(codeID == null){
+	public QRCode getQRCode(String codeValue){
+		if(codeValue == null){
 			return null;
 		}
-		List<QRCode> qrcodes = sqlSession.selectList("deviceAttribute.getOne", codeID);
+		List<QRCode> qrcodes = sqlSession.selectList("deviceAttribute.getOne", codeValue);
 		if(qrcodes == null || qrcodes.size() == 0){
 			return null;
 		}else {
@@ -20,11 +20,11 @@ public class DeviceAttributeDao extends BaseDaoImpl{
 		}
 	}
 	
-	public boolean occupyQRCode(String codeID){
-		if(codeID == null){
+	public boolean occupyQRCode(String codeValue){
+		if(codeValue == null){
 			return false;
 		}else{
-			return sqlSession.update("deviceAttribute.occupyQRCode", codeID) >= 0;
+			return sqlSession.update("deviceAttribute.occupyQRCode", codeValue) >= 0;
 		}
 	}
 }

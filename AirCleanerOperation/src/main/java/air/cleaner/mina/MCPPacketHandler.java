@@ -1,6 +1,7 @@
 package air.cleaner.mina;
 
 import java.net.InetSocketAddress;
+import java.util.Calendar;
 
 import model.HeartbeatMCPPacket;
 import model.MCPPacket;
@@ -47,8 +48,8 @@ public class MCPPacketHandler extends IoHandlerAdapter{
 				HeartbeatMCPPacket packet = (HeartbeatMCPPacket) message;
 				deviceReceiveService.updateCacheCleanerStatus(packet, ip);
 				//send return packet
-				packet.setLEN(new byte[]{0x01});
-				packet.setDATA(new byte[]{0x00});
+				packet.setLEN(new byte[]{0x20});
+				packet.setDATA(currentTimeByte());
 				packet.calCRC();
 				session.write(packet);
 			}else{
@@ -106,5 +107,19 @@ public class MCPPacketHandler extends IoHandlerAdapter{
 			throws Exception {
 		LOG.error("message deliever exception caught", cause);
 		super.exceptionCaught(session, cause);
+	}
+	
+	public byte[] currentTimeByte(){
+		Calendar calendar = Calendar.getInstance();
+		byte[] year = ByteUtil.intToByteArray(calendar.get(Calendar.YEAR) % 100, 1);
+		byte[] month = ByteUtil.intToByteArray(calendar.get(Calendar.MONTH) + 1, 1);
+		byte[] date = ByteUtil.intToByteArray(calendar.get(Calendar.DATE) , 1);
+		byte[] hour = ByteUtil.intToByteArray(calendar.get(Calendar.HOUR_OF_DAY) , 1);
+		byte[] minute = ByteUtil.intToByteArray(calendar.get(Calendar.MINUTE) , 1);
+		byte[] second = ByteUtil.intToByteArray(calendar.get(Calendar.SECOND) , 1);
+		byte[] reserve = new byte[26];
+		
+		byte[] result = ByteUtil.concatAll(year, month, date, hour, minute, second, reserve);
+		return result;
 	}
 }
