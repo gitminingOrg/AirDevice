@@ -98,7 +98,7 @@ public class QRCodeDaoImpl extends BaseDao implements QRCodeDao {
 			condition.put("batchNo", appendix.get("batchNo"));
 		}
 		if (!StringUtils.isEmpty(param.getsSearch())) {
-			condition.put("search", param.getsSearch());
+			condition.put("search", new StringBuffer("%").append(param.getsSearch()).append("%").toString());
 		}
 		ResultData total = query(condition);
 		if (total.getResponseCode() != ResponseCode.RESPONSE_OK) {
