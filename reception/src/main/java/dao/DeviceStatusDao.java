@@ -8,7 +8,6 @@ import model.CleanerStatus;
 
 import org.springframework.stereotype.Repository;
 
-import util.ReceptionConstant;
 import bean.CityAqi;
 import bean.CityList;
 import bean.DeviceAir;

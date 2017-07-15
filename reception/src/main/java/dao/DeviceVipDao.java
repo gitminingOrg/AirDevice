@@ -110,4 +110,11 @@ public class DeviceVipDao extends BaseDaoImpl{
 			return cityList.get(0);
 		}
 	}
+	
+	public boolean updateQRScanTime(String deviceID, String scanTime){
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("deviceID", deviceID);
+		params.put("scanTime", scanTime);
+		return sqlSession.update("userVip.updateQRScanTime", params) >= 0;
+	}
 }

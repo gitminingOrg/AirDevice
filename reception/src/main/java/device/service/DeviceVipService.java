@@ -265,6 +265,9 @@ public class DeviceVipService {
 		}
 		boolean insert =deviceVipDao.insertUserDevice(ud);
 		if(insert){
+			//绑定成功，更新二维码扫码时间
+			String scanTime = TimeUtil.getCurrentTime();
+			deviceVipDao.updateQRScanTime(ud.getDeviceID(), scanTime);
 			return ReturnCode.SUCCESS;
 		}
 		return ReturnCode.FAILURE;

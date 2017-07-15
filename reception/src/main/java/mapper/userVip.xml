@@ -233,4 +233,10 @@
 		FROM user_location 
 		WHERE user_id = #{userID} AND status = 1
 	</select>
+	
+	<update id="updateQRScanTime" parameterType="java.util.Map">
+		UPDATE qrcode 
+		SET scan_time = #{scanTime}
+		WHERE code_value = #{deviceID}
+	</update>
 </mapper>
