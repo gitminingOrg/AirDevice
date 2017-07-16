@@ -61,6 +61,20 @@
             </li>
             <li>
             	<a href="javascript:;">
+                	<i class="glyph-icon icon-table"></i>
+                    用户
+                </a>
+                <ul>
+                	<li>
+                    	<a href="${path.concat('/consumer/overview')}">
+	                        <i class="glyph-icon icon-chevron-right"></i>
+	                        用户设备
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+            	<a href="javascript:;">
                 	<i class="glyph-icon icon-tags"></i>
                     设备
                 </a>

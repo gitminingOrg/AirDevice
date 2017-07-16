@@ -1,5 +1,7 @@
 package model.qrcode;
 
+import java.sql.Timestamp;
+
 import model.Entity;
 import model.goods.AbstractGoods;
 
@@ -25,6 +27,10 @@ public class QRCode extends Entity{
     private boolean delivered;
     
     private boolean occupied;
+    
+    private Timestamp deliverAt;
+    
+    private Timestamp scanAt;
     
     public QRCode() {
     	super();
@@ -122,5 +128,21 @@ public class QRCode extends Entity{
 
 	public void setOccupied(boolean occupied) {
 		this.occupied = occupied;
+	}
+
+	public Timestamp getDeliverAt() {
+		return deliverAt;
+	}
+
+	public void setDeliverAt(Timestamp deliverAt) {
+		this.deliverAt = deliverAt;
+	}
+
+	public Timestamp getScanAt() {
+		return scanAt;
+	}
+
+	public void setScanAt(Timestamp scanAt) {
+		this.scanAt = scanAt;
 	}
 }

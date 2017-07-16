@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -114,7 +115,7 @@ public class QRCodeController {
 				return "";
 			}
 		}
-		response = qRCodeService.query(condition);
+		response = qRCodeService.fetch(condition);
 		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
 			logger.error(response.getDescription());
 		}
@@ -212,6 +213,7 @@ public class QRCodeController {
 			return result;
 		}
 		Map<String, Object> condition = new HashMap<>();
+		condition.put("delivered", false);
 		ResultData response = qRCodeService.fetch(condition, param);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			result = (DataTablePage<QRCodeVo>) response.getData();
@@ -229,7 +231,7 @@ public class QRCodeController {
 		}
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("codeId", codeId);
-		ResultData response = qRCodeService.query(condition);
+		ResultData response = qRCodeService.fetch(condition);
 		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
 			result.setDescription("code id: " + codeId + " is invalid");
@@ -238,6 +240,7 @@ public class QRCodeController {
 		QRCode code = new QRCode();
 		code.setCodeId(codeId);
 		code.setDelivered(true);
+		code.setDeliverAt(new Timestamp(System.currentTimeMillis()));
 		response = qRCodeService.deliver(code);
 		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -246,5 +249,51 @@ public class QRCodeController {
 		}
 		result.setData(code);
 		return result;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value="/deliver/range")
+	public ModelAndView deliver(String batchNo, String fromValue, String endValue) {
+		ModelAndView view = new ModelAndView();
+		if(StringUtils.isEmpty(batchNo) || StringUtils.isEmpty(fromValue) || StringUtils.isEmpty(endValue)) {
+			view.setViewName("redirect:/qrcode/overview");
+			return view;
+		}
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("batchNo", batchNo.trim());
+		ResultData response = qRCodeService.fetch(condition);
+		if(response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+			view.setViewName("redirect:/qrcode/overview");
+			return view;
+		}
+		List<QRCodeVo> list = (List<QRCodeVo>)response.getData();
+		for(int i = 0; i < list.size(); i ++) {
+			QRCodeVo current = list.get(i);
+			if(!current.getValue().equals(fromValue.trim())) {
+				list.remove(i);
+				i --;
+			} else {
+				break;
+			}
+		}
+		for(int i = list.size() - 1; i >= 0; i --) {
+			QRCodeVo current = list.get(i);
+			if(!current.getValue().equals(endValue.trim())) {
+				list.remove(i);
+			} else {
+				break;
+			}
+		}
+		for(QRCodeVo item : list) {
+			QRCode code = new QRCode();
+			code.setCodeId(item.getCodeId());
+			code.setDelivered(true);
+			code.setDeliverAt(new Timestamp(System.currentTimeMillis()));
+			response = qRCodeService.deliver(code);
+			if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+				logger.error("deliver qrcode error. code id: " + item.getCodeId());
+			}
+		}
+		view.setViewName("redirect:/qrcode/overview");
+		return view;
 	}
 }

@@ -23,6 +23,8 @@ public class ConsumerGoodsVo {
 	
 	private int bonus;
 	
+	private boolean blockFlag;
+	
 	private Timestamp createAt;
 
 	public String getGoodsId() {
@@ -104,4 +106,13 @@ public class ConsumerGoodsVo {
 	public void setCodeValue(String codeValue) {
 		this.codeValue = codeValue;
 	}
+
+	public boolean isBlockFlag() {
+		return blockFlag;
+	}
+
+	public void setBlockFlag(boolean blockFlag) {
+		this.blockFlag = blockFlag;
+	}
+	
 }

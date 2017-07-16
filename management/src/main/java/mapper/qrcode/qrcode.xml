@@ -29,6 +29,9 @@
 		<if test="batchNo != null">
 			and batch_no = #{batchNo}
 		</if>
+		<if test="delivered != null">
+			and code_delivered = #{delivered}
+		</if>
 		<if test="search != null">
 			and (model_id like #{search} or code_value like #{search} or batch_no like #{search})
 		</if>
@@ -43,7 +46,8 @@
 	
 	<update id="update" parameterType="model.qrcode.QRCode">
 		update qrcode
-		set code_delivered = true
+		set code_delivered = true,
+		deliever_time = #{deliverAt}
 		where code_id = #{codeId}
 	</update>
 </mapper>
