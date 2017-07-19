@@ -26,7 +26,7 @@ public class ClientHandler extends IoHandlerAdapter{
 					((MCPPacket) message).setDATA(ByteUtil.serverToByte("127.0.0.1", 0x14));
 					((MCPPacket) message).calCRC();
 				}else if(cid == 2){
-					((MCPPacket) message).setDATA(ByteUtil.serverToByte("7000", 0x05));
+					((MCPPacket) message).setDATA(ByteUtil.serverToByte("7777", 0x05));
 					((MCPPacket) message).calCRC();
 				}else if(cid == 0xFE){
 					((MCPPacket) message).setDATA(ByteUtil.serverToByte("AS121WE", 0x14));
@@ -39,6 +39,9 @@ public class ClientHandler extends IoHandlerAdapter{
 					((MCPPacket) message).calCRC();
 				}else if (cid == 0xFD) {
 					((MCPPacket) message).setDATA(ByteUtil.intToByteArray(212, 0x01));
+					((MCPPacket) message).calCRC();
+				}else if (cid == 0xFC) {
+					((MCPPacket) message).setDATA(ByteUtil.intToByteArray(366, 0x02));
 					((MCPPacket) message).calCRC();
 				}
 				session.write(message);

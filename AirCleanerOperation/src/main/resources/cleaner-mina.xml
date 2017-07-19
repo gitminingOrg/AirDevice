@@ -32,7 +32,6 @@
 	</bean>
 	<bean id="codecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
 		<constructor-arg>
-<!-- 		<bean class="org.apache.mina.filter.codec.textline.TextLineCodecFactory" /> -->
 			<bean class="air.cleaner.mina.CleanerCodeFactory" />
 		</constructor-arg>
 	</bean>
@@ -49,7 +48,25 @@
 					value-ref="mdcInjectionFilter" />
 				<entry key="codecFilter" value-ref="codecFilter" />
 				<entry key="loggingFilter" value-ref="loggingFilter" />
+<!-- 				<entry key="keepAliveFilter" value-ref="keepAliveFilter" /> -->
 			</map>
 		</property>
 	</bean>
+	
+	<!--心跳检测filter-->
+    <bean id="keepAliveFilter" class="org.apache.mina.filter.keepalive.KeepAliveFilter">
+        <!--构造函数的第一个参数传入自己实现的工厂-->
+        <constructor-arg>
+            <bean class="air.cleaner.mina.CleanerKeepAliveFactory"></bean>
+        </constructor-arg>
+        <!--第二个参数需要的是IdleStatus对象，value值设置为读写空闲-->
+        <constructor-arg type = "org.apache.mina.core.session.IdleStatus" value="BOTH_IDLE" >
+        </constructor-arg>
+        <!--心跳频率，不设置则默认60s  -->
+        <property name="requestInterval" value="60" />
+        <!--心跳超时时间，不设置则默认30s    -->
+        <property name="requestTimeout" value="30" />
+        <!--不设置默认false-->
+        <property name="forwardEvent" value="true" />
+    </bean>
 </beans>

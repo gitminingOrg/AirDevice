@@ -19,6 +19,9 @@ public class DeviceInfo implements Serializable{
 	@Command(id=0x03, name=Constant.HEARTBEAT_GAP,length=0x02)
 	private int heartbeatGap;
 	
+	@Command(id = 0xFC, name = Constant.RUNDAY, length = 0x02)
+	private int runday;	
+	
 	@Command(id = 0xFD, name = Constant.DEVICETYPE, length=0x01)
 	private int deviceType;
 	
@@ -78,6 +81,12 @@ public class DeviceInfo implements Serializable{
 	}
 	public void setDeviceType(int deviceType) {
 		this.deviceType = deviceType;
+	}
+	public int getRunday() {
+		return runday;
+	}
+	public void setRunday(int runday) {
+		this.runday = runday;
 	}
 
 }

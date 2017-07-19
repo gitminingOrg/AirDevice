@@ -10,6 +10,7 @@ import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
 import org.apache.mina.core.service.IoHandlerAdapter;
+import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,6 +110,12 @@ public class MCPPacketHandler extends IoHandlerAdapter{
 		super.exceptionCaught(session, cause);
 	}
 	
+	@Override
+	public void sessionIdle(IoSession session, IdleStatus status)
+			throws Exception {
+		LOG.debug("session idle");
+		super.sessionIdle(session, status);
+	}
 	public byte[] currentTimeByte(){
 		Calendar calendar = Calendar.getInstance();
 		byte[] year = ByteUtil.intToByteArray(calendar.get(Calendar.YEAR) % 100, 1);

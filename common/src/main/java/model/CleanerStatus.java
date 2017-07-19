@@ -21,9 +21,9 @@ public class CleanerStatus implements Serializable{
 	@AQIData(start=0x03,length=1,name=Constant.HUMIDITY)
 	private int humidity;
 	@AQIData(start=0x04,length=2,name=Constant.HCHO)
-	private int HCHO;
+	private int hcho;
 	@AQIData(start=0x06,length=2,name=Constant.CO2)
-	private int CO2;
+	private int co2;
 	
 	@Command(id=0x06,length=2,name=Constant.VELOCITY)
 	@AQIData(start=0x08,length=2,name=Constant.VELOCITY)
@@ -52,6 +52,12 @@ public class CleanerStatus implements Serializable{
 	@Command(id=0x09, name=Constant.CYCLE,length=0x01)
 	@AQIData(start=0x0F,length=1,name=Constant.CYCLE)
 	private int cycle;   //0 内循环, 1 外循环
+	
+	@AQIData(start=0x10,length=1,name=Constant.VOC)
+	private int voc;
+	
+	@AQIData(start=0x11,length=2,name=Constant.SIGNAL)
+	private int signal;
 	
 	private String ip;
 
@@ -87,20 +93,22 @@ public class CleanerStatus implements Serializable{
 		this.humidity = humidity;
 	}
 
-	public int getHCHO() {
-		return HCHO;
+	
+
+	public int getHcho() {
+		return hcho;
 	}
 
-	public void setHCHO(int hCHO) {
-		HCHO = hCHO;
+	public void setHcho(int hcho) {
+		this.hcho = hcho;
 	}
 
-	public int getCO2() {
-		return CO2;
+	public int getCo2() {
+		return co2;
 	}
 
-	public void setCO2(int cO2) {
-		CO2 = cO2;
+	public void setCo2(int co2) {
+		this.co2 = co2;
 	}
 
 	public int getVelocity() {
@@ -164,6 +172,22 @@ public class CleanerStatus implements Serializable{
 
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+
+	public int getVoc() {
+		return voc;
+	}
+
+	public void setVoc(int voc) {
+		this.voc = voc;
+	}
+
+	public int getSignal() {
+		return signal;
+	}
+
+	public void setSignal(int signal) {
+		this.signal = signal;
 	}
 
 	/**

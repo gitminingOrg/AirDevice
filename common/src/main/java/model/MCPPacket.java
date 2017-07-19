@@ -112,7 +112,7 @@ public class MCPPacket implements Serializable{
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("\nFRT:").append(ByteUtil.byteToHex(FRT));
+		sb.append("\nFRH:").append(ByteUtil.byteToHex(FRH));
 		sb.append("\nCTF:").append(ByteUtil.byteToHex(CTF));
 		sb.append("\nCID:").append(ByteUtil.byteToHex(CID));
 		sb.append("\nUID:").append(ByteUtil.byteToHex(UID));

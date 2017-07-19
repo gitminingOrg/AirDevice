@@ -14,12 +14,12 @@
 	<context:component-scan base-package="air.cleaner.vip.controller"></context:component-scan>
 	<mvc:resources location="/www/" mapping="/www/**" />
 	
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/device/**"/>
-			<bean class="air.cleaner.interceptor.DeviceControlServerInterceptor"></bean>
-		</mvc:interceptor>
-	</mvc:interceptors>
+<!-- 	<mvc:interceptors> -->
+<!-- 		<mvc:interceptor> -->
+<!-- 			<mvc:mapping path="/device/**"/> -->
+<!-- 			<bean class="air.cleaner.interceptor.DeviceControlServerInterceptor"></bean> -->
+<!-- 		</mvc:interceptor> -->
+<!-- 	</mvc:interceptors> -->
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">
