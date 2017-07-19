@@ -153,7 +153,7 @@ public class QRCodeServiceImpl implements QRCodeService {
 	}
 
 	@Override
-	public ResultData query(Map<String, Object> condition) {
+	public ResultData fetch(Map<String, Object> condition) {
 		ResultData result = new ResultData();
 		ResultData response = qRCodeDao.query(condition);
 		result.setResponseCode(response.getResponseCode());

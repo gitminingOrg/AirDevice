@@ -36,33 +36,47 @@
         </div>
         <div id="page-content">
             <h4>批量出库</h4>
-            <div class="col-md-10 center-margin">
-                <div class="form-row">
-                    <div class="form-input">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <label>起始编号:</label>
+            <form id="range-deliver-form">
+                <div class="col-md-10 center-margin">
+                    <div class="form-row">
+                        <div class="form-input">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>批号:</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input placeholder="请输入批号" name="batchNo" type="text" autocomplete="off">
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <input placeholder="请输入起始编号" type="text">
-                            </div>
-                            <div class="col-md-2">
-                                <label>截止编号:</label>
-                            </div>
-                            <div class="col-md-3">
-                                <input placeholder="请输入截止编号" type="text">
-                            </div>
-                            <div class="col-md-2">
-                                <button class='btn large bg-blue'>
-                                    <span clas='button-content'>批量出库</span>
-                                </button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-input">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>起始编号:</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input placeholder="请输入起始编号" name="fromValue" type="text" autocomplete="off">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>截止编号:</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input placeholder="请输入截止编号" name="endValue" type="text" autocomplete="off">
+                                </div>
+                                <div class="col-md-2">
+                                    <button class='btn large bg-blue' id="range-deliver-btn">
+                                        <span clas='button-content'>批量出库</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
             <hr/>
-            <h4>已有二维码列表</h4>
+            <h4>已有列表</h4>
             <div class="col-md-10 center-margin">
                 <div class="form-row">
                     <div class="form-input">
@@ -176,6 +190,12 @@
 
         $("#search_btn").on('click', function() {
             table.draw(false);
+        });
+
+        $("#range-deliver-btn").on('click', function() {
+            $("#range-deliver-form").attr("method", "post");
+            $("#range-deliver-form").attr("action", "${path.concat('/qrcode/deliver/range')}");
+            $("#range-deliver-form").submit();
         })
 
         var table = $("#component-list-table").DataTable({
