@@ -42,7 +42,7 @@ public class QRCodeServiceImpl implements QRCodeService {
 
 	private final static String SAVE_PATH = "/material/qrcode/";
 
-	private final static String TEMPLATE_BG_PATH = "/material/backend/image/qrcode_bg.png";
+	private final static String TEMPLATE_BG_PATH = "/material/backend/image/qrcode_bgv2.png";
 
 	private final static int FORE_GROUND = 0xFF495170, BACK_GROUND = 0xFFAAAAB3;
 
@@ -130,6 +130,8 @@ public class QRCodeServiceImpl implements QRCodeService {
 			Font font = new Font("arial", Font.PLAIN, 50);
 			g.setColor(Color.BLACK);
 			g.setFont(font);
+			g.drawString(value, x, y);
+			y = 1175;
 			g.drawString(value, x, y);
 			g.dispose();
 			ImageIO.write(big, "png", new File(qrcode.toString()));
