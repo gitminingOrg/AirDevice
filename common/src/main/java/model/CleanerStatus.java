@@ -60,6 +60,8 @@ public class CleanerStatus implements Serializable{
 	private int signal;
 	
 	private String ip;
+	
+	private String time;
 
 	public String getDeviceID() {
 		return deviceID;
@@ -188,6 +190,14 @@ public class CleanerStatus implements Serializable{
 
 	public void setSignal(int signal) {
 		this.signal = signal;
+	}
+
+	public String getTime() {
+		return time;
+	}
+
+	public void setTime(String time) {
+		this.time = time;
 	}
 
 	/**

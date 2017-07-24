@@ -56,6 +56,8 @@
 		<result property="light" column="light"/>
 		<result property="cycle" column="cycle"/>
 		<result property="ip" column="ip"/>
+		<result property="voc" column="voc"/>
+		<result property="signal" column="signal"/>
 		<result property="time" column="time"/>
 	</resultMap>
 	
@@ -93,7 +95,7 @@
 	<select id="selectRecentCleanerStatus" resultMap="cleanerStatus">
 		SELECT device_id, pm25, temperature, humidity, hcho, 
 		co2, velocity, power, workmode, uv, heat,
-		light, cycle, time 
+		light, cycle, voc, signal, time 
 		FROM
 		deviceStatus ds
 		WHERE

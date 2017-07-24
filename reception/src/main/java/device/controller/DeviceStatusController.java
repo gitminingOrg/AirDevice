@@ -406,7 +406,7 @@ public class DeviceStatusController {
 	
 	@RequestMapping(value= "/test")
 	public String test(){
-		aqiDataUpdateService.updateDeviceAir();
+		deviceStatusService.updateAirCondition();
 		return "";
 	}
 }

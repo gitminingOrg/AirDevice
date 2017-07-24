@@ -121,7 +121,7 @@ public class DeviceStatusService {
 		}
 		if(cache == null){
 			cache = CacheBuilder.newBuilder().
-					expireAfterWrite(2, TimeUnit.HOURS).maximumSize(100000).build(new CacheLoader<String, String>(){
+					expireAfterWrite(5, TimeUnit.DAYS).maximumSize(1000000).build(new CacheLoader<String, String>(){
 						@Override
 						public String load(String key) throws Exception {
 							return null;

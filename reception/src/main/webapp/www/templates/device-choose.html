@@ -30,10 +30,12 @@
 			</a>	
 	
 			<div class="item item-text-wrap row" style="float:right;color:#888888">
-				<div class="col col-30" style="margin-right: 0px"><span style="font-size:12px;">室内环境指数</span></div>
-				<div class="col"><i class="icon ion-thermometer assertive"></i> {{ device.cleanerStatus.temperature }} <sup>o</sup>C</div>
-				<div class="col"><i class="icon ion-waterdrop calm"></i> {{ device.cleanerStatus.humidity }} %</div>
-				<div class="col"><i class="icon ion-cloud"></i> co<sub>2</sub> {{ device.cleanerStatus.co2 }}</div>
+				<div class="col col-20" style="margin-right: 0px"><span>室内</span></div>
+				<div class="col col-80">
+				<div style="float:right;margin-left:15px"><i class="icon ion-cloud"></i> CO<sub>2</sub> {{ device.cleanerStatus.co2 }}</div>
+				<div style="float:right;margin-left:15px"><i class="icon ion-waterdrop calm"></i> {{ device.cleanerStatus.humidity }}%</div>
+				<div style="float:right;margin-left:15px"><i class="icon ion-thermometer assertive"></i> {{ device.cleanerStatus.temperature }}<sup>o</sup>C</div>
+				</div>
 			</div>    
 		</div> 
 		

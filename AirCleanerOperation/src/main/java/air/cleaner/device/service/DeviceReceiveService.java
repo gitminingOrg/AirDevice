@@ -18,6 +18,7 @@ import utils.ByteUtil;
 import utils.Constant;
 import utils.MethodUtil;
 import utils.PacketSendUtil;
+import utils.TimeUtil;
 import air.cleaner.cache.CleanerStatusCacheManager;
 import air.cleaner.cache.DeviceInfoCacheManager;
 import air.cleaner.cache.SessionCacheManager;
@@ -61,6 +62,8 @@ public class DeviceReceiveService {
 	public void updateCacheCleanerStatus(HeartbeatMCPPacket packet, String ip){
 		CleanerStatus cleanerStatus = packet.packetToCleanerStatus();
 		cleanerStatus.setIp(ip);
+		String time = TimeUtil.getCurrentTime();
+		cleanerStatus.setTime(time);
 		boolean update = cleanerStatusCacheManager.updateCleanerStatus(cleanerStatus);
 		if (!update) {
 			LOG.warn("update cleaner status cache failed");
@@ -165,6 +168,8 @@ public class DeviceReceiveService {
 				}
 			}
 		}
+		String time = TimeUtil.getCurrentTime();
+		cleanerStatus.setTime(time);
 	}
 	
 	public CleanerStatus getCleanerStatus(String deviceID){

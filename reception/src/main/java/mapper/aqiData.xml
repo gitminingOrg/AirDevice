@@ -34,8 +34,8 @@
 		<result property="pm25" column="pm25"/>
 		<result property="temperature" column="temperature"/>
 		<result property="humidity" column="humidity"/>
-		<result property="HCHO" column="hcho"/>
-		<result property="CO2" column="co2"/>
+		<result property="hcho" column="hcho"/>
+		<result property="co2" column="co2"/>
 		<result property="velocity" column="velocity"/>
 		<result property="power" column="power"/>
 		<result property="workMode" column="workmode"/>
@@ -44,6 +44,8 @@
 		<result property="light" column="light"/>
 		<result property="cycle" column="cycle"/>
 		<result property="ip" column="ip"/>
+		<result property="voc" column="voc"/>
+		<result property="signal" column="signal"/>
 		<result property="time" column="time"/>
 	</resultMap>
 	
@@ -162,11 +164,10 @@
 	<insert id="insertCleanerStatusList" parameterType="java.util.List">
 		INSERT INTO
 		deviceStatus
-		(device_id, pm25, temperature, humidity, hcho, co2, velocity, power, workmode, uv, heat, light, cycle, ip)
+		(device_id, pm25, temperature, humidity, hcho, co2, velocity, power, workmode, uv, heat, light, cycle, ip, voc, `signal`)
 		VALUES
 		<foreach collection="list" item="item" index="index" separator=",">
-		(#{item.deviceID},#{item.pm25},#{item.temperature},#{item.humidity},#{item.HCHO}
-		,#{item.CO2},#{item.velocity},#{item.power},#{item.workMode},#{item.uv},#{item.heat},#{item.light},#{item.cycle},#{item.ip})
+		(#{item.deviceID},#{item.pm25},#{item.temperature},#{item.humidity},#{item.hcho},#{item.co2},#{item.velocity},#{item.power},#{item.workMode},#{item.uv},#{item.heat},#{item.light},#{item.cycle},#{item.ip},#{item.voc},#{item.signal})
 		</foreach>
 	</insert>
 	
@@ -199,7 +200,7 @@
 			   SELECT device_chip.chip_id
 			   FROM device_city,device_chip
 			   WHERE device_city.status = 1 AND device_chip.status = 1 AND device_city.device_id = device_chip.device_id
-			  ) AND time LIKE #{time} AND deviceStatus.device_id = device_chip.chip_id
+			  ) AND time LIKE #{time} AND deviceStatus.device_id = device_chip.chip_id AND deviceStatus.power = 1
 			  GROUP BY device_id
 	</select>
 	

@@ -3,6 +3,7 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
   $scope.deviceID = $stateParams.deviceID;
   $scope.role = 3
   $scope.tab = 2
+  $scope.configHref = ''
   $scope.shareGuide = false
   $scope.doRefresh = function(){
 	  $scope.init();
@@ -14,6 +15,9 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 	  $http.get('/reception/own/user/role/'+$stateParams.deviceID).success(function(response){
 		  if(response.status == 1){
 			  $scope.role = response.contents.role
+			  if($scope.role == 0){
+				  $scope.configHref = '#/device/name/'+$stateParams.deviceID
+			  }
 		  }
 	  })
 	  
@@ -66,7 +70,7 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 			            enabled: false
 			        },
 			    chart: {
-			        type: 'column'
+			        type: 'spline'
 			    },
 			    title: {
 			        align: 'left',
@@ -105,42 +109,82 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
   }
   $scope.cityAir()
   $scope.start = function(number){
-      var powerInt = number
-      $scope.request = true;
-      $http.get("/reception/status/"+$stateParams.deviceID+"/power/"+powerInt).then(
-  		function success(response) {
-  			$scope.request = false;
-  			if(response.data.status != 1){
-  				$scope.showAlert();
-  			}else{
-  				$scope.cleanerStatus.power = number
-  			}
-  	    }, function error(response) {
-  	    	$scope.request = false;
-  	        // 请求失败执行代码
-  	});
+	  $scope.showStartConfirm(number)
   }
+  $scope.showStartConfirm = function(powerInt) {
+  	var message = '确认开启设备？'
+  	if(powerInt == 0){
+  		message = '确认关闭设备？'
+  	}
+      var confirmPopup = $ionicPopup.confirm({
+        title: '设备电源',
+        template: message,
+        cancelText: '取消', // String (默认: 'Cancel')。一个取消按钮的文字。
+        cancelType: 'button-default', // String (默认: 'button-default')。取消按钮的类型。
+        okText: '确认', // String (默认: 'OK')。OK按钮的文字。
+        okType: 'button-calm', // String (默认: 'button-positive')。OK按钮的类型。
+      });
+      confirmPopup.then(function(res) {
+        if(res) {
+            $scope.request = true;
+            $http.get("/reception/status/"+$stateParams.deviceID+"/power/"+powerInt).then(
+        		function success(response) {
+        			$scope.request = false;
+        			if(response.data.status != 1){
+        				$scope.showAlert();
+        			}else{
+        				$scope.cleanerStatus.power = powerInt
+        			}
+        	    }, function error(response) {
+        	    	$scope.request = false;
+        	   });
+        } else {
+          	console.log('cancel')
+        }
+      });
+    };
   
   $scope.heatControl = function(number){
-      var heatInt = number
-      $scope.request = true;
-      $http.get("/reception/status/"+$stateParams.deviceID+"/heat/"+heatInt).then(
-  		function success(response) {
-  			$scope.request = false;
-  			if(response.data.status == 2){
-					$state.go('login')
-				}
-  			else if(response.data.status != 1){
-  				$scope.showAlert();
-  				//$scope.heat = !$scope.heat;
-  			}else{
-  				$scope.cleanerStatus.heat = number;
-  			}
-  	    }, function error(response) {
-  	    	$scope.request = false;
-  	        // 请求失败执行代码
-  	});
+	  $scope.showHeatConfirm(number)
+
   }
+  $scope.showHeatConfirm = function(heatInt) {
+	  	var message = '确认开启辅热？'
+	  	if(heatInt == 0){
+	  		message = '确认关闭辅热？'
+	  	}
+	      var confirmPopup = $ionicPopup.confirm({
+	        title: '设备加热',
+	        template: message,
+	        cancelText: '取消', // String (默认: 'Cancel')。一个取消按钮的文字。
+	        cancelType: 'button-default', // String (默认: 'button-default')。取消按钮的类型。
+	        okText: '确认', // String (默认: 'OK')。OK按钮的文字。
+	        okType: 'button-calm', // String (默认: 'button-positive')。OK按钮的类型。
+	      });
+	      confirmPopup.then(function(res) {
+	        if(res) {
+	            $scope.request = true;
+	            $http.get("/reception/status/"+$stateParams.deviceID+"/heat/"+heatInt).then(
+	        		function success(response) {
+	        			$scope.request = false;
+	        			if(response.data.status == 2){
+	      					$state.go('login')
+	      				}
+	        			else if(response.data.status != 1){
+	        				$scope.showAlert();
+	        				//$scope.heat = !$scope.heat;
+	        			}else{
+	        				$scope.cleanerStatus.heat = heatInt;
+	        			}
+	        	    }, function error(response) {
+	        	    	$scope.request = false;
+	        	        // 请求失败执行代码
+	        	});
+	        } else {
+	          	console.log('cancel')
+	        }
+	      });
+	    };
   
   $scope.uvControl = function(){
       $scope.cleanerStatus.uv = 1- $scope.cleanerStatus.uv;
@@ -327,3 +371,5 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
       });
     };
 })
+
+
