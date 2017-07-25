@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.consumer.sharecode">
+	<resultMap id="consumerShareCodeVo" type="vo.consumer.ConsumerShareCodeVo">
+		<result property="consumerId" column="consumer_id"/>
+		<result property="codeValue" column="code_value"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="model.consumer.ConsumerShareCode" useGeneratedKeys="false">
+		insert into consumer_share_code(sc_id, consumer_id, code_value, block_flag, create_time)
+		values(#{codeId}, #{consumerId}, #{codeValue}, #{blockFlag}, #{createAt})
+	</insert>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="consumerShareCodeVo">
+		select sc_id, consumer_id, code_value
+		from consumer_share_code
+		where 1 = 1
+		<if test="consumerId != null">
+			and consumer_id = #{consumerId}
+		</if>
+		<if test="codeValue != null">
+			
+		</if>
+	</select>
+</mapper>

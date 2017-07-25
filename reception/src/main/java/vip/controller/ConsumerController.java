@@ -1,6 +1,5 @@
 package vip.controller;
 
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -15,21 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import form.LoginForm;
 import model.ResultMap;
+import utils.ResultData;
 import vo.vip.ConsumerVo;
 
 @RestController
 @RequestMapping("/consumer")
 public class ConsumerController {
 	private Logger logger = LoggerFactory.getLogger(ConsumerController.class);
-	
+
 	@RequiresGuest
 	@RequestMapping(method = RequestMethod.POST, value = "/login")
 	public ResultMap login(LoginForm form) {
 		ResultMap result = new ResultMap();
-		try{
+		try {
 			Subject subject = SecurityUtils.getSubject();
 			subject.login(new UsernamePasswordToken(form.getPhone(), ""));
-		}catch (Exception e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setStatus(ResultMap.STATUS_FAILURE);
 			result.setInfo(e.getMessage());
@@ -38,20 +38,28 @@ public class ConsumerController {
 		result.setStatus(ResultMap.STATUS_SUCCESS);
 		return result;
 	}
-	
+
 	@RequiresAuthentication
-	@RequestMapping(method = RequestMethod.GET, value="/info")
+	@RequestMapping(method = RequestMethod.GET, value = "/info")
 	public ResultMap info() {
 		ResultMap result = new ResultMap();
 		Subject subject = SecurityUtils.getSubject();
-		ConsumerVo current = (ConsumerVo)subject.getPrincipal();
-		if(StringUtils.isEmpty(current)) {
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if (StringUtils.isEmpty(current)) {
 			result.setStatus(ResultMap.STATUS_FORBIDDEN);
 			result.setInfo("No user authenticated, please login first.");
 			return result;
 		}
 		result.setStatus(ResultMap.STATUS_SUCCESS);
 		result.addContent("consumer", current);
+		return result;
+	}
+
+	@RequiresAuthentication
+	@RequestMapping(method = RequestMethod.GET, value = "/share/reference")
+	public ResultMap shareCode() {
+		ResultMap result = new ResultMap();
+
 		return result;
 	}
 }
