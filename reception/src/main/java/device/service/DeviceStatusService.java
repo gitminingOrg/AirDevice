@@ -1,7 +1,11 @@
 package device.service;
 
 import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -287,9 +291,13 @@ public class DeviceStatusService {
 	private boolean checkStatus(int times, int period, String field, int expect, String deviceID, String userID){
 		//current try
 		int cursor = 0;
+		String statusTime = null;
 		while(cursor < times){
 			cursor++;
 			CleanerStatus cleanerStatus = getCleanerStatus(deviceID);
+			if(cleanerStatus != null){
+				statusTime = cleanerStatus.getTime();
+			}
 			Method method;
 			try {
 				method = cleanerStatus.getClass().getDeclaredMethod(MethodUtil.getFieldGetMethod(field));
@@ -309,6 +317,9 @@ public class DeviceStatusService {
 				LOG.error("Thread sleep failed", e);
 			}
 		}
+		if(statusTime != null && compareCurrentTime(statusTime, ReceptionConstant.DEFAULT_GAP_SECOND)){
+			return true;
+		}
 		return false;
 	}
 	
@@ -318,5 +329,22 @@ public class DeviceStatusService {
 	
 	public boolean bindDevice2Chip(DeviceChip dc) {
 		return deviceChipDao.insert(dc);
+	}
+	
+	private boolean compareCurrentTime(String time, int maxDiffSecond){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		try {
+			Date inputDate = sdf.parse(time);
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.SECOND, 0 - maxDiffSecond);
+			Date thresholdTime = calendar.getTime();
+			
+			if(inputDate.after(thresholdTime)){
+				return true;
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

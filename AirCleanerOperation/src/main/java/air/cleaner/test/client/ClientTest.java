@@ -39,16 +39,16 @@ public class ClientTest extends Thread{
 	    
 	    
 	    while(true){
-	    	//ConnectFuture cf = connector.connect(new InetSocketAddress("127.0.0.1", 8888));//建立连接
-	    	ConnectFuture cf = connector.connect(new InetSocketAddress("commander.qingair.net", 8888));//建立连接 
+	    	ConnectFuture cf = connector.connect(new InetSocketAddress("127.0.0.1", 8888));//建立连接
+	    	//ConnectFuture cf = connector.connect(new InetSocketAddress("commander.qingair.net", 8888));//建立连接 
 	    	cf.awaitUninterruptibly();//等待连接创建完成 
 	        
 	        byte[] FRH =new byte[]{-0x11};
 			byte[] CTF = new byte[]{0x02};
 			byte[] CID = new byte[]{0x00};
-			byte[] UID = new byte[]{0x15,0x34,0x66,0x66,0x11,0x22,0x00,0x00,0x22,0x00,0x00,0x01};
+			byte[] UID = new byte[]{0x15,-0x34,0x11,0x11,0x11,0x22,0x00,0x00,0x22,0x00,0x00,0x29};
 			byte[] LEN = new byte[]{0x20};
-			byte[] DATA = new byte[]{0x00,0x02,0x33,0x22,0x11,0x11,0x11,0x11,0x00,0x11,0x01,0x01,0x01,0x01};
+			byte[] DATA = new byte[]{0x00,0x02,0x33,0x22,0x01,0x11,0x11,0x11,0x00,0x11,0x01,0x01,0x01,0x01};
 			byte[] reserve = new byte[]{0x68,0x01,0x03,0x11,0x22,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
 
 			int check = CRC16.CRC_XModem(ByteUtil.concatAll(CTF, CID, UID, LEN,DATA, reserve));
@@ -57,7 +57,7 @@ public class ClientTest extends Thread{
 	        MCPPacket mcpPacket= new MCPPacket(CTF, CID, UID, LEN, ByteUtil.concatAll(DATA, reserve), CRC);
 	        cf.getSession().write(mcpPacket);
 	        try {
-				Thread.sleep(70000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

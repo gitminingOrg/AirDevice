@@ -83,6 +83,9 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 	    				$http.get('/reception/own/user/location/'+cityPinyin).success(function(response){
 	    					
 	    				})
+	    				$http.get('/reception/init/enrich/'+$stateParams.serial).success(function(response){
+	    					
+	    				})
 	    			}
 	    		})
 	    		// Setup the loader

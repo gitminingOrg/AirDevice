@@ -38,7 +38,6 @@ import com.google.gson.GsonBuilder;
 import config.ReceptionConfig;
 import dao.DeviceAttributeDao;
 import dao.DeviceChipDao;
-import dao.DeviceStatusDao;
 import dao.DeviceVipDao;
 
 @Service

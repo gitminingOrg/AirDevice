@@ -69,6 +69,18 @@
 		WHERE city_name=#{cityName} AND time=#{time}
 	</select>
 	
+	<select id="selectRangeCityAqi" resultMap="cityAqi" parameterType="java.util.Map">
+		SELECT 
+		city_name, city_pinyin, time, city_aqi, aqi_category, primary_pollutant, pm25, pm10, co, no2, o3, o3_8h, so2
+		FROM
+		city_aqi
+		WHERE
+		city_pinyin in (select city from device_city where device_id = #{deviceID} and status = 1)
+		AND time &gt;= #{startTime} 
+		AND time &lt;= #{endTime} 
+		ORDER BY time asc 
+	</select>
+	
 	<insert id="insertCity" parameterType="bean.CityList">
 		INSERT INTO
 		city_list (city_name,city_pinyin,initial)
@@ -177,7 +189,7 @@
 		WHERE device_id = #{deviceID} 
 		AND date 
 		IN 
-		(SELECT t.date FROM (SELECT * FROM deviceAir WHERE device_id = #{deviceID} ORDER BY date DESC LIMIT 7) AS t);
+		(SELECT t.date FROM (SELECT * FROM deviceAir WHERE device_id = #{deviceID} ORDER BY date DESC LIMIT 7) AS t) ORDER BY date ASC;
 	</select>
 	
 	<insert id="insertDeviceAir" parameterType="bean.DeviceAir">
@@ -185,6 +197,16 @@
 		deviceAir (device_id,inside_air,outside_air,date)
 		VALUES
 		(#{deviceID},#{insideAir},#{outsideAir},#{date})
+	</insert>
+	
+	<insert id="insertDeviceAirList" parameterType="java.util.List">
+		INSERT INTO
+		deviceAir (device_id,inside_air,outside_air,date)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+		(#{item.deviceID},#{item.insideAir},#{item.outsideAir},#{item.date})
+		</foreach>
+		
 	</insert>
 	
 	<select id="findDeviceAir" resultMap="deviceAir">

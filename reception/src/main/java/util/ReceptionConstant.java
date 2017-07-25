@@ -28,4 +28,5 @@ public class ReceptionConstant {
 	public static final int DEFAULT_EXPIRE_DAYS = 3;
 	public static final int DEFAULT_QR_LENGTH = 200;
 	public static final int DEFAULT_TOP_DAY = 7;
+	public static final int DEFAULT_GAP_SECOND = 50;
 }
