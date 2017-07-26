@@ -15,6 +15,7 @@ import model.SupportForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
 
 import util.JsonResponseConverter;
@@ -31,9 +32,13 @@ import bean.UserDevice;
 import bean.Wechat2Device;
 import bean.WechatUser;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import config.ReceptionConfig;
 import dao.DeviceAttributeDao;
@@ -345,5 +350,26 @@ public class DeviceVipService {
 	
 	public String getUserCity(String userID){
 		return deviceVipDao.getUserCity(userID);
+	}
+	
+	public boolean checkSubscribe(String openID){
+		String accessToken = ReceptionConfig.getAccessToken();
+		String next_openid = "start_default";
+		while(!Strings.isNullOrEmpty(next_openid)){
+			String url = "https://api.weixin.qq.com/cgi-bin/user/get?access_token="+accessToken;
+			if(!next_openid.equals("start_default")){
+				url = url + "&next_openid="+next_openid;
+			}
+			String json = HttpDeal.getResponse(url);
+			JSONObject jsonObject = JSONObject.parseObject(json);
+			JSONArray jsonArray = jsonObject.getJSONObject("data").getJSONArray("openid");
+			if(jsonArray.size() == 0){
+				return false;
+			}else if(jsonArray.contains(openID)){
+				return true;
+			}
+			next_openid = jsonObject.getString("next_openid");
+		}
+		return false;
 	}
 }

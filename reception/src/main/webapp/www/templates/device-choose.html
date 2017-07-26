@@ -12,6 +12,12 @@
 	 <label ng-class="{'button button-balanced button-small' : airQuality == '优' , 'button button-energized button-small' : airQuality == '良' , 'button button-assertive button-small' : (airQuality != '优' && airQuality != '良')}">{{ airQuality }}</label>
 	 </p>
 	 </div>
+	 
+<!-- 	 <div class="padding"> -->
+<!-- 	 <center><img alt="" src="img/GMQR.png?762048" width="90%"></img></center> -->
+<!-- 	 <p>1. 请【长按】图中二维码，并选择【识别二维码】，关注【果麦新风】公众号</p> -->
+<!-- 	 <p>2. 您的所有果麦新风设备都将会出现在【果麦新风】公众号【我的设备】中</p> -->
+<!-- 	 </div> -->
      <div ng-if="!deviceWaiting" ng-repeat="device in deviceList" class="card">
  		<div ng-if="device.cleanerStatus">
 <!-- 		    <div class="item item-divider"> -->

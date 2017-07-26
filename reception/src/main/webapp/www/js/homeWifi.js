@@ -1,3 +1,3 @@
 app.controller('WifiCtrl',function($http,$scope, $state) {
-	window.location.href = "/reception/www/wxinitial.html"
+	//window.location.href = "/reception/www/wxinitial.html"
 })

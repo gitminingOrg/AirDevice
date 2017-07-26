@@ -42,11 +42,11 @@
 	    <div ng-if="tab == 2" id="velocity">
 	    <div class="row">
 		  <div class="col"><button ng-click="setMode(0)" ng-class="{'button button-gm button-block button-outline button-calm' : cleanerStatus.workMode == 0, 'button button-gm button-block button-outline button-stable':cleanerStatus.workMode != 0}">自动</button></div>
-		  <div class="col"><button ng-click="setMode(2)" ng-class="{'button button-gm button-block button-outline button-calm' : cleanerStatus.workMode == 2, 'button button-gm button-block button-outline button-stable':cleanerStatus.workMode != 2}">睡眠</button></div>
-		  <div class="col"><button ng-click="setMode(1)" style="float:right" ng-class="{'button button-gm button-block button-outline button-calm' : cleanerStatus.workMode == 1, 'button button-gm button-block button-outline button-stable':cleanerStatus.workMode != 1}">手动</button></div>
+		  <div class="col"><button ng-click="setMode(1)" ng-class="{'button button-gm button-block button-outline button-calm' : cleanerStatus.workMode == 1, 'button button-gm button-block button-outline button-stable':cleanerStatus.workMode != 1}">睡眠</button></div>
+		  <div class="col"><button ng-click="setMode(2)" style="float:right" ng-class="{'button button-gm button-block button-outline button-calm' : cleanerStatus.workMode == 2, 'button button-gm button-block button-outline button-stable':cleanerStatus.workMode != 2}">手动</button></div>
 		</div>
 		
-		<div ng-if="cleanerStatus.workMode == 1" class="range range-positive">
+		<div ng-if="cleanerStatus.workMode == 2" class="range range-positive">
 		  	风量 {{cleanerStatus.velocity}}
             <input type="range" style="margin-right:0" on-release="velocityControl(cleanerStatus.velocity)" ng-model="cleanerStatus.velocity" name="volume" min="0" max="500" value="{{cleanerStatus.velocity}}">
         </div>
