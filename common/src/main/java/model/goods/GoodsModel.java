@@ -13,6 +13,8 @@ public class GoodsModel extends Entity{
 	
 	private String modelDescription;
 
+	private boolean isAdvanced;
+	
 	public GoodsModel() {
 		super();
 	}
@@ -24,6 +26,11 @@ public class GoodsModel extends Entity{
 		this.goods = goods;
 		this.modelCode = modelCode;
 		this.modelName = modelName;
+	}
+	
+	public GoodsModel(String goodsId, String modelCode, String modelName, boolean isAdvanced) {
+		this(goodsId, modelCode, modelName);
+		this.isAdvanced = isAdvanced;
 	}
 	
 	public String getModelId() {
@@ -64,5 +71,13 @@ public class GoodsModel extends Entity{
 
 	public void setModelDescription(String modelDescription) {
 		this.modelDescription = modelDescription;
+	}
+
+	public boolean isAdvanced() {
+		return isAdvanced;
+	}
+
+	public void setAdvanced(boolean isAdvanced) {
+		this.isAdvanced = isAdvanced;
 	}
 }

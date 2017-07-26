@@ -11,6 +11,8 @@ public class GoodsModelVo {
 	
 	private String modelName;
 	
+	private boolean isAdvanced;
+	
 	private String modelDescription;
 
 	public String getModelId() {
@@ -51,6 +53,14 @@ public class GoodsModelVo {
 
 	public void setModelName(String modelName) {
 		this.modelName = modelName;
+	}
+
+	public boolean isAdvanced() {
+		return isAdvanced;
+	}
+
+	public void setAdvanced(boolean isAdvanced) {
+		this.isAdvanced = isAdvanced;
 	}
 
 	public String getModelDescription() {
