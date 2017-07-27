@@ -24,7 +24,7 @@
 	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button button-calm button-gm' : tab == 1, 'button   button-gm button-light' : tab != 1}" ng-click="tabChange(1)">分享</button></div>
 	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 2, 'button   button-gm button-light' : tab != 2}" ng-click="tabChange(2)">风量</button> </div>
 	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 3, 'button   button-gm button-light' : tab != 3}" ng-click="tabChange(3)">辅热</button></div>
-	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 4, 'button   button-gm button-light' : tab != 4}" ng-click="tabChange(4)">高级</button> 
+	     <div ng-if="advance" class="col" style="text-align:center;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 4, 'button   button-gm button-light' : tab != 4}" ng-click="tabChange(4)">高级</button> 
 	     <ion-spinner ng-if="request" icon="bubbles" class="spinner-calm"></ion-spinner>
 	     </div>
 	    </div>

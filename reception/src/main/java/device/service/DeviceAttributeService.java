@@ -31,4 +31,12 @@ public class DeviceAttributeService {
 			return deviceAttributeDao.occupyQRCode(code);
 		}
 	}
+	
+	public boolean checkDeviceAdvanced(String deviceID){
+		if(deviceID == null){
+			return false;
+		}else{
+			return deviceAttributeDao.isDeviceAdvanced(deviceID);
+		}
+	}
 }

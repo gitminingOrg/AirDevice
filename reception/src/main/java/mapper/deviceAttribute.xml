@@ -31,4 +31,9 @@
 		WHERE
 		code_value = #{codeValue}
 	</update>
+	
+	<select id="QRAdvance" resultType="java.lang.Integer">
+		SELECT is_advanced FROM goods_model where block_flag = 0 AND model_id IN 
+		(SELECT model_id FROM qrcode WHERE code_value = #{codeValue} AND block_flag = 0)
+	</select>
 </mapper>

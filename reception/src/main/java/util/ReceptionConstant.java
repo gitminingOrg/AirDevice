@@ -17,6 +17,7 @@ public class ReceptionConstant {
 	public static final String STATUS_LIST = "statusList";
 	public static final String DEVICE_NAME = "deviceName";
 	public static final String CLEANER_STATUS = "cleanerStatus";
+	public static final String ADVANCE = "advance";
 	public static final String DEVICE = "device";
 	public static final String CITY = "city";
 	public static final String CITY_AQI = "cityAqi";

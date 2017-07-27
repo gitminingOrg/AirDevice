@@ -27,4 +27,17 @@ public class DeviceAttributeDao extends BaseDaoImpl{
 			return sqlSession.update("deviceAttribute.occupyQRCode", codeValue) >= 0;
 		}
 	}
+	
+	public boolean isDeviceAdvanced(String codeValue){
+		List<Integer> result = sqlSession.selectList("deviceAttribute.QRAdvance", codeValue);
+		if(result == null || result.size() == 0){
+			return false;
+		}
+		for (Integer integer : result) {
+			if(integer == 1){
+				return true;
+			}
+		}
+		return false;
+	}
 }

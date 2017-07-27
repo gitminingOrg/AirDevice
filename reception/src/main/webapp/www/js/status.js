@@ -5,6 +5,8 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
   $scope.tab = 2
   $scope.configHref = ''
   $scope.shareGuide = false
+  $scope.advance = false
+  
   $scope.doRefresh = function(){
 	  $scope.init();
 	  $scope.cityAir();
@@ -35,6 +37,7 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 			}
 		  else if(response.status == 1){
 			  $scope.cleanerStatus = response.contents.cleanerStatus;
+			  $scope.advance = response.contents.advance
 		  }
 		  $http.get('/reception/status/'+$stateParams.deviceID+'/aqi/current').success(function(response){
 			  if(response.status == 2){

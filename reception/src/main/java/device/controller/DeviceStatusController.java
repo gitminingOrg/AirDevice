@@ -25,7 +25,9 @@ import vo.vip.ConsumerVo;
 import bean.AirCompareVO;
 import bean.CityAqi;
 import bean.DeviceCity;
+import dao.DeviceAttributeDao;
 import device.service.AqiDataUpdateService;
+import device.service.DeviceAttributeService;
 import device.service.DeviceStatusService;
 
 @RequestMapping("/status")
@@ -45,18 +47,23 @@ public class DeviceStatusController {
 	}
 	@Autowired
 	private LocationService locationService;
+	
+	@Autowired
+	private DeviceAttributeService deviceAttributeService;
 
 	@RequiresAuthentication
 	@RequestMapping("/device/{deviceID}")
 	public ResultMap getDeviceStatus(@PathVariable("deviceID")String device){
 		ResultMap resultMap = new ResultMap();
 		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(device);
+		boolean advance = deviceAttributeService.checkDeviceAdvanced(device);
 		if (cleanerStatus == null) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("未找到相应设备状态");
 		}else {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.addContent(ReceptionConstant.CLEANER_STATUS, cleanerStatus);
+			resultMap.addContent(ReceptionConstant.ADVANCE, advance);
 		}
 		return resultMap;
 	}
