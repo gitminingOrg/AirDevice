@@ -155,4 +155,8 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
 	        template: content
 	      });
 	    };
+	    
+	   $scope.goDetail = function(deviceID){
+		   $state.go('chats',{deviceID : deviceID});
+	   }
 })

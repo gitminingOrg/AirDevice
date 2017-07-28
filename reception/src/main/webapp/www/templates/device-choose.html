@@ -1,43 +1,38 @@
 ﻿
-  <ion-content style="background-color:#FAFAFA">
+  <ion-content style="background-color:#F7F7F7">
      <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
-  	 <div style="background: url(img/background.png?762048); background-size: 100% 180px; height: 180px">
-	 <button class="button button-calm" ng-click="modal.show()"><i class="icon ion-location"></i> {{location}} <i class="icon ion-ios-arrow-down"></i></button>
-	 <img alt="" src="img/logo.png?762048" height="40" width="100" style="float:right;margin-top:2px;margin-right:5px">
+  	 <div style="background: url(img/home_back.png?762048); background-size: 100% 180px; height: 180px">
+	 <button class="button button-calm" ng-click="modal.show()" style="background-color:transparent"><i class="icon ion-location" style="opacity:100"></i> {{location}} <i class="icon ion-ios-arrow-down"></i></button>
+	 <img alt="" src="img/logo.png?762048" height="40" width="90" style="float:right;margin-top:2px;margin-right:5px">
+	 <div style="background: url(img/Oval.png?762048); background-size: 100%; background-repeat: no-repeat; margin:0 auto; margin-top :-30px; padding-top: 30px;padding-bottom:12px; width :150px">
 	 <p style="color:white;text-align:center">{{ today }}</p>
 	 <center><ion-spinner ng-if="airWaiting || deviceWaiting" icon="bubbles" class="spinner-light"></ion-spinner></center>
 	 <p ng-if="!(airWaiting || deviceWaiting)" style="color:white;text-align:center;margin-top:0 px;font-size:36px; font-wight: bold">{{aqiData}} <span style="font-size:14px">AQI</span></p>
-	 <p style="color:white;text-align:center">pm2.5: {{ pm25 }} ug/m<sup>3</sup></p>
-	 <p style="color:white;text-align:center">
-	 <label ng-class="{'button button-balanced button-small' : airQuality == '优' , 'button button-energized button-small' : airQuality == '良' , 'button button-assertive button-small' : (airQuality != '优' && airQuality != '良')}">{{ airQuality }}</label>
+	 
+	 <p style="color:white;text-align:center;margin-bottom:0px;">
+	 <label ng-class="{'button button-balanced button-gm-sm' : airQuality == '优' , 'button button-energized button-gm-sm' : airQuality == '良' , 'button button-assertive button-gm-sm' : (airQuality != '优' && airQuality != '良')}">{{ airQuality }}</label>
 	 </p>
 	 </div>
+	 <p style="color:white;text-align:center">pm2.5 :&nbsp; {{ pm25 }}&nbsp; ug/m<sup>3</sup></p>
+	 </div>
 	 
-<!-- 	 <div class="padding"> -->
-<!-- 	 <center><img alt="" src="img/GMQR.png?762048" width="90%"></img></center> -->
-<!-- 	 <p>1. 请【长按】图中二维码，并选择【识别二维码】，关注【果麦新风】公众号</p> -->
-<!-- 	 <p>2. 您的所有果麦新风设备都将会出现在【果麦新风】公众号【我的设备】中</p> -->
-<!-- 	 </div> -->
-     <div ng-if="!deviceWaiting" ng-repeat="device in deviceList" class="card">
+     <div ng-if="!deviceWaiting" ng-repeat="device in deviceList" class="card-gm">
  		<div ng-if="device.cleanerStatus">
-<!-- 		    <div class="item item-divider"> -->
-<!-- 		        <a href="" style="float:right;font-size:10px" ng-click="showConfirm(device.deviceID)">该设备未正常绑定？</a> -->
-<!-- 		  	</div> -->
-	       
-			<a class="item" href="#tab/{{ device.deviceID}}/chats">
+			<div  class="item-gm" ng-click="goDetail(device.deviceID)" href="#tab/{{ device.deviceID}}/chats">
 				<div style="width: 60%;float:left">
-				<div style="margin-bottom:5px"><span style="font-size:20px; color:#666666">{{ device.deviceName }}</span></div>
-				<div style="font-size:16 px;color:#888888"> &nbsp;<i class="icon ion-nuclear"></i><span style="color:#00c0f5"> &nbsp;&nbsp;{{ device.cleanerStatus.velocity }}</span></div>
+				<div style="margin-bottom:10px;margin-left: -15px; border-left:2px solid #00c0f5"><span style="font-size:18px; color:balck; margin-left:15px">{{ device.deviceName }}</span></div>
+				<div style="font-size:16px;color:#888888"> &nbsp;<i class="icon ion-nuclear"></i><span style="color:#00c0f5"> &nbsp;&nbsp;{{ device.cleanerStatus.velocity }}</span></div>
 				</div>
 				
 				<div style="width: 40%; float:right">
-				<div style="float:right;padding-top:10px"><span style="font-size:36px; color:#00c0f5">{{ device.cleanerStatus.pm25 }}</span> <span style="color:#00c0f5">ug/m<sup>3</sup></span> </div>
+				<div style="float:right;padding-top:30px;padding-bottom:5px"><span style="font-size:48px; color:#00c0f5">{{ device.cleanerStatus.pm25 }}</span> <span style="color:#00c0f5; font-size:18px">ug/m<sup>3</sup></span> </div>
 				</div>
-			</a>	
-	
-			<div class="item item-text-wrap row" style="float:right;color:#888888">
-				<div class="col col-20" style="margin-right: 0px"><span>室内</span></div>
-				<div class="col col-80">
+			</div>	
+			
+			<hr class="split-gm"/>
+			<div class="item-gm" style="color:#888888;width:100%;font-size:16px">
+				<div style="float:left; width:20%"><span>室内</span></div>
+				<div style="float:right">
 				<div style="float:right;margin-left:15px"><i class="icon ion-cloud"></i> CO<sub>2</sub> {{ device.cleanerStatus.co2 }}</div>
 				<div style="float:right;margin-left:15px"><i class="icon ion-waterdrop calm"></i> {{ device.cleanerStatus.humidity }}%</div>
 				<div style="float:right;margin-left:15px"><i class="icon ion-thermometer assertive"></i> {{ device.cleanerStatus.temperature }}<sup>o</sup>C</div>
@@ -62,7 +57,7 @@
 			</a>	
 	
 			<div class="item item-text-wrap row" style="float:right;color:#888888">
-				<div class="col col-30" style="margin-right: 0px"><span style="font-size:12px;">室内环境指数</span></div>
+				<div class="col col-30" style="margin-right: 0px"><span>室内</span></div>
 				<div class="col"><i class="icon ion-thermometer assertive"></i> -- </div>
 				<div class="col"><i class="icon ion-waterdrop calm"></i> -- </div>
 				<div class="col"><i class="icon ion-cloud"></i>  -- </div>
