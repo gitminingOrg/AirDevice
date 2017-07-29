@@ -21,4 +21,10 @@
 			and consumer_id = #{consumerId}
 		</if>
 	</select>
+	
+	<update id="update" parameterType="model.consumer.ConsumerShareCode">
+		update consumer_share_code
+		set code_path = #{codePath}
+		where consumer_id = #{consumerId}
+	</update>
 </mapper>

@@ -153,7 +153,7 @@ public class ConsumerController {
 				code.setCodePath(response.getData().toString());
 				response = shareCodeService.refreshCodeBG(code);
 				result.setStatus(ResultMap.STATUS_SUCCESS);
-				result.addContent("sharepath", response.getData().toString());
+				result.addContent("sharepath", response.getData());
 				return result;
 			} else {
 				result.setStatus(ResultMap.STATUS_FAILURE);
