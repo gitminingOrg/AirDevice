@@ -89,7 +89,7 @@ public class MenuConfig {
 		vip_code.put("name", "优惠码");
 		vip_code.put("type", "view");
 		try {
-			vip_code.put("url", "http://commander.qingair.net/reception/www/templates/vip-code.html");
+			vip_code.put("url", "http://commander.qingair.net/reception/www/templates/coupon-share.html");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -221,7 +221,7 @@ public class MenuConfig {
 	    }
 	
     public static void main(String[] args) {
-        String token = "3CTGXqpPSLAybphzqQB1MYMWBdQHQM--BK5jHx0YUNOdlh96SIWKeESKlQ4kqWdyUKbuNBhnRrzT99PvmbaZ_utU-3IOPFOGh6e_PuhP7rN5vu4GxUpLu6svqmU913GAFOYaAEAQZJ";
+        String token = "Whh5rVzzSZBT0Dfxibn1uleKWYfD4xQ15ow1Yen_2j1QxrCI1yXEZSS6W0l8gVeG85k4Ws0JgEv-h3NBE7NOembwRnARaGM5Kfl8Vclkne26pCxKKGX8tsb3GJKJSnoKSWFdAHAFJS";
         String deleteMessage = MenuConfig.deleteMenu(token);
         System.out.println("删除操作: " + deleteMessage);
         String createMessage = MenuConfig.createMenu(token);

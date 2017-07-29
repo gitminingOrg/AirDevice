@@ -20,5 +20,14 @@
 		<if test="consumerId != null">
 			and consumer_id = #{consumerId}
 		</if>
+		<if test="codeValue != null">
+			and code_value = #{codeValue}
+		</if>
 	</select>
+	
+	<update id="update" parameterType="model.consumer.ConsumerShareCode">
+		update consumer_share_code
+		set code_path = #{codePath}
+		where consumer_id = #{consumerId}
+	</update>
 </mapper>

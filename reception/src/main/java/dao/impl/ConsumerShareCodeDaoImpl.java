@@ -27,10 +27,10 @@ public class ConsumerShareCodeDaoImpl extends BaseDaoImpl implements ConsumerSha
 		ResultData result = new ResultData();
 		code.setCodeId(IDGenerator.generate("CSC"));
 		try {
-			sqlSession.insert("management.consumer.sharecode.insert", code);
+			sqlSession.insert("reception.consumer.sharecode.insert", code);
 			Map<String, Object> condition = new HashMap<>();
-			condition.put("codeId", code.getCodeId());
-			ConsumerShareCodeVo vo = sqlSession.selectOne("management.consumer.sharecode.query", condition);
+			condition.put("codeValue", code.getCodeValue());
+			ConsumerShareCodeVo vo = sqlSession.selectOne("reception.consumer.sharecode.query", condition);
 			result.setData(vo);
 		}catch (Exception e) {
 			logger.error(e.getMessage());
