@@ -3,7 +3,9 @@
 <mapper namespace="reception.consumer.sharecode">
 	<resultMap id="consumerShareCodeVo" type="vo.consumer.ConsumerShareCodeVo">
 		<result property="consumerId" column="consumer_id"/>
+		<result property="consumerName" column="consumer_name"/>
 		<result property="shareCode" column="code_value"/>
+		<result property="path" column="code_path"/>
 	</resultMap>
 	
 	<insert id="insert" parameterType="model.consumer.ConsumerShareCode" useGeneratedKeys="false">
@@ -12,14 +14,11 @@
 	</insert>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="consumerShareCodeVo">
-		select sc_id, consumer_id, code_value
-		from consumer_share_code
+		select consumer_id, consumer_name, code_value, code_path
+		from share_code_view
 		where 1 = 1
 		<if test="consumerId != null">
 			and consumer_id = #{consumerId}
-		</if>
-		<if test="shareCode != null">
-			
 		</if>
 	</select>
 </mapper>
