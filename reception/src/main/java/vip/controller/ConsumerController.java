@@ -148,6 +148,10 @@ public class ConsumerController {
 			MultipartFile file = request.getFile("credit");
 			response = uploadService.upload(file, context);
 			if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+				ConsumerShareCode code = new ConsumerShareCode();
+				code.setConsumerId(customerId);
+				code.setCodePath(response.getData().toString());
+				response = shareCodeService.refreshCodeBG(code);
 				result.setStatus(ResultMap.STATUS_SUCCESS);
 				result.addContent("sharepath", response.getData().toString());
 				return result;

@@ -9,6 +9,8 @@ public class ConsumerShareCode extends Entity{
 	private String consumerId;
 	
 	private String codeValue;
+	
+	private String codePath;
 
 	public ConsumerShareCode() {
 		super();
@@ -42,5 +44,13 @@ public class ConsumerShareCode extends Entity{
 
 	public void setCodeValue(String codeValue) {
 		this.codeValue = codeValue;
+	}
+
+	public String getCodePath() {
+		return codePath;
+	}
+
+	public void setCodePath(String codePath) {
+		this.codePath = codePath;
 	}
 }

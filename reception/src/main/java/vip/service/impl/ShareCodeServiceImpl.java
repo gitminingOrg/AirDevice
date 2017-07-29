@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.drew.imaging.jpeg.JpegMetadataReader;
@@ -19,6 +20,8 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifThumbnailDirectory;
 
+import dao.ConsumerShareCodeDao;
+import model.consumer.ConsumerShareCode;
 import utils.PathUtil;
 import utils.ResponseCode;
 import utils.ResultData;
@@ -29,6 +32,9 @@ public class ShareCodeServiceImpl implements ShareCodeService {
 	private Logger logger = LoggerFactory.getLogger(ShareCodeServiceImpl.class);
 
 	private final static String TEMPLATE_FG_PATH = "/material/img/sharecode.png";
+	
+	@Autowired
+	private ConsumerShareCodeDao consumerShareCodeDao;
 	
 	@Override
 	public ResultData customizeShareCode(String path, String value) {
@@ -51,6 +57,19 @@ public class ShareCodeServiceImpl implements ShareCodeService {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
 			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public ResultData refreshCodeBG(ConsumerShareCode code) {
+		ResultData result = new ResultData();
+		ResultData response = consumerShareCodeDao.update(code);
+		result.setResponseCode(response.getResponseCode());
+		if(response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setData(response.getData());
+		}else {
+			result.setDescription(response.getDescription());
 		}
 		return result;
 	}

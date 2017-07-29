@@ -9,4 +9,6 @@ public interface ConsumerShareCodeDao {
 	ResultData insert(ConsumerShareCode code);
 	
 	ResultData query(Map<String, Object> condition);
+	
+	ResultData update(ConsumerShareCode code);
 }

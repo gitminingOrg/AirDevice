@@ -52,7 +52,27 @@ public class ConsumerShareCodeDaoImpl extends BaseDaoImpl implements ConsumerSha
 			result.setDescription(e.getMessage());
 		}
 		return result;
-	} 
-	
+	}
 
+	@Override
+	public ResultData update(ConsumerShareCode code) {
+		ResultData result = new ResultData();
+		try {
+			synchronized (lock) {
+				sqlSession.update("reception.consumer.sharecode.update", code);
+			}
+			Map<String, Object> condition = new HashMap<>();
+			condition.put("consumerId", code.getConsumerId());
+			condition.put("blockFlag", false);
+			ResultData response = query(condition);
+			if(response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+				result.setData(((List<ConsumerShareCodeVo>)response.getData()).get(0));
+			}else {
+				result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			}
+		}catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return result;
+	} 
 }
