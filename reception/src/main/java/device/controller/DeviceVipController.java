@@ -39,6 +39,8 @@ import utils.QRCodeGenerator;
 import vip.service.ConsumerSerivce;
 import vo.location.DeviceCityVo;
 import vo.vip.ConsumerVo;
+
+import bean.CityList;
 import bean.DeviceName;
 import bean.DeviceShareCode;
 import bean.DeviceStatus;

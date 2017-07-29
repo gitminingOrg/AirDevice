@@ -36,8 +36,8 @@ public class ShareCodeServiceImpl implements ShareCodeService {
 		try {
 			StringBuffer pic = new StringBuffer(PathUtil.retrivePath()).append(path);
 			StringBuffer fg = new StringBuffer(PathUtil.retrivePath()).append(TEMPLATE_FG_PATH);
-			BufferedImage big = ImageIO.read(new File(pic.toString()));
 			BufferedImage small = ImageIO.read(new File(fg.toString()));
+			BufferedImage big = ImageIO.read(new File(pic.toString()));
 			Graphics2D g = big.createGraphics();
 			g.drawImage(small, big.getWidth() - small.getWidth(), big.getHeight() - small.getHeight(), small.getWidth(), small.getHeight(), null);
 			Font font = new Font("arial", Font.PLAIN, 50);
@@ -53,65 +53,5 @@ public class ShareCodeServiceImpl implements ShareCodeService {
 			result.setDescription(e.getMessage());
 		}
 		return result;
-	}
-	
-	/** 
-	* 计算旋转参数 
-	*/  
-	public static Rectangle CalcRotatedSize(Rectangle src,int angel){  
-	    // if angel is greater than 90 degree,we need to do some conversion.  
-	    if(angel > 90){  
-	        if(angel / 9%2 ==1){  
-	            int temp = src.height;  
-	            src.height = src.width;  
-	            src.width = temp;  
-	        }  
-	        angel = angel % 90;  
-	    }  
-	      
-	    double r = Math.sqrt(src.height * src.height + src.width * src.width ) / 2 ;  
-	    double len = 2 * Math.sin(Math.toRadians(angel) / 2) * r;  
-	    double angel_alpha = (Math.PI - Math.toRadians(angel)) / 2;    
-	    double angel_dalta_width = Math.atan((double) src.height / src.width);    
-	    double angel_dalta_height = Math.atan((double) src.width / src.height);    
-	  
-	    int len_dalta_width = (int) (len * Math.cos(Math.PI - angel_alpha    
-	            - angel_dalta_width));    
-	    int len_dalta_height = (int) (len * Math.cos(Math.PI - angel_alpha    
-	            - angel_dalta_height));    
-	    int des_width = src.width + len_dalta_width * 2;    
-	    int des_height = src.height + len_dalta_height * 2;    
-	    return new java.awt.Rectangle(new Dimension(des_width, des_height));    
-	}
-	
-	/** 
-	 * 图片翻转时，计算图片翻转到正常显示需旋转角度  
-	 */  
-	public int getRotateAngleForPhoto(File file){
-	    int angel = 0;  
-	    Metadata metadata;
-	    try{  
-	        metadata = JpegMetadataReader.readMetadata(file);  
-	        Directory directory = metadata.getDirectory(ExifThumbnailDirectory.class);  
-	        if(directory.containsTag(ExifThumbnailDirectory.TAG_ORIENTATION)){   
-	            // Exif信息中方向　　  
-	            int orientation = directory.getInt(ExifThumbnailDirectory.TAG_ORIENTATION);   
-	            // 原图片的方向信息  
-	            if(6 == orientation ){  
-	                //6旋转90  
-	                angel = 90;  
-	            }else if( 3 == orientation){  
-	               //3旋转180  
-	                angel = 180;  
-	            }else if( 8 == orientation){  
-	               //8旋转90  
-	                angel = 270;  
-	            }  
-	        }  
-	    } catch(Exception e){  
-	        logger.error(e.getMessage());
-	    }  
-	    logger.info("图片旋转角度：" + angel);  
-	    return angel;  
 	}
 }
