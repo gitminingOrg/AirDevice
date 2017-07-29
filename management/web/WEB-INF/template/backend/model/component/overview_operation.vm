@@ -53,6 +53,9 @@
                             	<div class="form-label col-md-2">
                                     <label for="model-code">型号代码</label>
                                 </div>
+                                <div class="form-label col-md-2">
+                                    <label for="model-code">产品类型</label>
+                                </div>
                                 <div class="form-input col-md-10">
                                         <input id="model-code" type="text" autoCompelete="off"></input>
                                 </div>

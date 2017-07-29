@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import model.SupportForm;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.base.Strings;
@@ -16,9 +16,12 @@ import bean.DeviceShareCode;
 import bean.DeviceStatus;
 import bean.UserDevice;
 import bean.Wechat2Device;
+import model.SupportForm;
 
 @Repository
 public class DeviceVipDao extends BaseDaoImpl{
+	private Logger logger = LoggerFactory.getLogger(DeviceVipDao.class);
+	
 	public List<DeviceStatus> getUserDevice(String userID){
 		return sqlSession.selectList("userVip.getUserDevice", userID);
 	}
@@ -80,6 +83,18 @@ public class DeviceVipDao extends BaseDaoImpl{
 		}else{
 			return userDevices.get(0);
 		}
+	}
+	
+	public boolean haveSharePermission(Map<String, Object> condition) {
+		try {
+		List<UserDevice> list = sqlSession.selectList("userVip.query", condition);
+		if(!list.isEmpty()) {
+			return true;
+		}
+		}catch (Exception e) {
+			
+		}
+		return false;
 	}
 	
 	public boolean addUserLocation(String userID, String cityPinyin){

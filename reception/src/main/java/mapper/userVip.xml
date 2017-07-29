@@ -127,6 +127,21 @@
 		status = 1 AND user_id = #{userID} AND device_id = #{deviceID}
 	</select>
 	
+	<select id="query" resultMap="userDevice">
+		select user_id, device_id, role
+		from userDevice
+		where 1 = 1
+		<if test="role != null">
+			and role = #{role}
+		</if>
+		<if test="status != null">
+			and status = #{status}
+		</if>
+		<if test="userId != null">
+			and status = #{userId}
+		</if>
+	</select>
+	
 	<select id="selectDeviceName" resultMap="deviceName">
 		SELECT 
 		device_id, name, phone, address, province_id, city_id, version

@@ -1,6 +1,7 @@
 package model.consumer;
 
 import model.Entity;
+import utils.ShareCodeGenerator;
 
 public class ConsumerShareCode extends Entity{
 	private String codeId;
@@ -9,6 +10,16 @@ public class ConsumerShareCode extends Entity{
 	
 	private String codeValue;
 
+	public ConsumerShareCode() {
+		super();
+	}
+	
+	public ConsumerShareCode(String consumerId) {
+		this();
+		this.consumerId = consumerId;
+		this.codeValue = ShareCodeGenerator.generate();
+	}
+	
 	public String getCodeId() {
 		return codeId;
 	}
