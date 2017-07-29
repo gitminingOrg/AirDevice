@@ -4,7 +4,26 @@
 	line-height: 30px;
 	font-size: 14px
 }
-
+.button-me {
+    border-color: transparent;
+    background-color: #00c0f5;
+    color: #FFF;
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    padding: 0 12px;
+    min-width: 52px;
+    min-height: 32px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    vertical-align: top;
+    text-align: center;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    line-height: 30px;
+    cursor: pointer;
+}
 .button-gm-sm {
 	min-height: 16px;
 	line-height: 16px;
@@ -73,3 +92,13 @@
 	border-top:1px dashed #ddd;
 	height:1px;
 }
+.center-in-center{
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }

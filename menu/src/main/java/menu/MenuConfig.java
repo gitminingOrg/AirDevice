@@ -12,8 +12,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 public class MenuConfig {
-	private final static String wechat_appid = "";
-	private final static String wechat_secret = "";
+	private final static String wechat_appid = "wxe8ca0dc55e5f81fd";
+	private final static String wechat_secret = "f059ce8503d18423654d6c1d7a8129e2";
 
 	/**
 	 * 调用此方法需传入appid和secret，现默认不使用该方法获取
@@ -75,8 +75,23 @@ public class MenuConfig {
 		deivce.put("name", "设备");
 		deivce.put("sub_button", device_button);
 		
+		//会员块
+		JSONObject vip_bonus = new JSONObject();
+		mine_device.put("name", "积分商城");
+		mine_device.put("type", "view");
+		try {
+			mine_device.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		JSONObject vip_code = new JSONObject();
+		new_device.put("name", "优惠码");
+		new_device.put("type", "scancode_push");
+		new_device.put("key", "discover");
+		
 		JSONObject vip = new JSONObject();
-		vip.put("name", "我的会员");
+		vip.put("name", "我的");
 		vip.put("type", "view");
 		try {
 			vip.put("url", "http://commander.qingair.net/reception/www/index.html");

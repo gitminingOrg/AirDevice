@@ -41,26 +41,25 @@
 		</div> 
 		
  		<div ng-if="!device.cleanerStatus">
-<!-- 		    <div class="item item-divider"> -->
-<!-- 		        <a href="" style="float:right;font-size:10px" ng-click="showConfirm(device.deviceID)">该设备未正常绑定？</a> -->
-<!-- 		  	</div> -->
-	       
-			<a class="item" href="">
+			<div  class="item-gm">
 				<div style="width: 60%;float:left">
-				<div style="margin-bottom:5px"><span style="font-size:20px; color:#666666">{{ device.deviceName }}</span></div>
-				<div style="font-size:16 px;color:#888888"> &nbsp;<i class="icon ion-nuclear"></i><span style="color:#00c0f5"> &nbsp;&nbsp; --</span></div>
+				<div style="margin-bottom:10px;margin-left: -15px; border-left:2px solid #00c0f5"><span style="font-size:18px; color:balck; margin-left:15px">{{ device.deviceName }}</span></div>
+				<div style="font-size:16px;color:#888888"> &nbsp;<i class="icon ion-nuclear"></i><span style="color:#00c0f5"> &nbsp;&nbsp;--</span></div>
 				</div>
 				
 				<div style="width: 40%; float:right">
-				<div style="float:right;padding-top:10px"><span style="font-size:36px; color:#00c0f5">离线</span> </div>
+				<div style="float:right;padding-top:30px;padding-bottom:5px"><span style="font-size:48px; color:#00c0f5">离线</span> </div>
 				</div>
-			</a>	
-	
-			<div class="item item-text-wrap row" style="float:right;color:#888888">
-				<div class="col col-30" style="margin-right: 0px"><span>室内</span></div>
-				<div class="col"><i class="icon ion-thermometer assertive"></i> -- </div>
-				<div class="col"><i class="icon ion-waterdrop calm"></i> -- </div>
-				<div class="col"><i class="icon ion-cloud"></i>  -- </div>
+			</div>	
+			
+			<hr class="split-gm"/>
+			<div class="item-gm" style="color:#888888;width:100%;font-size:16px">
+				<div style="float:left; width:20%"><span>室内</span></div>
+				<div style="float:right">
+				<div style="float:right;margin-left:15px"><i class="icon ion-cloud"></i> -- </div>
+				<div style="float:right;margin-left:15px"><i class="icon ion-waterdrop calm"></i> -- </div>
+				<div style="float:right;margin-left:15px"><i class="icon ion-thermometer assertive"></i> -- </div>
+				</div>
 			</div>    
 		</div> 		
      </div> 
