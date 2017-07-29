@@ -1,6 +1,5 @@
 package form;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sun.istack.internal.NotNull;
 
 public class ModelCreateForm {
@@ -12,6 +11,9 @@ public class ModelCreateForm {
 	
 	@NotNull
 	private String modelName;
+	
+	@NotNull
+	private boolean advanced;
 	
 	@NotNull
 	private String param;
@@ -38,6 +40,14 @@ public class ModelCreateForm {
 
 	public void setModelName(String modelName) {
 		this.modelName = modelName;
+	}
+	
+	public boolean isAdvanced() {
+		return advanced;
+	}
+
+	public void setAdvanced(boolean advanced) {
+		this.advanced = advanced;
 	}
 
 	public String getParam() {

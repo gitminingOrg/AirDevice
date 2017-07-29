@@ -5,18 +5,22 @@
 		<result property="consumerId" column="consumer_id"/>
 		<result property="consumerWechat" column="consumer_wechat" />
 		<result property="consumerName" column="consumer_name" />
-		<result property="shareCode" column="code_value"/>
+		<result property="shareCode" column="code_value" />
+		<result property="path" column="code_path" />
 	</resultMap>
 	
 	<select id="queryfrombg" parameterType="java.util.Map" resultMap="consumerShareCodeVo">
-		select sc_id, consumer_id, code_value
+		select consumer_id, consumer_wechat, consumer_name, code_value, code_path
 		from share_code_view
 		where 1 = 1
 		<if test="consumerId != null">
 			and consumer_id = #{consumerId}
 		</if>
 		<if test="shareCode != null">
-			and code_value like #{shareCode}
+			and code_value = #{shareCode}
+		</if>
+		<if test="search != null">
+			and (code_value like #{search} or consumer_name like #{search})
 		</if>
 	</select>
 </mapper>

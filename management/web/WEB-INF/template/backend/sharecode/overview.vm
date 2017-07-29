@@ -3,7 +3,7 @@
 <head>
     #parse("/backend/init/init.vm")
     #parse("/backend/common/datatable.lib.vm")
-    <title>客户</title>
+    <title>平台优惠码</title>
 </head>
 <body class="fixed-sidebar fixed-header" ontouchstart>
 	<div id="loading" class="ui-front loader ui-widget-overlay bg-white opacity-100">
@@ -11,7 +11,7 @@
     </div>
     <div id="page-wrapper">
     	#parse("/backend/common/sidebar.vm")
-        #parse("/backend/consumer/component/overview_list.vm")
+    	#parse("/backend/sharecode/component/overview_list.vm")
     </div>
 </body>
 <script type="text/javascript"></script>

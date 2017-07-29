@@ -12,5 +12,6 @@
 		<mapper resource="mapper/goods/modelcomponent.xml" />
 		<mapper resource="mapper/consumer/consumergoods.xml" />
 		<mapper resource="mapper/order/externalorder.xml" />
+		<mapper resource="mapper/consumer/consumersharecode.xml" />
 	</mappers>
 </configuration>

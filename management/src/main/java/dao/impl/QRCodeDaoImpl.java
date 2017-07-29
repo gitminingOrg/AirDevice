@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.sym;
 
 import dao.BaseDao;
 import dao.QRCodeDao;
@@ -23,7 +22,6 @@ import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.goods.BatchVo;
-import vo.goods.GoodsComponentVo;
 import vo.qrcode.QRCodeVo;
 
 @Repository
@@ -48,17 +46,17 @@ public class QRCodeDaoImpl extends BaseDao implements QRCodeDao {
 		}
 		return result;
 	}
-	
+
 	@Override
 	public ResultData query(Map<String, Object> condition) {
 		ResultData result = new ResultData();
 		try {
 			List<QRCodeVo> list = sqlSession.selectList("management.qrcode.query", condition);
-			if(list.isEmpty()) {
+			if (list.isEmpty()) {
 				result.setResponseCode(ResponseCode.RESPONSE_NULL);
 			}
 			result.setData(list);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
 			result.setDescription(e.getMessage());
@@ -71,11 +69,11 @@ public class QRCodeDaoImpl extends BaseDao implements QRCodeDao {
 		ResultData result = new ResultData();
 		try {
 			List<BatchVo> list = sqlSession.selectList("management.qrcode.batch.query", condition);
-			if(list.isEmpty()) {
+			if (list.isEmpty()) {
 				result.setResponseCode(ResponseCode.RESPONSE_NULL);
 			}
 			result.setData(list);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
 			result.setDescription(e.getMessage());
@@ -88,14 +86,16 @@ public class QRCodeDaoImpl extends BaseDao implements QRCodeDao {
 		ResultData result = new ResultData();
 		DataTablePage<QRCodeVo> page = new DataTablePage<>(param);
 		JSONObject appendix = JSON.parseObject(param.getParams());
-		if (!StringUtils.isEmpty(appendix.get("goodsId"))) {
-			condition.put("goodsId", appendix.get("goodsId"));
-		}
-		if (!StringUtils.isEmpty(appendix.get("modelId"))) {
-			condition.put("modelId", appendix.get("modelId"));
-		}
-		if (!StringUtils.isEmpty("batchNo")) {
-			condition.put("batchNo", appendix.get("batchNo"));
+		if (!StringUtils.isEmpty(appendix)) {
+			if (!StringUtils.isEmpty(appendix.get("goodsId"))) {
+				condition.put("goodsId", appendix.get("goodsId"));
+			}
+			if (!StringUtils.isEmpty(appendix.get("modelId"))) {
+				condition.put("modelId", appendix.get("modelId"));
+			}
+			if (!StringUtils.isEmpty("batchNo")) {
+				condition.put("batchNo", appendix.get("batchNo"));
+			}
 		}
 		if (!StringUtils.isEmpty(param.getsSearch())) {
 			condition.put("search", new StringBuffer("%").append(param.getsSearch()).append("%").toString());
@@ -116,7 +116,7 @@ public class QRCodeDaoImpl extends BaseDao implements QRCodeDao {
 		result.setData(page);
 		return result;
 	}
-	
+
 	private List<QRCodeVo> queryByPage(Map<String, Object> condition, int start, int length) {
 		List<QRCodeVo> list = new ArrayList<>();
 		try {
@@ -131,10 +131,10 @@ public class QRCodeDaoImpl extends BaseDao implements QRCodeDao {
 	public ResultData udpate(QRCode code) {
 		ResultData result = new ResultData();
 		synchronized (lock) {
-			try{
+			try {
 				sqlSession.update("management.qrcode.update", code);
 				result.setData(code);
-			}catch (Exception e) {
+			} catch (Exception e) {
 				logger.error(e.getMessage());
 				result.setResponseCode(ResponseCode.RESPONSE_ERROR);
 				result.setDescription(e.getMessage());

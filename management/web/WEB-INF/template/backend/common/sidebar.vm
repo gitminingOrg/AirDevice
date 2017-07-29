@@ -65,6 +65,12 @@
                     用户
                 </a>
                 <ul>
+                    <li>
+                        <a href="${path.concat('/sharecode/overview')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            分享码
+                        </a>
+                    </li>
                 	<li>
                     	<a href="${path.concat('/consumer/overview')}">
 	                        <i class="glyph-icon icon-chevron-right"></i>

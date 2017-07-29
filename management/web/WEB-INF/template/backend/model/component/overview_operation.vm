@@ -53,9 +53,6 @@
                             	<div class="form-label col-md-2">
                                     <label for="model-code">型号代码</label>
                                 </div>
-                                <div class="form-label col-md-2">
-                                    <label for="model-code">产品类型</label>
-                                </div>
                                 <div class="form-input col-md-10">
                                         <input id="model-code" type="text" autoCompelete="off"></input>
                                 </div>
@@ -66,6 +63,17 @@
                                 </div>
                                 <div class="form-input col-md-10">
                                         <input id="model-name" type="text" autoCompelete="off"></input>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-label col-md-2">
+                                    <label for="model-name">是否高级</label>
+                                </div>
+                                <div class="form-checkbox-radio col-md-10">
+                                    <input id="setting-advanced" type="radio" name="setting" value="true">
+                                    <label for="setting-advanced">高级</label>
+                                    <input id="setting-normal" type="radio" name="setting" value="false" checked>
+                                    <label for="setting-normal">普通</label>
                                 </div>
                             </div>
                             #if(${component})
@@ -103,11 +111,12 @@
 					eval(express);
 				}
 			})
+            var advanced = $("input:radio[name=setting]:checked").val();
 			var goods_id = $("#goods-name").val();
 			var model_code = $("#model-code").val();
 			var model_name = $("#model-name").val();
 			var url = "${path.concat('/model/create')}";
-			$.post(url, {goodsId: goods_id, modelCode: model_code, modelName: model_name, param: JSON.stringify(param)}, function(result) {
+			$.post(url, {goodsId: goods_id, modelCode: model_code, modelName: model_name, advanced: advanced, param: JSON.stringify(param)}, function(result) {
 				if(result.responseCode == "RESPONSE_OK") {
 					window.location.href = "${path.concat('/model/overview')}"
 				}

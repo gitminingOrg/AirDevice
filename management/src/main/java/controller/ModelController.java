@@ -118,7 +118,7 @@ public class ModelController {
 			result.setDescription("表单数据格式不正确");
 			return result;
 		}
-		GoodsModel gm = new GoodsModel(form.getGoodsId(), form.getModelCode(), form.getModelName());
+		GoodsModel gm = new GoodsModel(form.getGoodsId(), form.getModelCode(), form.getModelName(), form.isAdvanced());
 		ResultData response = goodsService.createModel(gm);
 		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
 			logger.error(response.getDescription());

@@ -9,4 +9,6 @@ public interface ConsumerService {
 	ResultData fetchConsumerGoods(Map<String, Object> condition);
 	
 	ResultData fetchConsumerGoods(Map<String, Object> condition, DataTableParam param);
+	
+	ResultData fetchShareCode(Map<String, Object> condition, DataTableParam param);
 }

@@ -4,14 +4,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -20,9 +24,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.csvreader.CsvReader;
 
 import model.order.TaobaoOrder;
+import pagination.DataTablePage;
+import pagination.DataTableParam;
 import service.OrderService;
 import utils.ResponseCode;
 import utils.ResultData;
+import vo.consumer.ConsumerShareCodeVo;
+import vo.order.OrderVo;
 
 @RestController
 @RequestMapping("/order")
@@ -70,5 +78,20 @@ public class OrderController {
 		}
 		view.setViewName("redirect:/order/overview");
 		return view;
+	}
+
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST, value = "/list")
+	public DataTablePage<OrderVo> list(DataTableParam param) {
+		DataTablePage<OrderVo> result = new DataTablePage<>(param);
+		if (StringUtils.isEmpty(param)) {
+			return result;
+		}
+		Map<String, Object> condition = new HashMap<>();
+		ResultData response = orderService.fetch(condition, param);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result = (DataTablePage<OrderVo>) response.getData();
+		}
+		return result;
 	}
 }
