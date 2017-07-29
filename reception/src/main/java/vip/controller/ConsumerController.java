@@ -1,5 +1,6 @@
 package vip.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import model.consumer.ConsumerShareCode;
 import utils.ResponseCode;
 import utils.ResultData;
 import vip.service.ConsumerSerivce;
+import vip.service.ShareCodeService;
 import vip.service.UploadService;
 import vo.consumer.ConsumerShareCodeVo;
 import vo.vip.ConsumerVo;
@@ -37,10 +39,13 @@ public class ConsumerController {
 
 	@Autowired
 	private ConsumerSerivce consumerService;
-	
+
 	@Autowired
 	private UploadService uploadService;
-	
+
+	@Autowired
+	private ShareCodeService shareCodeService;
+
 	@RequiresGuest
 	@RequestMapping(method = RequestMethod.POST, value = "/login")
 	public ResultMap login(LoginForm form) {
@@ -90,7 +95,7 @@ public class ConsumerController {
 		condition.put("userId", customerId);
 		condition.put("status", 1);
 		boolean status = consumerService.canShare(condition);
-		if(!status) {
+		if (!status) {
 			result.setStatus(ResultMap.STATUS_FORBIDDEN);
 			result.setInfo("Do not have permission to share.");
 			return result;
@@ -99,7 +104,7 @@ public class ConsumerController {
 		condition.put("consumerId", customerId);
 		condition.put("blockFlag", false);
 		ResultData response = consumerService.fetchShareCode(condition);
-		if(response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			ConsumerShareCodeVo vo = ((List<ConsumerShareCodeVo>) response.getData()).get(0);
 			result.setStatus(ResultMap.STATUS_SUCCESS);
 			result.addContent("sharecode", vo);
@@ -107,7 +112,7 @@ public class ConsumerController {
 		}
 		ConsumerShareCode code = new ConsumerShareCode(customerId);
 		response = consumerService.createShareCode(code);
-		if(response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			result.setStatus(ResultMap.STATUS_SUCCESS);
 			result.addContent("sharecode", response.getData());
 			return result;
@@ -115,26 +120,50 @@ public class ConsumerController {
 		result.setStatus(ResultMap.STATUS_FAILURE);
 		return result;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, value = "/share/upload")
 	public ResultMap upload(MultipartHttpServletRequest request) {
 		ResultMap result = new ResultMap();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if (StringUtils.isEmpty(current)) {
+			result.setStatus(ResultMap.STATUS_FORBIDDEN);
+			result.setInfo("No user authenticated, please login first.");
+			return result;
+		}
+		Map<String, Object> condition = new HashMap<>();
+		String customerId = current.getCustomerId();
+		condition.put("consumerId", customerId);
+		condition.put("blockFlag", false);
+		ResultData response = consumerService.fetchShareCode(condition);
+		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+			result.setStatus(ResultMap.STATUS_FORBIDDEN);
+			result.setInfo("The user does not have a share code.");
+			return result;
+		}
+		ConsumerShareCodeVo vo = ((List<ConsumerShareCodeVo>) response.getData()).get(0);
 		String context = request.getSession().getServletContext().getRealPath("/");
-        try {
-            MultipartFile file = request.getFile("credit");
-            ResultData response = uploadService.upload(file, context);
-            if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                logger.info(response.getData().toString());
-                
-            } else {
-                result.setStatus(ResultMap.STATUS_FAILURE);
-                result.setInfo("image upload failure");
-                return result;
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
+		try {
+			MultipartFile file = request.getFile("credit");
+			response = uploadService.upload(file, context);
+			if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+				response = shareCodeService.customizeShareCode(response.getData().toString(), vo.getShareCode());
+				if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+					result.setStatus(ResultMap.STATUS_SUCCESS);
+					result.addContent("sharepath", response.getData().toString());
+					return result;
+				}
+				result.setInfo("generate customize picture failed.");
+				return result;
+			} else {
+				result.setStatus(ResultMap.STATUS_FAILURE);
+				result.setInfo("image upload failure");
+				return result;
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
 		return result;
 	}
 }
