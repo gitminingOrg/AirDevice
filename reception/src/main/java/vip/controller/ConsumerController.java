@@ -148,13 +148,8 @@ public class ConsumerController {
 			MultipartFile file = request.getFile("credit");
 			response = uploadService.upload(file, context);
 			if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-				response = shareCodeService.customizeShareCode(response.getData().toString(), vo.getShareCode());
-				if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-					result.setStatus(ResultMap.STATUS_SUCCESS);
-					result.addContent("sharepath", response.getData().toString());
-					return result;
-				}
-				result.setInfo("generate customize picture failed.");
+				result.setStatus(ResultMap.STATUS_SUCCESS);
+				result.addContent("sharepath", response.getData().toString());
 				return result;
 			} else {
 				result.setStatus(ResultMap.STATUS_FAILURE);

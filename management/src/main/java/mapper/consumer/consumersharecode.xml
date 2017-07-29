@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.consumer.sharecode">
+	<resultMap id="consumerShareCodeVo" type="vo.consumer.ConsumerShareCodeVo">
+		<result property="consumerId" column="consumer_id"/>
+		<result property="consumerWechat" column="consumer_wechat" />
+		<result property="consumerName" column="consumer_name" />
+		<result property="shareCode" column="code_value"/>
+	</resultMap>
+	
+	<select id="queryfrombg" parameterType="java.util.Map" resultMap="consumerShareCodeVo">
+		select sc_id, consumer_id, code_value
+		from share_code_view
+		where 1 = 1
+		<if test="consumerId != null">
+			and consumer_id = #{consumerId}
+		</if>
+		<if test="shareCode != null">
+			and code_value like #{shareCode}
+		</if>
+	</select>
+</mapper>

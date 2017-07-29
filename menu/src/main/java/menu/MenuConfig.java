@@ -77,41 +77,85 @@ public class MenuConfig {
 		
 		//会员块
 		JSONObject vip_bonus = new JSONObject();
-		mine_device.put("name", "积分商城");
-		mine_device.put("type", "view");
+		vip_bonus.put("name", "积分商城");
+		vip_bonus.put("type", "view");
 		try {
-			mine_device.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
+			vip_bonus.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		JSONObject vip_code = new JSONObject();
-		new_device.put("name", "优惠码");
-		new_device.put("type", "scancode_push");
-		new_device.put("key", "discover");
+		vip_code.put("name", "优惠码");
+		vip_code.put("type", "view");
+		try {
+			vip_code.put("url", "http://commander.qingair.net/reception/www/templates/vip-code.html");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		JSONArray vip_button = new JSONArray();
+		vip_button.add(vip_bonus);
+		vip_button.add(vip_code);
 		
 		JSONObject vip = new JSONObject();
 		vip.put("name", "我的");
-		vip.put("type", "view");
-		try {
-			vip.put("url", "http://commander.qingair.net/reception/www/index.html");
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
+		vip.put("sub_button", vip_button);
+		
 	
-		JSONObject about = new JSONObject();
-		about.put("name", "关于产品");
-		about.put("type", "view");
+		//关于产品
+		JSONObject consumer_case = new JSONObject();
+		consumer_case.put("name", "用户案例");
+		consumer_case.put("type", "view");
 		try {
-			about.put("url", "http://commander.qingair.net/reception/www/index.html");
+			consumer_case.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		JSONObject gm_recognize = new JSONObject();
+		gm_recognize.put("name", "认识果麦");
+		gm_recognize.put("type", "view");
+		try {
+			gm_recognize.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		JSONObject product_guide = new JSONObject();
+		product_guide.put("name", "新风指南");
+		product_guide.put("type", "view");
+		try {
+			product_guide.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		JSONObject product_effect = new JSONObject();
+		product_effect.put("name", "净化效果");
+		product_effect.put("type", "view");
+		try {
+			product_effect.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		JSONArray prod_button = new JSONArray();
+		prod_button.add(consumer_case);
+		prod_button.add(gm_recognize);
+		prod_button.add(product_guide);
+		prod_button.add(product_effect);
+		
+		JSONObject prod = new JSONObject();
+		prod.put("name", "关于产品");
+		prod.put("sub_button", prod_button);
+		
+
 		
 		JSONArray buttons = new JSONArray();
 		buttons.add(deivce);
 		buttons.add(vip);
-		buttons.add(about);
+		buttons.add(prod);
 		JSONObject menu = new JSONObject();
 		menu.put("button", buttons);
 		System.out.println(JSON.toJSONString(menu));
@@ -177,7 +221,7 @@ public class MenuConfig {
 	    }
 	
     public static void main(String[] args) {
-        String token = "RWto3tIMnPKREXxpff08go7DxYXyDclmJMat2Qbb7BbOpWTIe6WgjskDu2Y1jk7YKZIOaRgbi2mvTe7udxNWiuPL7Ba6nObWiRxgCHndw1s7JEUolUfYDzhdfwQQPhKCMOXaAJAFHQ";
+        String token = "3CTGXqpPSLAybphzqQB1MYMWBdQHQM--BK5jHx0YUNOdlh96SIWKeESKlQ4kqWdyUKbuNBhnRrzT99PvmbaZ_utU-3IOPFOGh6e_PuhP7rN5vu4GxUpLu6svqmU913GAFOYaAEAQZJ";
         String deleteMessage = MenuConfig.deleteMenu(token);
         System.out.println("删除操作: " + deleteMessage);
         String createMessage = MenuConfig.createMenu(token);
