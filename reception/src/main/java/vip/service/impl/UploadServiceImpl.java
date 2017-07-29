@@ -1,6 +1,8 @@
 package vip.service.impl;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import net.coobird.thumbnailator.Thumbnails;
 import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
@@ -57,8 +60,8 @@ public class UploadServiceImpl implements UploadService {
 		try {
 			file.transferTo(temp);
 			int index = temp.getPath().indexOf(SystemTeller.tellPath(PATH + "/" + time));
-			result.setData(temp.getPath().substring(index));
-
+			result.setData(temp.getPath().substring(index)); 
+			Thumbnails.of(temp.getAbsolutePath()).scale(1f).outputQuality(0.15f).outputFormat("jpg").toFile(temp.getAbsolutePath());
 		} catch (IOException e) {
 			logger.debug(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
