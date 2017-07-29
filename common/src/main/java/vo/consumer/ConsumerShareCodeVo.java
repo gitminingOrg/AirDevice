@@ -8,6 +8,8 @@ public class ConsumerShareCodeVo {
 	private String consumerName;
 	
 	private String shareCode;
+	
+	private String path;
 
 	public String getConsumerId() {
 		return consumerId;
@@ -39,5 +41,13 @@ public class ConsumerShareCodeVo {
 
 	public void setShareCode(String shareCode) {
 		this.shareCode = shareCode;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 }
