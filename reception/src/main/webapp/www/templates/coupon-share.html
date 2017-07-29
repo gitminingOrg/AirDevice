@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+<link href="../css/share.css?07291900" rel="stylesheet">
+<link href="../css/bootstrap.min.css?07291900" rel="stylesheet">
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+<script src="../js/couponShare.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.2/js/fileinput.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.2/js/locales/zh.min.js"></script>
+<title>果麦智能新风净化</title>
+</head>
+<body>
+<div id="unAuth" style="display:none" class="center-in-center">
+<img alt="" src="../img/cry.png">
+</div>
+
+<div id="auth">
+	<div id="header" class="row">
+		<div id="eye" class="pad col-xs-7 col-sm-7 col-md-7 col-lg-7">
+			<div id="location" style="font-size:48px;border-left: solid 3px #222222;padding-left:10px">南京</div>
+			<div id="pm25" style="font-size:18px;font-style:italic;margin-top:10px;padding-left:15px">pm2.5 1/16</div>
+		</div>
+		
+		
+		
+		<div id="ear" class="pad col-xs-5 col-sm-5 col-md-5 col-lg-5">
+			<div id="qrcode" style="float:right;padding-top:5px"><img src="../img/GMQR.png" height="70" width="70"/></div>
+			<div id="date" style="float:right;padding-top:5px">29 July Sat</div>
+		</div>
+	</div>
+	<div id="img_choose" class="container">
+	<div id="choose" class="weui_uploader_input_wrp">
+	<input id="fileinput_id1" class="file" type="file" name="credit" accept="image/jpg,image/jpeg,image/png,image/gif" capture="camera"/>
+	</div>
+	</div>
+	<div id="main" onclick="imgShift()">
+	<div class="container"><img id="photo" src="../img/whatever.png" width="100%"/> </div>
+	<div id="co_name" class="container" style="float:right">©果麦新风</div>
+	</div>
+	
+	<div id="footer" class="footer container">
+	<p style="font-size:14px">亲友折扣码：1428571</p>
+	<p style="font-size:10px">详情请咨询【果麦新风】淘宝店铺</p>
+	</div>
+</div>
+</body>
+</html>

@@ -86,9 +86,11 @@ public class UploadServiceImpl implements UploadService {
                 g2.rotate(Math.toRadians(angel), src_width / 2, src_height / 2);  
   
                 g2.drawImage(big, null, null);
+			}else {
+				big = src;
 			}
             ImageIO.write(big, suffix, temp);  
-            Thumbnails.of(temp.getAbsolutePath()).scale(1f).outputQuality(0.15f).outputFormat("jpg").toFile(temp.getAbsolutePath());
+            Thumbnails.of(temp.getAbsolutePath()).size(800, 600).outputQuality(0.8f).outputFormat("jpg").toFile(temp.getAbsolutePath());
 		} catch (IOException e) {
 			logger.debug(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
