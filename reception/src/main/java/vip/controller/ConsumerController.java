@@ -15,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import form.LoginForm;
 import model.ResultMap;
@@ -23,6 +26,7 @@ import model.consumer.ConsumerShareCode;
 import utils.ResponseCode;
 import utils.ResultData;
 import vip.service.ConsumerSerivce;
+import vip.service.UploadService;
 import vo.consumer.ConsumerShareCodeVo;
 import vo.vip.ConsumerVo;
 
@@ -33,6 +37,9 @@ public class ConsumerController {
 
 	@Autowired
 	private ConsumerSerivce consumerService;
+	
+	@Autowired
+	private UploadService uploadService;
 	
 	@RequiresGuest
 	@RequestMapping(method = RequestMethod.POST, value = "/login")
@@ -106,6 +113,28 @@ public class ConsumerController {
 			return result;
 		}
 		result.setStatus(ResultMap.STATUS_FAILURE);
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST, value = "/share/upload")
+	public ResultMap upload(MultipartHttpServletRequest request) {
+		ResultMap result = new ResultMap();
+		String context = request.getSession().getServletContext().getRealPath("/");
+        try {
+            MultipartFile file = request.getFile("credit");
+            ResultData response = uploadService.upload(file, context);
+            if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                logger.info(response.getData().toString());
+                
+            } else {
+                result.setStatus(ResultMap.STATUS_FAILURE);
+                result.setInfo("image upload failure");
+                return result;
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
 		return result;
 	}
 }

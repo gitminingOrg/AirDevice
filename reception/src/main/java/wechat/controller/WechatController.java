@@ -6,10 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import model.ResultMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,18 +19,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.thoughtworks.xstream.XStream;
+
+import bean.WechatUser;
+import config.ReceptionConfig;
+import config.WechatConfig;
+import model.ResultMap;
 import util.Configuration;
 import util.WechatUtil;
 import utils.Encryption;
 import utils.HttpDeal;
-import bean.WechatUser;
-
-import com.alibaba.fastjson.JSONObject;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import config.ReceptionConfig;
-import config.WechatConfig;
 
 @RestController
 public class WechatController {
@@ -56,6 +56,19 @@ public class WechatController {
 		return "";
 	}
 
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST, value = "wechat", produces="text/xml;charset=utf-8")
+	public String handle(HttpServletRequest request, HttpServletRequest response) {
+		try {
+			ServletInputStream stream = request.getInputStream();
+			String input = WechatUtil.inputStream2String(stream);
+			
+		}catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return "";
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/wechat/init")
 	public ResultMap init(String url) {
 		url = url.split("#")[0];
@@ -65,7 +78,6 @@ public class WechatController {
 			result.setInfo("请传入当前页面的完整URL");
 			return result;
 		}
-		logger.info(url + "   urllruhahahah");
 		Configuration configuration = WechatConfig.config(url);
 		logger.info(JSONObject.toJSONString(configuration));
 		result.setStatus(ResultMap.STATUS_SUCCESS);
