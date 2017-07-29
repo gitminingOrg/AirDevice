@@ -21,7 +21,7 @@ import vip.service.ShareCodeService;
 public class ShareCodeServiceImpl implements ShareCodeService {
 	private Logger logger = LoggerFactory.getLogger(ShareCodeServiceImpl.class);
 
-	private final static String TEMPLATE_FG_PATH = "/material/image/sharecode.png";
+	private final static String TEMPLATE_FG_PATH = "/material/img/sharecode.png";
 	
 	@Override
 	public ResultData customizeShareCode(String path, String value) {

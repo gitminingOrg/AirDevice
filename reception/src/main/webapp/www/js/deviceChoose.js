@@ -21,6 +21,13 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
 						$scope.deviceWaiting = false
 						var date = new Date();
 						$scope.today = months[date.getMonth()] +" " + date.getDate()
+				    	$http.get("/reception/own/user/city").success(function(response2){
+				    		if(response2.status == 1){	
+								$scope.updateCityAir(response2.contents.city);
+				        	}else{
+				        		$scope.updateCityAir('beijing');
+				        	}
+				        });
 					}
 				}else {
 					$state.go('login');
@@ -28,24 +35,6 @@ app.controller( 'DeviceCtrl', function($rootScope, $scope, $cordovaBarcodeScanne
 		    }, function error(response) {
 		    	$state.go('login');
 		    });
-		
-//    	$http.get("/reception/location/phone").success(function(response){
-//    		if(response.status == 1){	
-//				$scope.gps = response.contents.location
-//				$scope.updateCityAir($scope.gps.cityPinyin);
-//        	}else{
-//        		$scope.updateCityAir('beijing');
-//        	}
-//        });
-    	
-		
-    	$http.get("/reception/own/user/city").success(function(response){
-    		if(response.status == 1){	
-				$scope.updateCityAir(response.contents.city);
-        	}else{
-        		$scope.updateCityAir('beijing');
-        	}
-        });
 	}
     $scope.init()
     

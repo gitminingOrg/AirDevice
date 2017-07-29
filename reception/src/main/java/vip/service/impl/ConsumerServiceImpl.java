@@ -82,7 +82,7 @@ public class ConsumerServiceImpl implements ConsumerSerivce {
 		ResultData result = new ResultData();
 		ResultData response = consumerShareCodeDao.query(condition);
 		if(response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-			result.setData(result.getData());
+			result.setData(response.getData());
 		}else {
 			result.setResponseCode(ResponseCode.RESPONSE_NULL);
 		}

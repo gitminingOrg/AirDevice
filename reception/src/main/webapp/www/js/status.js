@@ -82,7 +82,7 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 			          fontSize: '13px'
 			        }
 			    },
-			    colors: ['#11c1f3','#ef473a'],
+			    colors: ['#11c1f3','#f282aa'],
 			    xAxis: {
 			        categories: airCompare.dates,
 			        crosshair: true

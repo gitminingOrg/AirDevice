@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="management.consumer.sharecode">
+<mapper namespace="reception.consumer.sharecode">
 	<resultMap id="consumerShareCodeVo" type="vo.consumer.ConsumerShareCodeVo">
 		<result property="consumerId" column="consumer_id"/>
-		<result property="codeValue" column="code_value"/>
+		<result property="shareCode" column="code_value"/>
 	</resultMap>
 	
 	<insert id="insert" parameterType="model.consumer.ConsumerShareCode" useGeneratedKeys="false">
@@ -18,7 +18,7 @@
 		<if test="consumerId != null">
 			and consumer_id = #{consumerId}
 		</if>
-		<if test="codeValue != null">
+		<if test="shareCode != null">
 			
 		</if>
 	</select>

@@ -41,7 +41,7 @@ public class ConsumerShareCodeDaoImpl extends BaseDaoImpl implements ConsumerSha
 	public ResultData query(Map<String, Object> condition) {
 		ResultData result = new ResultData();
 		try {
-			List<ConsumerShareCodeVo> list = sqlSession.selectList("management.consumer.sharecode.query", condition);
+			List<ConsumerShareCodeVo> list = sqlSession.selectList("reception.consumer.sharecode.query", condition);
 			if(list.isEmpty()) {
 				result.setResponseCode(ResponseCode.RESPONSE_NULL);
 			}
