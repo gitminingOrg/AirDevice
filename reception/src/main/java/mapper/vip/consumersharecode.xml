@@ -20,6 +20,9 @@
 		<if test="consumerId != null">
 			and consumer_id = #{consumerId}
 		</if>
+		<if test="codeValue != null">
+			and code_value = #{codeValue}
+		</if>
 	</select>
 	
 	<update id="update" parameterType="model.consumer.ConsumerShareCode">
