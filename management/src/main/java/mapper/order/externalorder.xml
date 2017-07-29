@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.externalorder">
+	<insert id="insertTaobaoBatch" parameterType="java.util.List" useGeneratedKeys="false">
+		insert into taobao_order(order_id, order_no, buyer_name, buyer_ali_account, order_price, receiver_name, receiver_phone, receiver_address, order_coupon, goods_title, goods_kind, pay_time, block_flag, create_time)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.orderId}, #{item.orderNo}, #{item.buyerName}, #{item.buyerAliAccount}, #{item.price}, #{item.receiverName}, #{item.receiverPhone}, #{item.receiverAddress}, #{item.coupon}, #{item.goodsTitle}, #{item.goodsKind}, #{item.payTime}, #{item.blockFlag}, #{item.createAt})
+		</foreach>
+	</insert>
+</mapper>

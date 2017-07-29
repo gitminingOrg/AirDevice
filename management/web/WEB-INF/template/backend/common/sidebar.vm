@@ -21,7 +21,7 @@
             </li>
             <li>
             	<a href="javascript:;">
-                	<i class="glyph-icon icon-code"></i>
+                	<i class="glyph-icon icon-qrcode"></i>
                     二维码
                 </a>
                 <ul>
@@ -61,7 +61,7 @@
             </li>
             <li>
             	<a href="javascript:;">
-                	<i class="glyph-icon icon-table"></i>
+                	<i class="glyph-icon icon-users"></i>
                     用户
                 </a>
                 <ul>
@@ -75,7 +75,7 @@
             </li>
             <li>
             	<a href="javascript:;">
-                	<i class="glyph-icon icon-tags"></i>
+                	<i class="glyph-icon icon-laptop"></i>
                     设备
                 </a>
                 <ul>
@@ -89,6 +89,19 @@
                     	<a href="${path.concat('/goods/overview')}">
                         	<i class="glyph-icon icon-chevron-right"></i>
                            	设备概览
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-file-text-o"></i>订单
+                </a>
+                <ul>
+                    <li>
+                        <a href="${path.concat('/order/overview')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            淘宝订单
                         </a>
                     </li>
                 </ul>

@@ -1,0 +1,81 @@
+<div id="page-main">
+	<div id="page-main-wrapper">
+		<div id="page-header" class="clearfix">
+			<div id="page-header-wrapper" class="clearfix">
+				<div id="page-breadcrumb-wrapper">
+                	<div id="page-breadcrumb">
+                    	<a href="javascript:;">
+                        	<i class="glyph-icon icon-dashboard"></i>
+                                首页
+                        </a>
+                        <a href="javascript:;">
+                            <i class="glyph-icon icon-file-text-o"></i>
+                            订单
+                        </a>
+                        <span class="current">
+                            淘宝订单
+                        </span>
+                    </div>
+                </div>
+			</div>
+		</div>
+        <div id="page-breadcrumb-wrapper">
+            <div id="page-breadcrumb">
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-dashboard"></i>
+                        首页
+                </a>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-file-text-o"></i>
+                    订单
+                </a>
+                <span class="current">
+                    淘宝订单
+                </span>
+            </div>
+        </div>
+        <div id="page-content">
+            <div class="infobox warning-bg">
+                <p><i class="glyph-icon icon-exclamation mrg10R"></i> 若您需要导入新的订单，请单击这里进行 <a href="javascript:;" class="white-modal-80" title="添加部件"> 上传订单 </a>.</p>
+            </div>
+            <div class="hide" id="white-modal-80" title="添加型号">
+                <div class="pad10A">
+                    <div class="col-md-12 center-margin">
+                        <div class="form-row">
+                            <div class="form-label col-md-2">
+                                <label for="goods-name">导入列表</label>
+                            </div>
+                            <div class="form-input col-md-10">
+                                <form id="order-form">
+                                    <input name="orderFile" type="file">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <button class="btn medium bg-blue-alt" id="confirm-upload">
+                                <span class="button-content">上传</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+<script>
+    $(document).ready(function() {
+        $("#confirm-upload").on('click', function() {
+            $("#order-form").attr('action', "${path.concat('/order/upload')}");
+            $("#order-form").attr('method', "post");
+            $("#order-form").attr('enctype', 'multipart/form-data');
+            $("#order-form").submit();
+        });
+    });
+
+    function not_null(item) {
+        if (item == null || item == "" || item.length <= 0) {
+            return false;
+        }
+        return true;
+    }
+</script>
