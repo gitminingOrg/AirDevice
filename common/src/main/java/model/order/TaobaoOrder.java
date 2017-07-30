@@ -25,6 +25,8 @@ public class TaobaoOrder extends Entity{
 	
 	private String goodsKind;
 	
+	private String productSerial;
+	
 	private String payTime;
 	
 	public TaobaoOrder() {
@@ -133,6 +135,14 @@ public class TaobaoOrder extends Entity{
 
 	public void setGoodsKind(String goodsKind) {
 		this.goodsKind = goodsKind;
+	}
+
+	public String getProductSerial() {
+		return productSerial;
+	}
+
+	public void setProductSerial(String productSerial) {
+		this.productSerial = productSerial;
 	}
 
 	public String getPayTime() {

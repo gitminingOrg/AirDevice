@@ -16,18 +16,18 @@ import utils.ResponseCode;
 import utils.ResultData;
 
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
 	private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
-	
+
 	@Autowired
 	private OrderDao orderDao;
-	
+
 	@Override
 	public ResultData upload(List<TaobaoOrder> order) {
 		ResultData result = new ResultData();
 		ResultData response = orderDao.insert(order);
 		result.setResponseCode(response.getResponseCode());
-		if(response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
 			result.setDescription(response.getDescription());
 		}
 		return result;
@@ -37,6 +37,32 @@ public class OrderServiceImpl implements OrderService{
 	public ResultData fetch(Map<String, Object> condition, DataTableParam param) {
 		ResultData result = new ResultData();
 		ResultData response = orderDao.query(condition, param);
+		result.setResponseCode(response.getResponseCode());
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setData(response.getData());
+		} else {
+			result.setDescription(response.getDescription());
+		}
+		return result;
+	}
+
+	@Override
+	public ResultData fetch(Map<String, Object> condition) {
+		ResultData result = new ResultData();
+		ResultData response = orderDao.query(condition);
+		result.setResponseCode(response.getResponseCode());
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setData(response.getData());
+		} else {
+			result.setDescription(response.getDescription());
+		}
+		return result;
+	}
+
+	@Override
+	public ResultData assignSerial(TaobaoOrder order) {
+		ResultData result = new ResultData();
+		ResultData response = orderDao.update(order);
 		result.setResponseCode(response.getResponseCode());
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			result.setData(response.getData());

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -91,6 +92,47 @@ public class OrderController {
 		ResultData response = orderService.fetch(condition, param);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			result = (DataTablePage<OrderVo>) response.getData();
+		}
+		return result;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/{orderId}")
+	public ModelAndView detail(@PathVariable("orderId") String orderId) {
+		ModelAndView view = new ModelAndView();
+		if(StringUtils.isEmpty(orderId)) {
+			view.setViewName("redirect:/order/overview");
+			return view;
+		}
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("orderId", orderId);
+		ResultData response = orderService.fetch(condition);
+		if(response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+			view.setViewName("redirect:/order/overview");
+			return view;
+		}
+		OrderVo vo = ((List<OrderVo>)response.getData()).get(0);
+		view.addObject("order", vo);
+		view.setViewName("/backend/order/detail");;
+		return view;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/{orderId}/deliver")
+	public ResultData deliver(@PathVariable("orderId") String orderId, String productSerial) {
+		ResultData result = new ResultData();
+		if(StringUtils.isEmpty(orderId) || StringUtils.isEmpty(productSerial)) {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription("订单编号和产品编号");
+			return result;
+		}
+		TaobaoOrder order = new TaobaoOrder();
+		order.setOrderId(orderId);
+		order.setProductSerial(productSerial);
+		ResultData response = orderService.assignSerial(order);
+		if(response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setResponseCode(ResponseCode.RESPONSE_OK);
+		}else {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription("发货失败");
 		}
 		return result;
 	}

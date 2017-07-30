@@ -115,9 +115,15 @@
                 }}, 
                 {title: "渠道", "mData": "channel"},
                 {title: "优惠码", "mData": "coupon"},
+                {title: "产品编号", "mData": "productSerial"},
                 {title: "付款时间", "mData": "payTime"},
-                {title: "操作", "mRender": function() {
-                    return "";
+                {title: "操作", "mRender": function(data, type, full) {
+                    var node = "";
+                    if(!not_null(full.productSerial)) {
+                        var edit = "<a href='" + "${path.concat('/order/')}" + full.orderId + "' class='btn small bg-blue-alt tooltip-button' data-placement='top' ><i class='glyph-icon icon-edit'></i></a>";
+                        node += edit;
+                    }
+                    return node;
                 }}
             ],
             "language": {

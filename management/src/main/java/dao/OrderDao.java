@@ -13,4 +13,6 @@ public interface OrderDao {
 	ResultData query(Map<String, Object> condition);
 
 	ResultData query(Map<String, Object> condition, DataTableParam param);
+	
+	ResultData update(TaobaoOrder order);
 }

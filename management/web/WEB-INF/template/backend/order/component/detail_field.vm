@@ -1,0 +1,128 @@
+<div id="page-main">
+	<div id="page-main-wrapper">
+		<div id="page-header" class="clearfix">
+			<div id="page-header-wrapper" class="clearfix">
+				<div id="page-breadcrumb-wrapper">
+                	<div id="page-breadcrumb">
+                    	<a href="javascript:;">
+                        	<i class="glyph-icon icon-dashboard"></i>
+                                首页
+                        </a>
+                        <a href="javascript:;">
+                            <i class="glyph-icon icon-file-text-o"></i>
+                            订单
+                        </a>
+                        <span class="current">
+                            订单详情
+                        </span>
+                    </div>
+                </div>
+			</div>
+		</div>
+        <div id="page-breadcrumb-wrapper">
+            <div id="page-breadcrumb">
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-dashboard"></i>
+                        首页
+                </a>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-file-text-o"></i>
+                    订单
+                </a>
+                <span class="current">
+                    订单详情
+                </span>
+            </div>
+        </div>
+        <div id="page-content">
+            <div class="col-md-12 center-margin">
+            	<h4>订单详情</h4>
+            	<div class="form-row">
+            		<div class="form-label col-md-2">订单编号</div>
+            		<div class="form-input col-md-10">${order.orderNo}</div>
+            	</div>
+            	<div class="form-row">
+            		<div class="form-label col-md-2">购买人</div>
+            		<div class="form-input col-md-10">${order.buyerName}</div>
+            	</div> 
+            	<div class="form-row">
+            		<div class="form-label col-md-2">交易帐号</div>
+            		<div class="form-input col-md-10">${order.buyerAccount}</div>
+            	</div> 
+            	<div class="form-row">
+            		<div class="form-label col-md-2">收货人</div>
+            		<div class="form-input col-md-10">${order.receiverName}(${order.receiverPhone})</div>
+            	</div>
+            	<div class="form-row">
+            		<div class="form-label col-md-2">收货地址</div>
+            		<div class="form-input col-md-10">${order.receiverAddress}</div>
+            	</div>
+            	#if($!{order.coupon})
+            		<div class="form-row">
+            			<div class="form-label col-md-2">优惠码</div>
+            			<div class="form-input col-md-10">${order.coupon}</div>
+            		</div>
+            	#end
+            	<div class="form-row">
+            		<div class="form-label col-md-2">购买商品</div>
+            		<div class="form-input col-md-10">${order.goodsTitle} (${order.goodsKind})</div>
+            	</div>
+            	<div class="form-row">
+            		<div class="form-label col-md-2">付款时间</div>
+            		<div class="form-input col-md-10">${order.payTime}</div>
+            	</div>
+				<div class="form-row">
+            		<div class="form-label col-md-2">订单渠道</div>
+            		<div class="form-input col-md-10">${order.channel}</div>
+            	</div>
+            	<hr />
+            	<div class="form-row">
+            		<a href="javascript:;" class="btn medium bg-blue white-modal-80" title="填写产品编号">
+           				<span class="button-content">发货</span>
+        			</a>
+            	</div>
+            </div>
+            <div class="hide" id="white-modal-80" title="填写产品编号">
+                <div class="pad10A">
+                    <div class="col-md-12 center-margin">
+                        <div class="form-row">
+                            <div class="form-label col-md-2">
+                                <label for="goods-name">产品编号</label>
+                            </div>
+                            <div class="form-input col-md-10">
+                                <input id="product-serial" type="text">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <button class="btn medium bg-blue-alt" id="confirm-deliver">
+                                <span class="button-content">发货</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+<script>
+	$(document).ready(function() {
+		$("#confirm-deliver").on('click', function() {
+			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/deliver";
+			var product_serial = $("#product-serial").val();
+			$.post(url, {productSerial: product_serial}, function(result) {
+				if(result.responseCode == "RESPONSE_OK") {
+					window.location.href = "${path.concat('/order/')}" + "${order.orderId}"; 
+				}else {
+					alert("发货失败");
+				}
+			});
+		})
+	});
+
+    function not_null(item) {
+        if (item == null || item == "" || item.length <= 0) {
+            return false;
+        }
+        return true;
+    }
+</script>

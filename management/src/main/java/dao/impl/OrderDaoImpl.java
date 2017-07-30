@@ -93,4 +93,17 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 		}
 		return list;
 	}
+
+	@Override
+	public ResultData update(TaobaoOrder order) {
+		ResultData result = new ResultData();
+		try {
+			sqlSession.update("management.externalorder.update", order);
+		}catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getLocalizedMessage());
+		}
+		return result;
+	}
 }

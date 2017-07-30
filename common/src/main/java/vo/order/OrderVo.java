@@ -21,6 +21,8 @@ public class OrderVo {
 	
 	private String goodsKind;
 	
+	private String productSerial;
+	
 	private String payTime;
 	
 	private String channel;
@@ -103,6 +105,14 @@ public class OrderVo {
 
 	public void setGoodsKind(String goodsKind) {
 		this.goodsKind = goodsKind;
+	}
+	
+	public String getProductSerial() {
+		return productSerial;
+	}
+
+	public void setProductSerial(String productSerial) {
+		this.productSerial = productSerial;
 	}
 
 	public String getPayTime() {
