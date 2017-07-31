@@ -397,9 +397,9 @@ public class DeviceStatusController {
 		}
 		//get city pm2.5
 		int cityData = 0;
-		DeviceCityVo location = locationService.getDeviceLocation(deviceID);
-		if(location != null) {
-			String cityPinyin = location.getCityPinyin();
+		DeviceCity deviceCity = deviceStatusService.getDeviceCity(userID, deviceID);
+		if(deviceCity != null) {
+			String cityPinyin = deviceCity.getCity();
 			CityAqi cityAqi = deviceStatusService.getCityCurrentAqi(cityPinyin);
 			if(cityAqi != null){
 				cityData = cityAqi.getPm25();

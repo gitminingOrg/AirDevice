@@ -31,10 +31,11 @@
 }
 
 .statBar {
+	min-width: 0px;
 	min-height: 15px;
 	line-height: 12px;
 	font-size: 10px;
-	border-radius: 10px;
+	border-radius: 5px;
 }
 .barContainer{
 	width:100%; 
@@ -46,7 +47,7 @@
 .barContent {
     height: 16px;
     margin: 0 20px 0 60px;
-    border-radius: 10px;
+    border-radius: 5px;
     background: #f4f4f4;
 }
 
