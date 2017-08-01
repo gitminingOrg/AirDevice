@@ -20,8 +20,8 @@
  		<div ng-if="device.cleanerStatus">
 			<div  class="item-gm" ng-click="goDetail(device.deviceID)" href="#tab/{{ device.deviceID}}/chats">
 				<div style="width: 60%;float:left">
-				<div style="margin-bottom:10px;margin-left: -15px; border-left:2px solid #00c0f5"><span style="font-size:18px; color:balck; margin-left:15px">{{ device.deviceName }}</span></div>
-				<div style="font-size:16px;color:#888888"> &nbsp;<i class="icon ion-nuclear"></i><span style="color:#00c0f5"> &nbsp;&nbsp;{{ device.cleanerStatus.velocity }}</span></div>
+				<div style="margin-bottom:10px"><span style="font-size:18px; color:balck">{{ device.deviceName }}</span></div>
+				<div style="font-size:16px;color:#888888"> &nbsp;<i class="icon-fan" style="color:#C5D6F7"></i><span style="color:#00c0f5"> &nbsp;&nbsp;{{ device.cleanerStatus.velocity }}</span></div>
 				</div>
 				
 				<div style="width: 40%; float:right">
@@ -33,9 +33,9 @@
 			<div class="item-gm" style="color:#888888;width:100%;font-size:16px">
 				<div style="float:left; width:20%"><span>室内</span></div>
 				<div style="float:right">
-				<div style="float:right;margin-left:15px"><i class="icon ion-cloud"></i> CO<sub>2</sub> {{ device.cleanerStatus.co2 }}</div>
-				<div style="float:right;margin-left:15px"><i class="icon ion-waterdrop calm"></i> {{ device.cleanerStatus.humidity }}%</div>
-				<div style="float:right;margin-left:15px"><i class="icon ion-thermometer assertive"></i> {{ device.cleanerStatus.temperature }}<sup>o</sup>C</div>
+				<div style="float:right;margin-left:15px"><i class="icon-leat" style="backgroud-color:red"></i> CO<sub>2</sub> {{ device.cleanerStatus.co2 }}</div>
+				<div style="float:right;margin-left:15px"><i class="icon-drop"></i> {{ device.cleanerStatus.humidity }}%</div>
+				<div style="float:right;margin-left:15px"><i class="icon-the"></i> {{ device.cleanerStatus.temperature }}<sup>o</sup>C</div>
 				</div>
 			</div>    
 		</div> 
@@ -43,8 +43,8 @@
  		<div ng-if="!device.cleanerStatus">
 			<div  class="item-gm">
 				<div style="width: 60%;float:left">
-				<div style="margin-bottom:10px;margin-left: -15px; border-left:2px solid #00c0f5"><span style="font-size:18px; color:balck; margin-left:15px">{{ device.deviceName }}</span></div>
-				<div style="font-size:16px;color:#888888"> &nbsp;<i class="icon ion-nuclear"></i><span style="color:#00c0f5"> &nbsp;&nbsp;--</span></div>
+				<div style="margin-bottom:10px"><span style="font-size:18px; color:balck">{{ device.deviceName }}</span></div>
+				<div style="font-size:16px;color:#888888"> &nbsp;<i class="icon-fan" style="color:#C5D6F7"></i><span style="color:#00c0f5"> &nbsp;&nbsp;--</span></div>
 				</div>
 				
 				<div style="width: 40%; float:right">
@@ -56,9 +56,9 @@
 			<div class="item-gm" style="color:#888888;width:100%;font-size:16px">
 				<div style="float:left; width:20%"><span>室内</span></div>
 				<div style="float:right">
-				<div style="float:right;margin-left:15px"><i class="icon ion-cloud"></i> -- </div>
-				<div style="float:right;margin-left:15px"><i class="icon ion-waterdrop calm"></i> -- </div>
-				<div style="float:right;margin-left:15px"><i class="icon ion-thermometer assertive"></i> -- </div>
+				<div style="float:right;margin-left:15px"><i class="icon-leat"></i> -- </div>
+				<div style="float:right;margin-left:15px"><i class="icon-drop"></i> -- </div>
+				<div style="float:right;margin-left:15px"><i class="icon-the"></i> -- </div>
 				</div>
 			</div>    
 		</div> 		

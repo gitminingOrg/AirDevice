@@ -1,46 +1,48 @@
-﻿  <ion-content style="background-color:#FAFAFA">
+﻿  <ion-content style="background-color:#F7F7F7">
   <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
-  <div style="background: url(img/background.png?762048); background-size: 100% 180px; height: 180px">
-	 <a class="button button-calm" ng-href="{{ configHref }}"> {{deviceName.name}} <i ng-if="role == 0" class="icon ion-ios-cog-outline"></i></a>
+  <div style="background: url(img/home_back.png?762048); background-size: 100% 180px; height: 180px">
+	 <a class="button button-calm" style="background-color:transparent" ng-href="{{ configHref }}"> {{deviceName.name}} <i ng-if="role == 0" class="icon ion-ios-cog-outline"></i></a>
 	 
 	 <img alt="" src="img/logo.png?762048" height="40" width="100" style="float:right;margin-top:2px;margin-right:5px">
+	 <div style="background: url(img/bubble.png?762048); background-size: 100%; background-repeat: no-repeat; margin:0 auto; margin-top :-20px; padding-top: 20px;padding-bottom:12px; width :150px">
 	 <p style="color:white;text-align:center;margin-top:20px;font-size:40px; font-wight: bold">{{ cleanerStatus.pm25 }} </p>
-	 <p style="color:white;text-align:center;margin-top:20px;font-wight: bold">ug/m<sup>3</sup></p>
-	 <center><a style="color:white;text-align:center" href="#/home/device">返回设备列表</a></center>
+	 <p style="color:white;text-align:center;margin-top:15px;font-wight: bold"> &nbsp; ug / m<sup>3</sup></p>
+	 <div style="margin-top:20px"><center><a style="color:white;text-align:center;line-height:20px" href="#/home/device">返回设备列表</a></center></div>
+	 </div>
    </div>
-     <div class="card">
+     <div class="card-gm">
 	     <!-- <div class="item item-divider" style="font-size:12px"><i class="icon ion-android-home"></i> 室内环境</div> -->
 	     <div class="row">
-	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-nuclear energized"></i><br/>风量<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.velocity }}</span></p></div>
-	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-flame assertive"></i><br/>辅热<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.heat == 1 ? '开' : '关' }}</span></p></div>
-	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-thermometer assertive"></i><br/>温度<br/><p style="margin-top:5px; margin-bottom:0px"> <span style="color:#00c0f5">{{ cleanerStatus.temperature }} <sup>o</sup>C</span></p></div>
-	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-waterdrop calm"></i><br/>湿度<br/> <p style="margin-top:5px; margin-bottom:0px"> <span style="color:#00c0f5">{{ cleanerStatus.humidity }}%</span></p></div>
-	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-leaf balanced"></i><br/>CO<sub>2</sub><br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.co2 }}</span></p></div>
-	     <div class="col" style="text-align:center;color:#666666"><i class="icon ion-erlenmeyer-flask dark"></i><br/>甲醛<br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.hcho }}</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>风量</p><i class="icon-fan" style="font-size:16px"></i><br/><p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.velocity }}</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>辅热</p><i class="icon-heat" style="font-size:16px"></i><br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.heat == 1 ? '开' : '关' }}</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>温度</p><i class="icon-the" style="font-size:16px"></i><br/><p style="margin-top:5px; margin-bottom:0px"> <span style="color:#00c0f5">{{ cleanerStatus.temperature }} <sup>o</sup>C</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>湿度</p><i class="icon-drop" style="font-size:16px"></i><br/> <p style="margin-top:5px; margin-bottom:0px"> <span style="color:#00c0f5">{{ cleanerStatus.humidity }}%</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>CO<sub>2</sub></p><i class="icon-leat" style="font-size:16px"></i><br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.co2 }}</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666"><p>甲醛</p><i class="icon-hcho" style="font-size:16px"></i><br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.hcho }}</span></p></div>
 	     </div>
      </div>  
-	<div ng-if="role <= 1" class="card">
-		<div class="row" style="margin-bottom:0px" >
-	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button button-calm button-gm' : tab == 1, 'button   button-gm button-light' : tab != 1}" ng-click="tabChange(1)">分享</button></div>
+	<div ng-if="role <= 1" class="card-gm">
+		<div class="row" style="margin-bottom:0;padding:0" >
+	     <div class="col" style="float:left;text-align:left;color:#666666"><button ng-class="{'button button-calm button-gm' : tab == 1, 'button   button-gm button-light' : tab != 1}" ng-click="tabChange(1)">分享</button></div>
 	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 2, 'button   button-gm button-light' : tab != 2}" ng-click="tabChange(2)">风量</button> </div>
-	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 3, 'button   button-gm button-light' : tab != 3}" ng-click="tabChange(3)">辅热</button></div>
-	     <div ng-if="advance" class="col" style="text-align:center;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 4, 'button   button-gm button-light' : tab != 4}" ng-click="tabChange(4)">高级</button> 
+	     <div ng-if="advance" class="col" style="text-align:center;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 4, 'button   button-gm button-light' : tab != 4}" ng-click="tabChange(4)">高级</button></div>
+	     <div class="col" style="text-align:right;float:right;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 3, 'button   button-gm button-light' : tab != 3}" ng-click="tabChange(3)">辅热</button>
 	     <ion-spinner ng-if="request" icon="bubbles" class="spinner-calm"></ion-spinner>
 	     </div>
-	    </div>
+	     </div>
 	    
-	    <div class="padding">
+	    <div>
 	    <div ng-if="tab == 1" id="share">
-	    <div class="row">
+	    <div class="row" style="padding:0">
 	      <div ng-if="role <= 1" class="col"><button ng-click="shareStatus()" class="button button-gm button-block button-outline button-calm">状态分享</button></div>
 		  <div ng-if="role == 0" class="col"><button ng-click="deviceShare(1)" class="button button-gm button-block button-outline button-calm">控制分享</button></div>
 <!-- 		  <div ng-if="role == 0" class="col"><button style="float:right" ng-click="deviceShare(2)" class="button button-gm button-outline button-calm">只读分享</button></div> -->
 		</div>
-		<div class="padding"><button ng-if="role == 0" class="button button-gm button-block button-calm" ng-click="userManage(deviceID)">权限管理</button></div>
+		<div style="padding:0 5px 0 5px"><button ng-if="role == 0" class="button button-gm button-block button-calm" ng-click="userManage(deviceID)">权限管理</button></div>
 	    </div>
 	    
 	    <div ng-if="tab == 2" id="velocity">
-	    <div class="row">
+	    <div class="row"  style="padding:0">
 		  <div class="col"><button ng-click="setMode(0)" ng-class="{'button button-gm button-block button-outline button-calm' : cleanerStatus.workMode == 0, 'button button-gm button-block button-outline button-stable':cleanerStatus.workMode != 0}">自动</button></div>
 		  <div class="col"><button ng-click="setMode(1)" ng-class="{'button button-gm button-block button-outline button-calm' : cleanerStatus.workMode == 1, 'button button-gm button-block button-outline button-stable':cleanerStatus.workMode != 1}">睡眠</button></div>
 		  <div class="col"><button ng-click="setMode(2)" style="float:right" ng-class="{'button button-gm button-block button-outline button-calm' : cleanerStatus.workMode == 2, 'button button-gm button-block button-outline button-stable':cleanerStatus.workMode != 2}">手动</button></div>
@@ -51,14 +53,14 @@
             <input type="range" style="margin-right:0" on-release="velocityControl(cleanerStatus.velocity)" ng-model="cleanerStatus.velocity" name="volume" min="0" max="500" value="{{cleanerStatus.velocity}}">
         </div>
         
-        <div class="padding">
-	    <button ng-if="cleanerStatus.power == 0" class="button button-gm button-block button-calm" ng-click="start(1)">打开设备</button>
-	    <button ng-if="cleanerStatus.power == 1" class="button button-gm button-block button-assertive" ng-click="start(0)">关闭设备</button>
+        <div style="padding:0 5px 0 5px">
+	    <button ng-if="cleanerStatus.power == 0" class="button button-gm button-block button-calm" style="padding-left:5px;padding:right:15px" ng-click="start(1)">打开设备</button>
+	    <button ng-if="cleanerStatus.power == 1" class="button button-gm button-block button-assertive" style="padding-left:15px;padding:right:15px" ng-click="start(0)">关闭设备</button>
 	    </div>
 	    
 	    </div>
 	    
-	    <div ng-if="tab == 3" id="heat" >
+	    <div ng-if="tab == 3" id="heat"  style="padding:0 5px 0 5px">
 	    <button ng-if="cleanerStatus.heat == 0" class="button button-gm button-block button-calm" ng-click="heatControl(1)">打开辅热</button>
 	    <button ng-if="cleanerStatus.heat == 1" class="button button-gm button-block button-assertive" ng-click="heatControl(0)">关闭辅热</button>
 	    </div>
@@ -99,10 +101,10 @@
 	    </div>
 	</div>
     
-    <div class="card" >
-	    <div class="padding" style="color:#333333">空气质量对比</div>
+    <div class="card-gm" >
+	    <div style="color:#333333;font-size:16px;margin-bottom:20px">空气质量对比</div>
 	    
-	    <div class="padding">
+	    <div>
 		    <div class="barContainer">
 			    <p class="barFont">室内 <span style="color:#11c1f3"> {{ indoor }}</span> </p>
 			    <div class="barContent">
@@ -119,7 +121,7 @@
 	    </div>
     </div>
      
-	<div style="height:30%" class="card">
+	<div style="height:30%" class="card-gm">
 		<div style="height:300px" id="chart2"></div>
 	</div>
 	

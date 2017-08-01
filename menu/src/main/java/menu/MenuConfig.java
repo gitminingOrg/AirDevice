@@ -80,7 +80,7 @@ public class MenuConfig {
 		vip_bonus.put("name", "积分商城");
 		vip_bonus.put("type", "view");
 		try {
-			vip_bonus.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
+			vip_bonus.put("url", "http://commander.qingair.net/reception/www/templates/bonus.html");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -221,7 +221,7 @@ public class MenuConfig {
 	    }
 	
     public static void main(String[] args) {
-        String token = "Whh5rVzzSZBT0Dfxibn1uleKWYfD4xQ15ow1Yen_2j1QxrCI1yXEZSS6W0l8gVeG85k4Ws0JgEv-h3NBE7NOembwRnARaGM5Kfl8Vclkne26pCxKKGX8tsb3GJKJSnoKSWFdAHAFJS";
+        String token = "UkOlTh3bYzRpiApsRrjK8R5PnJgTtiG7fJNYMNDyribcf317dOuGWkFRMuIk460y4fpQ7O8VbURX8x_4irCR5ax_mU-ftYgMaBBI7puFfZ0Swci8bBLkJWuwp6L-6o68YVEjAHAURA";
         String deleteMessage = MenuConfig.deleteMenu(token);
         System.out.println("删除操作: " + deleteMessage);
         String createMessage = MenuConfig.createMenu(token);
