@@ -227,7 +227,7 @@ public class DeviceStatusService {
 	}
 	
 	public AirCompareVO getAirCompareVO(String deviceID){
-		List<String> dates = new ArrayList<String>();
+		List<String> dates = TimeUtil.getLastWeekdays();
 		List<Integer> insides = new ArrayList<Integer>();
 		List<Integer> outsides = new ArrayList<Integer>();
 		
