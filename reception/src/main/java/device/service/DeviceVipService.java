@@ -249,17 +249,57 @@ public class DeviceVipService {
 				sessionIds.remove(sessionId);
 			}
 		}
+		if(sessionIds == null || sessionIds.size() == 0){
+			return null;
+		}
+		//if only one new session, that's it
+		if(sessionIds.size() == 1){
+			String chipID = sessionIds.get(0).split("\\.")[1];
+			return chipID;
+		}
+		//else compare ip, find the most likely
+		String suspectID = null;
+		int sim = -1;
+		
 		for(String sessionId : sessionIds){
 			String chipID = sessionId.split("\\.")[1];
 			CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatusByChip(chipID);
 			if(cleanerStatus == null){
 				continue;
 			}
+			//if ip same, that's it
 			if(! Strings.isNullOrEmpty(cleanerStatus.getIp()) && cleanerStatus.getIp().equals(ip)){
 				return chipID;
 			}
+			
+			//else cal ip sim, get the most like one
+			int similarity = calIPSimilarity(ip, cleanerStatus.getIp());
+			if(similarity > sim){
+				sim = similarity;
+			}
+			suspectID = chipID;
 		}
-		return null;
+		return suspectID;
+	}
+	
+	private int calIPSimilarity(String ip1, String ip2){
+		if(ip1 == null || ip2 == null){
+			return 0;
+		}
+		int result = 0;
+		int score = 8;
+		String[] items1 = ip1.split("\\.");
+		String[] items2 = ip2.split("\\.");
+		if(items1.length != 4 || items2.length != 4){
+			return 0;
+		}
+		for (int i = 0; i < items1.length; i++) {
+			if(items1[i].equals(items2[i])){
+				result+=score;
+			}
+			score = score / 2;
+		}
+		return result;
 	}
 	
 	public ReturnCode bind(UserDevice ud) {

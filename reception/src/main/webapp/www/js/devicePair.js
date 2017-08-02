@@ -1,12 +1,5 @@
 app.controller('DevicePairCtrl',function($stateParams,$http,$scope,$state, $interval,$ionicLoading) {
 	$scope.deviceID = $stateParams.deviceID;
-	$ionicLoading.show({
-	    content: 'Loading',
-	    animation: 'fade-in',
-	    showBackdrop: true,
-	    maxWidth: 200,
-	    showDelay: 0
-	  });
 	var complete = function(){
 		$http({  
 	        url    : '/reception/own/register/complete',  
@@ -24,7 +17,6 @@ app.controller('DevicePairCtrl',function($stateParams,$http,$scope,$state, $inte
 	var timer = $interval(complete, 2 * 1000)
 	  $scope.$on('$ionicView.beforeLeave',function(){
 		  $interval.cancel(timer);
-		  $ionicLoading.hide();
 	  })
 	
 })

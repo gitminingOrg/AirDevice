@@ -69,9 +69,9 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 		  else if(response.status == 1){
 			  var airCompare = response.contents.airCompare
 			    $('#chart2').highcharts({
-			        credits: {
-			            enabled: false
-			        },
+			    credits: {
+			        enabled: false
+			    },
 			    chart: {
 			        type: 'spline'
 			    },
@@ -293,6 +293,9 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
       				//$scope.uv = !$scope.uv;
       			}else{
       				$scope.cleanerStatus.workMode = mode;
+      				if(mode == 1){
+      					$scope.cleanerStatus.velocity = 100
+      				}
       			}
       	    }, function error(response) {
       	    	$scope.request = false;

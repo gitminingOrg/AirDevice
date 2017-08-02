@@ -16,7 +16,6 @@
 //            }
 //        });
 //        window.location.href = "/reception/www/index.html#/home/device"
-    	  alert('配置成功!');
     	  if(typeof(serial) != undefined && serial != null){
     		  window.location.href = "/reception/www/index.html#/device/pair/"+serial
     	  }else{
@@ -24,8 +23,7 @@
     	  }
     	  
       } else {
-        alert('配置失败！请重试');
-        window.location.href = "/reception/www/index.html#/home/device"
+        window.close()
       }
     });
   }
@@ -37,7 +35,12 @@
   });
 }();
 
-
+(function() {
+	window.alert = function(name) {
+	$(".tip").css("display", "block")
+	$(".tip .content").html(name)
+	}
+})()
 
 
 function GetQueryString(name)
