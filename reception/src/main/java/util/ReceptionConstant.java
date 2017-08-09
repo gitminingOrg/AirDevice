@@ -14,6 +14,9 @@ public class ReceptionConstant {
 	public static final String deviceInfoPath = "/AirCleanerOperation/device/info/device?token=%s";
 	public static final String chipIDPath = "/AirCleanerOperation/device/all";
 	
+	public static final String shareImgTemplatePath = "/material/img/share.png";
+	public static final String couponImgTemplatePath = "/material/img/coupon-base.png";
+	
 	public static final String STATUS_LIST = "statusList";
 	public static final String DEVICE_NAME = "deviceName";
 	public static final String CLEANER_STATUS = "cleanerStatus";

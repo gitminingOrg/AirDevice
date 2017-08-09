@@ -623,4 +623,32 @@ public class DeviceVipController {
 		}
 		return resultMap;
 	}
+	
+	@RequiresAuthentication
+	@RequestMapping("/share/data/{deviceID}")
+	public ResultMap generateShareDataPic(@PathVariable("deviceID")String deviceID){
+		ResultMap resultMap = new ResultMap();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if (current == null) {
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
+		boolean result = deviceVipService.generateShareImage(current.getCustomerId(), deviceID);
+		return resultMap;
+	}
+	
+	@RequiresAuthentication
+	@RequestMapping("/coupon/{code}")
+	public ResultMap generateCouponPic(@PathVariable("code")String code){
+		ResultMap resultMap = new ResultMap();
+		Subject subject = SecurityUtils.getSubject();
+		ConsumerVo current = (ConsumerVo) subject.getPrincipal();
+		if (current == null) {
+			resultMap.setStatus(ResultMap.STATUS_FORBIDDEN);
+			return resultMap;
+		}
+		boolean result = deviceVipService.generateCouponImage(current.getCustomerId(), code);
+		return resultMap;
+	}
 }

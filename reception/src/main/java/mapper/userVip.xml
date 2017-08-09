@@ -256,4 +256,13 @@
 		SET scan_time = #{scanTime}
 		WHERE code_value = #{deviceID}
 	</update>
+	
+	<select id="selectOpenID" resultType="String">
+		SELECT 
+		consumer_wechat
+		FROM 
+		consumer_info
+		WHERE
+		consumer_id = #{userID} AND block_flag = 0
+	</select>
 </mapper>

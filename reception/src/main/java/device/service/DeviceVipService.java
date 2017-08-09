@@ -1,10 +1,13 @@
 package device.service;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import model.CleanerStatus;
 import model.DeviceInfo;
@@ -15,14 +18,19 @@ import model.SupportForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
 
 import util.JsonResponseConverter;
 import util.ReceptionConstant;
 import util.TokenGenerator;
+import util.WechatUtil;
 import utils.HttpDeal;
+import utils.PathUtil;
 import utils.TimeUtil;
+import vip.service.ConsumerSerivce;
+import wechat.dao.WechatDao;
+import bean.AirCompareVO;
+import bean.CityAqi;
 import bean.CityList;
 import bean.DeviceCity;
 import bean.DeviceName;
@@ -31,14 +39,13 @@ import bean.DeviceStatus;
 import bean.UserDevice;
 import bean.Wechat2Device;
 import bean.WechatUser;
+import bean.Word;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import config.ReceptionConfig;
 import dao.DeviceAttributeDao;
@@ -56,6 +63,12 @@ public class DeviceVipService {
 	private DeviceStatusService deviceStatusService;
 	@Autowired
 	private DeviceChipDao deviceChipDao;
+	@Autowired
+	private WechatDao wechatDao;
+	@Autowired
+	private ImageGenerataService imageGenerataService;
+	@Autowired
+	private ConsumerSerivce consumerSerivce;
 
 	/**
 	 * get the status of a user's all devices
@@ -409,6 +422,108 @@ public class DeviceVipService {
 				return true;
 			}
 			next_openid = jsonObject.getString("next_openid");
+		}
+		return false;
+	}
+	
+	public boolean generateShareImage(String userID, String deviceID){
+		//generate chart
+		AirCompareVO airCompareVO = deviceStatusService.getAirCompareVO(deviceID);
+		String chartPath = imageGenerataService.generateLineChart(airCompareVO.getOutsides(), airCompareVO.getInsides(), airCompareVO.getDates(), userID);
+		//combine chart with share template
+		BufferedImage template = imageGenerataService.loadImageLocal(PathUtil.retrivePath()+ReceptionConstant.shareImgTemplatePath);
+		BufferedImage chart = imageGenerataService.loadImageLocal(chartPath);
+		BufferedImage combine = imageGenerataService.modifyImagetogeter(chart, template);
+		//add cleaner status on image
+		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(deviceID);
+		int cityData = 0;
+		DeviceCity deviceCity = deviceStatusService.getDeviceCity(userID, deviceID);
+		if(deviceCity != null) {
+			String cityPinyin = deviceCity.getCity();
+			CityAqi cityAqi = deviceStatusService.getCityCurrentAqi(cityPinyin);
+			if(cityAqi != null){
+				cityData = cityAqi.getPm25();
+			}
+		}
+		DeviceName deviceName = getDeviceName(deviceID);
+		List<Word> words = new ArrayList<Word>();
+		Word name = new Word(deviceName.getName(), 60, 120, 72, Color.WHITE);
+		Word velocity = new Word(Integer.toString(cleanerStatus.getVelocity()), 100, 1160, 64, new Color(0x00c0f5));
+		
+		String heatString = "关";
+		if(cleanerStatus.getHeat() == 1){
+			heatString = "开";
+		}
+		Word heat = new Word(heatString, 340, 1160, 64, new Color(0x00c0f5));
+		Word temperature = new Word(cleanerStatus.getTemperature()+"℃", 580, 1160, 64, new Color(0x00c0f5));
+		Word humidity = new Word(cleanerStatus.getHumidity()+"%", 820, 1160, 64, new Color(0x00c0f5));
+		Word co2 = new Word(Integer.toString(cleanerStatus.getCo2()), 1060, 1160, 64, new Color(0x00c0f5));
+		Word hcho = new Word(Integer.toString(cleanerStatus.getHcho()), 1300, 1160, 64, new Color(0x00c0f5));
+		Word pm25 = new Word(Integer.toString(cleanerStatus.getPm25()), 700, 360, 144, Color.WHITE);
+		Word in = new Word(Integer.toString(cleanerStatus.getPm25()), 212, 1612, 56, new Color(0x00c0f5));
+		Word out = new Word(Integer.toString(cityData), 212, 1720, 56, new Color(0xf282aa));
+		words.add(name);
+		words.add(velocity);
+		words.add(heat);
+		words.add(temperature);
+		words.add(humidity);
+		words.add(co2);
+		words.add(hcho);
+		words.add(pm25);
+		words.add(in);
+		words.add(out);
+		
+		combine = imageGenerataService.modifyImage(combine, words);
+		String outPath = PathUtil.retrivePath()+"/material/img/"+userID+"_out.png";
+		imageGenerataService.writeImageLocal(outPath , combine);
+		//notify user in wechat
+		String openID = wechatDao.getOpenID(userID);
+		String mediaID = WechatUtil.uploadImage(ReceptionConfig.getAccessToken(), outPath);
+		if(mediaID != null){
+			boolean result = WechatUtil.pushImage(ReceptionConfig.getAccessToken() , openID , mediaID);
+			return result;
+		}
+		return false;
+	}
+	
+	public boolean generateCouponImage(String userID, String shareCode){
+		BufferedImage template = imageGenerataService.loadImageLocal(PathUtil.retrivePath()+ReceptionConstant.couponImgTemplatePath);
+		List<Word> words = new ArrayList<Word>();
+		String city = getUserCity(userID);
+		CityAqi cityAqi = deviceStatusService.getCityCurrentAqi(city);
+		if(cityAqi == null){
+			cityAqi = deviceStatusService.getCityCurrentAqi("beijing");
+		}
+		String cityName = cityAqi.getCityName();
+		int cityAir = cityAqi.getPm25();
+		int indoor = 3;
+		List<DeviceStatus> deviceStatus = getUserCleaner(userID);
+		for (DeviceStatus status : deviceStatus) {
+			if(status!=null && status.getCleanerStatus() != null && status.getCleanerStatus().getPm25() < indoor){
+				indoor = status.getCleanerStatus().getPm25();
+				break;
+			}
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMM EEE",Locale.ENGLISH);
+		Calendar c = Calendar.getInstance();
+		String date = sdf.format(c.getTime());
+		Word word_city = new Word(cityName, 120, 300, 200, Color.BLACK);
+		Word word_air = new Word("PM2.5 "+indoor +"/"+ cityAir, 140, 420, 60, Color.BLACK);
+		Word word_date = new Word(date, 1165, 500, 50, Color.BLACK);
+		Word word_code = new Word(shareCode, 400, 2385, 60, Color.BLACK);
+		words.add(word_city);
+		words.add(word_air);
+		words.add(word_date);
+		words.add(word_code);
+		String outPath = PathUtil.retrivePath()+"/material/img/"+userID+"_code.png";
+		BufferedImage outImage = imageGenerataService.modifyImage(template, words);
+		imageGenerataService.writeImageLocal(outPath , outImage);
+		//notify user in wechat
+		String openID = wechatDao.getOpenID(userID);
+		String mediaID = WechatUtil.uploadImage(ReceptionConfig.getAccessToken(), outPath);
+		if(mediaID != null){
+			boolean result = WechatUtil.pushImage(ReceptionConfig.getAccessToken() , openID , mediaID);
+			return result;
 		}
 		return false;
 	}
