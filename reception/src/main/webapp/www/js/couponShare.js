@@ -30,15 +30,18 @@ $(document).ready(function() {
 				$('#unAuth').hide();
 				$('#auth').show();
 				$("#code").text(data.contents.sharecode.shareCode)
-				if(data.contents.sharecode.path != null){
-					var url = "http://"+window.location.host+"/reception"+data.contents.sharecode.path;
-			        $('#photo').attr('src',url);
-			        $('#main').show();
-					$('#img_choose').hide();
-				}else{
-					$('#img_choose').show();
-					$('#main').hide();
-				}
+				var url = "http://"+window.location.host+"/reception/www/img/default.jpeg"
+				$('#photo').attr('src',url)
+				
+//				if(data.contents.sharecode.path != null){
+//					var url = "http://"+window.location.host+"/reception"+data.contents.sharecode.path;
+//			        $('#photo').attr('src',url);
+//			        $('#main').show();
+//					$('#img_choose').hide();
+//				}else{
+//					$('#img_choose').show();
+//					$('#main').hide();
+//				}
 			}else{
 				$('#unAuth').show();
 				$('#auth').hide();
@@ -76,4 +79,19 @@ $(document).ready(function() {
 function imgShift(){
 	$('#img_choose').show();
 	$('#main').hide();
+}
+
+function pushCode(){
+	$('#pushing').show()
+	$('#push').hide()
+	var code = $('#code').text()
+	var url = "/reception/own/coupon/"+ code
+	$.ajax({
+			type: "GET",
+			url: url,
+			success: function(response){
+				$('#push').show()
+				$('#pushing').hide()
+			}
+		})
 }

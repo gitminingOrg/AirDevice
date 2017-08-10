@@ -635,6 +635,11 @@ public class DeviceVipController {
 			return resultMap;
 		}
 		boolean result = deviceVipService.generateShareImage(current.getCustomerId(), deviceID);
+		if(result){
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		}else{
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+		}
 		return resultMap;
 	}
 	
@@ -649,6 +654,11 @@ public class DeviceVipController {
 			return resultMap;
 		}
 		boolean result = deviceVipService.generateCouponImage(current.getCustomerId(), code);
+		if(result){
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+		}else{
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+		}
 		return resultMap;
 	}
 }

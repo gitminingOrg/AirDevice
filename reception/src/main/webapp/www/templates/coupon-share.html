@@ -4,20 +4,20 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-<link href="../css/share.css?07291900" rel="stylesheet">
-<link href="../css/bootstrap.min.css?07300000" rel="stylesheet">
+<link href="../css/share.css?08101900" rel="stylesheet">
+<link href="../css/bootstrap.min.css?08101900" rel="stylesheet">
 <script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
-<script src="../js/couponShare.js?07300000"></script>
+<script src="../js/couponShare.js?08101900"></script>
 <script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.2/js/fileinput.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.2/js/locales/zh.min.js"></script>
 <title>果麦智能新风净化</title>
 </head>
 <body>
 <div id="unAuth" style="display:none" class="center-in-center">
-<img alt="" src="../img/cry.png?07300000">
+<img alt="" src="../img/cry.png?08101500">
 </div>
 
 <div id="auth">
@@ -35,15 +35,19 @@
 		</div>
 	</div>
 	<div id="img_choose" class="container" style="display:none">
-	<div id="choose" class="weui_uploader_input_wrp">
-	<input id="fileinput_id1" class="file" type="file" name="credit" accept="image/jpg,image/jpeg,image/png,image/gif"/>
+		<div id="choose" class="weui_uploader_input_wrp">
+		<input id="fileinput_id1" class="file" type="file" name="credit" accept="image/jpg,image/jpeg,image/png,image/gif"/>
+		</div>
 	</div>
-	</div>
-	<div id="main" onclick="imgShift()" style="display:none">
-	<div class="container"><img id="photo" src="../img/whatever.png" width="100%"/> </div>
+	<div id="main">
+	<div class="container"><img id="photo" src="../img/default.jpeg" width="100%"/> </div>
 	<div id="co_name" class="container" style="float:right">©果麦新风</div>
+	<div class="container">
+	<button class="button-me" id="push" value="推送优惠码图片" onclick="pushCode()">推送优惠码图片</button>
+	<p id="pushing" style="display:none">正在推送...</p>
 	</div>
-	
+	</div>
+
 	<div id="footer" class="footer container">
 	<p style="font-size:14px">亲友折扣码：<span id="code"></span></p>
 	<p style="font-size:10px">详情请咨询【果麦新风】淘宝店铺</p>

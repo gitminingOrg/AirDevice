@@ -30,6 +30,9 @@ public class TimeUtil {
 			int index = current_index % 7;
 			current_index++;
 			result.add(weekdays[index]);
+			if(i == 6){
+				result.set(6, "昨日");
+			}
 		}
 		return result;
 	}

@@ -34,7 +34,7 @@
 	    <div>
 	    <div ng-if="tab == 1" id="share">
 	    <div class="row" style="padding:0">
-	      <div ng-if="role <= 1" class="col"><button ng-click="shareStatus()" class="button button-gm button-block button-outline button-calm">状态分享</button></div>
+	      <div ng-if="role <= 1" class="col"><button ng-click="pushShare()" class="button button-gm button-block button-outline button-calm">状态分享</button></div>
 		  <div ng-if="role == 0" class="col"><button ng-click="deviceShare(1)" class="button button-gm button-block button-outline button-calm">控制分享</button></div>
 <!-- 		  <div ng-if="role == 0" class="col"><button style="float:right" ng-click="deviceShare(2)" class="button button-gm button-outline button-calm">只读分享</button></div> -->
 		</div>
@@ -121,7 +121,7 @@
 	    </div>
     </div>
      
-	<div style="height:30%" class="card-gm">
+	<div style="height:30%;padding-left:0; padding-right:0" class="card-gm">
 		<div style="height:300px" id="chart2"></div>
 	</div>
 	

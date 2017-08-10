@@ -28,6 +28,7 @@ import bean.DeviceCity;
 import dao.DeviceAttributeDao;
 import device.service.AqiDataUpdateService;
 import device.service.DeviceAttributeService;
+import device.service.DeviceInitService;
 import device.service.DeviceStatusService;
 
 @RequestMapping("/status")
@@ -50,6 +51,8 @@ public class DeviceStatusController {
 	
 	@Autowired
 	private DeviceAttributeService deviceAttributeService;
+	@Autowired
+	private DeviceInitService deviceInitService;
 
 	@RequiresAuthentication
 	@RequestMapping("/device/{deviceID}")
@@ -312,6 +315,13 @@ public class DeviceStatusController {
 		if (airCompareVO == null) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo(ResultMap.EMPTY_INFO);
+		}else if(airCompareVO.getInsides().size() != 7){
+			deviceInitService.enrichHistory(deviceID);
+			airCompareVO = deviceStatusService.getAirCompareVO(deviceID);
+			if (airCompareVO == null) {
+				resultMap.setStatus(ResultMap.STATUS_FAILURE);
+				resultMap.setInfo(ResultMap.EMPTY_INFO);
+			}
 		}else{
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.addContent(ReceptionConstant.AIR_COMPARE, airCompareVO);

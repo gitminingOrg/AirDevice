@@ -1,7 +1,31 @@
 .pad {
     padding:30px 30px 30px 30px !important;
 }
-
+.button-gm {
+	min-height: 30px;
+	line-height: 30px;
+	font-size: 14px
+}
+.button-me {
+    border-color: transparent;
+    background-color: #00c0f5;
+    color: #FFF;
+    position: relative;
+    display: inline-block;
+    margin: 10px 0;
+    padding: 0 12px;
+    min-width: 52px;
+    min-height: 32px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    vertical-align: top;
+    text-align: center;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    line-height: 30px;
+    cursor: pointer;
+}
 .footer {
     color: #444;
     position: absolute;

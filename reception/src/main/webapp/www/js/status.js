@@ -339,6 +339,32 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
   
     });
   
+  $scope.pushShare = function(){
+	  $scope.request = true;
+	  $http.get("/reception/own/share/data/"+$stateParams.deviceID).success(function(response){
+		  $scope.request = false;
+		  if(response.status == 1){
+		      var popup = $ionicPopup.confirm({
+		          title: '返回公众号',
+		          template: '图片已推送，是否返回公众号查看？',
+		          cancelText: '取消', // String (默认: 'Cancel')。一个取消按钮的文字。
+		          cancelType: 'button-default', // String (默认: 'button-default')。取消按钮的类型。
+		          okText: '确认', // String (默认: 'OK')。OK按钮的文字。
+		          okType: 'button-calm', // String (默认: 'button-positive')。OK按钮的类型。
+		        });
+		        popup.then(function(res) {
+		          if(res) {
+		              window.close()
+		          } else {
+		              console.log('cancel')
+		          }
+		        });
+		  }else{
+			  $scope.showPopup("推送失败","请重试")
+		  }
+	  });
+  }
+  
   $scope.shareStatus = function(){
 	  $http({  
 	        url    : '/reception/status/data/share',  

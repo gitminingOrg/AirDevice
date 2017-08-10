@@ -10,6 +10,8 @@ import model.ReturnCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import util.ReceptionConstant;
+import config.ReceptionConfig;
 import bean.CityAqi;
 import bean.DeviceAir;
 import dao.DeviceInitDao;
@@ -28,7 +30,7 @@ public class DeviceInitService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		String endTime = sdf.format(calendar.getTime());
 		
-		calendar.add(Calendar.DATE, -7);
+		calendar.add(Calendar.DATE, 0-ReceptionConstant.DEFAULT_TOP_DAY);
 		String startTime = sdf.format(calendar.getTime());
 		
 		

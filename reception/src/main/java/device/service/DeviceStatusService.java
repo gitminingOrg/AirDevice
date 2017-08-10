@@ -236,7 +236,6 @@ public class DeviceStatusService {
 			return null;
 		}else {
 			for (DeviceAir deviceAir : deviceAirs) {
-				dates.add(deviceAir.getDate());
 				insides.add(deviceAir.getInsideAir());
 				outsides.add(deviceAir.getOutsideAir());
 			}
