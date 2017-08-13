@@ -36,4 +36,20 @@
 		SELECT is_advanced FROM goods_model where block_flag = 0 AND model_id IN 
 		(SELECT model_id FROM qrcode WHERE code_value = #{codeValue} AND block_flag = 0)
 	</select>
+	
+	<select id="deviceComponent" resultType="String">
+		select nick_name from component_list 
+		where 
+		item_id 
+		in 
+		(select gc.item_id from goods_component gc, qrcode qr where qr.model_id = gc.model_id and qr.code_value = #{deviceID})
+	</select>
+	
+	<select id="deviceVelocity" resultType="java.lang.Integer">
+		select gm.velocity AS velocity from goods_model gm, qrcode qr
+		where 
+		gm.model_id = qr.model_id 
+		and 
+		qr.code_value = #{deviceID}
+	</select>
 </mapper>

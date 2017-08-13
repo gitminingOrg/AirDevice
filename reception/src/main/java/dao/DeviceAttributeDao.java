@@ -40,4 +40,24 @@ public class DeviceAttributeDao extends BaseDaoImpl{
 		}
 		return false;
 	}
+	
+	public List<String> getDeviceComponents(String deviceID){
+		if(deviceID == null){
+			return null;
+		}else{
+			return sqlSession.selectList("deviceAttribute.deviceComponent", deviceID);
+		}
+	}
+	
+	public int getDeviceVelocity(String deviceID){
+		if(deviceID == null){
+			return 500;
+		}else{
+			List<Integer> voList = sqlSession.selectList("deviceAttribute.deviceVelocity", deviceID);
+			if(voList == null || voList.size() == 0){
+				return 500;
+			}
+			return voList.get(0);
+		}
+	}
 }

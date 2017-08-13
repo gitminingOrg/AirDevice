@@ -6,14 +6,17 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import model.CleanerStatus;
 import model.DeviceInfo;
 import model.ResultMap;
 import model.ReturnCode;
 import model.SupportForm;
+import model.consumer.ConsumerShareCode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +29,11 @@ import util.TokenGenerator;
 import util.WechatUtil;
 import utils.HttpDeal;
 import utils.PathUtil;
+import utils.ResponseCode;
+import utils.ResultData;
 import utils.TimeUtil;
 import vip.service.ConsumerSerivce;
+import vo.consumer.ConsumerShareCodeVo;
 import wechat.dao.WechatDao;
 import bean.AirCompareVO;
 import bean.CityAqi;
@@ -427,13 +433,6 @@ public class DeviceVipService {
 	}
 	
 	public boolean generateShareImage(String userID, String deviceID){
-		//generate chart
-		AirCompareVO airCompareVO = deviceStatusService.getAirCompareVO(deviceID);
-		String chartPath = imageGenerataService.generateLineChart(airCompareVO.getOutsides(), airCompareVO.getInsides(), airCompareVO.getDates(), userID);
-		//combine chart with share template
-		BufferedImage template = imageGenerataService.loadImageLocal(PathUtil.retrivePath()+ReceptionConstant.shareImgTemplatePath);
-		BufferedImage chart = imageGenerataService.loadImageLocal(chartPath);
-		BufferedImage combine = imageGenerataService.modifyImagetogeter(chart, template);
 		//add cleaner status on image
 		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(deviceID);
 		int cityData = 0;
@@ -448,31 +447,70 @@ public class DeviceVipService {
 		DeviceName deviceName = getDeviceName(deviceID);
 		List<Word> words = new ArrayList<Word>();
 		Word name = new Word(deviceName.getName(), 60, 120, 72, Color.WHITE);
-		Word velocity = new Word(Integer.toString(cleanerStatus.getVelocity()), 100, 1160, 64, new Color(0x00c0f5));
+		Word velocity = new Word(Integer.toString(cleanerStatus.getVelocity()), 152, 1080, 64, new Color(0x00c0f5));
 		
 		String heatString = "关";
 		if(cleanerStatus.getHeat() == 1){
 			heatString = "开";
 		}
-		Word heat = new Word(heatString, 340, 1160, 64, new Color(0x00c0f5));
-		Word temperature = new Word(cleanerStatus.getTemperature()+"℃", 580, 1160, 64, new Color(0x00c0f5));
-		Word humidity = new Word(cleanerStatus.getHumidity()+"%", 820, 1160, 64, new Color(0x00c0f5));
-		Word co2 = new Word(Integer.toString(cleanerStatus.getCo2()), 1060, 1160, 64, new Color(0x00c0f5));
-		Word hcho = new Word(Integer.toString(cleanerStatus.getHcho()), 1300, 1160, 64, new Color(0x00c0f5));
-		Word pm25 = new Word(Integer.toString(cleanerStatus.getPm25()), 700, 360, 144, Color.WHITE);
-		Word in = new Word(Integer.toString(cleanerStatus.getPm25()), 212, 1612, 56, new Color(0x00c0f5));
-		Word out = new Word(Integer.toString(cityData), 212, 1720, 56, new Color(0xf282aa));
+		Word heat = new Word(heatString, 520, 1080, 64, new Color(0x00c0f5));
+		Word temperature = new Word(cleanerStatus.getTemperature()+"℃", 872, 1080, 64, new Color(0x00c0f5));
+		Word humidity = new Word(cleanerStatus.getHumidity()+"%", 1232, 1080, 64, new Color(0x00c0f5));
+		Word pm25 = new Word(Integer.toString(cleanerStatus.getPm25()), 705, 360, 144, Color.WHITE);
+		if(cleanerStatus.getPm25() > cityData){
+			cityData = cleanerStatus.getPm25();
+		}
+		Word in = new Word(Integer.toString(cleanerStatus.getPm25()), 212, 1504, 56, new Color(0x00c0f5));
+		Word out = new Word(Integer.toString(cityData), 212, 1604, 56, new Color(0xf282aa));
 		words.add(name);
 		words.add(velocity);
 		words.add(heat);
 		words.add(temperature);
 		words.add(humidity);
-		words.add(co2);
-		words.add(hcho);
 		words.add(pm25);
 		words.add(in);
 		words.add(out);
 		
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("consumerId", userID);
+		condition.put("blockFlag", false);
+		ResultData response = consumerSerivce.fetchShareCode(condition);
+		ConsumerShareCodeVo vo = null;
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			vo = ((List<ConsumerShareCodeVo>) response.getData()).get(0);
+		}else{
+			ConsumerShareCode code = new ConsumerShareCode(userID);
+			response = consumerSerivce.createShareCode(code);
+			vo = (ConsumerShareCodeVo) response.getData();
+		}
+		
+		Word code = new Word(vo.getShareCode(), 1140, 2030, 64, Color.BLACK);
+		words.add(code);
+		//generate chart
+		AirCompareVO airCompareVO = deviceStatusService.getAirCompareVO(deviceID);
+		String chartPath = imageGenerataService.generateLineChart(airCompareVO.getOutsides(), airCompareVO.getInsides(), airCompareVO.getDates(), userID);
+		
+		//combine chart with share template
+		String path = PathUtil.retrivePath()+ReceptionConstant.shareImgTemplatePath0;
+		if(cityData != 0){
+			double devide = 1.0 * cleanerStatus.getPm25() / cityData;
+			if(devide < 0.11){
+				path = PathUtil.retrivePath()+ReceptionConstant.shareImgTemplatePath0;
+			}else if(devide < 0.31){
+				path = PathUtil.retrivePath()+ReceptionConstant.shareImgTemplatePath1;
+			}else if(devide < 0.51){
+				path = PathUtil.retrivePath()+ReceptionConstant.shareImgTemplatePath2;
+			}else if(devide < 0.71){
+				path = PathUtil.retrivePath()+ReceptionConstant.shareImgTemplatePath3;
+			}else if(devide < 0.91){
+				path = PathUtil.retrivePath()+ReceptionConstant.shareImgTemplatePath4;
+			}else{
+				path = PathUtil.retrivePath()+ReceptionConstant.shareImgTemplatePath5;
+			}
+		}
+		BufferedImage template = imageGenerataService.loadImageLocal(PathUtil.retrivePath()+ReceptionConstant.shareImgTemplatePath0);
+		BufferedImage chart = imageGenerataService.loadImageLocal(chartPath);
+		BufferedImage combine = imageGenerataService.modifyImagetogeter(chart, template);
 		combine = imageGenerataService.modifyImage(combine, words);
 		String outPath = PathUtil.retrivePath()+"/material/img/"+userID+"_out.png";
 		imageGenerataService.writeImageLocal(outPath , combine);
@@ -495,8 +533,9 @@ public class DeviceVipService {
 			cityAqi = deviceStatusService.getCityCurrentAqi("beijing");
 		}
 		String cityName = cityAqi.getCityName();
-		int cityAir = cityAqi.getPm25();
-		int indoor = 3;
+		int cityAir = cityAqi.getCityAqi();
+		String aqiRate = cityAqi.getAqiCategory();
+		int indoor = cityAqi.getPm25() > 25 ? 24 : cityAqi.getPm25();
 		List<DeviceStatus> deviceStatus = getUserCleaner(userID);
 		for (DeviceStatus status : deviceStatus) {
 			if(status!=null && status.getCleanerStatus() != null && status.getCleanerStatus().getPm25() < indoor){
@@ -508,7 +547,7 @@ public class DeviceVipService {
 		Calendar c = Calendar.getInstance();
 		String date = sdf.format(c.getTime());
 		Word word_city = new Word(cityName, 120, 300, 200, Color.BLACK);
-		Word word_air = new Word("PM2.5 "+indoor +"/"+ cityAir, 140, 420, 60, Color.BLACK);
+		Word word_air = new Word("室外AQI："+cityAir+" "+aqiRate+" / 我家："+indoor, 140, 420, 50, Color.BLACK);
 		Word word_date = new Word(date, 1165, 500, 50, Color.BLACK);
 		Word word_code = new Word(shareCode, 400, 2385, 60, Color.BLACK);
 		words.add(word_city);

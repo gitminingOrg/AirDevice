@@ -54,30 +54,15 @@ public class MenuConfig {
 	public static String createMenu(String token) {
 		//设备块
 		JSONObject mine_device = new JSONObject();
-		mine_device.put("name", "我的设备");
-		mine_device.put("type", "view");
-		try {
-			mine_device.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		JSONObject new_device = new JSONObject();
-		new_device.put("name", "发现设备");
-		new_device.put("type", "scancode_push");
-		new_device.put("key", "discover");
-		
-		JSONArray device_button = new JSONArray();
-		device_button.add(mine_device);
-		device_button.add(new_device);
-		
-		JSONObject deivce = new JSONObject();
-		deivce.put("name", "设备");
-		deivce.put("sub_button", device_button);
+		mine_device.put("name", "我的空气");
+		mine_device.put("type", "click");
+		mine_device.put("key", "gmair");
 		
 		//会员块
+
+		
 		JSONObject vip_bonus = new JSONObject();
-		vip_bonus.put("name", "积分商城");
+		vip_bonus.put("name", "我的积分");
 		vip_bonus.put("type", "view");
 		try {
 			vip_bonus.put("url", "http://commander.qingair.net/reception/www/templates/bonus.html");
@@ -86,7 +71,7 @@ public class MenuConfig {
 		}
 		
 		JSONObject vip_code = new JSONObject();
-		vip_code.put("name", "优惠码");
+		vip_code.put("name", "亲友折扣");
 		vip_code.put("type", "view");
 		try {
 			vip_code.put("url", "http://commander.qingair.net/reception/www/templates/coupon-share.html");
@@ -94,12 +79,22 @@ public class MenuConfig {
 			e.printStackTrace();
 		}
 		
+		JSONObject vip_mall = new JSONObject();
+		vip_mall.put("name", "果麦商城");
+		vip_mall.put("type", "view");
+		try {
+			vip_mall.put("url", "http://commander.qingair.net/reception/www/index.html#/home/mall");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 		JSONArray vip_button = new JSONArray();
+		
 		vip_button.add(vip_bonus);
 		vip_button.add(vip_code);
+		vip_button.add(vip_mall);
 		
 		JSONObject vip = new JSONObject();
-		vip.put("name", "我的");
+		vip.put("name", "购买与服务");
 		vip.put("sub_button", vip_button);
 		
 	
@@ -153,7 +148,7 @@ public class MenuConfig {
 
 		
 		JSONArray buttons = new JSONArray();
-		buttons.add(deivce);
+		buttons.add(mine_device);
 		buttons.add(vip);
 		buttons.add(prod);
 		JSONObject menu = new JSONObject();
@@ -221,7 +216,7 @@ public class MenuConfig {
 	    }
 	
     public static void main(String[] args) {
-        String token = "UkOlTh3bYzRpiApsRrjK8R5PnJgTtiG7fJNYMNDyribcf317dOuGWkFRMuIk460y4fpQ7O8VbURX8x_4irCR5ax_mU-ftYgMaBBI7puFfZ0Swci8bBLkJWuwp6L-6o68YVEjAHAURA";
+        String token = "0z4rnHhWMoIRO4ZJ-DrFS2Ugx2bBGfzjc4-kH4ake3eG_m0IQJFSalobFWcsWtucKC9BFYJvFV4tPWg-tipgyPMRO_rfgf07IHJ2R-0XNUAH7GedvE_SIuZkk8rtbluRIUFhADAZLW";
         String deleteMessage = MenuConfig.deleteMenu(token);
         System.out.println("删除操作: " + deleteMessage);
         String createMessage = MenuConfig.createMenu(token);

@@ -5,7 +5,7 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
   $scope.tab = 2
   $scope.configHref = ''
   $scope.shareGuide = false
-  $scope.advance = false
+  $scope.components = new Array()
   
   $scope.doRefresh = function(){
 	  $scope.init();
@@ -37,7 +37,20 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 			}
 		  else if(response.status == 1){
 			  $scope.cleanerStatus = response.contents.cleanerStatus;
-			  $scope.advance = response.contents.advance
+			  if(response.contents.cleanerStatus){
+				  if(response.contents.cleanerStatus.light <= 0){
+					  $scope.light = 0
+					  $scope.lightGrade = '关'
+				  }else if(response.contents.cleanerStatus.light <= 50){
+					  $scope.light = 1
+					  $scope.lightGrade = '暗'
+				  }else{
+					  $scope.light = 2
+					  $scope.lightGrade = '开'
+				  }
+			  }
+			  $scope.components = response.contents.components
+			  $scope.velocityMax = response.contents.velocityMax
 		  }
 		  $http.get('/reception/status/'+$stateParams.deviceID+'/aqi/current').success(function(response){
 			  if(response.status == 2){
@@ -232,8 +245,17 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 	  }
   
   $scope.lightControl = function(light){
+	  $scope.lightUpload = 0
+	$scope.lightGrade = '关'
+	if(light == 1){
+		$scope.lightUpload = 50
+		$scope.lightGrade = '暗'
+	}else if(light == 2){
+		$scope.lightUpload = 100
+		$scope.lightGrade = '开'
+	}
   	$scope.lightRequest = true;
-  	$http.get("/reception/status/"+$stateParams.deviceID+"/light/"+light).then(
+  	$http.get("/reception/status/"+$stateParams.deviceID+"/light/"+$scope.lightUpload).then(
       		function success(response) {
       			$scope.lightRequest = false;
       			if(response.data.status == 2){
@@ -316,10 +338,10 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
   $scope.userManage = function(deviceID){
 	  $state.go('privilege',{deviceID : deviceID})
   }
-  var timer = $interval($scope.init, 20 * 1000)
-  $scope.$on('$ionicView.beforeLeave',function(){
-	  $interval.cancel(timer);
-  })
+//  var timer = $interval($scope.init, 20 * 1000)
+//  $scope.$on('$ionicView.beforeLeave',function(){
+//	  $interval.cancel(timer);
+//  })
   
 	$.post('/reception/wechat/init',{url : self.location.href}, function(response){
   		if(response.status == 1){
@@ -376,8 +398,8 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 	    			    wx.onMenuShareAppMessage({              //配置分享给朋友接口
 	    			        title: '果麦新风', // 分享标题
 	    			        desc: '分享我的果麦新风机', // 分享描述
-	    			        link: 'http://commander.qingair.net/reception/www/index.html#/read/'+response.contents.token, // 分享链接
-	    			        imgUrl: 'http://commander.qingair.net/reception/www/img/GMQR.png', // 分享图标
+	    			        link: 'http://commander.gmair.net/reception/www/index.html#/read/'+response.contents.token, // 分享链接
+	    			        imgUrl: 'http://commander.gmair.net/reception/www/img/GMQR.png', // 分享图标
 	    			        type: '', // 分享类型,music、video或link，不填默认为link
 	    			        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
 	    			        success: function () { 
@@ -390,8 +412,8 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 	    			    
 	    			    wx.onMenuShareTimeline({
 	    			        title: '果麦新风', // 分享标题
-	    			        link: 'http://commander.qingair.net/reception/www/index.html#/read/'+response.contents.token, // 分享链接
-	    			        imgUrl: 'http://commander.qingair.net/reception/www/img/GMQR.png', // 分享图标
+	    			        link: 'http://commander.gmair.net/reception/www/index.html#/read/'+response.contents.token, // 分享链接
+	    			        imgUrl: 'http://commander.gmair.net/reception/www/img/GMQR.png', // 分享图标
 	    			        type: '', // 分享类型,music、video或link，不填默认为link
 	    			        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
 	    			        success: function () { 

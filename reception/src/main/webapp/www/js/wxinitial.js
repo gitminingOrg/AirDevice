@@ -32,6 +32,10 @@
     $('#action').click(function(){
       configWiFi();
     });
+    
+    $('#return').click(function(){
+    	window.location.href = "/reception/www/index.html#/home/device"
+      });
   });
 }();
 

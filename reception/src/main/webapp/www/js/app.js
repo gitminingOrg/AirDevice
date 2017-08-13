@@ -119,12 +119,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','h
       }
     }
   })
-  .state('mall', {
+  .state('home.mall', {
     url: '/mall',
-    templateUrl: 'templates/mall.html',
-    controller: 'MallCtrl',
-    reload: true,
-    cache: false         
+    views: {
+        'home-mall': {
+          templateUrl: 'templates/mall.html',
+          controller: 'MallCtrl' ,
+          reload: true,
+          cache: false        
+        }
+      }        
   })
   .state('login', {
     url: '/login',

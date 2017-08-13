@@ -1,5 +1,8 @@
 package device.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +40,21 @@ public class DeviceAttributeService {
 			return false;
 		}else{
 			return deviceAttributeDao.isDeviceAdvanced(deviceID);
+		}
+	}
+	
+	public List<String> getDeviceComponents(String deviceID){
+		if(deviceID == null){
+			return new ArrayList<String>();
+		}
+		return deviceAttributeDao.getDeviceComponents(deviceID);
+	}
+	
+	public int getDeviceVelocity(String deviceID){
+		if(deviceID == null){
+			return 500;
+		}else{
+			return deviceAttributeDao.getDeviceVelocity(deviceID);
 		}
 	}
 }

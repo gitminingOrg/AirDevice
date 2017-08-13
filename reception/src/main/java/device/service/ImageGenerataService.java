@@ -86,7 +86,7 @@ public class ImageGenerataService {
               
   
             g = d.createGraphics();  
-            g.drawImage(b, 50,2000, w, h, null);  
+            g.drawImage(b, 50,2500, w, h, null);  
             g.dispose();  
         } catch (Exception e) {  
             System.out.println(e.getMessage());  

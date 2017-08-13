@@ -1,5 +1,7 @@
 package device.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import location.service.LocationService;
@@ -59,14 +61,17 @@ public class DeviceStatusController {
 	public ResultMap getDeviceStatus(@PathVariable("deviceID")String device){
 		ResultMap resultMap = new ResultMap();
 		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(device);
-		boolean advance = deviceAttributeService.checkDeviceAdvanced(device);
+		//boolean advance = deviceAttributeService.checkDeviceAdvanced(device);
+		int velo_max = deviceAttributeService.getDeviceVelocity(device);
+		List<String> components = deviceAttributeService.getDeviceComponents(device);
 		if (cleanerStatus == null) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
 			resultMap.setInfo("未找到相应设备状态");
 		}else {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			resultMap.addContent(ReceptionConstant.CLEANER_STATUS, cleanerStatus);
-			resultMap.addContent(ReceptionConstant.ADVANCE, advance);
+			resultMap.addContent(ReceptionConstant.COMPONENTS, components);
+			resultMap.addContent(ReceptionConstant.VELO_MAX, velo_max);
 		}
 		return resultMap;
 	}
@@ -425,5 +430,20 @@ public class DeviceStatusController {
 	public String test(){
 		deviceStatusService.updateAirCondition();
 		return "";
+	}
+	
+	@RequiresAuthentication
+	@RequestMapping(value= "/component/{deviceID}")
+	public ResultMap getComponentList(@PathVariable("deviceID")String deviceID){
+		ResultMap resultMap = new ResultMap();
+		List<String> components = deviceAttributeService.getDeviceComponents(deviceID);
+		if(components == null){
+			resultMap.setStatus(ResultMap.STATUS_FAILURE);
+			resultMap.setInfo(ResultMap.EMPTY_INFO);
+		}else {
+			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
+			resultMap.addContent("components", components);
+		}
+		return resultMap;
 	}
 }

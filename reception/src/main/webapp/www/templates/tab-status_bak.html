@@ -1,11 +1,12 @@
-﻿  <ion-content style="background-color:#F7F7F7">
+﻿  
+    <ion-content style="background-color:#F7F7F7">
   <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()"></ion-refresher>
   <div style="background: url(img/home_back.png?762048); background-size: 100% 180px; height: 180px">
-	 <a class="button button-calm" style="background-color:transparent" ng-href="{{ configHref }}"> {{deviceName.name}} <i ng-if="role == 0" class="icon ion-ios-cog-outline"></i></a>
+	 <a class="button button-calm" style="background-color:transparent;color:transparent" ng-href="{{ configHref }}"> {{deviceName.name}} <i ng-if="role == 0" class="icon ion-ios-cog-outline"></i></a>
 	 
 	 <img alt="" src="img/logo.png?762048" height="40" width="100" style="float:right;margin-top:2px;margin-right:5px">
 	 <div style="background: url(img/bubble.png?762048); background-size: 100%; background-repeat: no-repeat; margin:0 auto; margin-top :-20px; padding-top: 20px;padding-bottom:12px; width :150px">
-	 <p style="color:white;text-align:center;margin-top:20px;font-size:40px; font-wight: bold">{{ cleanerStatus.pm25 }} </p>
+	 <p style="color:transparent;text-align:center;margin-top:20px;font-size:40px; font-wight: bold">{{ cleanerStatus.pm25 }} </p>
 	 <p style="color:white;text-align:center;margin-top:15px;font-wight: bold"> &nbsp; µg / m<sup>3</sup></p>
 	 <div style="margin-top:20px"><center><a style="color:white;text-align:center;line-height:20px" href="#/home/device">返回设备列表</a></center></div>
 	 </div>
@@ -13,15 +14,15 @@
      <div class="card-gm" style="padding-left:0;padding-right:0">
 	     <!-- <div class="item item-divider" style="font-size:12px"><i class="icon ion-android-home"></i> 室内环境</div> -->
 	     <div class="row">
-	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>风量</p><i class="icon-fan" style="font-size:16px"></i><br/><p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.velocity }}</span></p></div>
-	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>辅热</p><i class="icon-heat" style="font-size:16px"></i><br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.heat == 1 ? '开' : '关' }}</span></p></div>
-	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>温度</p><i class="icon-the" style="font-size:16px"></i><br/><p style="margin-top:5px; margin-bottom:0px"> <span style="color:#00c0f5">{{ cleanerStatus.temperature }} <sup>o</sup>C</span></p></div>
-	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>湿度</p><i class="icon-drop" style="font-size:16px"></i><br/> <p style="margin-top:5px; margin-bottom:0px"> <span style="color:#00c0f5">{{ cleanerStatus.humidity }}%</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>风量</p><i class="icon-fan" style="font-size:16px"></i><br/><p style="margin-top:5px; margin-bottom:0px"><span style="color:transparent">{{ cleanerStatus.velocity }}</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>辅热</p><i class="icon-heat" style="font-size:16px"></i><br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:transparent">{{ cleanerStatus.heat == 1 ? '开' : '关' }}</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>温度</p><i class="icon-the" style="font-size:16px"></i><br/><p style="margin-top:5px; margin-bottom:0px"> <span style="color:transparent">{{ cleanerStatus.temperature }} <sup>o</sup>C</span></p></div>
+	     <div class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>湿度</p><i class="icon-drop" style="font-size:16px"></i><br/> <p style="margin-top:5px; margin-bottom:0px"> <span style="color:transparent">{{ cleanerStatus.humidity }}%</span></p></div>
 <!-- 	     <div ng-if="components.indexOf('co2') >= 0" class="col" style="text-align:center;color:#666666;border-right: 1px dashed #EEEEEE"><p>CO<sub>2</sub></p><i class="icon-leat" style="font-size:16px"></i><br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.co2 }}</span></p></div> -->
-	     <div ng-if="components.indexOf('hcho') >= 0" class="col" style="text-align:center;color:#666666"><p>甲醛</p><i class="icon-hcho" style="font-size:16px"></i><br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:#00c0f5">{{ cleanerStatus.hcho }}</span></p></div>
+	     <div ng-if="components.indexOf('hcho') >= 0" class="col" style="text-align:center;color:#666666"><p>甲醛</p><i class="icon-hcho" style="font-size:16px"></i><br/> <p style="margin-top:5px; margin-bottom:0px"><span style="color:transparent">{{ cleanerStatus.hcho }}</span></p></div>
 	     </div>
      </div>  
-	<div ng-if="role <= 1" class="card-gm">
+	<div ng-if="role <= -1" class="card-gm">
 		<div class="row" style="margin-bottom:0;padding:0" >
 	     <div class="col" style="float:left;text-align:left;color:#666666"><button ng-class="{'button button-calm button-gm' : tab == 1, 'button   button-gm button-light' : tab != 1}" ng-click="tabChange(1)">分享</button></div>
 	     <div class="col" style="text-align:center;color:#666666"><button ng-class="{'button  button-calm  button-gm' : tab == 2, 'button   button-gm button-light' : tab != 2}" ng-click="tabChange(2)">风量</button> </div>
@@ -36,6 +37,7 @@
 	    <div class="row" style="padding:0">
 	      <div ng-if="role <= 1" class="col"><button ng-click="pushShare()" class="button button-gm button-block button-outline button-calm">状态分享</button></div>
 		  <div ng-if="role == 0" class="col"><button ng-click="deviceShare(1)" class="button button-gm button-block button-outline button-calm">控制分享</button></div>
+<!-- 		  <div ng-if="role == 0" class="col"><button style="float:right" ng-click="deviceShare(2)" class="button button-gm button-outline button-calm">只读分享</button></div> -->
 		</div>
 		<div style="padding:0 5px 0 5px"><button ng-if="role == 0" class="button button-gm button-block button-calm" ng-click="userManage(deviceID)">权限管理</button></div>
 	    </div>
@@ -49,7 +51,7 @@
 		
 		<div ng-if="cleanerStatus.workMode == 2" class="range range-positive">
 		  	风量 {{cleanerStatus.velocity}}
-            <input type="range" style="margin-right:0" on-release="velocityControl(cleanerStatus.velocity)" ng-model="cleanerStatus.velocity" name="volume" min="0" max="{{velocityMax}}" value="{{cleanerStatus.velocity}}">
+            <input type="range" style="margin-right:0" on-release="velocityControl(cleanerStatus.velocity)" ng-model="cleanerStatus.velocity" name="volume" min="0" max="500" value="{{cleanerStatus.velocity}}">
         </div>
         
         <div style="padding:0 5px 0 5px">
@@ -90,7 +92,7 @@
 			<div class="item">
 			<ion-spinner ng-if="lightRequest" style="float:right" icon="bubbles" class="spinner-calm"></ion-spinner>
 			<div style="padding:0px" class="range range-positive">
-				<span style="font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;">屏显</span> &nbsp;<span style="font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;font-weight:bold">{{ lightGrade }}</span>
+				<span style="font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;">屏显</span> &nbsp;<span style="font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;">{{ lightGrade }}</span>
 				<input type="range" on-release="lightControl(cleanerStatus.light)" ng-model="cleanerStatus.light" style="margin-right:0px" name="volume" min="0" max="2" value="0">
 			</div>
 			</div>
@@ -105,23 +107,30 @@
 	    
 	    <div>
 		    <div class="barContainer">
-			    <p class="barFont">室内 <span style="color:#11c1f3"> {{ indoor }}</span> </p>
+			    <p class="barFont">室内 <span style="color:transparent"> {{ indoor }}</span> </p>
 			    <div class="barContent">
 			    	<label class="button statBar button-calm" style="width:{{ inPercent }}%"></label>
 			    </div>
 		    </div>
 		    <div style="height:2px"></div>
 		    <div class="barContainer">
-			    <p class="barFont">室外 <span style="color:#f282aa"> {{ outdoor }}</span></p>
+			    <p class="barFont">室外 <span style="color:transparent"> {{ outdoor }}</span></p>
 			    <div class="barContent">
 			    	<label class="button statBar button-assertive" style="width:{{outPercent}}%"></label>
 			    </div>
 		    </div>
 	    </div>
     </div>
+     <div> <img src="img/WechatIMG36.png?762048" width="100%"></img></div>
 	<div style="height:30%;padding-left:0; padding-right:0" class="card-gm">
 		<div style="height:300px" id="chart2"></div>
 	</div>
-	
+	<div style="margin:0 auto" >
+	<center>
+	<img alt="" src="img/GMQR.png?762048" width="25%">
+	<p><span style="color:#666666;font-size:10px">新鲜好空气由果麦新风提供</span></p>
+	</center>
+	</div>
 	<div ng-if="shareGuide" class="popoverGuide">点击右上角“ <i class="icon ion-more"></i> ”按钮进行分享 &nbsp;&nbsp;&nbsp;<i class="icon ion-navigate"></i></div>
   </ion-content>
+  
