@@ -317,10 +317,7 @@ public class DeviceStatusController {
 	public ResultMap getAirCompareVO(@PathVariable("deviceID") String deviceID){
 		ResultMap resultMap = new ResultMap();
 		AirCompareVO airCompareVO = deviceStatusService.getAirCompareVO(deviceID);
-		if (airCompareVO == null) {
-			resultMap.setStatus(ResultMap.STATUS_FAILURE);
-			resultMap.setInfo(ResultMap.EMPTY_INFO);
-		}else if(airCompareVO.getInsides().size() != 7){
+		if(airCompareVO == null || airCompareVO.getInsides().size() != 7){
 			deviceInitService.enrichHistory(deviceID);
 			airCompareVO = deviceStatusService.getAirCompareVO(deviceID);
 			if (airCompareVO == null) {

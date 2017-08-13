@@ -86,7 +86,7 @@ public class ImageGenerataService {
               
   
             g = d.createGraphics();  
-            g.drawImage(b, 50,2500, w, h, null);  
+            g.drawImage(b, 50,1860, w, h, null);  
             g.dispose();  
         } catch (Exception e) {  
             System.out.println(e.getMessage());  
@@ -115,7 +115,7 @@ public class ImageGenerataService {
             g = img.createGraphics();
             for (Word word : contents) {
             	g.setColor(word.getColor());//设置字体颜色 
-            	Font font = new Font("宋体", Font.PLAIN, word.getSize());
+            	Font font = new Font("宋体", word.getWeight(), word.getSize());
             	g.setFont(font);
             	int x = word.getX();
             	int y = word.getY();

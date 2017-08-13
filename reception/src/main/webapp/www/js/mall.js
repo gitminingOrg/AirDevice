@@ -19,4 +19,8 @@ app.controller('MallCtrl', function($scope, $http) {
 //	});
 //	$scope.goodsDetail = function(){alert('aaa')}
 //	window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx67fcdc4fa58f7578&redirect_uri=https%3A%2F%2Fwww.yuncaogangmu.com%2Fcommodity%2Fviewlist&response_type=code&scope=snsapi_base&state=view#wechat_redirect'
+	$scope.linkCopy= function(){
+		$("#shop_link").focus();
+		$("#shop_link").select();
+	}
 })

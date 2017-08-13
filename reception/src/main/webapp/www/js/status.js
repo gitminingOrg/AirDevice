@@ -1,4 +1,4 @@
-app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ionicPopup,$ionicModal, $interval,$timeout) {
+app.controller('StatusCtrl', function($window,$http, $scope, $stateParams, $state, $ionicPopup,$ionicModal, $interval,$timeout) {
   $scope.percent = 90;
   $scope.deviceID = $stateParams.deviceID;
   $scope.role = 3
@@ -376,7 +376,7 @@ app.controller('StatusCtrl', function($http, $scope, $stateParams, $state, $ioni
 		        });
 		        popup.then(function(res) {
 		          if(res) {
-		              window.close()
+		              $window.close()
 		          } else {
 		              console.log('cancel')
 		          }

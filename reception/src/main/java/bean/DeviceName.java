@@ -3,6 +3,7 @@ package bean;
 public class DeviceName {
 	private String deviceID;
 	private String name;
+	private String owner;
 	private String phone;
 	private String provinceID;
 	private String cityID;
@@ -12,22 +13,19 @@ public class DeviceName {
 	public DeviceName() {
 		super();
 	}
-	
-	
-	
-	public DeviceName(String deviceID, String name, String phone,
+
+	public DeviceName(String deviceID, String name, String owner, String phone,
 			String provinceID, String cityID, String address, int version) {
 		super();
 		this.deviceID = deviceID;
 		this.name = name;
+		this.owner = owner;
 		this.phone = phone;
 		this.provinceID = provinceID;
 		this.cityID = cityID;
 		this.address = address;
 		this.version = version;
 	}
-
-
 
 	public String getDeviceID() {
 		return deviceID;
@@ -74,6 +72,12 @@ public class DeviceName {
 
 	public void setCityID(String cityID) {
 		this.cityID = cityID;
+	}
+	public String getOwner() {
+		return owner;
+	}
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 	
 }

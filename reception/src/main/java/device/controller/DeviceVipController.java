@@ -113,7 +113,7 @@ public class DeviceVipController {
 			// 设置设备名称
 			ReturnCode insert = deviceVipService
 					.insertDeviceName(new DeviceName(form.getSerial(), form
-							.getAlias(), form.getMobile(),
+							.getAlias(), form.getOwner(), form.getMobile(),
 							form.getProvinceID(), form.getCityID(), form
 									.getLocation(), 1));
 			if (insert == ReturnCode.FORBIDDEN) {

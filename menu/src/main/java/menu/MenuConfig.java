@@ -65,7 +65,7 @@ public class MenuConfig {
 		vip_bonus.put("name", "我的积分");
 		vip_bonus.put("type", "view");
 		try {
-			vip_bonus.put("url", "http://commander.qingair.net/reception/www/templates/bonus.html");
+			vip_bonus.put("url", "http://commander.gmair.net/reception/www/templates/bonus.html");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -74,7 +74,7 @@ public class MenuConfig {
 		vip_code.put("name", "亲友折扣");
 		vip_code.put("type", "view");
 		try {
-			vip_code.put("url", "http://commander.qingair.net/reception/www/templates/coupon-share.html");
+			vip_code.put("url", "http://commander.gmair.net/reception/www/templates/coupon-share.html");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -83,7 +83,7 @@ public class MenuConfig {
 		vip_mall.put("name", "果麦商城");
 		vip_mall.put("type", "view");
 		try {
-			vip_mall.put("url", "http://commander.qingair.net/reception/www/index.html#/home/mall");
+			vip_mall.put("url", "http://commander.gmair.net/reception/www/index.html#/home/mall");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -103,7 +103,7 @@ public class MenuConfig {
 		consumer_case.put("name", "用户案例");
 		consumer_case.put("type", "view");
 		try {
-			consumer_case.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
+			consumer_case.put("url", "http://commander.gmair.net/reception/www/index.html#/home/device");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -112,7 +112,7 @@ public class MenuConfig {
 		gm_recognize.put("name", "认识果麦");
 		gm_recognize.put("type", "view");
 		try {
-			gm_recognize.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
+			gm_recognize.put("url", "http://commander.gmair.net/reception/www/index.html#/home/device");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -121,7 +121,7 @@ public class MenuConfig {
 		product_guide.put("name", "新风指南");
 		product_guide.put("type", "view");
 		try {
-			product_guide.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
+			product_guide.put("url", "http://commander.gmair.net/reception/www/index.html#/home/device");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,7 +130,7 @@ public class MenuConfig {
 		product_effect.put("name", "净化效果");
 		product_effect.put("type", "view");
 		try {
-			product_effect.put("url", "http://commander.qingair.net/reception/www/index.html#/home/device");
+			product_effect.put("url", "http://commander.gmair.net/reception/www/index.html#/home/device");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -216,7 +216,7 @@ public class MenuConfig {
 	    }
 	
     public static void main(String[] args) {
-        String token = "0z4rnHhWMoIRO4ZJ-DrFS2Ugx2bBGfzjc4-kH4ake3eG_m0IQJFSalobFWcsWtucKC9BFYJvFV4tPWg-tipgyPMRO_rfgf07IHJ2R-0XNUAH7GedvE_SIuZkk8rtbluRIUFhADAZLW";
+        String token = "PRLzGA8Dq8GxaMJjzcEYGQR3s6NA2oonkKgONAeTdaJbkKz9gKN7mMMWMFUEQLBroy0k6YlmgwBfQq34POQ0qixWWxBVRyCEeZLGIXZ_E7IwQnDPrNht5yn51i9CGzLqHVEdAJANBK";
         String deleteMessage = MenuConfig.deleteMenu(token);
         System.out.println("删除操作: " + deleteMessage);
         String createMessage = MenuConfig.createMenu(token);

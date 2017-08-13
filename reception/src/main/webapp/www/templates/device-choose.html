@@ -13,7 +13,7 @@
 	 <label ng-class="{'button button-balanced button-gm-sm' : airQuality == '优' , 'button button-energized button-gm-sm' : airQuality == '良' , 'button button-assertive button-gm-sm' : (airQuality != '优' && airQuality != '良')}">{{ airQuality }}</label>
 	 </p>
 	 </div>
-	 <p style="color:white;text-align:center">pm2.5 :&nbsp; {{ pm25 }}&nbsp; ug/m<sup>3</sup></p>
+	 <p style="color:white;text-align:center">pm2.5 :&nbsp; {{ pm25 }}&nbsp; µg/m<sup>3</sup></p>
 	 </div>
 	 
      <div ng-if="!deviceWaiting" ng-repeat="device in deviceList" class="card-gm">
@@ -25,7 +25,7 @@
 				</div>
 				
 				<div style="width: 40%; float:right">
-				<div style="float:right;padding-top:30px;padding-bottom:5px"><span style="font-size:48px; color:#00c0f5">{{ device.cleanerStatus.pm25 }}</span> <span style="color:#00c0f5; font-size:18px">ug/m<sup>3</sup></span> </div>
+				<div style="float:right;padding-top:30px;padding-bottom:5px"><span style="font-size:48px; color:#00c0f5">{{ device.cleanerStatus.pm25 }}</span> <span style="color:#00c0f5; font-size:18px">µg/m<sup>3</sup></span> </div>
 				</div>
 			</div>	
 			

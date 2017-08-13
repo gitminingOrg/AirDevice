@@ -9,6 +9,8 @@ public class BindDeviceForm {
 	
 	private String alias;
 	
+	private String owner;
+	
 	@NotNull
 	private String mobile;
 	
@@ -64,6 +66,14 @@ public class BindDeviceForm {
 
 	public void setCityID(String cityID) {
 		this.cityID = cityID;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 	
 }

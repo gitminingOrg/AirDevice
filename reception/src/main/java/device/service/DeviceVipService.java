@@ -1,6 +1,7 @@
 package device.service;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -446,7 +447,7 @@ public class DeviceVipService {
 		}
 		DeviceName deviceName = getDeviceName(deviceID);
 		List<Word> words = new ArrayList<Word>();
-		Word name = new Word(deviceName.getName(), 60, 120, 72, Color.WHITE);
+		Word name = new Word(deviceName.getName(), 60, 120, 72, Color.WHITE,Font.BOLD);
 		Word velocity = new Word(Integer.toString(cleanerStatus.getVelocity()), 152, 1080, 64, new Color(0x00c0f5));
 		
 		String heatString = "关";
@@ -456,7 +457,10 @@ public class DeviceVipService {
 		Word heat = new Word(heatString, 520, 1080, 64, new Color(0x00c0f5));
 		Word temperature = new Word(cleanerStatus.getTemperature()+"℃", 872, 1080, 64, new Color(0x00c0f5));
 		Word humidity = new Word(cleanerStatus.getHumidity()+"%", 1232, 1080, 64, new Color(0x00c0f5));
-		Word pm25 = new Word(Integer.toString(cleanerStatus.getPm25()), 705, 360, 144, Color.WHITE);
+		Word pm25 = new Word(Integer.toString(cleanerStatus.getPm25()), 705, 360, 144, Color.WHITE,Font.BOLD);
+		if(cleanerStatus.getPm25() >= 10){
+			pm25 = new Word(Integer.toString(cleanerStatus.getPm25()), 660, 360, 144, Color.WHITE,Font.BOLD);
+		}
 		if(cleanerStatus.getPm25() > cityData){
 			cityData = cleanerStatus.getPm25();
 		}
@@ -484,7 +488,7 @@ public class DeviceVipService {
 			vo = (ConsumerShareCodeVo) response.getData();
 		}
 		
-		Word code = new Word(vo.getShareCode(), 1140, 2030, 64, Color.BLACK);
+		Word code = new Word(vo.getShareCode(), 1140, 3720, 64, Color.BLACK, Font.BOLD);
 		words.add(code);
 		//generate chart
 		AirCompareVO airCompareVO = deviceStatusService.getAirCompareVO(deviceID);
@@ -508,7 +512,7 @@ public class DeviceVipService {
 				path = PathUtil.retrivePath()+ReceptionConstant.shareImgTemplatePath5;
 			}
 		}
-		BufferedImage template = imageGenerataService.loadImageLocal(PathUtil.retrivePath()+ReceptionConstant.shareImgTemplatePath0);
+		BufferedImage template = imageGenerataService.loadImageLocal(path);
 		BufferedImage chart = imageGenerataService.loadImageLocal(chartPath);
 		BufferedImage combine = imageGenerataService.modifyImagetogeter(chart, template);
 		combine = imageGenerataService.modifyImage(combine, words);
