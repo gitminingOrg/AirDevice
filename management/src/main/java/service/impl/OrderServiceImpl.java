@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public ResultData assignSerial(TaobaoOrder order) {
+	public ResultData assign(TaobaoOrder order) {
 		ResultData result = new ResultData();
 		ResultData response = orderDao.update(order);
 		result.setResponseCode(response.getResponseCode());

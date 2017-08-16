@@ -14,5 +14,5 @@ public interface OrderService {
 	
 	ResultData fetch(Map<String, Object> condition);
 	
-	ResultData assignSerial(TaobaoOrder order);
+	ResultData assign(TaobaoOrder order);
 }

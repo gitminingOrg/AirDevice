@@ -23,6 +23,8 @@ public class OrderVo {
 	
 	private String productSerial;
 	
+	private String shipNo;
+	
 	private String payTime;
 	
 	private String channel;
@@ -113,6 +115,14 @@ public class OrderVo {
 
 	public void setProductSerial(String productSerial) {
 		this.productSerial = productSerial;
+	}
+
+	public String getShipNo() {
+		return shipNo;
+	}
+
+	public void setShipNo(String shipNo) {
+		this.shipNo = shipNo;
 	}
 
 	public String getPayTime() {

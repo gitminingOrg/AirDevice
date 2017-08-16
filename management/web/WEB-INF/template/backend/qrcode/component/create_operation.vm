@@ -64,17 +64,17 @@
                         </label>
                     </div>
                     <div class="form-input col-md-10">
-                        <input placeholder="该批次编号默认为${batchNo}" type="text" value="${batchNo}" name="batchNo" id="batch_no">
+                        <input placeholder="请输入产品批号" type="text" value="" name="batchNo" id="batch_no">
                     </div>
                 </div>
                 <div class="form-row pad0B">
                     <div class="form-label col-md-2">
                         <label for="qr_num">
-                            请输入生成数量:
+                            请输入生成数量，不得超过1000:
                         </label>
                     </div>
                     <div class="form-input col-md-10">
-                        <input placeholder="该批号中所含二维码的数量" type="text" name="num" id="qr_num">
+                        <input placeholder="该批号中所含二维码的数量" type="number" name="num" id="qr_num">
                     </div>
                 </div>
             </div>

@@ -117,7 +117,7 @@ public class OrderController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/{orderId}/deliver")
-	public ResultData deliver(@PathVariable("orderId") String orderId, String productSerial) {
+	public ResultData deliver(@PathVariable("orderId") String orderId, String productSerial, String shipNo) {
 		ResultData result = new ResultData();
 		if(StringUtils.isEmpty(orderId) || StringUtils.isEmpty(productSerial)) {
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -127,7 +127,8 @@ public class OrderController {
 		TaobaoOrder order = new TaobaoOrder();
 		order.setOrderId(orderId);
 		order.setProductSerial(productSerial);
-		ResultData response = orderService.assignSerial(order);
+		order.setShipNo(shipNo);
+		ResultData response = orderService.assign(order);
 		if(response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			result.setResponseCode(ResponseCode.RESPONSE_OK);
 		}else {

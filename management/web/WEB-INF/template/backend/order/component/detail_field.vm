@@ -94,6 +94,14 @@
                             </div>
                         </div>
                         <div class="form-row">
+                            <div class="form-label col-md-2">
+                                <label for="goods-name" autocomplete="off">物流单号</label>
+                            </div>
+                            <div class="form-input col-md-10">
+                                <input id="shipment-no" type="text" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-row">
                             <button class="btn medium bg-blue-alt" id="confirm-deliver">
                                 <span class="button-content">发货</span>
                             </button>
@@ -109,7 +117,8 @@
 		$("#confirm-deliver").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/deliver";
 			var product_serial = $("#product-serial").val();
-			$.post(url, {productSerial: product_serial}, function(result) {
+			var ship_no = $("#shipment-no").val();
+			$.post(url, {productSerial: product_serial, shipNo: ship_no}, function(result) {
 				if(result.responseCode == "RESPONSE_OK") {
 					window.location.href = "${path.concat('/order/')}" + "${order.orderId}"; 
 				}else {

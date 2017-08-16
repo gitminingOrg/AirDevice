@@ -8,8 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,19 +26,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-
 import form.QRCodeGenerateForm;
 import model.qrcode.QRCode;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
+import service.GoodsService;
 import service.QRCodeService;
 import utils.IDGenerator;
 import utils.PathUtil;
 import utils.ResponseCode;
 import utils.ResultData;
 import utils.ZipUtil;
+import vo.goods.GoodsModelVo;
 import vo.qrcode.QRCodeVo;
 
 @RestController
@@ -51,14 +48,13 @@ public class QRCodeController {
 	@Autowired
 	private QRCodeService qRCodeService;
 
+	@Autowired
+	private GoodsService goodsService;
+
 	@RequiresAuthentication
 	@RequestMapping(method = RequestMethod.GET, value = "/create")
 	public ModelAndView create() {
 		ModelAndView view = new ModelAndView();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
-		Calendar current = Calendar.getInstance();
-		String batchNo = sdf.format(current.getTime());
-		view.addObject("batchNo", batchNo);
 		view.setViewName("/backend/qrcode/create");
 		return view;
 	}
@@ -68,13 +64,23 @@ public class QRCodeController {
 	@RequestMapping(method = RequestMethod.POST, value = "/create")
 	public ResultData create(QRCodeGenerateForm form) {
 		ResultData result = new ResultData();
-		if (StringUtils.isEmpty(form.getBatchNo())) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmm");
-			Calendar current = Calendar.getInstance();
-			form.setBatchNo(sdf.format(current.getTime()));
+		String modelId = form.getModelId();
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("modelId", modelId);
+		if (StringUtils.isEmpty(modelId)) {
+			logger.error("Empty Model_id Parameter: " + modelId);
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			return result;
 		}
-		ResultData response = qRCodeService.create(form.getGoodsId(), form.getModelId(), form.getBatchNo(),
-				form.getNum());
+		ResultData response = goodsService.fetchModel(condition);
+		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+			logger.error("Incorrect Model_id Parameter: " + modelId);
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			return result;
+		}
+		GoodsModelVo vo = ((List<GoodsModelVo>) response.getData()).get(0);
+		String batch = new StringBuffer(vo.getModelCode()).append(form.getBatchNo()).toString();
+		response = qRCodeService.create(form.getGoodsId(), form.getModelId(), batch, form.getNum());
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			String filename = generateZip(form.getBatchNo());
 			result.setData(filename);
@@ -250,40 +256,40 @@ public class QRCodeController {
 		result.setData(code);
 		return result;
 	}
-	
-	@RequestMapping(method = RequestMethod.POST, value="/deliver/range")
+
+	@RequestMapping(method = RequestMethod.POST, value = "/deliver/range")
 	public ModelAndView deliver(String batchNo, String fromValue, String endValue) {
 		ModelAndView view = new ModelAndView();
-		if(StringUtils.isEmpty(batchNo) || StringUtils.isEmpty(fromValue) || StringUtils.isEmpty(endValue)) {
+		if (StringUtils.isEmpty(batchNo) || StringUtils.isEmpty(fromValue) || StringUtils.isEmpty(endValue)) {
 			view.setViewName("redirect:/qrcode/overview");
 			return view;
 		}
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("batchNo", batchNo.trim());
 		ResultData response = qRCodeService.fetch(condition);
-		if(response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
 			view.setViewName("redirect:/qrcode/overview");
 			return view;
 		}
-		List<QRCodeVo> list = (List<QRCodeVo>)response.getData();
-		for(int i = 0; i < list.size(); i ++) {
+		List<QRCodeVo> list = (List<QRCodeVo>) response.getData();
+		for (int i = 0; i < list.size(); i++) {
 			QRCodeVo current = list.get(i);
-			if(!current.getValue().equals(fromValue.trim())) {
+			if (!current.getValue().equals(fromValue.trim())) {
 				list.remove(i);
-				i --;
+				i--;
 			} else {
 				break;
 			}
 		}
-		for(int i = list.size() - 1; i >= 0; i --) {
+		for (int i = list.size() - 1; i >= 0; i--) {
 			QRCodeVo current = list.get(i);
-			if(!current.getValue().equals(endValue.trim())) {
+			if (!current.getValue().equals(endValue.trim())) {
 				list.remove(i);
 			} else {
 				break;
 			}
 		}
-		for(QRCodeVo item : list) {
+		for (QRCodeVo item : list) {
 			QRCode code = new QRCode();
 			code.setCodeId(item.getCodeId());
 			code.setDelivered(true);

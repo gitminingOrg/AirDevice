@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.sun.jndi.url.iiopname.iiopnameURLContextFactory;
 
 import config.ManagementConfig;
 import dao.QRCodeDao;
@@ -42,9 +44,9 @@ public class QRCodeServiceImpl implements QRCodeService {
 
 	private final static String SAVE_PATH = "/material/qrcode/";
 
-	private final static String TEMPLATE_BG_PATH = "/material/backend/image/qrcode_bgv2.png";
+	private final static String TEMPLATE_BG_PATH = "/material/backend/image/qrcode_bgv3.png";
 
-	private final static int FORE_GROUND = 0xFF495170, BACK_GROUND = 0xFFAAAAB3;
+	private final static int FORE_GROUND = 0xFF141830, BACK_GROUND = 0xFF6E7480;
 
 	private Object lock = new Object();
 
@@ -64,23 +66,21 @@ public class QRCodeServiceImpl implements QRCodeService {
 		AbstractGoods goods = new RealGoods();
 		goods.setGoodsId(goodsId);
 		synchronized (lock) {
+			DecimalFormat principle = new DecimalFormat("000");
 			for (int i = 0; i < num; i++) {
-				String value = QRSerialGenerator.generate();
-				String url = "http://" + ManagementConfig.getValue("domain_url")
-						+ ManagementConfig.getValue("qrcode_base") + "/" + value;
+				String value = new StringBuffer(batchNo).append(principle.format(i)).append(QRSerialGenerator.generate()).toString();
+				String url = "http://" + ManagementConfig.getValue("domain_url") + ManagementConfig.getValue("qrcode_base") + "/" + value;
 				// qrcode save folder
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 				String date = sdf.format(Calendar.getInstance().getTime());
-				File file = new File(new StringBuffer(PathUtil.retrivePath()).append(SAVE_PATH).append(date)
-						.append(File.separator).toString());
+				File file = new File(new StringBuffer(PathUtil.retrivePath()).append(SAVE_PATH).append(date).append(File.separator).toString());
 				if (!file.exists()) {
 					file.mkdirs();
 				}
-				String path = new StringBuffer(SAVE_PATH).append(date).append(File.separator).append(value)
-						.append("_machine.png").toString();
+				String path = new StringBuffer(SAVE_PATH).append(date).append(File.separator).append(value).append("_machine.png").toString();
 				QRCode code = new QRCode(batchNo, value, path, url, goods, modelId);
-				generate(code);
-				combine(code.getPath(), value);
+//				generate(code);
+//				combine(code.getPath(), value);
 				qRCodeDao.insert(code);
 			}
 		}
@@ -101,8 +101,7 @@ public class QRCodeServiceImpl implements QRCodeService {
 		hints.put(EncodeHintType.MARGIN, 1);
 		try {
 			MatrixToImageConfig config = new MatrixToImageConfig(FORE_GROUND, BACK_GROUND);
-			BitMatrix matrix = new MultiFormatWriter().encode(code.getUrl(), BarcodeFormat.QR_CODE, DEFAULT_WIDTH,
-					DEFAULT_HEIGHT, hints);
+			BitMatrix matrix = new MultiFormatWriter().encode(code.getUrl(), BarcodeFormat.QR_CODE, DEFAULT_WIDTH, DEFAULT_HEIGHT, hints);
 			File file = new File(new StringBuffer(PathUtil.retrivePath()).append(code.getPath()).toString());
 			MatrixToImageWriter.writeToPath(matrix, QRCode.DEFAULT_FORMAT, file.toPath(), config);
 			result.setData(code);
@@ -115,6 +114,12 @@ public class QRCodeServiceImpl implements QRCodeService {
 	}
 
 	private ResultData combine(String path, String value) {
+		char[] item = value.toCharArray();
+		StringBuffer sb = new StringBuffer();
+		for(char i : item) {
+			sb.append(i).append(" ");
+		}
+		value = sb.toString().trim();
 		ResultData result = new ResultData();
 		try {
 			StringBuffer bg = new StringBuffer(PathUtil.retrivePath()).append(TEMPLATE_BG_PATH);
@@ -122,16 +127,16 @@ public class QRCodeServiceImpl implements QRCodeService {
 			BufferedImage big = ImageIO.read(new File(bg.toString()));
 			BufferedImage small = ImageIO.read(new File(qrcode.toString()));
 			Graphics2D g = big.createGraphics();
-			int x = 440;
-			int y = 468;
+			int x = 437;
+			int y = 461;
 			g.drawImage(small, x, y, small.getWidth(), small.getHeight(), null);
-			x = 350;
-			y = 1075;
+			x = 300;
+			y = 1080;
 			Font font = new Font("arial", Font.PLAIN, 50);
 			g.setColor(Color.BLACK);
 			g.setFont(font);
 			g.drawString(value, x, y);
-			y = 1175;
+			y = 1270;
 			g.drawString(value, x, y);
 			g.dispose();
 			ImageIO.write(big, "png", new File(qrcode.toString()));
@@ -190,5 +195,16 @@ public class QRCodeServiceImpl implements QRCodeService {
 			response.setDescription(response.getDescription());
 		}
 		return result;
+	}
+	
+	private String format(String value) {
+		StringBuffer sb = new StringBuffer();
+		for(int i = 0; i < value.length(); i ++) {
+			sb.append(value.charAt(i));
+			if(i == 2 || i == 6 || i == 9) {
+				sb.append("-");
+			}
+		}
+		return sb.toString();
 	}
 }

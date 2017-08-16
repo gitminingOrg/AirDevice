@@ -13,6 +13,7 @@
 		<result property = "goodsTitle" column="goods_title" />
 		<result property = "goodsKind" column="goods_kind" />
 		<result property = "productSerial" column="product_serial"/>
+		<result property = "shipNo" column="ship_no" />
 		<result property = "payTime" column = "pay_time" />
 		<result property = "channel" column = "channel" />
 	</resultMap>
@@ -26,7 +27,7 @@
 	</insert>
 	
 	<select id="query" parameterType="java.util.Map" resultMap = "orderVo">
-		select order_id, order_no, buyer_name, buyer_account, receiver_name, receiver_phone, receiver_address, order_coupon, goods_title, goods_kind, product_serial, pay_time, channel
+		select order_id, order_no, buyer_name, buyer_account, receiver_name, receiver_phone, receiver_address, order_coupon, goods_title, goods_kind, product_serial, ship_no, pay_time, channel
 		from order_view
 		where 1 = 1
 		<if test="orderId != null">
@@ -54,7 +55,8 @@
 	
 	<update id="update" parameterType="model.order.TaobaoOrder">
 		update taobao_order
-		set product_serial = #{productSerial}
+		set product_serial = #{productSerial},
+		ship_no = #{shipNo}
 		where order_id = #{orderId}
 	</update>
 </mapper>
