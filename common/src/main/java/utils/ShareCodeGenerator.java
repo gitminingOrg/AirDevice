@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class ShareCodeGenerator {
 	private static final Random seed = new Random();
-    private static final char[] code = {'1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G'};
+    private static final char[] code = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
     private static int num(int min, int max) {
         return min + seed.nextInt(max - min);
@@ -22,7 +22,6 @@ public class ShareCodeGenerator {
         StringBuffer result = new StringBuffer();
         Random random = new Random();
         result.append(new String(temp));
-        result.append(random.nextInt(99));
         return result.toString();
     }
 }
