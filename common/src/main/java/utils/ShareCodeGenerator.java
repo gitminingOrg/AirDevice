@@ -15,7 +15,7 @@ public class ShareCodeGenerator {
     }
 
     public static String generate() {
-        char[] temp = new char[6];
+        char[] temp = new char[4];
         for (int i = 0; i < temp.length; i++) {
             temp[i] = gen();
         }

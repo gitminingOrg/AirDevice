@@ -19,7 +19,7 @@ public class ConsumerShareCode extends Entity{
 	public ConsumerShareCode(String consumerId) {
 		this();
 		this.consumerId = consumerId;
-		this.codeValue = ShareCodeGenerator.generate();
+		this.codeValue = consumerId.substring(2, 4) + ShareCodeGenerator.generate();
 	}
 	
 	public String getCodeId() {
