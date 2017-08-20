@@ -65,6 +65,15 @@
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/login"/>
         <property name="unauthorizedUrl" value="/login"/>
+        <property name="filterChainDefinitions">
+        	<value>
+        		/ = anon
+        		/login = anon
+        		/plugins/** = anon
+        		
+        		/dashboard = roles[qrcode_writer]
+        	</value>
+        </property>
     </bean>
     
     <task:annotation-driven/>
