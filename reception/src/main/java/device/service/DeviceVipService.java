@@ -490,6 +490,8 @@ public class DeviceVipService {
 		
 		Word code = new Word(vo.getShareCode(), 1140, 3720, 64, Color.BLACK, Font.BOLD);
 		words.add(code);
+		Word history = new Word("历史空气质量", 50, 1900, 64, Color.BLACK);
+		words.add(history);
 		//generate chart
 		AirCompareVO airCompareVO = deviceStatusService.getAirCompareVO(deviceID);
 		String chartPath = imageGenerataService.generateLineChart(airCompareVO.getOutsides(), airCompareVO.getInsides(), airCompareVO.getDates(), userID);
