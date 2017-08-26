@@ -40,13 +40,31 @@ app.controller('StatusCtrl', function($window,$http, $scope, $stateParams, $stat
 			  if(response.contents.cleanerStatus){
 				  if(response.contents.cleanerStatus.light <= 0){
 					  $scope.light = 0
-					  $scope.lightGrade = '关'
-				  }else if(response.contents.cleanerStatus.light <= 50){
+					  $scope.lightGrade = 0
+				  }else if(response.contents.cleanerStatus.light < 30){
 					  $scope.light = 1
-					  $scope.lightGrade = '暗'
-				  }else{
+					  $scope.lightGrade = 1
+				  }else if(response.contents.cleanerStatus.light < 40){
 					  $scope.light = 2
-					  $scope.lightGrade = '开'
+					  $scope.lightGrade = 2
+				  }else if(response.contents.cleanerStatus.light < 50){
+					  $scope.light = 3
+					  $scope.lightGrade = 3
+				  }else if(response.contents.cleanerStatus.light < 60){
+					  $scope.light = 4
+					  $scope.lightGrade = 4
+				  }else if(response.contents.cleanerStatus.light < 70){
+					  $scope.light = 5
+					  $scope.lightGrade = 5
+				  }else if(response.contents.cleanerStatus.light < 80){
+					  $scope.light = 6
+					  $scope.lightGrade = 6
+				  }else if(response.contents.cleanerStatus.light < 90){
+					  $scope.light = 7
+					  $scope.lightGrade = 7
+				  }else{
+					  $scope.light = 8
+					  $scope.lightGrade = 8
 				  }
 			  }
 			  $scope.components = response.contents.components
@@ -245,14 +263,24 @@ app.controller('StatusCtrl', function($window,$http, $scope, $stateParams, $stat
 	  }
   
   $scope.lightControl = function(light){
-	  $scope.lightUpload = 0
-	$scope.lightGrade = '关'
+	$scope.lightUpload = 0
+	$scope.lightGrade = light
 	if(light == 1){
-		$scope.lightUpload = 50
-		$scope.lightGrade = '暗'
+		$scope.lightUpload = 15
 	}else if(light == 2){
-		$scope.lightUpload = 100
-		$scope.lightGrade = '开'
+		$scope.lightUpload = 35
+	}else if(light == 3){
+		$scope.lightUpload = 45
+	}else if(light == 4){
+		$scope.lightUpload = 55
+	}else if(light == 5){
+		$scope.lightUpload = 65
+	}else if(light == 6){
+		$scope.lightUpload = 75
+	}else if(light == 7){
+		$scope.lightUpload = 85
+	}else if(light == 8){
+		$scope.lightUpload = 95
 	}
   	$scope.lightRequest = true;
   	$http.get("/reception/status/"+$stateParams.deviceID+"/light/"+$scope.lightUpload).then(
