@@ -94,7 +94,7 @@
 			<ion-spinner ng-if="lightRequest" style="float:right" icon="bubbles" class="spinner-calm"></ion-spinner>
 			<div style="padding:0px" class="range range-positive">
 				<span style="font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;">屏显</span> &nbsp;<span style="font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial, sans-serif;font-weight:bold">{{ lightGrade }}</span>
-				<input type="range" on-release="lightControl(cleanerStatus.light)" ng-model="cleanerStatus.light" style="margin-right:0px" name="volume" min="0" max="8" value="0">
+				<input type="range" on-release="lightControl(lightGrade)" ng-model="lightGrade" style="margin-right:0px" name="volume" min="0" max="8" value="0">
 			</div>
 			</div>
 			
