@@ -116,7 +116,7 @@
 		FROM
 		city_aqi
 		WHERE
-		city_pinyin=#{city} AND time in (select max(time) from city_aqi where city_pinyin=#{city}) LIMIT 1
+		city_pinyin=#{city} order by id desc LIMIT 1
 	</select>
 	
 	<select id="selectAllCityAvgAqi" resultMap="cityAqi">
