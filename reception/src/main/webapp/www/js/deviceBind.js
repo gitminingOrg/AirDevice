@@ -78,14 +78,16 @@ app.controller( 'DeviceBindCtrl', function($scope, $http, $state, $stateParams, 
 	    			cityPinyin = province.locationPinyin
 	    		}
 	    		$http.post('/reception/status/city/config/'+$stateParams.serial+'/'+ cityPinyin).success(function(response){
-	    			if(response.status != 1){
-	    				$scope.showAlert('城市绑定失败','城市绑定失败')
+	    			if(response.status == 1){
+	    				
 	    				$http.get('/reception/own/user/location/'+cityPinyin).success(function(response){
 	    					
 	    				})
 	    				$http.get('/reception/init/enrich/'+$stateParams.serial).success(function(response){
 	    					
 	    				})
+	    			}else{
+	    				$scope.showAlert('城市绑定失败','城市绑定失败');
 	    			}
 	    		})
 	    		// Setup the loader
