@@ -15,6 +15,8 @@ public class ModelCreateForm {
 	@NotNull
 	private boolean advanced;
 	
+	private String description;
+	
 	@NotNull
 	private String param;
 
@@ -56,5 +58,13 @@ public class ModelCreateForm {
 
 	public void setParam(String param) {
 		this.param = param;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

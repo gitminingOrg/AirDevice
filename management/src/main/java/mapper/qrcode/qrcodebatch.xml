@@ -4,10 +4,12 @@
 	<resultMap id="batchVo" type="vo.goods.BatchVo">
 		<result property="batchNo" column="batch_no" />
 		<result property="num" column="total_num" />
+		<result property="delivered" column="delivered" />
+		<result property="occupied" column="occupied" />
 	</resultMap>
 
 	<select id="query" parameterType="java.util.Map" resultMap="batchVo">
-		select batch_no, sum(code_id)
+		select batch_no, count(code_id) as num, count(if(code_delivered = 1, true, null)) as delivered, count(if(code_occupied = 1, true, null)) as occupied
 		from qrcode
 		where 1 = 1
 		<if test="batchNo != null">

@@ -119,6 +119,7 @@ public class ModelController {
 			return result;
 		}
 		GoodsModel gm = new GoodsModel(form.getGoodsId(), form.getModelCode(), form.getModelName(), form.isAdvanced());
+		gm.setDescription(form.getDescription());
 		ResultData response = goodsService.createModel(gm);
 		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
 			logger.error(response.getDescription());

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="management.externalorder">
+<mapper namespace="management.customizeorder">
 	<resultMap id="orderVo" type="vo.order.OrderVo">
 		<result property = "orderId" column="order_id" />
 		<result property = "orderNo" column="order_no" />
@@ -14,21 +14,19 @@
 		<result property = "goodsKind" column="goods_kind" />
 		<result property = "productSerial" column="product_serial"/>
 		<result property = "shipNo" column="ship_no" />
-		<result property = "status" column="order_status" typeHandler="handler.OrderStatusHandler" />
+		<result property = "status" column="order_status" typeHandler="handler.OrderStatusHandler"/>
 		<result property = "payTime" column = "pay_time" />
 		<result property = "channel" column = "channel" />
 	</resultMap>
 	
-	<insert id="insertTaobaoBatch" parameterType="java.util.List" useGeneratedKeys="false">
-		insert into taobao_order(order_id, order_no, buyer_name, buyer_ali_account, order_price, receiver_name, receiver_phone, receiver_address, order_coupon, goods_title, goods_kind, pay_time, order_status, block_flag, create_time)
+	<insert id="insert" parameterType="model.order.CustomizeOrder" useGeneratedKeys="false">
+		insert into taobao_order(order_id, order_no, buyer_name, buyer_ali_account, order_price, receiver_name, receiver_phone, receiver_address, order_coupon, goods_title, goods_kind, order_status, pay_time, order_channel, block_flag, create_time)
 		values
-		<foreach collection="list" item="item" index="index" separator=",">
-			(#{item.orderId}, #{item.orderNo}, #{item.buyerName}, #{item.buyerAliAccount}, #{item.price}, #{item.receiverName}, #{item.receiverPhone}, #{item.receiverAddress}, #{item.coupon}, #{item.goodsTitle}, #{item.goodsKind}, #{item.payTime}, #{item.status, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{item.blockFlag}, #{item.createAt})
-		</foreach>
+		(#{orderId}, #{orderNo}, #{buyerName}, "无阿里账号", #{price}, #{receiverName}, #{receiverPhone}, #{receiverAddress}, #{coupon}, #{goodsTitle}, "无商品类型", #{status, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{payTime}, #{orderChannel}, #{blockFlag}, #{createAt})
 	</insert>
 	
 	<select id="query" parameterType="java.util.Map" resultMap = "orderVo">
-		select order_id, order_no, buyer_name, buyer_account, receiver_name, receiver_phone, receiver_address, order_coupon, goods_title, goods_kind, product_serial, order_status, ship_no, pay_time, channel
+		select order_id, order_no, buyer_name, buyer_account, receiver_name, receiver_phone, receiver_address, order_coupon, goods_title, goods_kind, product_serial, ship_no, pay_time, channel
 		from order_view
 		where 1 = 1
 		<if test="orderId != null">
@@ -49,12 +47,6 @@
 		<if test="productSerial != null">
 			and product_serial = #{productSerial}
 		</if>
-		<if test="channel != null">
-			and channel = #{channel}
-		</if>
-		<if test="status != null">
-			and order_status = #{status}
-		</if>
 		<if test="search != null">
 			and (order_no like #{search} or buyer_account like #{search} or buyer_name like #{search} or receiver_name like #{search} or receiver_phone like #{search} or order_coupon like #{search} or goods_title like #{search} or product_serial like #{search})
 		</if>
@@ -73,15 +65,4 @@
 		</set>
 		where order_id = #{orderId}
 	</update>
-	
-	<select id="channel" resultType="java.lang.String">
-		select distinct channel 
-		from order_view
-	</select>
-	
-	<select id="status" resultType="java.lang.String">
-		select distinct order_status
-		from order_view
-		order by order_status asc
-	</select>
 </mapper>

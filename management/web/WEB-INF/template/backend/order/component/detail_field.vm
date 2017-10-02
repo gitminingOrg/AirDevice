@@ -75,13 +75,109 @@
             		<div class="form-label col-md-2">订单渠道</div>
             		<div class="form-input col-md-10">${order.channel}</div>
             	</div>
-            	<hr />
             	<div class="form-row">
-            		<a href="javascript:;" class="btn medium bg-blue white-modal-80" title="填写产品编号">
+            		<div class="form-label col-md-2">订单状态</div>
+            		<div class="form-input col-md-10">
+            			#if(${order.status} == "PAYED")
+            				待发货
+            			#elseif(${order.status} == "SHIPPED")
+            				已发货
+            			#elseif(${order.status} == "INSTALLING")
+            				安装中
+            			#elseif(${order.status} == "SUCCEED")
+            				已关闭
+            			#elseif(${order.status} == "REFUNDED")
+            				已取消
+            			#end
+            		</div>
+            	</div>
+            	#if(${order.status} == "SHIPPED" || ${order.status} == "INSTALLING" || ${order.status} == "SUCCEED")
+            	<hr />
+            	<h4>订单进度</h4>
+            	<div id="mission-area"></div>
+            	<a href="javascript:;" class="btn medium bg-blue white-modal-80" title="添加订单进度记录">
+           			<span class="button-content">添加事件</span>
+        		</a>
+        		#if(${order.status} == "SHIPPED" || ${order.status} == "INSTALLING")
+        		<a id="order-complete" class="btn medium bg-green">
+           			<span class="button-content">订单完成</span>
+        		</a>
+        		#end
+        		#elseif(${order.status} == "PAYED")
+        		<hr />
+            	<div class="form-row">
+            		<a class="btn medium bg-blue white-modal-80" title="发货">
            				<span class="button-content">发货</span>
         			</a>
+        			<a id="order-cancel" class="btn medium bg-red">
+           				<span class="button-content">订单取消</span>
+        			</a>
+        			<a id="order-complete" class="btn medium bg-green">
+	           			<span class="button-content">订单完成</span>
+	        		</a>
             	</div>
+            	#end
             </div>
+            #if(${order.status} == "SHIPPED" || ${order.status} == "INSTALLING" || ${order.status} == "SUCCEED")
+            <div class="hide" id="white-modal-80" title="新增订单事件">
+                <div class="pad10A">
+                    <div class="col-md-12 center-margin">
+                        <div class="form-row">
+                            <div class="form-label col-md-2">
+                                <label for="mission-name">事件名称</label>
+                            </div>
+                            <div class="form-input col-md-10">
+                                <input id="mission-name" type="text">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label col-md-2">
+                                <label for="mission-content" autocomplete="off">事件详情</label>
+                            </div>
+                            <div class="form-input col-md-10">
+                                <input id="mission-content" type="text" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <button class="btn medium bg-blue-alt" id="confirm-event">
+                                <span class="button-content">新增</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+            	$(document).ready(function() {
+            		var orderId = "${order.orderId}";
+            		var fetch_mission_url = "${path.concat('/order/')}" + orderId + "/mission";
+            		$.get(fetch_mission_url, function(result) {
+            			if(result.responseCode == "RESPONSE_OK") {
+            				var missions = result.data;
+            				for(var i = 0; i < missions.length; i ++) {
+	            				var row = $("<div class='row'></div>");
+	            				var content_box = $("<div class='content-box'></div>");
+	            				var head = $("<h3 class='content-box-header bg-gray-alt'></h3>");
+	            				var separator = $("<div class='glyph-icon icon-separator'>");
+	            				var comment = $("<i class='glyph-icon icon-comments'></i>");
+	            				var span = $("<span></span>").text(missions[i].missionRecorder);
+	            				var float_right = $("<div class='glyph-icon icon-separator transparent float-right'></div>")
+	            				var icon_comment = $("<i class='glyph-icon icon-comments'></i>");
+	            				float_right.append(icon_comment);
+	            				separator.append(comment);
+	            				head.append(separator);
+	            				head.append(span);
+	            				head.append(float_right);
+	            				content_box.append(head);
+	            				var wrapper = $("<div class='content-box-wrapper'></div>").text(missions[i].missionTitle + ": " + missions[i].missionContent);
+	            				content_box.append(wrapper);
+	            				row.append(content_box);
+	            				$("#mission-area").append(row);
+            				}
+            			}
+            		});
+            	});
+            </script>
+            #elseif(${order.status} == "PAYED")
             <div class="hide" id="white-modal-80" title="填写产品编号">
                 <div class="pad10A">
                     <div class="col-md-12 center-margin">
@@ -109,6 +205,7 @@
                     </div>
                 </div>
             </div>
+            #end
         </div>
 	</div>
 </div>
@@ -125,6 +222,30 @@
 					alert("发货失败");
 				}
 			});
+		})
+		
+		$("#confirm-event").on('click', function() {
+			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/mission/create";
+			var mission_title = $("#mission-name").val();
+			var mission_content = $("#mission-content").val();
+			
+			$.post(url, {missionTitle: mission_title, missionContent: mission_content}, function(result) {
+				location.reload();
+			})
+		})
+		
+		$("#order-complete").on('click', function() {
+			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/complete";
+			$.post(url, function(result) {
+				location.reload();
+			})
+		})
+		
+		$("#order-cancel").on('click', function() {
+			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/cancel";
+			$.post(url, function(result) {
+				location.reload();
+			})
 		})
 	});
 

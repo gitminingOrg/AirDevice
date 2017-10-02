@@ -19,7 +19,8 @@ public class ConsumerShareCode extends Entity{
 	public ConsumerShareCode(String consumerId) {
 		this();
 		this.consumerId = consumerId;
-		this.codeValue = consumerId.substring(2, 4).toUpperCase() + ShareCodeGenerator.generate();
+		String prefix = consumerId.substring(3, 5).toUpperCase();
+		this.codeValue = (prefix.equals("NO") ? "NP" : prefix) + ShareCodeGenerator.generate();
 	}
 	
 	public String getCodeId() {

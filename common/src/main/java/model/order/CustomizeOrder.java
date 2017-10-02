@@ -2,58 +2,55 @@ package model.order;
 
 import model.Entity;
 
-public class TaobaoOrder extends Entity{
+public class CustomizeOrder extends Entity{
 	private String orderId;
-	
+
 	private String orderNo;
-	
+
 	private String buyerName;
-	
-	private String buyerAliAccount;
-	
-	private String price;
-	
+
+	private double price;
+
 	private String receiverName;
-	
+
 	private String receiverPhone;
-	
+
 	private String receiverAddress;
-	
+
 	private String coupon;
 
 	private String goodsTitle;
-	
-	private String goodsKind;
-	
+
 	private String productSerial;
-	
+
 	private String shipNo;
-	
+
 	private String payTime;
 	
+	private String orderChannel;
+
 	private OrderStatus status;
 	
-	public TaobaoOrder() {
+	public CustomizeOrder() {
 		super();
 		status = OrderStatus.PAYED;
 	}
 	
-	public TaobaoOrder(String[] param) {
+	public CustomizeOrder(String orderNo, String orderBuyer, double price, String receiverName, String receiverPhone,
+			String receiverAddress, String coupon, String goodsTitle, String payTime, String orderChannel) {
 		this();
-		this.orderNo = param[0].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", ""); //订单编号
-		this.buyerName = param[1]; //买家会员名
-		this.buyerAliAccount = param[2]; //买家支付宝
-		this.price = param[8]; //买家实际支付金额
-		this.receiverName = param[12]; //收货人姓名
-		this.receiverAddress = param[13]; //收货人地址
-		this.receiverPhone = param[16].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", ""); //联系手机
-		this.payTime = param[17];
-		this.goodsTitle = param[19];
-		this.goodsKind = param[20];
-		this.coupon = param[23];
-		
+		this.orderNo = orderNo;
+		this.buyerName = orderBuyer;
+		this.price = price;
+		this.receiverName = receiverName;
+		this.receiverPhone = receiverPhone;
+		this.receiverAddress = receiverAddress;
+		this.coupon = coupon;
+		this.goodsTitle = goodsTitle;
+		this.payTime = payTime;
+		this.orderChannel = orderChannel;
 	}
-	
+
 	public String getOrderId() {
 		return orderId;
 	}
@@ -78,19 +75,11 @@ public class TaobaoOrder extends Entity{
 		this.buyerName = buyerName;
 	}
 
-	public String getBuyerAliAccount() {
-		return buyerAliAccount;
-	}
-
-	public void setBuyerAliAccount(String buyerAliAccount) {
-		this.buyerAliAccount = buyerAliAccount;
-	}
-	
-	public String getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -134,14 +123,6 @@ public class TaobaoOrder extends Entity{
 		this.goodsTitle = goodsTitle;
 	}
 
-	public String getGoodsKind() {
-		return goodsKind;
-	}
-
-	public void setGoodsKind(String goodsKind) {
-		this.goodsKind = goodsKind;
-	}
-
 	public String getProductSerial() {
 		return productSerial;
 	}
@@ -149,7 +130,7 @@ public class TaobaoOrder extends Entity{
 	public void setProductSerial(String productSerial) {
 		this.productSerial = productSerial;
 	}
-	
+
 	public String getShipNo() {
 		return shipNo;
 	}
@@ -164,6 +145,14 @@ public class TaobaoOrder extends Entity{
 
 	public void setPayTime(String payTime) {
 		this.payTime = payTime;
+	}
+
+	public String getOrderChannel() {
+		return orderChannel;
+	}
+
+	public void setOrderChannel(String orderChannel) {
+		this.orderChannel = orderChannel;
 	}
 
 	public OrderStatus getStatus() {

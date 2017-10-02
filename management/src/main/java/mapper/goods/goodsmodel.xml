@@ -12,7 +12,7 @@
 	
 	<insert id="insert" parameterType="model.goods.GoodsModel" useGeneratedKeys="false">
 		insert into goods_model(model_id, goods_id, model_code, model_name, model_description, is_advanced, block_flag, create_time)
-		values(#{modelId}, #{goods.goodsId}, #{modelCode}, #{modelName}, #{modelDescription}, #{isAdvanced}, #{blockFlag}, #{createAt});
+		values(#{modelId}, #{goods.goodsId}, #{modelCode}, #{modelName}, #{description}, #{isAdvanced}, #{blockFlag}, #{createAt});
 	</insert>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="goodsModelVo">

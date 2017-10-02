@@ -1,0 +1,136 @@
+<div id="page-main">
+	<div id="page-main-wrapper">
+		<div id="page-header" class="clearfix">
+			<div id="page-header-wrapper" class="clearfix">
+				<div id="page-breadcrumb-wrapper">
+                	<div id="page-breadcrumb">
+                    	<a href="javascript:;">
+                        	<i class="glyph-icon icon-dashboard"></i>
+                                首页
+                        </a>
+                        <a href="javascript:;">
+                            <i class="glyph-icon icon-file-text-o"></i>
+                            订单
+                        </a>
+                        <span class="current">
+                            订单录入
+                        </span>
+                    </div>
+                </div>
+			</div>
+		</div>
+        <div id="page-breadcrumb-wrapper">
+            <div id="page-breadcrumb">
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-dashboard"></i>
+                        首页
+                </a>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-file-text-o"></i>
+                    订单
+                </a>
+                <span class="current">
+                    订单录入
+                </span>
+            </div>
+        </div>
+        <div id="page-content">
+            <div class="col-md-12 center-margin">
+            	<h4>订单录入</h4>
+            	<div class="form-row">
+            		<label for="order-number" class="form-label col-md-2">订单编号</label>
+            		<div class="form-input col-md-10">
+            			<input id="order-number" type="text" placeholder="请输入订单编号"/>
+            		</div>
+            	</div>
+            	<div class="form-row">
+            		<label for="order-buyer" class="form-label col-md-2">购买人</label>
+            		<div class="form-input col-md-10">
+            			<input id="order-buyer" type="text" placeholder="请输入购买人姓名" />
+            		</div>
+            	</div>
+            	<div class="form-row">
+            		<label for="order-price" class="form-label col-md-2">订单价格</label>
+            		<div class="form-input col-md-10">
+            			<input id="order-price" type="text" placeholder="请输入订单实付金额" />
+            		</div>
+            	</div> 
+            	<div class="form-row">
+            		<label for="order-receiver-name" class="form-label col-md-2">收货人姓名</label>
+            		<div class="form-input col-md-10">
+            			<input id="order-receiver-name" type="text" placeholder="请输入收货人姓名"/>
+            		</div>
+            	</div> 
+            	<div class="form-row">
+            		<label for="order-receiver-phone" class="form-label col-md-2">收货人电话</label>
+            		<div class="form-input col-md-10">
+            			<input id="order-receiver-phone" type="text" placeholder="请输入收货人电话"／>
+            		</div>
+            	</div>
+            	<div class="form-row">
+            		<label for="order-receiver-address" class="form-label col-md-2">收货地址</label>
+            		<div class="form-input col-md-10">
+            			<input id="order-receiver-address" type="text" placeholder="请输入收货地址"/>
+            		</div>
+            	</div>
+            	<div class="form-row">
+            		<label for="order-coupon" class="form-label col-md-2">优惠码</label>
+            		<div class="form-input col-md-10">
+            			<input id="order-coupon" type="text" placeholder="请输入优惠码" />
+                     </div>
+            	</div>
+            	<div class="form-row">
+            		<label for="order-goods" class="form-label col-md-2">购买商品</label>
+            		<div class="form-input col-md-10">
+            			<input id="order-goods" type="text" placeholder="请输入商品名称"/>
+            		</div>
+            	</div>
+				<div class="form-row">
+            		<label for="order-channel" class="form-label col-md-2">订单渠道</label>
+            		<div class="form-input col-md-10">
+            			<input id="order-channel" type="text" placeholder="请输入订单渠道"/>
+            		</div>
+            	</div>
+            	<div class="form-row">
+            		<label for="pay-time" class="form-label col-md-2">付款时间</label>
+            		<div class="form-input col-md-10">
+            			<input id="pay-time" type="text" placeholder="请输入付款时间"/>
+            		</div>
+            	</div>
+            	<hr />
+            	<div class="form-row">
+            		<button id="confirm-add" class="btn medium bg-blue" title="填写产品编号">
+           				<span class="button-content">添加</span>
+        			</button>
+            	</div>
+            </div>
+        </div>
+	</div>
+</div>
+<script>
+	$(document).ready(function() {
+		$("#confirm-add").click(function() {
+			var order_no = $("#order-number").val();
+			var order_buyer = $("#order-buyer").val();
+			var order_price = $("#order-price").val();
+			var receiver_name = $("#order-receiver-name").val();
+			var receiver_phone = $("#order-receiver-phone").val();
+			var receiver_address = $("#order-receiver-address").val();
+			var order_coupon = $("#order-coupon").val();
+			var goods_name = $("#order-goods").val();
+			var order_channel = $("#order-channel").val();
+			var pay_time = $("#pay-time").val();
+			var url = "${path.concat('/order/create')}";
+			$.post(url, {orderNo: order_no, orderBuyer: order_buyer, orderPrice: order_price, receiverName: receiver_name, receiverPhone: receiver_phone, receiverAddress: receiver_address, orderCoupon: order_coupon, goodsName: goods_name, orderChannel: order_channel, payTime: pay_time}, function(result) {
+				window.location.href = "${path.concat('/order/overview')}";
+			})
+		});
+	});
+
+    function not_null(item) {
+        if (item == null || item == "" || item.length <= 0) {
+            return false;
+        }
+        return true;
+    }
+</script>

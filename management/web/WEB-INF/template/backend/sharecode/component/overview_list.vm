@@ -80,7 +80,10 @@
             columns: [
                 {title: "客户编号", "mData": "consumerWechat"},
                 {title: "客户姓名", "mData": "consumerName"},
-                {title: "优惠码", "mData": "shareCode"}
+                {title: "优惠码", "mData": "shareCode"}，
+                {title: "分享次数", "mRender": function(data, type, full) {
+                	return "未确定";
+                }}
             ],
             "language": {
                 "processing": "正在加载中",

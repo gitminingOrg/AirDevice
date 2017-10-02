@@ -39,6 +39,11 @@ public class PlatformController {
     @RequestMapping(method = RequestMethod.GET, value = "/login")
     public ModelAndView login() {
         ModelAndView view = new ModelAndView();
+        Subject subject = SecurityUtils.getSubject();
+        if(subject.isAuthenticated() && subject.getPrincipal() != null) {
+        	view.setViewName("redirect:/dashboard");
+        	return view;
+        }
         view.setViewName("/backend/login");
         return view;
     }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.ordermission">
+	<resultMap id="missionVo" type="model.order.OrderMission">
+		<result property="missionId" column="mission_id"/>
+		<result property="missionTitle" column="mission_title"/>
+		<result property="missionContent" column="mission_content"/>
+		<result property="missionRecorder" column="mission_recorder"/>
+		<result property="blockFlag" column="block_flag"/>
+		<result property="createAt" column="create_time"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="model.order.OrderMission" useGeneratedKeys="false">
+		insert into order_mission(mission_id, order_id, mission_title, mission_content, mission_recorder, block_flag, create_time)
+		values (#{missionId}, #{orderId}, #{missionTitle}, #{missionContent}, #{missionRecorder}, #{blockFlag}, #{createAt})
+	</insert>
+	
+	<select id="query" parameterType="java.util.Map" resultMap = "missionVo">
+		select mission_id, order_id, mission_title, mission_content, mission_recorder, block_flag, create_time
+		from order_mission
+		where 1 = 1
+		<if test="missionId != null">
+			and mission_id = #{missionId}
+		</if>
+		<if test="orderId != null">
+			and order_id = #{orderId}
+		</if>
+		<if test="blockFlag != null">
+			and block_flag = #{blockFlag}
+		</if>
+		order by create_time asc
+	</select>
+</mapper>

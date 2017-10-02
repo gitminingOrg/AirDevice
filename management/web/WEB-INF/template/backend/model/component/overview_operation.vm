@@ -89,6 +89,14 @@
                            	#end
                             #end
                             <div class="form-row">
+                            	<div class="form-label col-md-2">
+                            		<label for="description">型号备注</label>
+                            	</div>
+                            	<div class="form-input col-md-10">
+                            		<input id="model-description" type="text" autoComplete="off" placeholder="请输入备注"/>
+                            	</div>
+                            </div>
+                            <div class="form-row">
                                 <button class="btn medium bg-blue-alt" id="confirm-add">
                                     <span class="button-content">添加</span>
                                 </button>
@@ -115,8 +123,9 @@
 			var goods_id = $("#goods-name").val();
 			var model_code = $("#model-code").val();
 			var model_name = $("#model-name").val();
+			var description = $("#model-description").val();
 			var url = "${path.concat('/model/create')}";
-			$.post(url, {goodsId: goods_id, modelCode: model_code, modelName: model_name, advanced: advanced, param: JSON.stringify(param)}, function(result) {
+			$.post(url, {goodsId: goods_id, modelCode: model_code, modelName: model_name, advanced: advanced, param: JSON.stringify(param), description: description}, function(result) {
 				if(result.responseCode == "RESPONSE_OK") {
 					window.location.href = "${path.concat('/model/overview')}"
 				}

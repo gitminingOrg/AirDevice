@@ -82,7 +82,7 @@ public class QRCodeController {
 		String batch = new StringBuffer(vo.getModelCode()).append(form.getBatchNo()).toString();
 		response = qRCodeService.create(form.getGoodsId(), form.getModelId(), batch, form.getNum());
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-			String filename = generateZip(form.getBatchNo());
+			String filename = generateZip(batch);
 			result.setData(filename);
 			return result;
 		}
@@ -183,6 +183,13 @@ public class QRCodeController {
 		}
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/batch")
+	public ModelAndView qrBatch() {
+		ModelAndView view = new ModelAndView();
+		view.setViewName("/backend/qrcode/batch");
+		return view;
+	}
+	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value = "/batch/available")
 	public ResultData batch(String goodsId, String modelId) {
@@ -220,6 +227,22 @@ public class QRCodeController {
 		}
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("delivered", false);
+		ResultData response = qRCodeService.fetch(condition, param);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result = (DataTablePage<QRCodeVo>) response.getData();
+		}
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST, value = "/delivered")
+	public DataTablePage<QRCodeVo> delivered(DataTableParam param) {
+		DataTablePage<QRCodeVo> result = new DataTablePage<>(param);
+		if (StringUtils.isEmpty(param)) {
+			return result;
+		}
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("delivered", true);
 		ResultData response = qRCodeService.fetch(condition, param);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			result = (DataTablePage<QRCodeVo>) response.getData();

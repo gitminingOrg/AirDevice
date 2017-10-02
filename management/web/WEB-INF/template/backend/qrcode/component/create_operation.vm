@@ -130,7 +130,7 @@
             $.post(url, {goodsId: goodsId, modelId: modelId, batchNo: batchNo, num: num}, function(result) {
                 if(result.responseCode == "RESPONSE_OK") {
                     $("#qr_num").val("");
-                    var title = "批次" + batchNo + "中的" + num + "个二维码生成成功，请点击下方按钮下载";
+                    var title = "该批次中的" + num + "个二维码生成成功，请点击下方按钮下载";
                     $(".infobox-title").text(title);
                     $("#success_msg").show();
                     $("#file-generating").hide();

@@ -1,5 +1,7 @@
 package vo.order;
 
+import model.order.OrderStatus;
+
 public class OrderVo {
 	private String orderId;
 	
@@ -28,6 +30,8 @@ public class OrderVo {
 	private String payTime;
 	
 	private String channel;
+	
+	private OrderStatus status;
 
 	public String getOrderId() {
 		return orderId;
@@ -139,5 +143,13 @@ public class OrderVo {
 
 	public void setChannel(String channel) {
 		this.channel = channel;
+	}
+
+	public OrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderStatus status) {
+		this.status = status;
 	}
 }

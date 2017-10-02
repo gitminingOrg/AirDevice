@@ -28,13 +28,19 @@
                 	<li>
                     	<a href="${path.concat('/qrcode/create')}">
 	                        <i class="glyph-icon icon-chevron-right"></i>
-	                        二维码生成
+	                        生成二维码
                         </a>
                     </li>
                     <li>
                     	<a href="${path.concat('/qrcode/overview')}">
                         	<i class="glyph-icon icon-chevron-right"></i>
-                           	二维码概览
+                           	出库
+                        </a>
+                    </li>
+                    <li>
+                    	<a href="${path.concat('/qrcode/batch')}">
+	                        <i class="glyph-icon icon-chevron-right"></i>
+	                        批次列表
                         </a>
                     </li>
                 </ul>
@@ -105,6 +111,10 @@
                 </a>
                 <ul>
                     <li>
+                    	<a href="${path.concat('/order/create')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            添加订单
+                        </a>
                         <a href="${path.concat('/order/overview')}">
                             <i class="glyph-icon icon-chevron-right"></i>
                             淘宝订单

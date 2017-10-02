@@ -60,13 +60,100 @@
                 </div>
             </div>
             <div class="col-md-12 center-margin">
+            	<div class="col-md-10 center-margin">
+	                <div class="form-row">
+	                    <div class="form-input">
+	                        <div class="row">
+	                            <div class="col-md-5">
+	                                <select id="channel_list">
+	                                    <option>---请选择渠道---</option>
+	                                </select>
+	                            </div>
+	                            <div class="col-md-5">
+	                                <select id="status_list">
+	                                    <option>---请选择订单状态---</option>
+	                                </select>
+	                            </div>
+	                            <div class="col-md-2">
+	                                <button id="search_btn" type="button" data-loading-text="查询中" class="btn large loading-button bg-blue">
+	                                    查询
+	                                </button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
                 <table id="order-list-table" class="table table-condensed"></table>
             </div>
         </div>
 	</div>
 </div>
 <script>
+	var param = {};
+	
+	channel_reset();
+	
+	status_reset();
+	
+	function channel_reset() {
+		$("#channel_list").empty();
+		$("#channel_list").append($("<option value=''></option>").text("---请选择渠道---"));
+		var channel_url = "${path.concat('/order/channel/list')}";
+		$.get(channel_url, function(result) {
+			if(result.responseCode == "RESPONSE_OK") {
+				var data = result.data;
+				for(index in data) {
+					var item = $("<option></option>").text(data[index]);
+					item.attr("value", data[index]);
+					$("#channel_list").append(item);
+				}
+			}
+		}) 
+	}
+	
+	function status_reset() {
+		$("#status_list").empty();
+		var param = {};
+		$("#status_list").append($("<option value=''></option>").text("---请选择订单类型---"));
+		var status_url = "${path.concat('/order/status/list')}";
+		$.get(status_url, function(result) {
+			if(result.responseCode == "RESPONSE_OK") {
+				var data = result.data;
+				for(index in data) {
+					var item = $("<option></option>");
+					if(data[index] == 1) {
+						item.text("待发货");
+					}
+					if(data[index] == 2) {
+						item.text("已发货");
+					}
+					if(data[index] == 2) {
+						item.text("已发货");
+					}
+					if(data[index] == 4) {
+						item.text("正在安装");
+					}
+					if(data[index] == 4) {
+						item.text("正在安装");
+					}
+					if(data[index] == 5) {
+						item.text("已完成");
+					}
+					if(data[index] == 8) {
+						item.text("已取消");
+					}
+					item.attr("value", data[index]);
+					$("#status_list").append(item);
+				}
+			}
+		})
+	}
+
     $(document).ready(function() {
+    	 $("#search_btn").on('click', function() {
+            table.draw(false);
+        });
+    
         $("#confirm-upload").on('click', function() {
             $("#order-form").attr('action', "${path.concat('/order/upload')}");
             $("#order-form").attr('method', "post");
@@ -97,7 +184,22 @@
                 $("#component-list-table").removeClass('no-footer');
             },
             "fnServerParams": function (aoData) {
-            
+            	delete aoData.params;
+            	var channel = $("#channel_list").val();
+            	if(param.channel != channel) {
+                    param.channel = channel;
+                    if(!not_null(channel)) {
+                        delete param.channel;
+                    }
+                }
+                var status = $("#status_list").val();
+                if(param.status != status) {
+                    param.status = status;
+                    if(!not_null(status)) {
+                        delete param.status;
+                    }
+                }
+                aoData.push({"name": "params", "value": JSON.stringify(param)});
             },
             "fnServerData": function (sSource, aoData, fnCallback) {
                 $.ajax({
@@ -114,15 +216,29 @@
                     return full.receiverName + "(" + full.receiverPhone + ")";
                 }}, 
                 {title: "渠道", "mData": "channel"},
-                {title: "优惠码", "mData": "coupon"},
-                {title: "产品编号", "mData": "productSerial"},
-                {title: "付款时间", "mData": "payTime"},
+                {title: "当前进度", "mRender": function(data, type, full) {
+                	var status = full.status;
+                	if(status == "PAYED") {
+                		return "待发货";
+                	}
+                	if(status == "SHIPPED") {
+                		return "已发货";
+                	}
+                	if(status == "INSTALLING") {
+                		return "正在安装";
+                	}
+                	if(status == "SUCCEED") {
+                		return "已完成";
+                	}
+                	if(status == "REFUNDED") {
+                		return "已取消";
+                	}
+                	return "未知状态";
+                }},
                 {title: "操作", "mRender": function(data, type, full) {
-                    var node = "";
-                    if(!not_null(full.productSerial)) {
-                        var edit = "<a href='" + "${path.concat('/order/')}" + full.orderId + "' class='btn small bg-blue-alt tooltip-button' data-placement='top' ><i class='glyph-icon icon-edit'></i></a>";
-                        node += edit;
-                    }
+                    var node = "";        
+                    var edit = "<a href='" + "${path.concat('/order/')}" + full.orderId + "' class='btn small bg-blue-alt tooltip-button' data-placement='top' ><i class='glyph-icon icon-edit'></i></a>";
+                    node += edit;
                     return node;
                 }}
             ],

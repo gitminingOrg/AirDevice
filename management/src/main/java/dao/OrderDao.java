@@ -3,6 +3,7 @@ package dao;
 import java.util.List;
 import java.util.Map;
 
+import model.order.CustomizeOrder;
 import model.order.TaobaoOrder;
 import pagination.DataTableParam;
 import utils.ResultData;
@@ -15,4 +16,10 @@ public interface OrderDao {
 	ResultData query(Map<String, Object> condition, DataTableParam param);
 	
 	ResultData update(TaobaoOrder order);
+	
+	ResultData create(CustomizeOrder order);
+	
+	ResultData channel();
+	
+	ResultData status();
 }

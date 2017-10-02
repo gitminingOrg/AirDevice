@@ -79,8 +79,8 @@ public class QRCodeServiceImpl implements QRCodeService {
 				}
 				String path = new StringBuffer(SAVE_PATH).append(date).append(File.separator).append(value).append("_machine.png").toString();
 				QRCode code = new QRCode(batchNo, value, path, url, goods, modelId);
-//				generate(code);
-//				combine(code.getPath(), value);
+				generate(code);
+				combine(code.getPath(), value);
 				qRCodeDao.insert(code);
 			}
 		}
@@ -130,7 +130,7 @@ public class QRCodeServiceImpl implements QRCodeService {
 			int x = 437;
 			int y = 461;
 			g.drawImage(small, x, y, small.getWidth(), small.getHeight(), null);
-			x = 300;
+			x = 200;
 			y = 1080;
 			Font font = new Font("arial", Font.PLAIN, 50);
 			g.setColor(Color.BLACK);

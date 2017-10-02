@@ -10,11 +10,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import dao.BaseDao;
 import dao.OrderDao;
+import model.order.CustomizeOrder;
 import model.order.TaobaoOrder;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
+import sun.font.EAttribute;
 import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
@@ -67,6 +72,15 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 		if (!StringUtils.isEmpty(param.getsSearch())) {
 			condition.put("search", new StringBuffer("%").append(param.getsSearch()).append("%").toString());
 		}
+		JSONObject params = JSON.parseObject(param.getParams());
+		if(!StringUtils.isEmpty(params)) {
+			if(!StringUtils.isEmpty(params.get("channel"))) {
+				condition.put("channel", params.getString("channel"));
+			}
+			if(!StringUtils.isEmpty(params.get("status"))) {
+				condition.put("status", params.getString("status"));
+			}
+		}
 		ResultData total = query(condition);
 		if (total.getResponseCode() != ResponseCode.RESPONSE_OK) {
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -102,7 +116,55 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 		}catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
-			result.setDescription(e.getLocalizedMessage());
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public ResultData create(CustomizeOrder order) {
+		ResultData result = new ResultData();
+		order.setOrderId(IDGenerator.generate("CSO"));
+		try {
+			sqlSession.insert("management.customizeorder.insert", order);
+		}catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public ResultData channel() {
+		ResultData result = new ResultData();
+		try {
+			List<String> list = sqlSession.selectList("management.externalorder.channel");
+			if(list.isEmpty()) {
+				result.setResponseCode(ResponseCode.RESPONSE_NULL);
+			}
+			result.setData(list);
+		}catch (Exception e) {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public ResultData status() {
+		ResultData result = new ResultData();
+		try {
+			List<String> list = sqlSession.selectList("management.externalorder.status");
+			if(list.isEmpty()) {
+				result.setResponseCode(ResponseCode.RESPONSE_NULL);
+			}
+			result.setData(list);
+		}catch (Exception e) {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+			result.setDescription(e.getMessage());
 		}
 		return result;
 	}
