@@ -31,13 +31,15 @@ public class CustomizeOrder extends Entity{
 
 	private OrderStatus status;
 	
+	private String description;
+	
 	public CustomizeOrder() {
 		super();
 		status = OrderStatus.PAYED;
 	}
 	
 	public CustomizeOrder(String orderNo, String orderBuyer, double price, String receiverName, String receiverPhone,
-			String receiverAddress, String coupon, String goodsTitle, String payTime, String orderChannel) {
+			String receiverAddress, String coupon, String goodsTitle, String payTime, String orderChannel, String description) {
 		this();
 		this.orderNo = orderNo;
 		this.buyerName = orderBuyer;
@@ -49,6 +51,7 @@ public class CustomizeOrder extends Entity{
 		this.goodsTitle = goodsTitle;
 		this.payTime = payTime;
 		this.orderChannel = orderChannel;
+		this.description = description;
 	}
 
 	public String getOrderId() {
@@ -161,5 +164,13 @@ public class CustomizeOrder extends Entity{
 
 	public void setStatus(OrderStatus status) {
 		this.status = status;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

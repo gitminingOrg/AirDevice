@@ -97,6 +97,12 @@
             			<input id="pay-time" type="text" placeholder="请输入付款时间"/>
             		</div>
             	</div>
+            	<div class="form-row">
+            		<label for="description" class="form-label col-md-2">订单备注</label>
+            		<div class="form-input col-md-10">
+            			<input id="description" type="text" placeholder="请输入订单备注"/>
+            		</div>
+            	</div>
             	<hr />
             	<div class="form-row">
             		<button id="confirm-add" class="btn medium bg-blue" title="填写产品编号">
@@ -120,8 +126,9 @@
 			var goods_name = $("#order-goods").val();
 			var order_channel = $("#order-channel").val();
 			var pay_time = $("#pay-time").val();
+			var description = $("#description").val();
 			var url = "${path.concat('/order/create')}";
-			$.post(url, {orderNo: order_no, orderBuyer: order_buyer, orderPrice: order_price, receiverName: receiver_name, receiverPhone: receiver_phone, receiverAddress: receiver_address, orderCoupon: order_coupon, goodsName: goods_name, orderChannel: order_channel, payTime: pay_time}, function(result) {
+			$.post(url, {orderNo: order_no, orderBuyer: order_buyer, orderPrice: order_price, receiverName: receiver_name, receiverPhone: receiver_phone, receiverAddress: receiver_address, orderCoupon: order_coupon, goodsName: goods_name, orderChannel: order_channel, payTime: pay_time, description: description}, function(result) {
 				window.location.href = "${path.concat('/order/overview')}";
 			})
 		});

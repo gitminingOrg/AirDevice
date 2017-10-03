@@ -1,5 +1,9 @@
 package form;
 
+/**
+ * @author sunshine
+ *
+ */
 public class OrderCreateForm {
 	private String orderNo;
 	
@@ -20,6 +24,8 @@ public class OrderCreateForm {
 	private String orderChannel;
 	
 	private String payTime;
+	
+	private String description;
 
 	public String getOrderNo() {
 		return orderNo;
@@ -99,5 +105,13 @@ public class OrderCreateForm {
 
 	public void setPayTime(String payTime) {
 		this.payTime = payTime;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

@@ -20,9 +20,9 @@
 	</resultMap>
 	
 	<insert id="insert" parameterType="model.order.CustomizeOrder" useGeneratedKeys="false">
-		insert into taobao_order(order_id, order_no, buyer_name, buyer_ali_account, order_price, receiver_name, receiver_phone, receiver_address, order_coupon, goods_title, goods_kind, order_status, pay_time, order_channel, block_flag, create_time)
+		insert into taobao_order(order_id, order_no, buyer_name, buyer_ali_account, order_price, receiver_name, receiver_phone, receiver_address, order_coupon, goods_title, goods_kind, order_status, pay_time, order_channel, description, block_flag, create_time)
 		values
-		(#{orderId}, #{orderNo}, #{buyerName}, "无阿里账号", #{price}, #{receiverName}, #{receiverPhone}, #{receiverAddress}, #{coupon}, #{goodsTitle}, "无商品类型", #{status, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{payTime}, #{orderChannel}, #{blockFlag}, #{createAt})
+		(#{orderId}, #{orderNo}, #{buyerName}, "无阿里账号", #{price}, #{receiverName}, #{receiverPhone}, #{receiverAddress}, #{coupon}, #{goodsTitle}, "无商品类型", #{status, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{payTime}, #{orderChannel}, #{description}, #{blockFlag}, #{createAt})
 	</insert>
 	
 	<select id="query" parameterType="java.util.Map" resultMap = "orderVo">

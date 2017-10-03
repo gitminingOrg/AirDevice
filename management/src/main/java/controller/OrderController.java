@@ -173,7 +173,7 @@ public class OrderController {
 		CustomizeOrder order = new CustomizeOrder(form.getOrderNo(), form.getOrderBuyer(),
 				Double.parseDouble(form.getOrderPrice()), form.getReceiverName(), form.getReceiverPhone(),
 				form.getReceiverAddress(), form.getOrderCoupon(), form.getGoodsName(), form.getPayTime(),
-				form.getOrderChannel());
+				form.getOrderChannel(), form.getDescription());
 		ResultData response = orderService.create(order);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			result.setResponseCode(ResponseCode.RESPONSE_OK);
