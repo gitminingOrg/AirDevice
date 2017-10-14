@@ -263,19 +263,9 @@
                 {title: "操作", "mRender": function(data, type, full) {
                     var operation = "";
                     if(full.codeDelivered == false) {
-                        var deliver = "<a id='" + full.codeId + "' href='javascript:;'' class='btn small bg-blue-alt tooltip-button outstore' data-placement='top'><span>出库</span></a>&nbsp;";
+                        var deliver = "<button id='" + full.codeId + "' onclick='deliver(\"" + full.codeId + "\")' class='btn small bg-blue-alt tooltip-button outstore' data-placement='top'><span>出库</span></button>&nbsp;";
                         operation += deliver;
                     }
-                    $(".outstore").on('click', function() {
-                        var id = $(this).attr("id");
-                        var url = "${path.concat('/qrcode/deliver')}"
-                        $.post(url, {codeId: id}, function(result) {
-                            if(result.responseCode == "RESPONSE_OK") {
-                                $("#" + id).remove();
-                            }
-                        })
-                    })
-                    alert(operation);
                     return (operation);
                 }}
             ],
@@ -297,6 +287,15 @@
             }
         });
     });
+
+	function deliver(codeId) {
+	    var url = "${path.concat('/qrcode/deliver')}"
+	    $.post(url, {codeId: codeId}, function(result) {
+		    if(result.responseCode == "RESPONSE_OK") {
+		    	$("#" + codeId).remove();
+		    }
+	    })
+	}
 
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {
