@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.machine">
+
+    <!--删除相关的机器数据-->
+    <delete id="deleteDevice" parameterType="String">
+        DELETE FROM airdevice.device_chip where device_id = #{device_id};
+        DELETE FROM airdevice.deviceStatus where device_id = #{device_id};
+
+        DELETE FROM airdevice.userDevice where device_id = #{device_id};
+        DELETE FROM airdevice.userAction where device_id = #{device_id};
+        DELETE FROM airdevice.deviceName where device_id = #{device_id};
+        DELETE FROM airdevice.device_city where device_id = #{device_id};
+        DELETE FROM airdevice.deviceAir where device_id = #{device_id};
+    </delete>
+
+    <!--更新二维码的状态-->
+    <update id="releaseQrcode" parameterType="String">
+        update airdevice.qrcode set code_occupied = 0 where code_value = #{qrCode};
+    </update>
+</mapper>

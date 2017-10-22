@@ -15,5 +15,6 @@
 		<mapper resource="mapper/order/externalorder.xml" />
 		<mapper resource="mapper/order/ordermission.xml"/>
 		<mapper resource="mapper/consumer/consumersharecode.xml" />
+		<mapper resource="mapper/machine/machine.xml" />
 	</mappers>
 </configuration>
