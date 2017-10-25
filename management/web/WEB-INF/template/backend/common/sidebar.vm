@@ -43,6 +43,12 @@
 	                        批次列表
                         </a>
                     </li>
+                    <li>
+                    	<a href="${path.concat('/qrcode/prebind')}">
+	                        <i class="glyph-icon icon-chevron-right"></i>
+	                        预绑定
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li>

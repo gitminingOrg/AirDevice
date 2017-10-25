@@ -23,7 +23,7 @@ public class QRCodePreBindDaoImpl extends BaseDao implements QRCodePreBindDao{
 		pb.setBindId(IDGenerator.generate("PBC"));
 		synchronized (lock) {
 			try {
-				sqlSession.insert("management.qrcode.prebind", pb);
+				sqlSession.insert("management.qrcode.prebind.insert", pb);
 				result.setData(pb);
 			}catch(Exception e) {
 				logger.error(e.getMessage());
