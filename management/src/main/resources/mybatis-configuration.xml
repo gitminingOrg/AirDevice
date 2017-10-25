@@ -16,5 +16,6 @@
 		<mapper resource="mapper/order/ordermission.xml"/>
 		<mapper resource="mapper/consumer/consumersharecode.xml" />
 		<mapper resource="mapper/machine/machine.xml" />
+		<mapper resource="mapper/feedBack/feedback.xml" />
 	</mappers>
 </configuration>

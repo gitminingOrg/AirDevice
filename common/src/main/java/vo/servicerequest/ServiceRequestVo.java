@@ -1,6 +1,6 @@
 package vo.servicerequest;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 import model.servicerequest.ServiceRequestStatus;
 
