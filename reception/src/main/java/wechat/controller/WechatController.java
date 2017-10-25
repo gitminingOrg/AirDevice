@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.enterprise.event.Reception;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -121,7 +122,7 @@ public class WechatController {
 									sb.append("PM2.5 :"+status.getCleanerStatus().getPm25()+"µg/m³\n");
 									sb.append("室内温度:"+status.getCleanerStatus().getTemperature()+"℃\n");
 									sb.append("室内湿度:"+status.getCleanerStatus().getHumidity()+"%\n");
-									if(status.getCleanerStatus().getCo2() > 0){
+									if(status.getCleanerStatus().getCo2() > 0 && status.getCleanerStatus().getCo2() != 2000){
 										sb.append("二氧化碳:"+status.getCleanerStatus().getCo2()+"ppm\n");
 									}
 									sb.append("风机风量:"+status.getCleanerStatus().getVelocity()+"m³/h\n");
@@ -187,7 +188,7 @@ public class WechatController {
 					logger.info("serial: " + serial);
 					String link = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="
 							+ ReceptionConfig.getValue("wechat_appid") + "&redirect_uri="
-							+ URLEncoder.encode("http://" + "commander.gmair.net/reception/www/index.html#/device/bind/" + serial, "utf-8")
+							+ URLEncoder.encode("http://" + ReceptionConfig.getValue("domain_url") + "/reception/www/index.html#/device/bind/" + serial, "utf-8")
 							+ "&response_type=code&scope=snsapi_base&state=view#wechat_redirect";
 					result.setStatus(ResultMap.STATUS_SUCCESS);
 					result.addContent("redirect_url", link);

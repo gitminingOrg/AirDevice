@@ -28,8 +28,10 @@ import com.sun.jndi.url.iiopname.iiopnameURLContextFactory;
 
 import config.ManagementConfig;
 import dao.QRCodeDao;
+import dao.QRCodePreBindDao;
 import model.goods.AbstractGoods;
 import model.goods.RealGoods;
+import model.qrcode.PreBindCodeUID;
 import model.qrcode.QRCode;
 import pagination.DataTableParam;
 import service.QRCodeService;
@@ -54,6 +56,9 @@ public class QRCodeServiceImpl implements QRCodeService {
 
 	@Autowired
 	private QRCodeDao qRCodeDao;
+	
+	@Autowired
+	private QRCodePreBindDao qRCodePreBindDao;
 
 	@Override
 	public ResultData create(String goodsId, String modelId, String batchNo, int num) {
@@ -206,5 +211,18 @@ public class QRCodeServiceImpl implements QRCodeService {
 			}
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public ResultData prebind(PreBindCodeUID pb) {
+		ResultData result = new ResultData();
+		ResultData response = qRCodePreBindDao.insert(pb);
+		result.setResponseCode(response.getResponseCode());
+		if(response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setData(response.getData());
+		}else {
+			result.setDescription(response.getDescription());
+		}
+		return result;
 	}
 }

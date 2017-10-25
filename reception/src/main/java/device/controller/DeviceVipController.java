@@ -225,6 +225,7 @@ public class DeviceVipController {
 						String userID = current.getCustomerId();
 						List<DeviceStatus> deviceStatus = deviceVipService
 								.getUserCleaner(userID);
+						LOG.info("user id: " + userID);
 						if (deviceStatus == null) {
 							resultMap.setStatus(ResultMap.STATUS_FAILURE);
 							resultMap.setInfo(ResultMap.EMPTY_INFO);

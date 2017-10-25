@@ -38,6 +38,11 @@
             <h4>预绑定</h4>
             <div id="range-deliver-form">
                 <div class="col-md-10 center-margin">
+                	<div class="form-row">
+                		<div class="form-input">
+                    		<a href="http://commander.gmair.net/AirCleanerOperation/device/all" target="_blank">请通过该链接查询所有当前在线的设备</a>
+                    	</div>
+                	</div>
                     <div class="form-row">
                         <div class="form-input">
                             <div class="row">
@@ -81,6 +86,8 @@
    		$.post(url, {uid: uid, codeId: codeid}, function(result) {
     		if(result.responseCode == "RESPONSE_OK") {
     			alert("成功");
+    			$("#uid").val("");
+    			$("#codeid").val("");
    			}
    		})
    	})

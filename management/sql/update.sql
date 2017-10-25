@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS `pre_binding`;
 CREATE TABLE `pre_binding` (
-  `bind_id` int(11) NOT NULL AUTO_INCREMENT,
+  `bind_id` varchar(20) NOT NULL AUTO_INCREMENT,
   `uid` char(255) NOT NULL,
   `code_id` varchar(255) NOT NULL,
   `block_flag` int(11) NOT NULL,

@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * will be replaced by service request in the future
+ * @author sunshine
+ *
+ */
 public class SupportForm {
 	private String name;
 	private String phone;

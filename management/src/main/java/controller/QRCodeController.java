@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import form.QRCodeGenerateForm;
+import model.qrcode.PreBindCodeUID;
 import model.qrcode.QRCode;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
@@ -189,7 +190,7 @@ public class QRCodeController {
 		view.setViewName("/backend/qrcode/batch");
 		return view;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value = "/batch/available")
 	public ResultData batch(String goodsId, String modelId) {
@@ -233,7 +234,7 @@ public class QRCodeController {
 		}
 		return result;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, value = "/delivered")
 	public DataTablePage<QRCodeVo> delivered(DataTableParam param) {
@@ -324,5 +325,26 @@ public class QRCodeController {
 		}
 		view.setViewName("redirect:/qrcode/overview");
 		return view;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/prebind")
+	public ModelAndView prebind() {
+		ModelAndView view = new ModelAndView();
+		view.setViewName("/backend/qrcode/prebind");
+		return view;
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/prebind")
+	public ResultData prebind(String uid, String codeId) {
+		ResultData result = new ResultData();
+		PreBindCodeUID pb = new PreBindCodeUID(uid, codeId);
+		ResultData response = qRCodeService.prebind(pb);
+		result.setResponseCode(response.getResponseCode());
+		if (result.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			result.setData(response.getData());
+		} else if (result.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			result.setDescription(response.getDescription());
+		}
+		return result;
 	}
 }

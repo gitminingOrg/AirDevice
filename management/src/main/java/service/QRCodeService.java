@@ -2,6 +2,7 @@ package service;
 
 import java.util.Map;
 
+import model.qrcode.PreBindCodeUID;
 import model.qrcode.QRCode;
 import pagination.DataTableParam;
 import utils.ResultData;
@@ -16,4 +17,6 @@ public interface QRCodeService {
 	ResultData fetch(Map<String, Object> condition, DataTableParam param);
 	
 	ResultData deliver(QRCode code);
+	
+	ResultData prebind(PreBindCodeUID pb);
 }

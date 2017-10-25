@@ -7,9 +7,9 @@ public class BasicDao {
 	Connection conn;
 	public BasicDao(){
 		String driver = "com.mysql.jdbc.Driver"; 
-		String url = "jdbc:mysql://commander.gmair.net:3306/airdevice?useUnicode=true&characterEncoding=utf-8";    
-		String user = "wonderwoman";
-		String password = "2bBatman";
+		String url = "jdbc:mysql://localhost:3306/airdevice?useUnicode=true&characterEncoding=utf-8";    
+		String user = "root";
+		String password = "guomaixinfeng";
 		
 		try {
 			Class.forName(driver);
