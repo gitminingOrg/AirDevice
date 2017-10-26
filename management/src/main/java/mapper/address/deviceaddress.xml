@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.deviceAddress">
+
+    <resultMap id="DeviceAddress" type="model.address.DeviceAddress">
+        <result property="device_id" column="device_id" />
+        <result property="owner" column="owner" />
+        <result property="phone" column="phone" />
+        <result property="province" column="province" />
+        <result property="city" column="city" />
+        <result property="address" column="address" />
+    </resultMap>
+
+    <select id="selectDeviceAddress" resultMap="DeviceAddress" >
+          SELECT device_id,
+                 `owner`,
+                 phone,
+                 city_name as city,
+                 province_name as province,
+                 address
+                 from devicename, location_city, location_province
+                 WHERE devicename.city_id = location_city.city_id
+                       AND
+			           devicename.province_id = location_province.province_id
+    </select>
+</mapper>

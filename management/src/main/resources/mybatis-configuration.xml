@@ -18,5 +18,6 @@
 		<mapper resource="mapper/machine/machine.xml" />
 		<mapper resource="mapper/feedBack/feedback.xml" />
 		<mapper resource="mapper/qrcode/prebind.xml" />
+		<mapper resource="mapper/address/deviceaddress.xml" />
 	</mappers>
 </configuration>
