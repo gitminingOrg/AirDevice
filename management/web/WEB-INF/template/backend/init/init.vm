@@ -7,4 +7,5 @@
 <link rel="stylesheet" href="${path.concat('/material/assets/themes/minified/agileui/color-schemes/elements/default.min.css')}">
 <link rel="stylesheet" href="${path.concat('/material/assets/themes/minified/agileui/responsive.min.css')}">
 <link rel="stylesheet" href="${path.concat('/material/assets/themes/minified/agileui/animations.min.css')}">
+<link rel="stylesheet" href="${path.concat('/material/css/backend/custom.css')}"/>
 <script type="text/javascript" src="${path.concat('/material/assets/js/minified/aui-production.min.js')}"></script>

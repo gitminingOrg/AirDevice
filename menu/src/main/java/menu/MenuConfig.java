@@ -12,9 +12,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 public class MenuConfig {
-	private final static String wechat_appid = "wxe8ca0dc55e5f81fd";
-	private final static String wechat_secret = "f059ce8503d18423654d6c1d7a8129e2";
-
+	//private final static String wechat_appid = "wxe8ca0dc55e5f81fd";
+	private final static String wechat_appid = "wx7ba6d2f313ff5d53";
+	//private final static String wechat_secret = "f059ce8503d18423654d6c1d7a8129e2";
+	private final static String wechat_secret = "2d41411d6ebe6f7badf8d969564c9840";
+	
 	/**
 	 * 调用此方法需传入appid和secret，现默认不使用该方法获取
 	 *
@@ -216,7 +218,7 @@ public class MenuConfig {
 	    }
 	
     public static void main(String[] args) {
-        String token = "PRLzGA8Dq8GxaMJjzcEYGQR3s6NA2oonkKgONAeTdaJbkKz9gKN7mMMWMFUEQLBroy0k6YlmgwBfQq34POQ0qixWWxBVRyCEeZLGIXZ_E7IwQnDPrNht5yn51i9CGzLqHVEdAJANBK";
+        String token = "";
         String deleteMessage = MenuConfig.deleteMenu(token);
         System.out.println("删除操作: " + deleteMessage);
         String createMessage = MenuConfig.createMenu(token);

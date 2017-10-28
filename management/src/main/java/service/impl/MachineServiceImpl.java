@@ -3,6 +3,7 @@ package service.impl;
 import dao.MachineDao;
 import model.machine.IdleMachine;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,16 @@ public class MachineServiceImpl implements MachineService {
 	@Override
 	public ResultData createIdleMachine(IdleMachine machine) {
 		ResultData result = new ResultData();
-		ResultData response = machineDao.insertIdleMachine(machine);
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("blockFlag", false);
+		condition.put("uid", machine.getUid());
+		ResultData response = machineDao.queryIdleMachine(condition);
+		if(response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setResponseCode(ResponseCode.RESPONSE_OK);
+			result.setDescription("该设备已被录入，无需再次录入");
+			return result;
+		}
+		response = machineDao.insertIdleMachine(machine);
 		result.setResponseCode(response.getResponseCode());
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			result.setData(response.getData());
