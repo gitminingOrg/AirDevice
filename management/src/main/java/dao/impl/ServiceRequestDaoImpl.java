@@ -30,7 +30,7 @@ public class ServiceRequestDaoImpl extends BaseDao implements ServiceRequestDao{
         } catch (Exception e) {
             logger.error(e.getMessage());
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
-            return result;
+            result.setDescription(e.getMessage());
         }
         return result;
     }
@@ -46,7 +46,7 @@ public class ServiceRequestDaoImpl extends BaseDao implements ServiceRequestDao{
         } catch (Exception e) {
             logger.error(e.getMessage());
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
-            return result;
+            result.setDescription(e.getMessage());
         }
         return result;
     }
@@ -64,7 +64,7 @@ public class ServiceRequestDaoImpl extends BaseDao implements ServiceRequestDao{
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 result.setResponseCode(ResponseCode.RESPONSE_ERROR);
-                return result;
+                result.setDescription(e.getMessage());
             }
             return result;
         }

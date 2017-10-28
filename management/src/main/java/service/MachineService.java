@@ -12,4 +12,6 @@ public interface MachineService {
     ResultData createIdleMachine(IdleMachine machine);
     
     ResultData fetchIdleMachine(Map<String, Object> condition);
+
+    ResultData updateIdleMachine(Map<String, Object> condition);
 }

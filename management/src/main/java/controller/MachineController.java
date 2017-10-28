@@ -3,6 +3,7 @@ package controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,25 @@ public class MachineController {
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("blockFlag", false);
 		ResultData response = machineService.fetchIdleMachine(condition);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription("服务器异常，请稍后尝试");
+			return result;
+		}
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setResponseCode(ResponseCode.RESPONSE_OK);
+			result.setData(response.getData());
+			return result;
+		}
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/idle/update")
+	public ResultData idleUpdate() {
+		ResultData result = new ResultData();
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("blockFlag", false);
+		ResultData response = machineService.updateIdleMachine(condition);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
 			result.setDescription("服务器异常，请稍后尝试");

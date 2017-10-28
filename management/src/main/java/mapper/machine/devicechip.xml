@@ -14,4 +14,24 @@
         select * from device_chip WHERE chip_id = #{uid};
     </select>
 
+    <select id="query" parameterType="java.util.Map" resultMap="DeviceChipVO">
+        select id, device_id, chip_id, status, update_time
+        FROM device_chip
+        WHERE 1 = 1
+        <if test="id != null">
+            AND id = #{id}
+        </if>
+        <if test="device_id != null">
+            AND device_id = #{id}
+        </if>
+        <if test="chip_id != null">
+            AND chip_id = #{chip_id}
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        <if test="search != null">
+            AND device_id LIKE #{search}
+        </if>
+    </select>
 </mapper>

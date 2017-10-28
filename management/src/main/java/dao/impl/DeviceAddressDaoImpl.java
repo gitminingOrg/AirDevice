@@ -28,7 +28,7 @@ public class DeviceAddressDaoImpl extends BaseDao implements DeviceAddressDao {
         } catch (Exception e) {
             logger.error(e.getMessage());
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
-            return result;
+            result.setDescription(e.getMessage());
         }
         return result;
     }

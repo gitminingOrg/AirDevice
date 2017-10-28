@@ -49,4 +49,9 @@ public class MachineServiceImpl implements MachineService {
 		}
 		return result;
 	}
+
+	@Override
+	public ResultData updateIdleMachine(Map<String, Object> condition) {
+		return machineDao.updateIdleMachine(condition);
+	}
 }

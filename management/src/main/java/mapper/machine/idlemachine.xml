@@ -21,4 +21,10 @@
 		and block_flag = #{blockFlag}
 	</if>
 </select>
+
+<update id="update">
+	UPDATE idle_machine
+	SET block_flag = 1
+	WHERE im_id = #{im_id}
+</update>
 </mapper>
