@@ -4,6 +4,7 @@ import dao.ServiceRequestDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.ServiceRequestService;
+import utils.ResultData;
 import vo.servicerequest.ServiceRequestVo;
 
 import java.util.List;
@@ -16,17 +17,17 @@ public class ServiceRequestServiceImpl implements ServiceRequestService{
     private ServiceRequestDao serviceRequestDao;
 
     @Override
-    public List<ServiceRequestVo> getFeedback() {
+    public ResultData getFeedback() {
         return serviceRequestDao.getFeedBack();
     }
 
     @Override
-    public List<ServiceRequestVo> getFeedBack(int status) {
+    public ResultData getFeedBack(int status) {
         return serviceRequestDao.getFeedBack(status);
     }
 
     @Override
-    public int updateFeedbackStatus(int id, int status) {
+    public ResultData updateFeedbackStatus(int id, int status) {
         return serviceRequestDao.updateFeedbackStatus(id, status);
     }
 }

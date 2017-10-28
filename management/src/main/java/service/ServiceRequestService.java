@@ -1,15 +1,16 @@
 package service;
 
 
+import utils.ResultData;
 import vo.servicerequest.ServiceRequestVo;
 
 import java.util.List;
 
 public interface ServiceRequestService {
 
-    public List<ServiceRequestVo> getFeedback();
+    ResultData getFeedback();
 
-    public List<ServiceRequestVo> getFeedBack(int status);
+    ResultData getFeedBack(int status);
 
-    public int updateFeedbackStatus(int id, int status);
+    ResultData updateFeedbackStatus(int id, int status);
 }

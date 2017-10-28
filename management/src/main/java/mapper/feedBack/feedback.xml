@@ -21,6 +21,24 @@
         SELECT * from support_form where status = #{status};
     </select>
 
+    <select id="query" resultMap="FeedBack">
+        SELECT id, name, phone, problem, status, submit_time
+        FROM support_form
+        WHERE 1 = 1
+        <if test= "id != null">
+            id = #{id}
+        </if>
+        <if test= "name != null">
+            name = #{name}
+        </if>
+        <if test= "phone != null">
+            phone = #{phone}
+        </if>
+        <if test= "status != null">
+            status = #{status}
+        </if>
+    </select>
+
     <!--更新用户反馈的状态-->
     <update id="updateFeedBackStatus" parameterType="hashmap">
         UPDATE support_form SET status = #{status} WHERE id = #{id};
