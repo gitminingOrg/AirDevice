@@ -7,10 +7,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import service.MachineService;
 import utils.ResponseCode;
 import utils.ResultData;
@@ -52,10 +49,11 @@ public class MachineController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/idle/update")
-	public ResultData idleUpdate() {
+	public ResultData idleUpdate(@RequestParam String im_id) {
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("blockFlag", false);
+		condition.put("im_id", im_id);
 		ResultData response = machineService.updateIdleMachine(condition);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
