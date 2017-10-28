@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.machine.idle">
+
+<resultMap id="idleMachineVo" type="vo.machine.IdleMachineVo">
+	<result property="imId" column="im_id"/>
+	<result property="uid" column="uid"/>
+	<result property="blockFlag" column="block_flag"/>
+</resultMap>
+
+<insert id="insert" parameterType="model.machine.IdleMachine" useGeneratedKeys="false">
+	insert into airdevice.idle_machine(im_id, uid, block_flag, create_time)
+	values(#{imId}, #{uid}, #{blockFlag}, #{createAt})
+</insert>
+
+<select id="query" parameterType="java.util.Map" resultMap="idleMachineVo">
+	select im_id, uid, block_flag
+	from airdevice.idle_machine
+	where 1 = 1
+	<if test="blockFlag != null">
+		and block_flag = #{blockFlag}
+	</if>
+</select>
+</mapper>

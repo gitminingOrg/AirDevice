@@ -7,3 +7,10 @@ CREATE TABLE `pre_binding` (
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`bind_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `airdevice`.`idle_machine` (
+  `im_id` VARCHAR(20) NOT NULL,
+  `uid` VARCHAR(45) NOT NULL,
+  `block_flag` TINYINT(1) NOT NULL,
+  `create_time` DATETIME NOT NULL,
+  PRIMARY KEY (`im_id`));
