@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import service.DeviceAddressService;
+import utils.ResponseCode;
 import utils.ResultData;
 
 @RestController
@@ -17,7 +18,18 @@ public class DeviceAddressController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/all")
     public ResultData getDeviceAddress() {
-        ResultData resultData = deviceAddressService.getDeviceAddress();
-        return resultData;
+        ResultData result = new ResultData();
+        ResultData response = deviceAddressService.getDeviceAddress();
+        if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("服务器异常，请稍后尝试");
+            return result;
+        }
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_OK);
+            result.setData(response.getData());
+            return result;
+        }
+        return result;
     }
 }
