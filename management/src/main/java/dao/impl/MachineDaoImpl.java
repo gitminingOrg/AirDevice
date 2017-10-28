@@ -38,7 +38,7 @@ public class MachineDaoImpl extends BaseDao implements MachineDao {
 		ResultData result = new ResultData();
 		machine.setImId(IDGenerator.generate("IME"));
 		try {
-			sqlSession.insert("management.machine.idle.insert");
+			sqlSession.insert("management.machine.idle.insert", machine);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
