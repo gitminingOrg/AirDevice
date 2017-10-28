@@ -2,9 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="management.qrcode.prebind">
 
-<insert id = "insert" parameterType="model.qrcode.PreBindCodeUID" useGeneratedKeys="false">
-	insert into pre_binding(bind_id, uid, code_id, block_flag, create_time)
-	values(#{bindId}, #{uid}, #{codeId}, #{blockFlag}, #{createAt})
-</insert>
+	<resultMap id="PreBindVO" type="vo.qrcode.PreBindVO">
+		<result property="bindId" column="bind_id" />
+		<result property="uid" column="uid" />
+		<result property="codeId" column="code_id" />
+		<result property="blockFlag" column="block_flag" />
+		<result property="createAt" column="create_time" />
+	</resultMap>
+
+	<insert id = "insert" parameterType="model.qrcode.PreBindCodeUID" useGeneratedKeys="false">
+		insert into pre_binding(bind_id, uid, code_id, block_flag, create_time)
+		values(#{bindId}, #{uid}, #{codeId}, #{blockFlag}, #{createAt})
+	</insert>
+
+	<select id="selectByQrcode" parameterType="string" resultMap="PreBindVO">
+		SELECT pre_binding.bind_id, pre_binding.uid, pre_binding.code_id,
+			   pre_binding.block_flag, pre_binding.create_time
+		FROM pre_binding, qrcode
+		WHERE pre_binding.code_id = qrcode.code_value
+		AND qrcode.code_occupied = 0 AND qrcode.code_delivered = 0
+		AND pre_binding.code_id = #{qrcode}
+	</select>
+	
+	<select id="selectByUid" parameterType="string" resultMap="PreBindVO">
+		select * from pre_binding WHERE uid = #{uid};
+	</select>
 
 </mapper>

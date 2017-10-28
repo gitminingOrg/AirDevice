@@ -225,4 +225,19 @@ public class QRCodeServiceImpl implements QRCodeService {
 		}
 		return result;
 	}
+
+	@Override
+	public ResultData fetchPreBindByQrcode(String qrcode) {
+		return qRCodePreBindDao.selectPreBindByQrcode(qrcode);
+	}
+
+	@Override
+	public ResultData fetchPreBindByUid(String uid) {
+		return qRCodePreBindDao.selectPreBindByUid(uid);
+	}
+
+	@Override
+	public ResultData fetchDeviceChip(String uid) {
+		return qRCodePreBindDao.selectChipDeviceByUid(uid);
+	}
 }

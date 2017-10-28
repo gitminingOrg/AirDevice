@@ -1,5 +1,6 @@
 package dao.impl;
 
+import model.device.DeviceChip;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -10,12 +11,16 @@ import model.qrcode.PreBindCodeUID;
 import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
+import vo.machine.DeviceChipVO;
+import vo.qrcode.PreBindVO;
+
+import java.util.List;
 
 @Repository
 public class QRCodePreBindDaoImpl extends BaseDao implements QRCodePreBindDao{
 	private Logger logger = LoggerFactory.getLogger(QRCodeDaoImpl.class);
 	
-	private Object lock = new Object();
+	private final Object lock = new Object();
 	
 	@Override
 	public ResultData insert(PreBindCodeUID pb) {
@@ -34,4 +39,52 @@ public class QRCodePreBindDaoImpl extends BaseDao implements QRCodePreBindDao{
 		return result;
 	}
 
+	// 判断二维码是否已经被绑定
+	@Override
+	public ResultData selectPreBindByQrcode(String qrcode) {
+		ResultData result = new ResultData();
+		try {
+			List<PreBindVO> preBindCodeUID =
+					sqlSession.selectList("management.qrcode.prebind.selectByQrcode", qrcode);
+			result.setData(preBindCodeUID);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+
+		return result;
+	}
+
+	// 使用uid查询预绑定表单的相关记录
+	@Override
+	public ResultData selectPreBindByUid(String uid) {
+		ResultData result = new ResultData();
+		try {
+			List<PreBindVO> preBindCodeUID =
+					sqlSession.selectList("management.qrcode.prebind.selectByUid", uid);
+			result.setData(preBindCodeUID);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	// 使用uid查询已经绑定的相关记录
+	@Override
+	public ResultData selectChipDeviceByUid(String uid) {
+		ResultData result = new ResultData();
+		try {
+			List<DeviceChipVO> deviceChipVOS =
+					sqlSession.selectList("management.machine.device_chip.selectByUid", uid);
+			result.setData(deviceChipVOS);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
 }

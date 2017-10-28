@@ -50,4 +50,8 @@
 		deliever_time = #{deliverAt}
 		where code_id = #{codeId}
 	</update>
+
+	<!--<select id="queryByBatchNo" parameterType="java.util.Map" resultMap="qRCodeVo">-->
+		<!--SELECT-->
+	<!--</select>-->
 </mapper>

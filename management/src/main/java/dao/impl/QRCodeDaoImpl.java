@@ -143,4 +143,6 @@ public class QRCodeDaoImpl extends BaseDao implements QRCodeDao {
 		}
 		return result;
 	}
+
+
 }

@@ -19,4 +19,10 @@ public interface QRCodeService {
 	ResultData deliver(QRCode code);
 	
 	ResultData prebind(PreBindCodeUID pb);
+
+	ResultData fetchPreBindByQrcode(String qrcode);
+
+	ResultData fetchPreBindByUid(String uid);
+
+	ResultData fetchDeviceChip(String uid);
 }
