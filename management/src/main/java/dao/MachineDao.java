@@ -7,9 +7,7 @@ import utils.ResultData;
 
 public interface MachineDao {
 
-	public int deleteDevice(String deviceId);
-
-	public int releaseQrCode(String QrCode);
+	ResultData deleteDevice(String deviceId);
 
 	ResultData insertIdleMachine(IdleMachine machine);
 

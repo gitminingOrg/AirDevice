@@ -20,13 +20,17 @@ public class MachineDaoImpl extends BaseDao implements MachineDao {
 	private Logger logger = LoggerFactory.getLogger(MachineDaoImpl.class);
 
 	@Override
-	public int deleteDevice(String deviceId) {
-		return sqlSession.delete("management.machine.deleteDevice", deviceId);
-	}
-
-	@Override
-	public int releaseQrCode(String QrCode) {
-		return sqlSession.update("management.machine.releaseQrcode", QrCode);
+	public ResultData deleteDevice(String deviceId) {
+		ResultData result = new ResultData();
+		try {
+			sqlSession.delete("management.machine.deleteDevice", deviceId);
+			sqlSession.delete("management.machine.releaseQrcode", deviceId);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			return result;
+		}
+		return result;
 	}
 
 	@Override

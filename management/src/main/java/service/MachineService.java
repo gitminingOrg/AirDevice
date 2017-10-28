@@ -7,7 +7,7 @@ import utils.ResultData;
 
 public interface MachineService {
 
-    public int deleteDevice(String deviceId);
+    ResultData deleteDevice(String deviceId);
     
     ResultData createIdleMachine(IdleMachine machine);
     

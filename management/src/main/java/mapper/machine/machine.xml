@@ -16,6 +16,6 @@
 
     <!--更新二维码的状态-->
     <update id="releaseQrcode" parameterType="String">
-        update airdevice.qrcode set code_occupied = 0 where code_value = #{qrCode};
+        update airdevice.qrcode set code_occupied = 0 where code_value = #{device_id};
     </update>
 </mapper>
