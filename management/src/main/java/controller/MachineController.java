@@ -25,10 +25,8 @@ public class MachineController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/device/delete/{deviceId}")
 	public ResultData delete(@PathVariable String deviceId) {
-		int result = machineService.deleteDevice(deviceId);
-		ResultData resultData = new ResultData();
-		resultData.setResponseCode(ResponseCode.RESPONSE_OK);
-		resultData.setData(result);
+
+		ResultData resultData = machineService.deleteDevice(deviceId);
 		resultData.setDescription("删除设备：" + deviceId);
 		logger.info("delete device using deviceId: " + deviceId);
 		return resultData;
