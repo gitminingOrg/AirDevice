@@ -1,11 +1,8 @@
 package service;
 
-
-import model.address.DeviceAddress;
-
-import java.util.List;
+import utils.ResultData;
 
 public interface DeviceAddressService {
 
-    public List<DeviceAddress> getDeviceAddress();
+    ResultData getDeviceAddress();
 }

@@ -19,9 +19,7 @@ public class DeviceAddressController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/all")
     public ResultData getDeviceAddress() {
-        ResultData resultData = new ResultData();
-        resultData.setResponseCode(ResponseCode.RESPONSE_OK);
-        resultData.setData(deviceAddressService.getDeviceAddress());
+        ResultData resultData = deviceAddressService.getDeviceAddress();
         return resultData;
     }
 }

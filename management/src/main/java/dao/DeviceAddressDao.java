@@ -2,10 +2,11 @@ package dao;
 
 
 import model.address.DeviceAddress;
+import utils.ResultData;
 
 import java.util.List;
 
 public interface DeviceAddressDao {
 
-    public List<DeviceAddress> getDeviceAddress();
+    ResultData getDeviceAddress();
 }

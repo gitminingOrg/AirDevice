@@ -5,6 +5,7 @@ import model.address.DeviceAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import service.DeviceAddressService;
+import utils.ResultData;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class DeviceAddressServiceImpl implements DeviceAddressService {
     private DeviceAddressDao addressDao;
 
     @Override
-    public List<DeviceAddress> getDeviceAddress() {
+    public ResultData getDeviceAddress() {
         return addressDao.getDeviceAddress();
     }
 }
