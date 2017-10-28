@@ -1,13 +1,14 @@
 package dao;
 
 
+import utils.ResultData;
 import vo.servicerequest.ServiceRequestVo;
 
 import java.util.List;
 
 public interface ServiceRequestDao {
 
-    public List<ServiceRequestVo> getFeedBack();
-    public List<ServiceRequestVo> getFeedBack(int status);
-    public int updateFeedbackStatus(int id, int status);
+    ResultData getFeedBack();
+    ResultData getFeedBack(int status);
+    ResultData updateFeedbackStatus(int id, int status);
 }

@@ -46,6 +46,8 @@ public class QRCodePreBindDaoImpl extends BaseDao implements QRCodePreBindDao{
 		try {
 			List<PreBindVO> preBindCodeUID =
 					sqlSession.selectList("management.qrcode.prebind.selectByQrcode", qrcode);
+			if (preBindCodeUID.size() == 0)
+				result.setResponseCode(ResponseCode.RESPONSE_NULL);
 			result.setData(preBindCodeUID);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -63,6 +65,8 @@ public class QRCodePreBindDaoImpl extends BaseDao implements QRCodePreBindDao{
 		try {
 			List<PreBindVO> preBindCodeUID =
 					sqlSession.selectList("management.qrcode.prebind.selectByUid", uid);
+			if (preBindCodeUID.size() == 0)
+				result.setResponseCode(ResponseCode.RESPONSE_NULL);
 			result.setData(preBindCodeUID);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
@@ -79,6 +83,8 @@ public class QRCodePreBindDaoImpl extends BaseDao implements QRCodePreBindDao{
 		try {
 			List<DeviceChipVO> deviceChipVOS =
 					sqlSession.selectList("management.machine.device_chip.selectByUid", uid);
+			if (deviceChipVOS.size() == 0)
+				result.setResponseCode(ResponseCode.RESPONSE_NULL);
 			result.setData(deviceChipVOS);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
