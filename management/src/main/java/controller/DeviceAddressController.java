@@ -1,13 +1,11 @@
 package controller;
 
 
-import model.address.DeviceAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import service.DeviceAddressService;
-import utils.ResponseCode;
 import utils.ResultData;
 
 @RestController

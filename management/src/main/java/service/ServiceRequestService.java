@@ -2,9 +2,6 @@ package service;
 
 
 import utils.ResultData;
-import vo.servicerequest.ServiceRequestVo;
-
-import java.util.List;
 
 public interface ServiceRequestService {
 
