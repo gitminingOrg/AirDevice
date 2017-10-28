@@ -22,13 +22,35 @@ public class ServiceRequestController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/all")
 	public ResultData list() {
-		ResultData result = serviceRequestService.getFeedback();
+		ResultData result = new ResultData();
+		ResultData response = serviceRequestService.getFeedback();
+		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription("服务器异常，请稍后尝试");
+			return result;
+		}
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setResponseCode(ResponseCode.RESPONSE_OK);
+			result.setData(response.getData());
+			return result;
+		}
 		return result;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/feedback")
 	public ResultData list(@RequestParam(name = "status") int status) {
-		ResultData result = serviceRequestService.getFeedBack(status);
+		ResultData result = new ResultData();
+		ResultData response = serviceRequestService.getFeedBack(status);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription("服务器异常，请稍后尝试");
+			return result;
+		}
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setResponseCode(ResponseCode.RESPONSE_OK);
+			result.setData(response.getData());
+			return result;
+		}
 		return result;
 	}
 
