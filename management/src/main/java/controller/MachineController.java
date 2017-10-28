@@ -27,7 +27,6 @@ public class MachineController {
 	public ResultData delete(@PathVariable String deviceId) {
 
 		ResultData resultData = machineService.deleteDevice(deviceId);
-		resultData.setDescription("删除设备：" + deviceId);
 		logger.info("delete device using deviceId: " + deviceId);
 		return resultData;
 	}
