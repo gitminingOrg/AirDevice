@@ -91,11 +91,11 @@ public class MachineController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/idle/update")
-	public ResultData idleUpdate(@RequestParam String im_id) {
+	public ResultData idleUpdate(@RequestParam String imId) {
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("blockFlag", false);
-		condition.put("im_id", im_id);
+		condition.put("im_id", imId);
 		ResultData response = machineService.updateIdleMachine(condition);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);

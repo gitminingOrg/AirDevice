@@ -25,7 +25,7 @@
 	</select>
 	
 	<select id="selectByUid" parameterType="string" resultMap="PreBindVO">
-		select * from pre_binding WHERE uid = #{uid};
+		select * from pre_binding WHERE uid = #{uid}
 	</select>
 
 </mapper>

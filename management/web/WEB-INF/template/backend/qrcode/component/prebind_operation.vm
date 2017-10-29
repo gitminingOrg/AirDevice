@@ -38,71 +38,95 @@
             <h4>待绑定主板列表</h4>
             <div class="row" id="idle-machine-list"></div>
             
-            <div id="range-deliver-form">
-                <div class="col-md-10 center-margin">
-                    <div class="form-row">
-                        <div class="form-input">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label>主板编号:</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input placeholder="请输入主板编号" id="uid" type="text" autocomplete="off">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-input">
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <label>二维码编号:</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <input placeholder="请输入二维码编号" id="codeid" type="text" autocomplete="off">
-                                </div>
-                                <div class="col-md-2">
-                                    <button class='btn large bg-blue' id="confirm-prebind-btn">
-                                        <span clas='button-content'>预绑定</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div id="prebind-form" title="预绑定" style="display:none;">
+            	<div id="range-deliver-form">
+                	<div class="col-md-10 center-margin">
+	                    <div class="form-row">
+	                        <div class="form-input">
+	                            <div class="row">
+	                                <div class="col-md-2">
+	                                    <label>主板编号:</label>
+	                                </div>
+	                                <div class="col-md-3">
+	                                    <input placeholder="请输入主板编号" id="uid" type="text" autocomplete="off">
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div class="form-row">
+		                    <div class="form-input">
+		                        <div class="row">
+		                            <div class="col-md-2">
+		                                <label>二维码编号:</label>
+		                            </div>
+		                            <div class="col-md-3">
+		                                <input placeholder="请输入二维码编号" id="codeid" type="text" autocomplete="off">
+		                            </div>
+		                            <div class="col-md-2">
+		                                <button class='btn large bg-blue' id="confirm-prebind-btn">
+		                                    <span clas='button-content'>预绑定</span>
+		                                </button>
+		                            </div>
+		                        </div>
+		                    </div>
+	                    </div>
+	                </div>
                 </div>
             </div>
-            <hr/>
         </div>
     </div>
 </div>
 <script>
 	$(document).ready(function() {
-		var idle_machine_url = "${path.concat('/machine/idle')}";
-		$.get(idle_machine_url, function(result) {
-			if(result.responseCode == "RESPONSE_OK") {
-				var data = result.data;
-				for(var i = 0; i < data.length; i ++) {
-					var uid = data[i].uid;
-					var col = $("<div class='col-md-4'></div>");
-					var dashboard = $("<div class='dashboard-panel content-box remove-border bg-blue-alt'></div>");
-            		var content_box = $("<div class='content-box-wrapper'></div>");
-            		var header = $("<div class='tile-header'></div>").text("主板: " + data[i].uid);
-            		content_box.append(header);
-            		var wrapper = $("<div class='tile-content-wrapper'></div>").attr("id", uid + "_time");
-            		var footer = $("<div></div>");
-            		var ignore = $("<button class='btn medium bg-red operate-btn'>取消</button>");
-            		var bind = $("<button class='btn medium bg-azure operate-btn'>绑定</button>")
-            		footer.append(ignore);
-            		footer.append(bind);
-            		content_box.append(wrapper);
-            		content_box.append(footer);
-            		dashboard.append(content_box);
-            		col.append(dashboard);
-            		$("#idle-machine-list").append(col);
-            		detailofuid(uid);
+		function confirm(imId) {
+			var confirm_url = "${path.concat('/machine/idle/update')}";
+			$.post(confirm_url, {imId: imId}, function(result) {
+				$("#idle-machine-list").empty();
+					refresh();
+			})
+		}
+
+		refresh();
+		
+		function refresh() {
+			var idle_machine_url = "${path.concat('/machine/idle')}";
+			$.get(idle_machine_url, function(result) {
+				if(result.responseCode == "RESPONSE_OK") {
+					var data = result.data;
+					for(var i = 0; i < data.length; i ++) {
+						var uid = data[i].uid;
+						var col = $("<div class='col-md-4'></div>");
+						var dashboard = $("<div class='dashboard-panel content-box remove-border bg-blue-alt'></div>");
+	            		var content_box = $("<div class='content-box-wrapper'></div>");
+	            		var header = $("<div class='tile-header'></div>").text("主板: " + data[i].uid);
+	            		content_box.append(header);
+	            		var wrapper = $("<div class='tile-content-wrapper'></div>").attr("id", uid + "_time");
+	            		var footer = $("<div></div>");
+	            		var ignore = $("<a class='btn medium bg-red operate-btn operate-btn-confirm' id='" + data[i].imId + "'>取消</a>");
+	            		var bind = $("<a class='btn medium bg-azure operate-btn operate-btn-prebind' href='javascript:;' title='预绑定' data-value='" + data[i].uid + "'>预绑</a>")
+	            		footer.append(ignore);
+	            		footer.append(bind);
+	            		content_box.append(wrapper);
+	            		content_box.append(footer);
+	            		dashboard.append(content_box);
+	            		col.append(dashboard);
+	            		$("#idle-machine-list").append(col);
+	            		detailofuid(uid);
+					}
+					$(".operate-btn-confirm").on('click', function() {
+   						var id = $(this).attr("id");
+   						confirm(id);
+   					});
+   					$(".operate-btn-prebind").on('click', function() {
+   						var value = $(this).attr("data-value");
+   						$("#idle-machine-list").hide();
+   						$("#uid").val(value);
+   						$("#prebind-form").show();
+   						
+   					})
 				}
-			}
-		})
+			})
+		}
 		
 		function detailofuid(uid) {
 			var detail_url = "${path.concat('/machine/')}" + uid + "/detail";
@@ -126,7 +150,7 @@
 	   	}
 	});
 
-	$("#confirm-prebind-btn").on('click', function(result) {
+	$("#confirm-prebind-btn").on('click', function() {
     	var uid = $("#uid").val();
     	var codeid = $("#codeid").val();
    		var url = "${path.concat('/qrcode/prebind')}"

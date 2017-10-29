@@ -29,7 +29,6 @@ public class MachineServiceImpl implements MachineService {
 	public ResultData createIdleMachine(IdleMachine machine) {
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
-		condition.put("blockFlag", false);
 		condition.put("uid", machine.getUid());
 		ResultData response = machineDao.queryIdleMachine(condition);
 		if(response.getResponseCode() == ResponseCode.RESPONSE_OK) {
