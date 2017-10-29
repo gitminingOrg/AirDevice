@@ -28,6 +28,7 @@ import model.qrcode.QRCode;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
 import service.GoodsService;
+import service.MachineService;
 import service.QRCodeService;
 import utils.IDGenerator;
 import utils.PathUtil;
@@ -35,6 +36,7 @@ import utils.ResponseCode;
 import utils.ResultData;
 import utils.ZipUtil;
 import vo.goods.GoodsModelVo;
+import vo.machine.IdleMachineVo;
 import vo.qrcode.QRCodeVo;
 
 @RestController
@@ -47,6 +49,9 @@ public class QRCodeController {
 
 	@Autowired
 	private GoodsService goodsService;
+
+	@Autowired
+	private MachineService machineService;
 
 	@RequiresAuthentication
 	@RequestMapping(method = RequestMethod.GET, value = "/create")
@@ -329,15 +334,25 @@ public class QRCodeController {
 		view.setViewName("/backend/qrcode/prebind");
 		return view;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/prebind")
 	public ResultData prebind(String uid, String codeId) {
 		ResultData result = new ResultData();
 		PreBindCodeUID pb = new PreBindCodeUID(uid, codeId);
 		ResultData response = qRCodeService.prebind(pb);
 		result.setResponseCode(response.getResponseCode());
-		if (result.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+		if (result.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			Map<String, Object> condition = new HashMap<>();
+			condition.put("uid", uid);
+			response = machineService.fetchIdleMachine(condition);
+			if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+				IdleMachineVo vo = ((List<IdleMachineVo>) response.getData()).get(0);
+				condition.clear();
+				condition.put("im_id", vo.getImId());
+				response = machineService.updateIdleMachine(condition);
+			}
 			result.setData(response.getData());
+
 		} else if (result.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
 			result.setDescription(response.getDescription());
 		}

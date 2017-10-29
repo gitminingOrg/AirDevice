@@ -103,7 +103,7 @@
 	            		var wrapper = $("<div class='tile-content-wrapper'></div>").attr("id", uid + "_time");
 	            		var footer = $("<div></div>");
 	            		var ignore = $("<a class='btn medium bg-red operate-btn operate-btn-confirm' id='" + data[i].imId + "'>取消</a>");
-	            		var bind = $("<a class='btn medium bg-azure operate-btn operate-btn-prebind' href='javascript:;' title='预绑定' data-value='" + data[i].uid + "'>预绑</a>")
+	            		var bind = $("<a class='btn medium bg-azure operate-btn operate-btn-prebind' href='javascript:;' title='预绑定' data-value='" + data[i].uid + "' data-id='" + data[i].imId + "'>预绑</a>")
 	            		footer.append(ignore);
 	            		footer.append(bind);
 	            		content_box.append(wrapper);
@@ -122,7 +122,6 @@
    						$("#idle-machine-list").hide();
    						$("#uid").val(value);
    						$("#prebind-form").show();
-   						
    					})
 				}
 			})
@@ -156,9 +155,7 @@
    		var url = "${path.concat('/qrcode/prebind')}"
    		$.post(url, {uid: uid, codeId: codeid}, function(result) {
     		if(result.responseCode == "RESPONSE_OK") {
-    			alert("成功");
-    			$("#uid").val("");
-    			$("#codeid").val("");
+    			window.location.href = "${path.concat('/qrcode/prebind')}";
    			}
    		})
    	})

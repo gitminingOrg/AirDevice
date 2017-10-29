@@ -14,3 +14,14 @@ CREATE TABLE `airdevice`.`idle_machine` (
   `block_flag` TINYINT(1) NOT NULL,
   `create_time` DATETIME NOT NULL,
   PRIMARY KEY (`im_id`));
+
+CREATE SCHEMA `air_operation` DEFAULT CHARACTER SET utf8 ;
+
+CREATE TABLE `air_operation`.`user_log` (
+  `log_id` VARCHAR(20) NOT NULL,
+  `user_id` VARCHAR(20) NOT NULL,
+  `target` VARCHAR(45) NOT NULL,
+  `message` LONGTEXT NOT NULL,
+  `block_flag` TINYINT(1) NOT NULL DEFAULT 0,
+  `create_time` DATETIME NOT NULL,
+  PRIMARY KEY (`log_id`));
