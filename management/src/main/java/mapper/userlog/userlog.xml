@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.userlog">
+    <resultMap id="userlogVO" type="vo.userlog.UserLogVO">
+        <result property="logId" column="log_id" />
+        <result property="userId" column="user_id" />
+        <result property="target" column="target" />
+        <result property="message" column="message"/>
+        <result property="blockFlog" column="block_flag"/>
+        <result property="createTime" column="create_time"/>
+        <association property="roles" column="userId = manager_id" select="rolequery" />
+    </resultMap>
+
+    <insert id="insert" parameterType="model.userlog.UserLog" useGeneratedKeys="false">
+        insert into air_operation.user_log(log_id, user_id, target, message,
+         block_flag, create_time)
+        values(#{logId}, #{userId}, #{target}, #{message}, #{blockFlag}, #{createTime})
+    </insert>
+
+    <select id="query" parameterType="java.util.Map" resultMap="UserlogVO">
+        select log_id, user_id, target, message, block_flag, create_time
+        from air_operation.user_log
+        where 1 = 1
+        <if test="log_id != null">
+            and log_id = #{logId}
+        </if>
+        <if test="user_id != null">
+            and user_id = #{userId}
+        </if>
+        <if test="target != null">
+            and target = #{target}
+        </if>
+        <if test="message != null">
+            and message = #{message}
+        </if>
+        <if test="block_flag != null">
+            and block_flag = #{blockFlag}
+        </if>
+        <if test="create_time != null">
+            and create_time = #{createTime}
+        </if>
+    </select>
+</mapper>
