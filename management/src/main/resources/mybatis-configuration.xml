@@ -21,5 +21,6 @@
 		<mapper resource="mapper/qrcode/prebind.xml" />
 		<mapper resource="mapper/address/deviceaddress.xml" />
 		<mapper resource="mapper/machine/idlemachine.xml" />
+		<mapper resource="mapper/role/role.xml" />
 	</mappers>
 </configuration>

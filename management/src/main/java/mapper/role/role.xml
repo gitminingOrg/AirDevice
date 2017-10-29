@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.role">
+    <resultMap id="roleVO" type="vo.role.RoleVO">
+        <result property="roleId" column="role_id" />
+        <result property="roleName" column="role_name" />
+        <result property="roleDescription" column="role_description" />
+        <result property="blogFlag" column="blockFlag"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <select id="query" parameterType="java.util.Map" resultMap="roleVO">
+        SELECT role_id, role_name, role_description, block_flag, create_time
+        FROM role
+        WHERE 1 = 1
+        <if test="roleId != null">
+            AND role_id = #{roleId}
+        </if>
+        <if test="role_name != null">
+            AND role_name = #{roleName}
+        </if>
+        <if test="role_description != null">
+            AND role_descrition = #{roleDescrition}
+        </if>
+        <if test="block_flag != null">
+            AND block_flag = #{bockFlag}
+        </if>
+        <if test="create_time != null">
+            AND create_time = #{createTime}
+        </if>
+    </select>
+</mapper>
