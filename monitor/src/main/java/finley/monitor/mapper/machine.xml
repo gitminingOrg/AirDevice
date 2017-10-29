@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="monitor.machine">
+	<resultMap id="machineVo" type="finley.monitor.vo.MachineVo">
+		<result property="machineId" column="device_id"/>
+		<result property="chipId" column="chip_id"/>
+	</resultMap>
+	
+	<select id="query" parameterType="java.util.Map" resultMap="machineVo">
+		select device_id, chip_id
+		from device_chip
+		where status = 1
+		<if test="machineId != null">
+			and device_id = #{machineId}
+		</if>
+	</select>
+</mapper>

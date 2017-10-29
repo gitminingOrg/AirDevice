@@ -15,6 +15,7 @@
     <module>menu</module>
     <module>management</module>
     <module>monitor</module>
+    <module>measurement</module>
   </modules>
 
 
