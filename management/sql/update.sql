@@ -25,3 +25,29 @@ CREATE TABLE `air_operation`.`user_log` (
   `block_flag` TINYINT(1) NOT NULL DEFAULT 0,
   `create_time` DATETIME NOT NULL,
   PRIMARY KEY (`log_id`));
+
+##20171029
+CREATE SCHEMA `air_measure` DEFAULT CHARACTER SET utf8 ;
+
+CREATE TABLE `air_measure`.`machine` (
+  `machine_id` VARCHAR(50) NOT NULL,
+  `block_flag` TINYINT(1) NOT NULL,
+  `create_time` DATETIME NOT NULL,
+  PRIMARY KEY (`machine_id`));
+
+CREATE TABLE `air_measure`.`qrcode` (
+  `code_id` VARCHAR(20) NOT NULL,
+  `code_value` VARCHAR(45) NOT NULL,
+  `code_status` TINYINT(1) NOT NULL DEFAULT 0,
+  `block_flag` TINYINT(1) NOT NULL DEFAULT 0,
+  `create_time` DATETIME NOT NULL,
+  PRIMARY KEY (`code_id`));
+
+CREATE TABLE `air_measure`.`mq_bind` (
+  `bind_id` VARCHAR(20) NOT NULL,
+  `machine_id` VARCHAR(45) NOT NULL,
+  `code_value` VARCHAR(45) NOT NULL,
+  `bind_status` TINYINT(1) NOT NULL,
+  `block_flag` TINYINT(1) NOT NULL,
+  `create_time` DATETIME NOT NULL,
+  PRIMARY KEY (`bind_id`));
