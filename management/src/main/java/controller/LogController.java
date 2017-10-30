@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.util.StringUtils;
 
 import service.UserLogService;
 import utils.ResponseCode;
@@ -29,6 +28,7 @@ public class LogController {
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("blockFlag", false);
+		//condition.put("userId",);
 		ResultData response = userLogService.fetch(condition);
 		result.setResponseCode(response.getResponseCode());
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK){

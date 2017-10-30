@@ -36,4 +36,17 @@ public class UserLogServiceImpl implements UserLogService {
         return result;
   }
 
+    @Override
+    public ResultData createUserLog(UserLog userLog) {
+        ResultData resultData = new ResultData();
+        ResultData response = userLogDao.insert(userLog);
+        resultData.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
+            resultData.setData(response.getData());
+        }else {
+            resultData.setDescription(response.getDescription());
+        }
+        return resultData;
+    }
+
 }

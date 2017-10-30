@@ -12,13 +12,14 @@ import java.util.List;
 import java.util.Map;
 import model.userlog.UserLog;
 import vo.userlog.UserLogVO;
+
 /**
  * Created by hushe on 2017/10/29.
  */
 @Repository
 public class UserLogDaoImpl extends BaseDao implements UserLogDao {
     private Logger logger = LoggerFactory.getLogger(UserLogDaoImpl.class);
-
+    private Object lock = new Object();
 
     @Override
     public ResultData query(Map<String, Object> condition) {
@@ -41,14 +42,16 @@ public class UserLogDaoImpl extends BaseDao implements UserLogDao {
     @Override
     public ResultData insert(UserLog userlog) {
         ResultData result = new ResultData();
-        try {
-            sqlSession.insert("management.userlog.insert", userlog);
-            result.setData(userlog);
-        }catch (Exception e){
-            logger.error(e.getMessage());
-            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
-            result.setDescription(e.getMessage());
-        }
+        synchronized (lock){
+            try {
+                sqlSession.insert("management.userlog.insert", userlog);
+                result.setData(userlog);
+            }catch (Exception e){
+                logger.error(e.getMessage());
+                result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+                result.setDescription(e.getMessage());
+            }
+            }
         return result;
     }
 }

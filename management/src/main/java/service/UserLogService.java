@@ -11,4 +11,5 @@ import java.util.Map;
  */
 public interface UserLogService {
     ResultData fetch(Map<String, Object> condition);
+    ResultData createUserLog(UserLog userLog);
 }
