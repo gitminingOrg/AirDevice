@@ -24,7 +24,6 @@ public class LogController {
 	@RequestMapping(method = RequestMethod.GET, value = "/list")
 	public ResultData log4user() {
 		ResultData result = new ResultData();
-
 		Map<String, Object> condition = new HashMap<>();
 		//Map.put()?
 
