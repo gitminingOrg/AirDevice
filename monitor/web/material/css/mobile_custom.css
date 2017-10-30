@@ -1,0 +1,192 @@
+body {
+    background-color: #000066;
+}
+
+.gmair-logo {
+    height: 50px;
+}
+
+div.seperate-div {
+    padding-left: 7px;
+    overflow: hidden;
+    border: 1px solid white;
+}
+
+div.no-border {
+    border: 0;
+}
+
+div.no-bottom-border {
+    border-bottom: 0;
+}
+
+li.my-datazone {
+    font-size: 30px;
+    color: white;
+    display: inline;
+}
+
+span.data-present {
+    font-size: 30px;
+    margin-left: 30px;
+    color: white;;
+}
+
+.thumbnail {
+    background-color: transparent;
+    border: 0;
+}
+
+.caption {
+    color: white;
+    padding: 0;
+    text-align: center;
+    font-size: 20px;
+}
+
+.circle {
+    background: url(../image/oval.png) no-repeat;
+    min-height: 70px;
+    background-size: 100%;
+}
+
+.my-thumbnail {
+    background: url(../image/oval.png) no-repeat;
+    min-height: 100px;
+    min-width: 100px;
+    background-size: 100%;
+    margin-bottom: 5px;
+}
+
+.cell {
+    text-align: center;
+}
+
+.label {
+    color: white;
+    font-size: 10px;
+}
+
+.pmvalue {
+    color: white;
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+.location-h1 {
+    float: right;
+    margin-right: 30px;
+    margin-top: 5px;
+    color: white;
+    font-size: 25px;
+}
+
+.my-row {
+    margin-left: 20%;
+    overflow: hidden;
+}
+
+.indoor {
+    margin-right: 10px;
+    padding-left: 0;
+}
+
+.outdoor {
+    margin-left: 10px;
+    padding-left: 0;
+}
+
+.digit {
+    margin-left: 10px;
+}
+
+.footer-div {
+    font-size: 20px;
+    color: grey;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.text-container {
+    padding-left: 20px;
+    overflow: hidden;
+    margin-top: 80px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.qrcode-container {
+    display: inline;
+    overflow: hidden;
+}
+
+.qrcode-img {
+    height: 190px;
+    width: 190px;
+}
+
+.trademark{
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+.qr-col {
+    padding-left: 0;
+}
+
+.middle-text{
+    font-size: 16px;
+    color: white;
+    padding: 0;
+    text-align: center;
+}
+
+.pm25-best, .aqi-best {
+    background-color: #00FF00;
+}
+
+.pm25-good, .aqi-good {
+    background-color: #FFFF00;
+}
+
+.pm25-soso, .aqi-soso {
+    background-color: #FF9900;
+}
+
+.pm25-bad, .aqi-bad {
+    background-color: #FF0000;
+}
+
+.pm25-rather-bad, .aqi-rather-bad {
+    background-color: #CC0000;
+}
+
+.pm25-worst, .aqi-worst {
+    background-color: #990000;
+}
+
+.best{
+    background: url("../image/oval_best.png") no-repeat;
+    background-size: 100%;
+}
+
+.good{
+    background: url("../image/oval_good.png") no-repeat;
+    background-size: 100%;
+
+}
+
+.soso{
+    background: url("../image/oval_soso.png") no-repeat;
+    background-size: 100%;
+}
+
+.bad{
+    background: url("../image/oval_bad.png") no-repeat;
+    background-size: 100%;
+}
