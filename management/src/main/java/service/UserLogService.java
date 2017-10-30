@@ -11,5 +11,5 @@ import java.util.Map;
  * Created by hushe on 2017/10/29.
  */
 public interface UserLogService {
-    ResultData fetch(Map<String, Object> condition);
+    public ResultData fetch(Map<String, Object> condition);
 }

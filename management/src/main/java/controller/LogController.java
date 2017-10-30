@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import java.lang.Class;
 
+import service.UserLogService;
 import utils.ResultData;
 
 @RestController
@@ -16,7 +18,7 @@ public class LogController {
 	@RequestMapping(method = RequestMethod.GET, value = "/list")
 	public ResultData log4user() {
 		ResultData result = new ResultData();
-		
+		ResultData response = UserLogService.
 		return result;
 	}
 	
