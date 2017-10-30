@@ -2,7 +2,6 @@ package service;
 
 
 import model.userlog.UserLog;
-import org.omg.CORBA.Object;
 import utils.ResultData;
 
 import java.util.Map;

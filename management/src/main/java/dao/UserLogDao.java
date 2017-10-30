@@ -1,6 +1,6 @@
 package dao;
 
-import org.omg.CORBA.Object;
+
 import utils.ResultData;
 import model.userlog.UserLog;
 

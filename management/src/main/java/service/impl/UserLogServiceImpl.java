@@ -4,7 +4,6 @@ import dao.BaseDao;
 import dao.UserLogDao;
 
 import model.userlog.UserLog;
-import org.omg.CORBA.Object;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -24,7 +23,6 @@ public class UserLogServiceImpl implements UserLogService {
     private Logger logger = LoggerFactory.getLogger(UserLogService.class);
 
     private UserLogDao userLogDao;
-
     @Override
     public ResultData fetch(Map<String, Object> condition) {
         ResultData result = new ResultData();
@@ -36,5 +34,6 @@ public class UserLogServiceImpl implements UserLogService {
             result.setDescription(response.getDescription());
         }
         return result;
-    }
+  }
+
 }
