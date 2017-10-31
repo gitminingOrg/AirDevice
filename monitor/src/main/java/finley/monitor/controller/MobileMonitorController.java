@@ -22,9 +22,6 @@ public class MobileMonitorController {
     @Autowired
     private MachineService machineService;
 
-    @Autowired
-    private CityPM25Service cityPM25Service;
-
     @RequestMapping(method = RequestMethod.GET, value = "/{machine}")
     public ModelAndView mobileMonitor(@PathVariable("machine") String machine) {
         ModelAndView view = new ModelAndView();
