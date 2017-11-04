@@ -51,7 +51,7 @@ public class UserLogDaoImpl extends BaseDao implements UserLogDao {
                 result.setResponseCode(ResponseCode.RESPONSE_ERROR);
                 result.setDescription(e.getMessage());
             }
-            }
+        }
         return result;
     }
 }

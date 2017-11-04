@@ -13,5 +13,6 @@
 		<mapper resource="mapper/location/city.xml" />
 		<mapper resource="mapper/device/devicechip.xml" />
 		<mapper resource="mapper/vip/consumersharecode.xml" />
+		<mapper resource="mapper/qrcode/prebind.xml" />
 	</mappers>
 </configuration>
