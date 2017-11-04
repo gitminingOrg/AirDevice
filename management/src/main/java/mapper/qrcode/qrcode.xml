@@ -32,6 +32,9 @@
 		<if test="delivered != null">
 			and code_delivered = #{delivered}
 		</if>
+		<if test="occupied != null">
+			AND code_occupied = #{occupied}
+		</if>
 		<if test="search != null">
 			and (model_id like #{search} or code_value like #{search} or batch_no like #{search})
 		</if>

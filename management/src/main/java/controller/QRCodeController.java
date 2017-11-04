@@ -237,6 +237,26 @@ public class QRCodeController {
 	}
 
 	@ResponseBody
+	@RequestMapping(method = RequestMethod.GET, value = "/free/all")
+	public ResultData getFreeQrcode() {
+		ResultData resultData = new ResultData();
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("deliverd", false);
+		condition.put("occupied", false);
+		ResultData response = qRCodeService.fetch(condition);
+
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			resultData.setData(response.getData());
+			return resultData;
+		} else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			resultData.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			resultData.setDescription("服务器异常，请稍后再试");
+			return resultData;
+		}
+		return resultData;
+	}
+
+	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, value = "/delivered")
 	public DataTablePage<QRCodeVo> delivered(DataTableParam param) {
 		DataTablePage<QRCodeVo> result = new DataTablePage<>(param);
