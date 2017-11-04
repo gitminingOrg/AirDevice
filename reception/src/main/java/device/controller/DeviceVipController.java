@@ -175,7 +175,7 @@ public class DeviceVipController {
 
 		String ip = IPUtil.tell(request);
 		LOG.info("mobile request ip: " + ip);
-		String chipId = deviceVipService.getNewChip(ip);
+		String chipId = deviceVipService.getNewChip(serial, ip);
 		if (chipId == null) {
 			result.setStatus(ResultMap.STATUS_FAILURE);
 			result.setInfo("当前局域网下无可绑定的设备");
@@ -513,7 +513,7 @@ public class DeviceVipController {
 			resultMap.setStatus(ResultMap.STATUS_SUCCESS);
 			String chipID = deviceStatusService.deviceIDToChipID(serial);
 			if (chipID == null) {
-				chipID = deviceVipService.getNewChip(IPUtil.tell(request));
+				chipID = deviceVipService.getNewChip(serial, IPUtil.tell(request));
 				if (chipID != null) {
 					boolean result = deviceStatusService
 							.bindDevice2Chip(new DeviceChip(serial, chipID));
