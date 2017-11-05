@@ -15,7 +15,7 @@
 		FROM pre_binding
 		WHERE 1 = 1
 		<if test="codeId != null">
-			and code = #{codeId}
+			and code_id = #{codeId}
 		</if>
 		<if test="blockFlag != null">
 			and block_flag = #{blockFlag}
