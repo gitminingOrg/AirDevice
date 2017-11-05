@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
@@ -281,9 +282,11 @@ public class DeviceVipService {
 			return null;
 		}
 		Map<String, Object> condition = new HashMap<>();
-		condition.put("qrcoe", serial);
+		condition.put("blockFlag", false);
+		condition.put("codeId", serial);
 		ResultData response = qrCodePrebindDao.query(condition);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			LOG.info("fetch_result: " + JSON.toJSONString(response));
 			PreBindVO vo = ((List<PreBindVO>) response.getData()).get(0);
 			return vo.getUid();
 		}
