@@ -14,7 +14,7 @@
 	<bean id="syncTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="syncDetail"></property>
         <property name="cronExpression">
-            <value>38 14 * * * ?</value>
+            <value>30 15 * * * ?</value>
         </property>
     </bean>
     

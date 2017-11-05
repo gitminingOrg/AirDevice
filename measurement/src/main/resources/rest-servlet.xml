@@ -15,6 +15,8 @@
     
     <context:component-scan base-package="dao" />
 
+    <context:component-scan base-package="schedule" />
+
     <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
 
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
