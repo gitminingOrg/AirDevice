@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.faces.flow.builder.ReturnBuilder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import com.alibaba.fastjson.JSONObject;
 import config.MeasurementConfig;
 import model.machine.IdleMachine;
 import model.qrcode.PreBindCodeUID;
+import schedule.QRSyncSchedule;
 import service.BindService;
 import service.MachineService;
 import utils.HttpDeal;
@@ -36,6 +39,9 @@ public class MachineController {
 
 	@Autowired
 	private MachineService machineService;
+
+	@Autowired
+	private QRSyncSchedule qRSyncSchedule;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/bind")
 	public ModelAndView bind() {
@@ -123,6 +129,13 @@ public class MachineController {
 	public ResultData list() {
 		ResultData result = new ResultData();
 
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/sync")
+	public ResultData qrSync() {
+		ResultData result = new ResultData();
+		qRSyncSchedule.schedule();
 		return result;
 	}
 }

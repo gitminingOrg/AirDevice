@@ -26,6 +26,7 @@ public class QRSyncSchedule {
 			for (int i = 0; i < list.size(); i++) {
 				JSONObject current = list.getJSONObject(i);
 				QRCode code = new QRCode();
+				code.setCodeId(current.getString("codeId"));
 				code.setBatchNo(current.getString("batchNo"));
 				code.setValue(current.getString("value"));
 				code.setPath(current.getString("path"));

@@ -105,7 +105,7 @@ public class MenuConfig {
 		consumer_case.put("name", "用户案例");
 		consumer_case.put("type", "view");
 		try {
-			consumer_case.put("url", "http://commander.gmair.net/reception/www/index.html#/home/device");
+			consumer_case.put("url", "https://mp.weixin.qq.com/s/E2ebpVvojJoQ_oO3zCvW8g");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -114,7 +114,7 @@ public class MenuConfig {
 		gm_recognize.put("name", "认识果麦");
 		gm_recognize.put("type", "view");
 		try {
-			gm_recognize.put("url", "http://commander.gmair.net/reception/www/index.html#/home/device");
+			gm_recognize.put("url", "https://mp.weixin.qq.com/s/bfAo_vzy_uOeRe49aHt0aw");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -123,7 +123,7 @@ public class MenuConfig {
 		product_guide.put("name", "新风指南");
 		product_guide.put("type", "view");
 		try {
-			product_guide.put("url", "http://commander.gmair.net/reception/www/index.html#/home/device");
+			product_guide.put("url", "https://mp.weixin.qq.com/s/M6OrB3fjvm4VKG7iwAWcsQ");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -132,7 +132,7 @@ public class MenuConfig {
 		product_effect.put("name", "净化效果");
 		product_effect.put("type", "view");
 		try {
-			product_effect.put("url", "http://commander.gmair.net/reception/www/index.html#/home/device");
+			product_effect.put("url", "https://mp.weixin.qq.com/s/044zpUcDsUTodE8mY9NT1g");
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -218,7 +218,7 @@ public class MenuConfig {
 	    }
 	
     public static void main(String[] args) {
-        String token = "";
+        String token = "WfdCBPNYMkWFqkc4rGn3YicnZwLYRm2b1wlRAGkrmL1P-THrwlC1Qmgc07rhy84bZShP1bo-O2UNAXhRtFPwVV5JVyHnFTnTh35eyWL44DGNDMsd0-Zu2wX88awYUKCUIDDeADAZUU";
         String deleteMessage = MenuConfig.deleteMenu(token);
         System.out.println("删除操作: " + deleteMessage);
         String createMessage = MenuConfig.createMenu(token);

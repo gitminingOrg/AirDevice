@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reception.qrcode.prebind">
+
+	<resultMap id="PreBindVO" type="vo.qrcode.PreBindVO">
+		<result property="bindId" column="bind_id" />
+		<result property="uid" column="uid" />
+		<result property="codeId" column="code_id" />
+		<result property="blockFlag" column="block_flag" />
+		<result property="createAt" column="create_time" />
+	</resultMap>
+
+	<select id="query" parameterType="java.util.Map" resultMap="PreBindVO">
+		SELECT bind_id, uid, code_id, block_flag, create_time
+		FROM pre_binding
+		WHERE 1 = 1
+		<if test="codeId != null">
+			and code = #{codeId}
+		</if>
+		<if test="blockFlag != null">
+			and block_flag = #{blockFlag}
+		</if>
+	</select>
+</mapper>
