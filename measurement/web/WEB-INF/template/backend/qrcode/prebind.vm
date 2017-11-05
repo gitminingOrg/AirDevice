@@ -1,0 +1,17 @@
+#parse("/common/util.vm")
+<html lang="zh_CN">
+<head>
+    #parse("/backend/init/init.vm")
+    <title>预绑定</title>
+</head>
+<body class="fixed-sidebar fixed-header" ontouchstart>
+	<div id="loading" class="ui-front loader ui-widget-overlay bg-white opacity-100">
+            <img src="${path.concat('/material/assets/images/loader-dark.gif')}" alt="loading">
+    </div>
+    <div id="page-wrapper">
+    	#parse("/backend/common/sidebar.vm")
+    	#parse("/backend/qrcode/component/prebind_operation.vm")
+    </div>
+</body>
+<script type="text/javascript"></script>
+</html>

@@ -1,0 +1,306 @@
+<div id="page-main">
+	<div id="page-main-wrapper">
+		<div id="page-header" class="clearfix">
+			<div id="page-header-wrapper" class="clearfix">
+				<div id="page-breadcrumb-wrapper">
+                	<div id="page-breadcrumb">
+                    	<a href="javascript:;">
+                        	<i class="glyph-icon icon-dashboard"></i>
+                                首页
+                        </a>
+                        <a href="javascript:;">
+                            <i class="glyph-icon icon-laptop"></i>
+                            二维码
+                        </a>
+                        <span class="current">
+                            列表
+                        </span>
+                    </div>
+                </div>
+			</div>
+		</div>
+        <div id="page-breadcrumb-wrapper">
+            <div id="page-breadcrumb">
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-dashboard"></i>
+                        首页
+                </a>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-laptop"></i>
+                    机器部件
+                </a>
+                <span class="current">
+                    概览
+                </span>
+            </div>
+        </div>
+        <div id="page-content">
+            <h4>批量出库</h4>
+            <form id="range-deliver-form">
+                <div class="col-md-10 center-margin">
+                    <div class="form-row">
+                        <div class="form-input">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>批号:</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input placeholder="请输入批号" name="batchNo" type="text" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-input">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label>起始编号:</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input placeholder="请输入起始编号" name="fromValue" type="text" autocomplete="off">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>截止编号:</label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input placeholder="请输入截止编号" name="endValue" type="text" autocomplete="off">
+                                </div>
+                                <div class="col-md-2">
+                                    <button class='btn large bg-blue' id="range-deliver-btn">
+                                        <span clas='button-content'>批量出库</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <hr/>
+            <h4>已有列表</h4>
+            <div class="col-md-10 center-margin">
+                <div class="form-row">
+                    <div class="form-input">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <select id="goods_list">
+                                    <option>---请选择产品---</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="model_list">
+                                    <option>---请选择型号---</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select id="batch_list">
+                                    <option></option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button id="search_btn" type="button" data-loading-text="查询中" class="btn large loading-button bg-blue">
+                                    查询
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table id="component-list-table" class="table table-condensed"></table>
+            </div>
+        </div>
+	</div>
+</div>
+<script>
+    var param = {};
+    function batch_reset(goodsId, modelId) {
+        $("#batch_list").empty();
+        var param = {};
+        if(not_null(goodsId)) {
+            param.goodsId = goodsId;
+        }
+        if(not_null(modelId)) {
+            param.modelId = modelId;
+        }
+        $("#batch_list").append($("<option value=''></option>").text("---请选择批号---"));
+        var batch_url = "${path.concat('/qrcode/batch/available')}";
+        $.get(batch_url, param, function(result) {
+            if(result.responseCode == "RESPONSE_OK") {
+                var data = result.data;
+                for(index in data) {
+                    var item = $("<option></option>").text(data[index].batchNo);
+                    item.attr("value", data[index].batchNo);
+                    $("#batch_list").append(item);
+                }
+            }
+        });
+    }
+
+    function model_reset(goodsId) {
+        $("#model_list").empty();
+        var param = {};
+        if(not_null(goodsId)) {
+            param.goodsId = goodsId;
+        }
+        $("#model_list").append($("<option value=''></option>").text("---请选择型号---"));
+        var model_url = "${path.concat('/goods/model/all')}";
+        $.get(model_url, param, function(result) {
+            if(result.responseCode == "RESPONSE_OK") {
+                var data = result.data;
+                for(index in data) {
+                    var item = $("<option></option>").text(data[index].modelCode + "-" + data[index].modelName);
+                    item.attr("value", data[index].modelId);
+                    $("#model_list").append(item);
+                }
+            }
+        });
+    }
+
+    function good_reset() {
+        $("#goods_list").empty();
+        $("#goods_list").append($("<option value=''></option>").text("---请选择产品---"));
+        var machine_url = "${path.concat('/goods/list/all')}";
+        $.get(machine_url, function(result) {
+            if(result.responseCode == "RESPONSE_OK") {
+                var data = result.data;
+                for(index in data) {
+                    var item = $("<option></option>").text(data[index].goodsName);
+                    item.attr("value", data[index].goodsId);
+                    $("#goods_list").append(item);
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $("#goods_list").on('change', function() {
+            var goodsId = $("#goods_list").val();
+            model_reset(goodsId);
+            batch_reset(goodsId, "");
+        });
+
+        $("#model_list").on('change', function() {
+            var goodsId = $("#goods_list").val();
+            var modelId = $("#model_list").val();
+            batch_reset(goodsId, modelId);
+        })
+
+
+        good_reset();
+        model_reset("");
+        batch_reset("", "");
+
+        $("#search_btn").on('click', function() {
+            table.draw(false);
+        });
+
+        $("#range-deliver-btn").on('click', function() {
+            $("#range-deliver-form").attr("method", "post");
+            $("#range-deliver-form").attr("action", "${path.concat('/qrcode/deliver/range')}");
+            $("#range-deliver-form").submit();
+        })
+
+        var table = $("#component-list-table").DataTable({
+            searching: true,
+            ordering: false,
+            paging: true,
+            "sPaginationType": "full_numbers",
+            "bPaginate": true,
+            "bLengthChange": false,
+            "bAutoWidth": true,
+            "bSort": true,
+            "bDeferRender": true,
+            "bProcessing": true,
+            "bServerSide": true,
+            "bInfoFiltered": false,
+            "sAjaxSource": '${path.concat('/qrcode/list')}',
+            "infoFiltered": false,
+            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                $(nRow).removeClass('dataTable');
+                $(nRow).css("text-align", "left");
+            },
+            "fnInitComplete": function () {
+                $("#component-list-table").removeClass('no-footer');
+            },
+            "fnServerParams": function (aoData) {
+                delete aoData.params;
+                var goodsId = $("#goods_list").val();
+                if(param.goodsId != goodsId) {
+                    param.goodsId = goodsId;
+                    if(!not_null(goodsId)) {
+                        delete param.goodsId;
+                    }
+                }
+                var modelId = $("#model_list").val();
+                if(param.modelId != modelId) {
+                    param.modelId = modelId;
+                    if(!not_null(modelId)) {
+                        delete param.modelId;
+                    }
+                }
+                var batchNo = $("#batch_list").val();
+                if(param.batchNo != batchNo) {
+                    param.batchNo = batchNo;
+                    if(!not_null(batchNo)) {
+                        delete param.batchNo;
+                    }
+                }
+                aoData.push({"name": "params", "value": JSON.stringify(param)});
+            },
+            "fnServerData": function (sSource, aoData, fnCallback) {
+                $.ajax({
+                    "dataType": "json",
+                    "type": "POST",
+                    "url": sSource,
+                    "data": aoData,
+                    "success": fnCallback
+                })
+            },
+            columns: [
+                {title: "创建日期", "mRender": function(data, type, full) {
+                    return ((new Date(full.createAt)).format("yyyy-MM-dd"));
+                }},
+                {title: "批号", "mData": "batchNo"},
+                {title: "序列号", "mData": "value"},
+                {title: "操作", "mRender": function(data, type, full) {
+                    var operation = "";
+                    if(full.codeDelivered == false) {
+                        var deliver = "<button id='" + full.codeId + "' onclick='deliver(\"" + full.codeId + "\")' class='btn small bg-blue-alt tooltip-button outstore' data-placement='top'><span>出库</span></button>&nbsp;";
+                        operation += deliver;
+                    }
+                    return (operation);
+                }}
+            ],
+            "language": {
+                "processing": "正在加载中",
+                "lengthMenu": "每页显示 _MENU_ 条记录",
+                "zeroRecords": "抱歉， 没有找到",
+                "info": "从 _START_ 到 _END_, 共 _TOTAL_ 条数据",
+                "infoEmpty": "暂无数据",
+                "infoFiltered": "数据表中共 _MAX_ 条记录)",
+                "zeroRecords": "当前无机器部件记录",
+                "search": "搜索:",
+                "paginate": {
+                    "first": "<i class='icon-caret-left'></i>",
+                    "previous": "<i class='icon-angle-left'></i>",
+                    "next": "<i class='icon-angle-right'></i>",
+                    "last": "<i class='icon-caret-right'></i>"
+                }
+            }
+        });
+    });
+
+	function deliver(codeId) {
+	    var url = "${path.concat('/qrcode/deliver')}"
+	    $.post(url, {codeId: codeId}, function(result) {
+		    if(result.responseCode == "RESPONSE_OK") {
+		    	$("#" + codeId).remove();
+		    }
+	    })
+	}
+
+    function not_null(item) {
+        if (item == null || item == "" || item.length <= 0) {
+            return false;
+        }
+        return true;
+    }
+</script>

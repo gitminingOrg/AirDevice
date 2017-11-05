@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="measurement.bind">
+	<resultMap id="PreBindVO" type="vo.qrcode.PreBindVO">
+		<result property="bindId" column="bind_id" />
+		<result property="uid" column="uid" />
+		<result property="codeId" column="code_id" />
+		<result property="blockFlag" column="block_flag" />
+		<result property="createAt" column="create_time" />
+	</resultMap>
+	
+	<insert id = "insert" parameterType="model.qrcode.PreBindCodeUID" useGeneratedKeys="false">
+		insert into mq_bind(bind_id, uid, code_id, block_flag, create_time)
+		values(#{bindId}, #{uid}, #{codeId}, #{blockFlag}, #{createAt})
+	</insert>
+	
+	<select id="query" parameterType="string" resultMap="PreBindVO">
+		SELECT bind_id, uid, code_id, block_flag, create_time
+		FROM mq_bind
+		WHERE 1 = 1
+		<if test="codeId != null">
+			and code_id = #{codeId}
+		</if>
+		<if test="uid != null">
+			and uid = #{uid}
+		</if>
+		<if test="blockFlag != null">
+			and block_flag = #{blockFlag}
+		</if>
+	</select>
+</mapper>

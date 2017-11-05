@@ -1,0 +1,270 @@
+<div id="page-main">
+	<div id="page-main-wrapper">
+		<div id="page-header" class="clearfix">
+			<div id="page-header-wrapper" class="clearfix">
+				<div id="page-breadcrumb-wrapper">
+                	<div id="page-breadcrumb">
+                    	<a href="javascript:;">
+                        	<i class="glyph-icon icon-dashboard"></i>
+                                首页
+                        </a>
+                        <a href="javascript:;">
+                            <i class="glyph-icon icon-file-text-o"></i>
+                            订单
+                        </a>
+                        <span class="current">
+                            淘宝订单
+                        </span>
+                    </div>
+                </div>
+			</div>
+		</div>
+        <div id="page-breadcrumb-wrapper">
+            <div id="page-breadcrumb">
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-dashboard"></i>
+                        首页
+                </a>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-file-text-o"></i>
+                    订单
+                </a>
+                <span class="current">
+                    淘宝订单
+                </span>
+            </div>
+        </div>
+        <div id="page-content">
+            <div class="infobox warning-bg">
+                <p><i class="glyph-icon icon-exclamation mrg10R"></i> 若您需要导入新的订单，请单击这里进行 <a href="javascript:;" class="white-modal-80" title="添加部件"> 上传订单 </a>.</p>
+            </div>
+            <div class="hide" id="white-modal-80" title="添加型号">
+                <div class="pad10A">
+                    <div class="col-md-12 center-margin">
+                        <div class="form-row">
+                            <div class="form-label col-md-2">
+                                <label for="goods-name">导入列表</label>
+                            </div>
+                            <div class="form-input col-md-10">
+                                <form id="order-form">
+                                    <input name="orderFile" type="file">
+                                </form>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <button class="btn medium bg-blue-alt" id="confirm-upload">
+                                <span class="button-content">上传</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 center-margin">
+            	<div class="col-md-10 center-margin">
+	                <div class="form-row">
+	                    <div class="form-input">
+	                        <div class="row">
+	                            <div class="col-md-5">
+	                                <select id="channel_list">
+	                                    <option>---请选择渠道---</option>
+	                                </select>
+	                            </div>
+	                            <div class="col-md-5">
+	                                <select id="status_list">
+	                                    <option>---请选择订单状态---</option>
+	                                </select>
+	                            </div>
+	                            <div class="col-md-2">
+	                                <button id="search_btn" type="button" data-loading-text="查询中" class="btn large loading-button bg-blue">
+	                                    查询
+	                                </button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+                <table id="order-list-table" class="table table-condensed"></table>
+            </div>
+        </div>
+	</div>
+</div>
+<script>
+	var param = {};
+	
+	channel_reset();
+	
+	status_reset();
+	
+	function channel_reset() {
+		$("#channel_list").empty();
+		$("#channel_list").append($("<option value=''></option>").text("---请选择渠道---"));
+		var channel_url = "${path.concat('/order/channel/list')}";
+		$.get(channel_url, function(result) {
+			if(result.responseCode == "RESPONSE_OK") {
+				var data = result.data;
+				for(index in data) {
+					var item = $("<option></option>").text(data[index]);
+					item.attr("value", data[index]);
+					$("#channel_list").append(item);
+				}
+			}
+		}) 
+	}
+	
+	function status_reset() {
+		$("#status_list").empty();
+		var param = {};
+		$("#status_list").append($("<option value=''></option>").text("---请选择订单类型---"));
+		var status_url = "${path.concat('/order/status/list')}";
+		$.get(status_url, function(result) {
+			if(result.responseCode == "RESPONSE_OK") {
+				var data = result.data;
+				for(index in data) {
+					var item = $("<option></option>");
+					if(data[index] == 1) {
+						item.text("待发货");
+					}
+					if(data[index] == 2) {
+						item.text("已发货");
+					}
+					if(data[index] == 2) {
+						item.text("已发货");
+					}
+					if(data[index] == 4) {
+						item.text("正在安装");
+					}
+					if(data[index] == 4) {
+						item.text("正在安装");
+					}
+					if(data[index] == 5) {
+						item.text("已完成");
+					}
+					if(data[index] == 8) {
+						item.text("已取消");
+					}
+					item.attr("value", data[index]);
+					$("#status_list").append(item);
+				}
+			}
+		})
+	}
+
+    $(document).ready(function() {
+    	 $("#search_btn").on('click', function() {
+            table.draw(false);
+        });
+    
+        $("#confirm-upload").on('click', function() {
+            $("#order-form").attr('action', "${path.concat('/order/upload')}");
+            $("#order-form").attr('method', "post");
+            $("#order-form").attr('enctype', 'multipart/form-data');
+            $("#order-form").submit();
+        });
+
+        var table = $("#order-list-table").DataTable({
+            searching: true,
+            ordering: false,
+            paging: true,
+            "sPaginationType": "full_numbers",
+            "bPaginate": true,
+            "bLengthChange": false,
+            "bAutoWidth": true,
+            "bSort": true,
+            "bDeferRender": true,
+            "bProcessing": true,
+            "bServerSide": true,
+            "bInfoFiltered": false,
+            "sAjaxSource": '${path.concat('/order/list')}',
+            "infoFiltered": false,
+            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                $(nRow).removeClass('dataTable');
+                $(nRow).css("text-align", "left");
+            },
+            "fnInitComplete": function () {
+                $("#component-list-table").removeClass('no-footer');
+            },
+            "fnServerParams": function (aoData) {
+            	delete aoData.params;
+            	var channel = $("#channel_list").val();
+            	if(param.channel != channel) {
+                    param.channel = channel;
+                    if(!not_null(channel)) {
+                        delete param.channel;
+                    }
+                }
+                var status = $("#status_list").val();
+                if(param.status != status) {
+                    param.status = status;
+                    if(!not_null(status)) {
+                        delete param.status;
+                    }
+                }
+                aoData.push({"name": "params", "value": JSON.stringify(param)});
+            },
+            "fnServerData": function (sSource, aoData, fnCallback) {
+                $.ajax({
+                    "dataType": "json",
+                    "type": "POST",
+                    "url": sSource,
+                    "data": aoData,
+                    "success": fnCallback
+                })
+            },
+            columns: [
+                {title: "订单编号", "mData": "orderNo"},
+                {title: "收件人", "mRender": function(data, type, full) {
+                    return full.receiverName + "(" + full.receiverPhone + ")";
+                }}, 
+                {title: "渠道", "mData": "channel"},
+                {title: "当前进度", "mRender": function(data, type, full) {
+                	var status = full.status;
+                	if(status == "PAYED") {
+                		return "待发货";
+                	}
+                	if(status == "SHIPPED") {
+                		return "已发货";
+                	}
+                	if(status == "INSTALLING") {
+                		return "正在安装";
+                	}
+                	if(status == "SUCCEED") {
+                		return "已完成";
+                	}
+                	if(status == "REFUNDED") {
+                		return "已取消";
+                	}
+                	return "未知状态";
+                }},
+                {title: "操作", "mRender": function(data, type, full) {
+                    var node = "";        
+                    var edit = "<a href='" + "${path.concat('/order/')}" + full.orderId + "' class='btn small bg-blue-alt tooltip-button' data-placement='top' ><i class='glyph-icon icon-edit'></i></a>";
+                    node += edit;
+                    return node;
+                }}
+            ],
+            "language": {
+                "processing": "正在加载中",
+                "lengthMenu": "每页显示 _MENU_ 条记录",
+                "zeroRecords": "抱歉， 没有找到",
+                "info": "从 _START_ 到 _END_, 共 _TOTAL_ 条数据",
+                "infoEmpty": "暂无数据",
+                "infoFiltered": "数据表中共 _MAX_ 条记录)",
+                "zeroRecords": "当前暂无订单记录",
+                "search": "搜索:",
+                "paginate": {
+                    "first": "<i class='icon-caret-left'></i>",
+                    "previous": "<i class='icon-angle-left'></i>",
+                    "next": "<i class='icon-angle-right'></i>",
+                    "last": "<i class='icon-caret-right'></i>"
+                }
+            }
+        });
+    });
+
+    function not_null(item) {
+        if (item == null || item == "" || item.length <= 0) {
+            return false;
+        }
+        return true;
+    }
+</script>
