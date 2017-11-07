@@ -40,6 +40,7 @@
 			  AND create_time <= #{endTime}
 			]]>
 		</if>
+		ORDER BY create_time DESC
 	</select>
 
 	<select id="selectByQrcode" parameterType="string" resultMap="PreBindVO">
