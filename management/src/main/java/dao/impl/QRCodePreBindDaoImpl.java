@@ -15,6 +15,7 @@ import vo.machine.DeviceChipVO;
 import vo.qrcode.PreBindVO;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class QRCodePreBindDaoImpl extends BaseDao implements QRCodePreBindDao{
@@ -86,6 +87,24 @@ public class QRCodePreBindDaoImpl extends BaseDao implements QRCodePreBindDao{
 			if (deviceChipVOS.size() == 0)
 				result.setResponseCode(ResponseCode.RESPONSE_NULL);
 			result.setData(deviceChipVOS);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public ResultData query(Map<String, Object> condition) {
+		ResultData result = new ResultData();
+		try {
+			List<PreBindVO> preBindVOS =
+					sqlSession.selectList("management.qrcode.prebind.query", condition);
+			if (preBindVOS.size() == 0) {
+				result.setResponseCode(ResponseCode.RESPONSE_NULL);
+			}
+			result.setData(preBindVOS);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);

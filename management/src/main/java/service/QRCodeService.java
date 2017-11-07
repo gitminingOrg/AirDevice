@@ -20,6 +20,8 @@ public interface QRCodeService {
 	
 	ResultData prebind(PreBindCodeUID pb);
 
+	ResultData fetchPreBind(Map<String, Object> condition);
+
 	ResultData fetchPreBindByQrcode(String qrcode);
 
 	ResultData fetchPreBindByUid(String uid);

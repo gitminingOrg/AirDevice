@@ -56,7 +56,7 @@ public class QRCodeServiceImpl implements QRCodeService {
 
 	@Autowired
 	private QRCodeDao qRCodeDao;
-	
+
 	@Autowired
 	private QRCodePreBindDao qRCodePreBindDao;
 
@@ -224,6 +224,11 @@ public class QRCodeServiceImpl implements QRCodeService {
 			result.setDescription(response.getDescription());
 		}
 		return result;
+	}
+
+	@Override
+	public ResultData fetchPreBind(Map<String, Object> condition) {
+		return qRCodePreBindDao.query(condition);
 	}
 
 	@Override

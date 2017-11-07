@@ -15,6 +15,33 @@
 		values(#{bindId}, #{uid}, #{codeId}, #{blockFlag}, #{createAt})
 	</insert>
 
+	<select id="query" parameterType="java.util.Map" resultMap="PreBindVO">
+		SELECT pre_binding.bind_id, pre_binding.uid, pre_binding.code_id,
+				pre_binding.block_flag, pre_binding.create_time
+		FROM pre_binding
+		WHERE 1 = 1
+		<if test="bindId != null">
+			AND bind_id = #{bindId}
+		</if>
+		<if test="uId != null">
+			AND uid = #{uId}
+		</if>
+		<if test="codeId != null">
+			AND code_id = #{codeId}
+		</if>
+		<if test="blockFlag != null">
+			AND block_flag = #{blockFlag}
+		</if>
+		<if test="startTime != null">
+			AND create_time >= #{startTime}
+		</if>
+		<if test="endTime != null">
+			<![CDATA[
+			  AND create_time <= #{endTime}
+			]]>
+		</if>
+	</select>
+
 	<select id="selectByQrcode" parameterType="string" resultMap="PreBindVO">
 		SELECT pre_binding.bind_id, pre_binding.uid, pre_binding.code_id,
 			   pre_binding.block_flag, pre_binding.create_time

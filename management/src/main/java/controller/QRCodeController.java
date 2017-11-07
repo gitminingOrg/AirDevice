@@ -378,4 +378,20 @@ public class QRCodeController {
 		}
 		return result;
 	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/prebind/list")
+	public ResultData preBindList() {
+		ResultData result = new ResultData();
+		Map<String, Object> condition = new HashMap<>();
+		ResultData response = qRCodeService.fetchPreBind(condition);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setData(response.getData());
+			return result;
+		} else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription("服务器异常，请稍后再试");
+			return result;
+		}
+		return result;
+	}
 }
