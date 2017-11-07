@@ -34,7 +34,8 @@ public class LocationController {
         String response = HttpDeal.getResponse(url);
         JSONObject json = JSON.parseObject(response);
         try {
-            if(!StringUtils.isEmpty(json)){
+            if(!StringUtils.isEmpty(
+                    json.getJSONObject("result").getJSONObject("ad_info"))){
                 JSONObject jo = new JSONObject();
                 jo.put("nation", json.getJSONObject("result").getJSONObject("ad_info").getJSONObject("nation"));
                 jo.put("province", json.getJSONObject("result").getJSONObject("ad_info").getJSONObject("province"));
