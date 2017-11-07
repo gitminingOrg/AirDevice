@@ -38,9 +38,9 @@ public class LocationController {
         JSONObject json = JSON.parseObject(response);
         try {
             JSONObject jo = new JSONObject();
-            jo.put("nation", json.getJSONObject("result").getJSONObject("ad_info").get("nation"));
-            jo.put("province", json.getJSONObject("result").getJSONObject("ad_info").get("province"));
-            jo.put("city", json.getJSONObject("result").getJSONObject("ad_info").get("city"));
+            jo.put("nation", json.getJSONObject("result").getJSONObject("ad_info").getJSONObject("nation"));
+            jo.put("province", json.getJSONObject("result").getJSONObject("ad_info").getJSONObject("province"));
+            jo.put("city", json.getJSONObject("result").getJSONObject("ad_info").getJSONObject("city"));
             result.setData(jo);
         }catch (Exception e){
             logger.error(e.getMessage());
