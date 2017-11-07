@@ -12,11 +12,6 @@ import utils.HttpDeal;
 import utils.ResponseCode;
 import utils.ResultData;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 /**
  * Created by hushe on 2017/10/28.
  */
