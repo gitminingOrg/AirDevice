@@ -43,7 +43,7 @@ public class LocationController {
                 result.setData(jo);
             }else {
                 result.setResponseCode(ResponseCode.RESPONSE_NULL);
-                result.setDescription("未获取到城市信息！");
+                result.setDescription("IP未解析成功！");
             }
         }catch (Exception e){
             logger.error(e.getMessage());
