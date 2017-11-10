@@ -5,6 +5,7 @@ import java.util.Map;
 import model.qrcode.PreBindCodeUID;
 import model.qrcode.QRCode;
 import pagination.DataTableParam;
+import pagination.MobilePageParam;
 import utils.ResultData;
 
 public interface QRCodeService {
@@ -21,6 +22,10 @@ public interface QRCodeService {
 	ResultData prebind(PreBindCodeUID pb);
 
 	ResultData fetchPreBind(Map<String, Object> condition);
+
+	ResultData fetchPreBind(Map<String, Object> condition, DataTableParam param);
+
+	ResultData fetchPreBind(Map<String, Object> condition, MobilePageParam param);
 
 	ResultData fetchPreBindByQrcode(String qrcode);
 

@@ -34,6 +34,7 @@ import model.goods.RealGoods;
 import model.qrcode.PreBindCodeUID;
 import model.qrcode.QRCode;
 import pagination.DataTableParam;
+import pagination.MobilePageParam;
 import service.QRCodeService;
 import utils.PathUtil;
 import utils.QRSerialGenerator;
@@ -229,6 +230,16 @@ public class QRCodeServiceImpl implements QRCodeService {
 	@Override
 	public ResultData fetchPreBind(Map<String, Object> condition) {
 		return qRCodePreBindDao.query(condition);
+	}
+
+	@Override
+	public ResultData fetchPreBind(Map<String, Object> condition, DataTableParam param) {
+		return qRCodePreBindDao.query(condition, param);
+	}
+
+	@Override
+	public ResultData fetchPreBind(Map<String, Object> condition, MobilePageParam param) {
+		return qRCodePreBindDao.query(condition, param);
 	}
 
 	@Override
