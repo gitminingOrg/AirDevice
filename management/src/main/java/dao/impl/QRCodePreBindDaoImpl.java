@@ -1,6 +1,7 @@
 package dao.impl;
 
 import model.device.DeviceChip;
+import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -8,12 +9,18 @@ import org.springframework.stereotype.Repository;
 import dao.BaseDao;
 import dao.QRCodePreBindDao;
 import model.qrcode.PreBindCodeUID;
+import org.springframework.util.StringUtils;
+import pagination.DataTablePage;
+import pagination.DataTableParam;
+import pagination.MobilePage;
+import pagination.MobilePageParam;
 import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.machine.DeviceChipVO;
 import vo.qrcode.PreBindVO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -111,5 +118,63 @@ public class QRCodePreBindDaoImpl extends BaseDao implements QRCodePreBindDao{
 			result.setDescription(e.getMessage());
 		}
 		return result;
+	}
+
+	@Override
+	// for web
+	public ResultData query(Map<String, Object> condition, DataTableParam param) {
+		ResultData result = new ResultData();
+		DataTablePage<PreBindVO> page = new DataTablePage<>(param);
+
+		if (!StringUtils.isEmpty(param.getsSearch())) {
+			condition.put("search", new StringBuilder("%").append(param.getsSearch()).append("%").toString());
+		}
+
+		ResultData total = query(condition);
+		if (total.getResponseCode() != ResponseCode.RESPONSE_OK) {
+			result.setResponseCode(total.getResponseCode());
+			result.setDescription(total.getDescription());
+			return result;
+		}
+
+		page.setiTotalRecords(((List) total.getData()).size());
+		page.setiTotalDisplayRecords(((List) total.getData()).size());
+		List<PreBindVO> current = queryByPage(condition, param.getiDisplayStart(), param.getiDisplayLength());
+
+		page.setData(current);
+		result.setData(page);
+
+		return result;
+	}
+
+	@Override
+	public ResultData query(Map<String, Object> condition, MobilePageParam param) {
+		ResultData result = new ResultData();
+		MobilePage<PreBindVO> page = new MobilePage<>();
+
+		ResultData total = query(condition);
+		if (total.getResponseCode() != ResponseCode.RESPONSE_OK) {
+			result.setResponseCode(total.getResponseCode());
+			result.setDescription(total.getDescription());
+			return result;
+		}
+
+		page.setTotal(((List) total.getData()).size());
+
+		List<PreBindVO> current = queryByPage(condition, param.getStart(), param.getLength());
+		page.setData(current);
+
+		result.setData(page);
+		return result;
+	}
+
+	private List<PreBindVO> queryByPage(Map<String, Object> condition, int start, int length) {
+		List<PreBindVO> list = new ArrayList<>();
+		try {
+			list = sqlSession.selectList("management.qrcode.prebind.query", condition, new RowBounds(start, length));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return list;
 	}
 }

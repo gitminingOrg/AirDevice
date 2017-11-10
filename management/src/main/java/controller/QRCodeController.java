@@ -27,6 +27,8 @@ import model.qrcode.PreBindCodeUID;
 import model.qrcode.QRCode;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
+import pagination.MobilePage;
+import pagination.MobilePageParam;
 import service.GoodsService;
 import service.MachineService;
 import service.QRCodeService;
@@ -37,6 +39,7 @@ import utils.ResultData;
 import utils.ZipUtil;
 import vo.goods.GoodsModelVo;
 import vo.machine.IdleMachineVo;
+import vo.qrcode.PreBindVO;
 import vo.qrcode.QRCodeVo;
 
 @RestController
@@ -394,4 +397,27 @@ public class QRCodeController {
 		}
 		return result;
 	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/prebind/list")
+	public DataTablePage<PreBindVO> getPreBindList(DataTableParam param) {
+		DataTablePage<PreBindVO> result = new DataTablePage<>(param);
+		Map<String, Object> condition = new HashMap<>();
+		ResultData response = qRCodeService.fetchPreBind(condition, param);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result = (DataTablePage<PreBindVO>) response.getData();
+		}
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/prebind/list/mobile")
+	public MobilePage<PreBindVO> getPreBindList(MobilePageParam param) {
+		MobilePage<PreBindVO> result = new MobilePage<>();
+		Map<String, Object> condition = new HashMap<>();
+		ResultData response = qRCodeService.fetchPreBind(condition, param);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result = (MobilePage<PreBindVO>) response.getData();
+		}
+		return result;
+	}
+
 }

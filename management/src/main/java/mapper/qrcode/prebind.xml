@@ -40,6 +40,9 @@
 			  AND create_time <= #{endTime}
 			]]>
 		</if>
+		<if test="search != null">
+			AND (uid LIKE #{search} or code_id LIKE #{search})
+		</if>
 		ORDER BY create_time DESC
 	</select>
 
