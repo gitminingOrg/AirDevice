@@ -51,3 +51,8 @@ CREATE TABLE `air_measure`.`mq_bind` (
   `block_flag` TINYINT(1) NOT NULL,
   `create_time` DATETIME NOT NULL,
   PRIMARY KEY (`bind_id`));
+
+  
+##2017.11.12
+ALTER TABLE `airdevice`.`goods_model` 
+ADD COLUMN `model_bonus` INT NOT NULL DEFAULT 0 AFTER `model_description`;
