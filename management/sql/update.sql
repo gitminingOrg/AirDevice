@@ -56,3 +56,8 @@ CREATE TABLE `air_measure`.`mq_bind` (
 ##2017.11.12
 ALTER TABLE `airdevice`.`goods_model` 
 ADD COLUMN `model_bonus` INT NOT NULL DEFAULT 0 AFTER `model_description`;
+
+
+##2017.11.13
+ALTER TABLE `airdevice`.`point_record` 
+ADD COLUMN `order_id` VARCHAR(20) NULL AFTER `consumer_id`;
