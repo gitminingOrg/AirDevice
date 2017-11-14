@@ -1,8 +1,6 @@
 package controller;
 
-import com.sun.javafx.util.Logging;
 import model.userlog.UserLog;
-import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
