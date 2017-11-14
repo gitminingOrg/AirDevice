@@ -9,8 +9,6 @@ public class UserLog extends Entity{
     private String userId;
     private String target;
     private String message;
-    private int blockFlag;
-    private Timestamp createTime;
 
     public UserLog(){
 
@@ -23,8 +21,6 @@ public class UserLog extends Entity{
         this.userId = userId;
         this.target = target;
         this.message = message;
-        this.blockFlag = blockFlag;
-        this.createTime = createTime;
     }
 
     public String getLogId() {
@@ -57,21 +53,5 @@ public class UserLog extends Entity{
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public int getBlockFlag() {
-        return blockFlag;
-    }
-
-    public void setBlockFlag(int blockFlag) {
-        this.blockFlag = blockFlag;
-    }
-
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
     }
 }

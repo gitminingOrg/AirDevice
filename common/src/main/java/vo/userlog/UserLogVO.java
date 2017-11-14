@@ -1,6 +1,6 @@
 package vo.userlog;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 
 
 public class UserLogVO {
