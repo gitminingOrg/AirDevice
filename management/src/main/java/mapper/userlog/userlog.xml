@@ -16,7 +16,7 @@
         values(#{logId}, #{userId}, #{target}, #{message}, #{blockFlag}, #{createTime})
     </insert>
 
-    <select id="query" parameterType="java.util.Map" resultMap="UserlogVO">
+    <select id="query" parameterType="java.util.Map" resultMap="userlogVO">
         select log_id, user_id, target, message, block_flag, create_time
         from air_operation.user_log
         where 1 = 1
