@@ -11,5 +11,5 @@ public interface PointRecordService {
 
     ResultData fetch(Map<String, Object> condition);
 
-    ResultData modify(Map<String, Object> condition);
+    ResultData modify(PointRecord pointRecord);
 }

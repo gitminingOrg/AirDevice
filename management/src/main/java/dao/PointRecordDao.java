@@ -12,5 +12,5 @@ public interface PointRecordDao {
 
     ResultData query(Map<String, Object> condition);
 
-    ResultData modify(Map<String, Object> condition);
+    ResultData update(PointRecord pointRecord);
 }

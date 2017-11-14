@@ -27,8 +27,8 @@ public class PointRecordServiceImpl implements PointRecordService {
     }
 
     @Override
-    public ResultData modify(Map<String, Object> condition) {
-        return pointRecordDao.modify(condition);
+    public ResultData modify(PointRecord pointRecord) {
+        return pointRecordDao.update(pointRecord);
     }
 
 }

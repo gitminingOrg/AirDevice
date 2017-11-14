@@ -59,7 +59,7 @@ public class PointRecordDaoImpl extends BaseDao implements PointRecordDao{
     }
 
     @Override
-    public ResultData modify(Map<String, Object> condition) {
+    public ResultData update(PointRecord pointRecord) {
         return null;
     }
 }
