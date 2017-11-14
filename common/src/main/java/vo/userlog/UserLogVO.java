@@ -11,7 +11,6 @@ public class UserLogVO {
     private boolean blockFlag;
     private Timestamp createAt;
 
-
     public String getLogId() {
         return logId;
     }
