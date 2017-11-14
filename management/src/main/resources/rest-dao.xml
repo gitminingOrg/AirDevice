@@ -6,4 +6,8 @@
 	<bean id="userDao" class="dao.impl.UserDaoImpl">
 		<property name="sqlSession" ref="sqlSession" />
 	</bean>
+
+	<bean id="userLogDao" class="dao.impl.UserLogDaoImpl">
+		<property name="sqlSession" ref="sqlSession" />
+	</bean>
 </beans>

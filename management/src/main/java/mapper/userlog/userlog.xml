@@ -6,14 +6,14 @@
         <result property="userId" column="user_id" />
         <result property="target" column="target" />
         <result property="message" column="message"/>
-        <result property="blockFlog" column="block_flag"/>
-        <result property="createTime" column="create_time"/>
+        <result property="blockFlag" column="block_flag"/>
+        <result property="createAt" column="create_time"/>
     </resultMap>
 
     <insert id="insert" parameterType="model.userlog.UserLog" useGeneratedKeys="false">
         insert into air_operation.user_log(log_id, user_id, target, message,
          block_flag, create_time)
-        values(#{logId}, #{userId}, #{target}, #{message}, #{blockFlag}, #{createTime})
+        values(#{logId}, #{userId}, #{target}, #{message}, #{blockFlag}, #{createAt})
     </insert>
 
     <select id="query" parameterType="java.util.Map" resultMap="userlogVO">
@@ -36,7 +36,7 @@
             and block_flag = #{blockFlag}
         </if>
         <if test="create_time != null">
-            and create_time = #{createTime}
+            and create_time = #{createAt}
         </if>
     </select>
 </mapper>

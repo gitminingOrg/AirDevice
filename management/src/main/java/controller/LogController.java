@@ -1,5 +1,8 @@
 package controller;
 
+import com.sun.javafx.util.Logging;
+import model.userlog.UserLog;
+import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +31,6 @@ public class LogController {
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("blockFlag", false);
-		//condition.put("userId",);
 		ResultData response = userLogService.fetch(condition);
 		result.setResponseCode(response.getResponseCode());
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
@@ -36,6 +38,23 @@ public class LogController {
 		}
 		else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR){
 			result.setDescription(response.getDescription());
+		}
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/add")
+	public ResultData create(UserLog userLog){
+		ResultData result = new ResultData();
+		ResultData response= userLogService.createUserLog(userLog);
+		result.setResponseCode(response.getResponseCode());
+		try {
+			if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
+				result.setData(response.getData());
+			}
+		} catch (Exception e){
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
 		}
 		return result;
 	}

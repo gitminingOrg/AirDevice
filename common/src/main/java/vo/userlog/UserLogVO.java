@@ -8,8 +8,9 @@ public class UserLogVO {
     private String userId;
     private String target;
     private String message;
-    private int blockFlag;
-    private Timestamp createTime;
+    private boolean blockFlag;
+    private Timestamp createAt;
+
 
     public String getLogId() {
         return logId;
@@ -43,19 +44,11 @@ public class UserLogVO {
         this.message = message;
     }
 
-    public int getBlockFlag() {
-        return blockFlag;
-    }
+    public boolean isBlockFlag() { return blockFlag; }
 
-    public void setBlockFlag(int blockFlag) {
-        this.blockFlag = blockFlag;
-    }
+    public void setBlockFlag(boolean blockFlag) { this.blockFlag = blockFlag; }
 
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
+    public Timestamp getCreateAt() { return createAt; }
 
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
-    }
+    public void setCreateAt(Timestamp createAt) { this.createAt = createAt; }
 }

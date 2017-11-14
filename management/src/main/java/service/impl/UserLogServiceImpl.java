@@ -6,6 +6,7 @@ import dao.UserLogDao;
 import model.userlog.UserLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import service.UserLogService;
 import utils.ResponseCode;
@@ -22,31 +23,16 @@ import java.util.Map;
 public class UserLogServiceImpl implements UserLogService {
     private Logger logger = LoggerFactory.getLogger(UserLogService.class);
 
+    @Autowired
     private UserLogDao userLogDao;
     @Override
     public ResultData fetch(Map<String, Object> condition) {
-        ResultData result = new ResultData();
-        ResultData response = userLogDao.query(condition);
-        result.setResponseCode(response.getResponseCode());
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
-            result.setData(response.getData());
-        }else if(response.getResponseCode() == ResponseCode.RESPONSE_ERROR){
-            result.setDescription(response.getDescription());
-        }
-        return result;
+        return userLogDao.query(condition);
   }
 
     @Override
     public ResultData createUserLog(UserLog userLog) {
-        ResultData resultData = new ResultData();
-        ResultData response = userLogDao.insert(userLog);
-        resultData.setResponseCode(response.getResponseCode());
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
-            resultData.setData(response.getData());
-        }else {
-            resultData.setDescription(response.getDescription());
-        }
-        return resultData;
+        return userLogDao.insert(userLog);
     }
 
 }

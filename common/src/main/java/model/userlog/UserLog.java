@@ -2,7 +2,6 @@ package model.userlog;
 
 import model.Entity;
 
-import java.security.Timestamp;
 
 public class UserLog extends Entity{
     private String logId;
@@ -10,12 +9,12 @@ public class UserLog extends Entity{
     private String target;
     private String message;
 
-    public UserLog(){
 
+    public UserLog(){
         super();
     }
 
-    public UserLog(String logId, String userId, String target, String message, int blockFlag, Timestamp createTime){
+    public UserLog(String logId, String userId, String target, String message){
         this();
         this.logId = logId;
         this.userId = userId;
@@ -54,4 +53,5 @@ public class UserLog extends Entity{
     public void setMessage(String message) {
         this.message = message;
     }
+
 }
