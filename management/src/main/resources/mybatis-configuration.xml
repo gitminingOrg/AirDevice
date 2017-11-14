@@ -22,5 +22,6 @@
 		<mapper resource="mapper/address/deviceaddress.xml" />
 		<mapper resource="mapper/machine/idlemachine.xml" />
 		<mapper resource="mapper/role/role.xml" />
+		<mapper resource="mapper/point/pointrecord.xml" />
 	</mappers>
 </configuration>

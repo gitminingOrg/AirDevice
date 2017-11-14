@@ -69,6 +69,9 @@
 			<if test="shipNo != null">
 				ship_no = #{shipNo},
 			</if>
+			<if test="blockFlag != null">
+				block_flag = #{blockFlag},
+			</if>
 			order_status = #{status, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}
 		</set>
 		where order_id = #{orderId}
