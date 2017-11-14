@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.pointrecord">
+    <resultMap id="PonitRecord" type="vo.pointrecord.PointRecordVO">
+        <result property="recordId" column="record_id"/>
+        <result property="consumerId" column="consumer_id" />
+        <result property="orderId" column="order_id" />
+        <result property="labelId" column="label_id" />
+        <result property="recordDescription" column="record_description"/>
+        <result property="blockFlag" column="block_flag"/>
+        <result property="createAt" column="create_time" />
+    </resultMap>
+
+    <insert id="insert" parameterType="model.pointrecord.PointRecord">
+        INSERT INTO point_record
+          VALUES (#{recordId}, #{consumerId}, #{orderId}, #{labelId}, #{recordDescription},
+                  #{blockFlag}, #{createAt})
+    </insert>
+
+    <select id="query" parameterType="java.util.Map" resultMap="PointRecord">
+        SELECT record_id, consumer_id, order_id, label_id, record_description, block_flag, create_time
+        FROM
+        point_record
+        WHERE 1 = 1
+        <if test="recordId != null">
+            AND record_id = #{recordId}
+        </if>
+        <if test="consumerId != null">
+            AND consumer_id = #{consumerId}
+        </if>
+        <if test="orderId != null">
+            AND order_id = #{orderId}
+        </if>
+        <if test="labelId != null">
+            AND label_id = #{labelId}
+        </if>
+        <if test="blockFlag != null">
+            AND block_flag = #{blockFlag}
+        </if>
+        <if test="startTime != null">
+            AND create_time > #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[
+              AND create_time < #{endTime}
+            ]]>
+        </if>
+        <if test="search != null">
+            AND record_description LIKE #{search}
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+    <update id="update" parameterType="model.pointrecord.PointRecord">
+
+    </update>
+
+</mapper>

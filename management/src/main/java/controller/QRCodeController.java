@@ -413,6 +413,7 @@ public class QRCodeController {
 	public MobilePage<PreBindVO> getPreBindList(MobilePageParam param) {
 		MobilePage<PreBindVO> result = new MobilePage<>();
 		Map<String, Object> condition = new HashMap<>();
+		condition.put("block", 0);
 		ResultData response = qRCodeService.fetchPreBind(condition, param);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			result = (MobilePage<PreBindVO>) response.getData();
