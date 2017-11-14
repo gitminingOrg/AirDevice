@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface PointRecordService {
 
-    ResultData add(PointRecord pointRecord);
+    ResultData create(PointRecord pointRecord);
 
     ResultData fetch(Map<String, Object> condition);
 

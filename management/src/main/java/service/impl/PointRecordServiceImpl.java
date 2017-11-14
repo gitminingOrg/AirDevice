@@ -17,7 +17,7 @@ public class PointRecordServiceImpl implements PointRecordService {
     private PointRecordDao pointRecordDao;
 
     @Override
-    public ResultData add(PointRecord pointRecord) {
+    public ResultData create(PointRecord pointRecord) {
         return pointRecordDao.insert(pointRecord);
     }
 

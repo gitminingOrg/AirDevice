@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="management.pointrecord">
-    <resultMap id="PonitRecord" type="vo.pointrecord.PointRecordVO">
+    <resultMap id="PointRecord" type="vo.pointrecord.PointRecordVO">
         <result property="recordId" column="record_id"/>
         <result property="consumerId" column="consumer_id" />
         <result property="orderId" column="order_id" />
