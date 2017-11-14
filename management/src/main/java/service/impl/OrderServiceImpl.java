@@ -79,6 +79,11 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	public ResultData blockOrder(Map<String, Object> condition) {
+		return orderDao.blockOrder(condition);
+	}
+
+	@Override
 	public ResultData create(CustomizeOrder order) {
 		ResultData result = new ResultData();
 		ResultData response = orderDao.create(order);

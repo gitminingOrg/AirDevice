@@ -17,6 +17,8 @@ public interface OrderService {
 	ResultData fetch(Map<String, Object> condition);
 	
 	ResultData assign(TaobaoOrder order);
+
+	ResultData blockOrder(Map<String, Object> condition);
 	
 	ResultData create(CustomizeOrder order);
 	

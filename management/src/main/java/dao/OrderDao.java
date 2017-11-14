@@ -16,6 +16,8 @@ public interface OrderDao {
 	ResultData query(Map<String, Object> condition, DataTableParam param);
 	
 	ResultData update(TaobaoOrder order);
+
+	ResultData blockOrder(Map<String, Object> condition);
 	
 	ResultData create(CustomizeOrder order);
 	

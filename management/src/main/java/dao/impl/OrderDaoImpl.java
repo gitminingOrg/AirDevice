@@ -122,6 +122,19 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	}
 
 	@Override
+	public ResultData blockOrder(Map<String, Object> condition) {
+		ResultData result = new ResultData();
+		try {
+			sqlSession.update("management.externalorder.blockOrder", condition);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
 	public ResultData create(CustomizeOrder order) {
 		ResultData result = new ResultData();
 		order.setOrderId(IDGenerator.generate("CSO"));
