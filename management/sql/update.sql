@@ -19,7 +19,7 @@ CREATE SCHEMA `air_operation` DEFAULT CHARACTER SET utf8 ;
 
 DROP TABLE IF EXISTS `user_log`;
 CREATE TABLE `air_operation`.`user_log` (
-  `log_id` VARCHAR(20) NOT NULL,
+  `log_id` varchar(20) NOT NULL,
   `user_id` VARCHAR(20) NOT NULL,
   `target` VARCHAR(45) NOT NULL,
   `message` LONGTEXT NOT NULL,
