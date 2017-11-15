@@ -17,6 +17,7 @@ CREATE TABLE `airdevice`.`idle_machine` (
 
 CREATE SCHEMA `air_operation` DEFAULT CHARACTER SET utf8 ;
 
+DROP TABLE IF EXISTS `user_log`;
 CREATE TABLE `air_operation`.`user_log` (
   `log_id` VARCHAR(20) NOT NULL,
   `user_id` VARCHAR(20) NOT NULL,
@@ -24,7 +25,8 @@ CREATE TABLE `air_operation`.`user_log` (
   `message` LONGTEXT NOT NULL,
   `block_flag` TINYINT(1) NOT NULL DEFAULT 0,
   `create_time` DATETIME NOT NULL,
-  PRIMARY KEY (`log_id`));
+  PRIMARY KEY (`log_id`)
+  );
 
 ##20171029
 CREATE SCHEMA `air_measure` DEFAULT CHARACTER SET utf8 ;
