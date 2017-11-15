@@ -25,10 +25,11 @@ public class LogController {
 	private UserLogService userLogService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/list")
-	public ResultData log4user() {
+	public ResultData log4user(String userId) {
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("blockFlag", false);
+		condition.put("userId", userId);
 		ResultData response = userLogService.fetch(condition);
 		result.setResponseCode(response.getResponseCode());
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
@@ -45,6 +46,22 @@ public class LogController {
 		ResultData result = new ResultData();
 		ResultData response= userLogService.createUserLog(userLog);
 		result.setResponseCode(response.getResponseCode());
+		try {
+			if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
+				result.setData(response.getData());
+			}
+		} catch (Exception e){
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/update")
+	public ResultData Update(UserLog userlog){
+		ResultData result = new ResultData();
+		ResultData response = userLogService.UpdateLog(userlog);
 		try {
 			if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
 				result.setData(response.getData());

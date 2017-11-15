@@ -53,4 +53,20 @@ public class UserLogDaoImpl extends BaseDao implements UserLogDao {
         }
         return result;
     }
+
+    @Override
+    public ResultData update(UserLog userlog) {
+        ResultData result = new ResultData();
+        synchronized (lock){
+            try {
+                sqlSession.update("management.userlog.update", userlog);
+                result.setData(userlog);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+                result.setDescription(e.getMessage());
+            }
+        }
+        return result;
+    }
 }

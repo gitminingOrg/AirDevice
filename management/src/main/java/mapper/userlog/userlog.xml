@@ -39,4 +39,12 @@
             and create_time = #{createAt}
         </if>
     </select>
+
+    <update id="update" parameterType="model.userlog.UserLog">
+        update air_operation.user_log
+        set target = #{target},
+            message = #{message},
+            create_time = #{createAt}
+        where user_id = #{userId}
+    </update>
 </mapper>

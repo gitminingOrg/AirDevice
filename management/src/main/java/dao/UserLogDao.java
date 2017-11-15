@@ -12,4 +12,5 @@ import java.util.Map;
 public interface UserLogDao {
     ResultData query(Map<String, Object> condition);
     ResultData insert(UserLog userlog);
+    ResultData update(UserLog userlog);
 }
