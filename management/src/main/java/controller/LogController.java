@@ -2,7 +2,6 @@ package controller;
 
 import model.systemlog.SystemLog;
 import model.userlog.UserLog;
-import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
