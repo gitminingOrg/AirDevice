@@ -66,6 +66,7 @@ ADD COLUMN `order_id` VARCHAR(20) NULL AFTER `consumer_id`;
 
 
 ##2017.11.16
+*#create system_log
 DROP TABLE IF EXISTS `system_log`;
 CREATE TABLE `air_operation`.`system_log` (
   `log_id` varchar(20) NOT NULL,
