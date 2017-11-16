@@ -28,4 +28,9 @@ public class SystemLogServiceImpl implements SystemLogService {
     public ResultData create(SystemLog systemlog) {
         return systemlogDao.insert(systemlog);
     }
+
+    @Override
+    public ResultData modify(SystemLog systemlog) {
+        return systemlogDao.update(systemlog);
+    }
 }

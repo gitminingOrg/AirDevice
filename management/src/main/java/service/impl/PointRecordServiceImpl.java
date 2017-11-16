@@ -30,5 +30,4 @@ public class PointRecordServiceImpl implements PointRecordService {
     public ResultData modify(PointRecord pointRecord) {
         return pointRecordDao.update(pointRecord);
     }
-
 }

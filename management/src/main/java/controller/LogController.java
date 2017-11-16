@@ -29,7 +29,7 @@ public class LogController {
 	@Autowired
 	private SystemLogService systemLogService;
 
-	@RequestMapping(method = RequestMethod.GET, value = "/userlist")
+	@RequestMapping(method = RequestMethod.GET, value = "/us_list")
 	public ResultData log4user(String userId) {
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
@@ -46,10 +46,10 @@ public class LogController {
 		return result;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/useradd")
-	public ResultData create(UserLog userLog){
+	@RequestMapping(method = RequestMethod.POST, value = "/us_insert")
+	public ResultData CreateUs(UserLog userLog){
 		ResultData result = new ResultData();
-		ResultData response= userLogService.createUserLog(userLog);
+		ResultData response= userLogService.create(userLog);
 		result.setResponseCode(response.getResponseCode());
 		try {
 			if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
@@ -63,10 +63,11 @@ public class LogController {
 		return result;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/update")
-	public ResultData Update(UserLog userlog){
+	@RequestMapping(method = RequestMethod.POST, value = "/us_update")
+	public ResultData UpdateUs(UserLog userlog){
 		ResultData result = new ResultData();
-		ResultData response = userLogService.UpdateLog(userlog);
+		ResultData response = userLogService.modify(userlog);
+		result.setResponseCode(response.getResponseCode());
 		try {
 			if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
 				result.setData(response.getData());
@@ -79,7 +80,7 @@ public class LogController {
 		return result;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/systemlist")
+	@RequestMapping(method = RequestMethod.GET, value = "/sy_list")
 	public ResultData log4system(){
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
@@ -94,8 +95,8 @@ public class LogController {
 		return result;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/systemadd")
-	public ResultData createSystem(SystemLog systemlog){
+	@RequestMapping(method = RequestMethod.POST, value = "/sy_insert")
+	public ResultData CreateSy(SystemLog systemlog){
 		ResultData result = new ResultData();
 		ResultData response = systemLogService.create(systemlog);
 		result.setResponseCode(response.getResponseCode());
@@ -104,6 +105,22 @@ public class LogController {
 				result.setData(response.getData());
 			}
 		} catch (Exception e){
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/sy_update")
+	public ResultData UpdateSy(SystemLog systemlog){
+		ResultData result = new ResultData();
+		ResultData response = systemLogService.modify(systemlog);
+		try {
+			if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
+				result.setData(response.getData());
+			}
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
 			result.setDescription(e.getMessage());

@@ -31,20 +31,12 @@ public class UserLogServiceImpl implements UserLogService {
   }
 
     @Override
-    public ResultData createUserLog(UserLog userLog) {
+    public ResultData create(UserLog userLog) {
         return userLogDao.insert(userLog);
     }
 
     @Override
-    public ResultData UpdateLog(UserLog userlog) {
-        ResultData result = new ResultData();
-        ResultData response = userLogDao.update(userlog);
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
-            result.setData(response.getData());
-        } else {
-            result.setDescription(response.getDescription());
-        }
-        return result;
+    public ResultData modify(UserLog userlog) {
+       return userLogDao.update(userlog);
     }
-
 }

@@ -12,4 +12,5 @@ import java.util.Map;
 public interface SystemLogDao {
     ResultData query(Map<String, Object> condition);
     ResultData insert(SystemLog systemlog);
+    ResultData update(SystemLog systemlog);
 }

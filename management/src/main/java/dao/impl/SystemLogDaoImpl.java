@@ -53,4 +53,20 @@ public class SystemLogDaoImpl extends BaseDao implements SystemLogDao {
         }
         return result;
     }
+
+    @Override
+    public ResultData update(SystemLog systemlog) {
+        ResultData result = new ResultData();
+        synchronized (lock) {
+            try {
+                sqlSession.update("management.systemlog.update", systemlog);
+                result.setData(systemlog);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+                result.setDescription(e.getMessage());
+            }
+        }
+        return result;
+    }
 }

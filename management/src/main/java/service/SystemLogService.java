@@ -11,4 +11,5 @@ import java.util.Map;
 public interface SystemLogService {
     ResultData fetch(Map<String, Object> condition);
     ResultData create(SystemLog systemlog);
+    ResultData modify(SystemLog systemlog);
 }
