@@ -11,6 +11,7 @@ import utils.ResultData;
 import java.util.List;
 import java.util.Map;
 import model.userlog.UserLog;
+import vo.userlog.UserLogVO;
 
 /**
  * Created by hushe on 2017/10/29.
@@ -24,7 +25,7 @@ public class UserLogDaoImpl extends BaseDao implements UserLogDao {
     public ResultData query(Map<String, Object> condition) {
         ResultData resultData = new ResultData();
         try {
-            List<UserLogDao> list =
+            List<UserLogVO> list =
                     sqlSession.selectList("management.userlog.query", condition);
             if(list.isEmpty()){
                 resultData.setResponseCode(ResponseCode.RESPONSE_NULL);

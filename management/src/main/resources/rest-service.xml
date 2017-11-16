@@ -5,4 +5,5 @@
 
 	<bean id="userService" class="service.impl.UserServiceImpl"></bean>
 	<bean id="userLogService" class="service.impl.UserLogServiceImpl"></bean>
+	<bean id="systemLogService" class="service.impl.SystemLogServiceImpl"></bean>
 </beans>

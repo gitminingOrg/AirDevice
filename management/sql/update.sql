@@ -63,3 +63,15 @@ ADD COLUMN `model_bonus` INT NOT NULL DEFAULT 0 AFTER `model_description`;
 ##2017.11.13
 ALTER TABLE `airdevice`.`point_record` 
 ADD COLUMN `order_id` VARCHAR(20) NULL AFTER `consumer_id`;
+
+
+##2017.11.16
+DROP TABLE IF EXISTS `system_log`;
+CREATE TABLE `air_operation`.`system_log` (
+  `log_id` varchar(20) NOT NULL,
+  `target` VARCHAR(45) NOT NULL,
+  `message` LONGTEXT NOT NULL,
+  `block_flag` TINYINT(1) NOT NULL DEFAULT 0,
+  `create_time` DATETIME NOT NULL,
+  PRIMARY KEY (`log_id`)
+  );

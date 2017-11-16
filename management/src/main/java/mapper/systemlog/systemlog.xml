@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.systemlog">
+    <resultMap id="systemlogVO" type="vo.systemlog.SystemLogVO">
+        <result property="logId" column="log_id" />
+        <result property="target" column="target" />
+        <result property="message" column="message"/>
+        <result property="blockFlag" column="block_flag"/>
+        <result property="createAt" column="create_time"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="model.systemlog.SystemLog" useGeneratedKeys="false">
+        insert into air_operation.system_log(log_id, target, message,
+         block_flag, create_time)
+        values(#{logId}, #{target}, #{message}, #{blockFlag}, #{createAt})
+    </insert>
+
+    <select id="query" parameterType="java.util.Map" resultMap="systemlogVO">
+        select log_id, target, message, block_flag, create_time
+        from air_operation.system_log
+        where 1 = 1
+        <if test="log_id != null">
+            and log_id = #{logId}
+        </if>
+        <if test="target != null">
+            and target = #{target}
+        </if>
+        <if test="message != null">
+            and message = #{message}
+        </if>
+        <if test="block_flag != null">
+            and block_flag = #{blockFlag}
+        </if>
+        <if test="create_time != null">
+            and create_time = #{createAt}
+        </if>
+    </select>
+
+    <update id="update" parameterType="model.systemlog.SystemLog">
+        update air_operation.system_log
+        set target = #{target},
+            message = #{message},
+            create_time = #{createAt}
+        where log_id = #{logId}
+    </update>
+</mapper>
