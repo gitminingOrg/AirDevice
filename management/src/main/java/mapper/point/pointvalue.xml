@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.pointvalue">
+    <resultMap id="PointValue" type="vo.pointrecord.PointValueVO">
+        <result property="recordId" column="record_id"/>
+        <result property="consumerId" column="consumer_id" />
+        <result property="orderId" column="order_id" />
+        <result property="consumerId" column="consumer_id" />
+        <result property="modelCode" column="model_code" />
+        <result property="modelBonus" column="model_bonus"/>
+        <result property="createAt" column="create_time" />
+    </resultMap>
+
+    <select id="query" parameterType="java.util.Map" resultMap="PointValue">
+        SELECT record_id, consumer_id, order_id, model_code, model_bonus, create_time
+        FROM
+        point_value_view
+        WHERE 1 = 1
+        <if test="recordId != null">
+            AND record_id = #{recodeId}
+        </if>
+        <if test="consumerId != null">
+            AND consumer_id = #{consumerId}
+        </if>
+        <if test="orderId != null">
+            AND order_id = #{order_id}
+        </if>
+        <if test="modelCode != null">
+            AND model_code = #{modelCode}
+        </if>
+        <if test="startTime != null">
+            AND create_time > #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[
+              AND create_time < #{endTime}
+            ]]>
+        </if>
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

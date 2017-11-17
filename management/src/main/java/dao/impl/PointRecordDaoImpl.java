@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
+import vo.pointrecord.PointValueVO;
 
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,26 @@ public class PointRecordDaoImpl extends BaseDao implements PointRecordDao{
         ResultData resultData = new ResultData();
         try {
             List<PointRecord> list = sqlSession.selectList("management.pointrecord.query", condition);
+            if (list.size() == 0) {
+                resultData.setResponseCode(ResponseCode.RESPONSE_NULL);
+                return resultData;
+            }
+            resultData.setData(list);
+        } catch (Exception e) {
+            resultData.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            logger.error(e.getMessage());
+            resultData.setDescription(e.getMessage());
+            return resultData;
+        }
+        return resultData;
+    }
+
+    // 查询用户的积分值
+    @Override
+    public ResultData queryPoint(Map<String, Object> condition) {
+        ResultData resultData = new ResultData();
+        try {
+            List<PointValueVO> list = sqlSession.selectList("management.pointvalue.query", condition);
             if (list.size() == 0) {
                 resultData.setResponseCode(ResponseCode.RESPONSE_NULL);
                 return resultData;

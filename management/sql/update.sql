@@ -76,3 +76,19 @@ CREATE TABLE `air_operation`.`system_log` (
   `create_time` DATETIME NOT NULL,
   PRIMARY KEY (`log_id`)
   );
+
+##2017.11.17
+  # create VIEW
+CREATE VIEW point_value_view
+AS
+SELECT
+	point_record.record_id as record_id,
+	point_record.order_id as order_id,
+	point_record.consumer_id as consumer_id,
+	goods_model.model_code as model_code,
+	goods_model.model_bonus as model_bonus,
+	point_record.create_time as create_time
+from point_record, taobao_order, goods_model
+WHERE point_record.order_id = taobao_order.order_id
+			AND SUBSTRING(taobao_order.product_serial, 1, 3) = goods_model.model_code
+			AND taobao_order.block_flag = 1

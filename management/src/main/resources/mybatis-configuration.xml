@@ -23,6 +23,7 @@
 		<mapper resource="mapper/machine/idlemachine.xml" />
 		<mapper resource="mapper/role/role.xml" />
 		<mapper resource="mapper/point/pointrecord.xml" />
+		<mapper resource="mapper/point/pointvalue.xml" />
 		<mapper resource="mapper/userlog/userlog.xml"/>
 		<mapper resource="mapper/systemlog/systemlog.xml"/>
 	</mappers>
