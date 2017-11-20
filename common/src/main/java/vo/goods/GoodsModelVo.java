@@ -15,6 +15,8 @@ public class GoodsModelVo {
 	
 	private String modelDescription;
 
+	private String min_velocity;
+
 	public String getModelId() {
 		return modelId;
 	}
@@ -69,5 +71,13 @@ public class GoodsModelVo {
 
 	public void setModelDescription(String modelDescription) {
 		this.modelDescription = modelDescription;
+	}
+
+	public String getMin_velocity() {
+		return min_velocity;
+	}
+
+	public void setMin_velocity(String min_velocity) {
+		this.min_velocity = min_velocity;
 	}
 }

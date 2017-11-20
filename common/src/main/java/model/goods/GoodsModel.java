@@ -13,6 +13,8 @@ public class GoodsModel extends Entity{
 	
 	private String modelDescription;
 
+	private String min_velocity;
+
 	private boolean isAdvanced;
 	
 	private String description;
@@ -89,5 +91,13 @@ public class GoodsModel extends Entity{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getMin_velocity() {
+		return min_velocity;
+	}
+
+	public void setMin_velocity(String min_velocity) {
+		this.min_velocity = min_velocity;
 	}
 }

@@ -8,11 +8,12 @@
 		<result property="modelCode" column="model_code" />
 		<result property="modelName" column="model_name" />
 		<result property="modelDescription" column="model_description" />
+		<result property="minVelocity" column="min_velocity"/>
 	</resultMap>
 	
 	<insert id="insert" parameterType="model.goods.GoodsModel" useGeneratedKeys="false">
-		insert into goods_model(model_id, goods_id, model_code, model_name, model_description, is_advanced, block_flag, create_time)
-		values(#{modelId}, #{goods.goodsId}, #{modelCode}, #{modelName}, #{description}, #{isAdvanced}, #{blockFlag}, #{createAt});
+		insert into goods_model(model_id, goods_id, model_code, model_name, model_description, min_velocity, is_advanced, block_flag, create_time)
+		values(#{modelId}, #{goods.goodsId}, #{modelCode}, #{modelName}, #{description}, #{minVelocity}, #{isAdvanced}, #{blockFlag}, #{createAt});
 	</insert>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="goodsModelVo">
