@@ -52,7 +52,7 @@
 		
 		<div ng-if="cleanerStatus.workMode == 2" class="range range-positive">
 		  	风量 {{cleanerStatus.velocity}}
-            <input type="range" style="margin-right:0" on-release="velocityControl(cleanerStatus.velocity)" ng-model="cleanerStatus.velocity" name="volume" min="0" max="{{velocityMax}}" value="{{cleanerStatus.velocity}}">
+            <input type="range" style="margin-right:0" on-release="velocityControl(cleanerStatus.velocity)" ng-model="cleanerStatus.velocity" name="volume" min="{{ velocityMin }}" max="{{velocityMax}}" value="{{cleanerStatus.velocity}}">
         </div>
         
         <div style="padding:0 5px 0 5px">

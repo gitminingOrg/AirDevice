@@ -68,6 +68,7 @@ app.controller('StatusCtrl', function($window,$http, $scope, $stateParams, $stat
 				  }
 			  }
 			  $scope.components = response.contents.components
+			  $scope.velocityMin = response.contents.velocityMin
 			  $scope.velocityMax = response.contents.velocityMax
 		  }
 		  $http.get('/reception/status/'+$stateParams.deviceID+'/aqi/current').success(function(response){

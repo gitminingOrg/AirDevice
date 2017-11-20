@@ -52,4 +52,12 @@
 		and 
 		qr.code_value = #{deviceID}
 	</select>
+	
+	<select id="deviceMinVelocity" resultType="java.lang.Integer">
+		select gm.min_velocity as velocity from goods_model gm, qrcode qr
+		where 
+		gm.model_id = qr.model_id
+		and 
+		qr.code_value = #{deviceID}
+	</select>
 </mapper>

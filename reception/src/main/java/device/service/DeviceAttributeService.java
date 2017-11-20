@@ -57,4 +57,12 @@ public class DeviceAttributeService {
 			return deviceAttributeDao.getDeviceVelocity(deviceID);
 		}
 	}
+	
+	public int getDeviceMinVelocity(String deviceID) {
+		if(deviceID == null){
+			return 0;
+		}else{
+			return deviceAttributeDao.getDeviceMinVelocity(deviceID);
+		}
+	}
 }

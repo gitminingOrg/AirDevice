@@ -4,11 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import location.service.LocationService;
-import model.CleanerStatus;
-import model.ResultMap;
-import model.ReturnCode;
-
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
@@ -20,18 +15,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import util.ReceptionConstant;
-import utils.Constant;
-import vo.location.DeviceCityVo;
-import vo.vip.ConsumerVo;
 import bean.AirCompareVO;
 import bean.CityAqi;
 import bean.DeviceCity;
-import dao.DeviceAttributeDao;
 import device.service.AqiDataUpdateService;
 import device.service.DeviceAttributeService;
 import device.service.DeviceInitService;
 import device.service.DeviceStatusService;
+import location.service.LocationService;
+import model.CleanerStatus;
+import model.ResultMap;
+import model.ReturnCode;
+import util.ReceptionConstant;
+import utils.Constant;
+import vo.location.DeviceCityVo;
+import vo.vip.ConsumerVo;
 
 @RequestMapping("/status")
 @RestController
@@ -63,6 +61,7 @@ public class DeviceStatusController {
 		CleanerStatus cleanerStatus = deviceStatusService.getCleanerStatus(device);
 		//boolean advance = deviceAttributeService.checkDeviceAdvanced(device);
 		int velo_max = deviceAttributeService.getDeviceVelocity(device);
+		int velo_min = deviceAttributeService.getDeviceMinVelocity(device);
 		List<String> components = deviceAttributeService.getDeviceComponents(device);
 		if (cleanerStatus == null) {
 			resultMap.setStatus(ResultMap.STATUS_FAILURE);
@@ -72,6 +71,7 @@ public class DeviceStatusController {
 			resultMap.addContent(ReceptionConstant.CLEANER_STATUS, cleanerStatus);
 			resultMap.addContent(ReceptionConstant.COMPONENTS, components);
 			resultMap.addContent(ReceptionConstant.VELO_MAX, velo_max);
+			resultMap.addContent(ReceptionConstant.VELO_MIN, velo_min);
 		}
 		return resultMap;
 	}

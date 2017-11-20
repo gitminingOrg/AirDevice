@@ -60,4 +60,16 @@ public class DeviceAttributeDao extends BaseDaoImpl{
 			return voList.get(0);
 		}
 	}
+	
+	public int getDeviceMinVelocity(String deviceID){
+		if(deviceID == null){
+			return 0;
+		}else{
+			List<Integer> voList = sqlSession.selectList("deviceAttribute.deviceMinVelocity", deviceID);
+			if(voList == null || voList.size() == 0){
+				return 0;
+			}
+			return voList.get(0);
+		}
+	}
 }

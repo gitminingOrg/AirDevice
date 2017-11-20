@@ -94,5 +94,5 @@ WHERE point_record.order_id = taobao_order.order_id
 			AND taobao_order.block_flag = 1
 
 ##2017.11.20
-ALTER TABLE `goods_model`
-ADD COLUMN `min_velocity`  int(11) NOT NULL AFTER `velocity`;
+ALTER TABLE `airdevice`.`goods_model` 
+ADD COLUMN `min_velocity` INT NOT NULL DEFAULT 0 AFTER `model_bonus`;

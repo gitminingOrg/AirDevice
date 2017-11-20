@@ -34,6 +34,7 @@ public class ReceptionConstant {
 	public static final String DEVICE_CITY = "deviceCity";
 	public static final String AIR_COMPARE = "airCompare";
 	public static final String VELO_MAX = "velocityMax";
+	public static final String VELO_MIN = "velocityMin";
 	
 	public static final int TOKEN_LENGTH = 40;
 	public static final int DEFAULT_EXPIRE_DAYS = 3;
