@@ -92,3 +92,7 @@ from point_record, taobao_order, goods_model
 WHERE point_record.order_id = taobao_order.order_id
 			AND SUBSTRING(taobao_order.product_serial, 1, 3) = goods_model.model_code
 			AND taobao_order.block_flag = 1
+
+##2017.11.20
+ALTER TABLE `goods_model`
+ADD COLUMN `min_velocity`  int(11) NOT NULL AFTER `velocity`;
