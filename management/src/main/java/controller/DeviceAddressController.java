@@ -2,6 +2,7 @@ package controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,7 @@ public class DeviceAddressController {
     @Autowired
     private DeviceAddressService deviceAddressService;
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/all")
     public ResultData getDeviceAddress() {
         ResultData result = new ResultData();
