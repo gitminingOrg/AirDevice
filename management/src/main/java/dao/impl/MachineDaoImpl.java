@@ -14,6 +14,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import vo.machine.MachineStatusVo;
 
 @Repository
 public class MachineDaoImpl extends BaseDao implements MachineDao {
@@ -69,6 +70,24 @@ public class MachineDaoImpl extends BaseDao implements MachineDao {
 		ResultData result = new ResultData();
 		try {
 			sqlSession.update("management.machine.idle.update", condition);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public ResultData queryMachineStatus(Map<String, Object> condition) {
+		ResultData result = new ResultData();
+		try {
+			List<MachineStatusVo> list = sqlSession.selectList("management.machine.queryMachineStatus", condition);
+			if (list.size() == 0) {
+				result.setResponseCode(ResponseCode.RESPONSE_NULL);
+				return result;
+			}
+			result.setData(list);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);

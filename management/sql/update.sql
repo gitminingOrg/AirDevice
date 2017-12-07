@@ -96,3 +96,11 @@ WHERE point_record.order_id = taobao_order.order_id
 ##2017.11.20
 ALTER TABLE `airdevice`.`goods_model` 
 ADD COLUMN `min_velocity` INT NOT NULL DEFAULT 0 AFTER `model_bonus`;
+
+##2017.12.06
+CREATE VIEW machine_status_view
+AS
+SELECT device_id, chip_id, model_code, model_name, update_time from device_chip, goods_model
+WHERE SUBSTR(device_chip.device_id FROM 1 FOR 3) = goods_model.model_code
+AND device_chip.`status` = 1
+ORDER BY device_chip.update_time DESC

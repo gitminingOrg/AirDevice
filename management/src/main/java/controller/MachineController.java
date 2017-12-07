@@ -1,8 +1,12 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,6 +134,38 @@ public class MachineController {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
 			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/device/status")
+	public ResultData status() {
+		ResultData result = new ResultData();
+		List<String> chips = new ArrayList<>();
+
+		String listUrl = "http://commander.gmair.net/AirCleanerOperation/device/all";
+		try {
+			String response = HttpDeal.getResponse(listUrl);
+			JSONObject json = JSON.parseObject(response);
+			if (!StringUtils.isEmpty(json.get("contents"))
+					&& !StringUtils.isEmpty(json.getJSONObject("contents").get("devices"))) {
+				JSONArray devices = json.getJSONObject("contents").getJSONArray("devices");
+				for (int i = 0; i < devices.size(); i++) {
+					chips.add(devices.getString(i).replace("session.", ""));
+				}
+			}
+		}catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		Map<String, Object> condition = new HashMap<>();
+		ResultData response = machineService.queryMachineStatus(condition, chips);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+			result.setResponseCode(ResponseCode.RESPONSE_NULL);
+		} else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription("服务器忙，请稍后再试!");
+		} else {
+			result.setData(response.getData());
 		}
 		return result;
 	}

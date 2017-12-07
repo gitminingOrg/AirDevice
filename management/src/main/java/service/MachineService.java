@@ -1,5 +1,6 @@
 package service;
 
+import java.util.List;
 import java.util.Map;
 
 import model.machine.IdleMachine;
@@ -14,4 +15,6 @@ public interface MachineService {
     ResultData fetchIdleMachine(Map<String, Object> condition);
 
     ResultData updateIdleMachine(Map<String, Object> condition);
+
+    ResultData queryMachineStatus(Map<String, Object> condition, List<String> chips);
 }

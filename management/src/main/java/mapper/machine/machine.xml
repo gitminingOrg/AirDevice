@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="management.machine">
 
+    <resultMap id="machineStatus" type="vo.machine.MachineStatusVo">
+        <result column="device_id" property="deviceId"/>
+        <result column="chip_id" property="chipId" />
+        <result column="model_code" property="modelCode" />
+        <result column="model_name" property="modelName" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
     <!--删除相关的机器数据-->
     <delete id="deleteDevice" parameterType="String">
         DELETE FROM airdevice.device_chip where device_id = #{device_id};
@@ -18,4 +26,14 @@
     <update id="releaseQrcode" parameterType="String">
         update airdevice.qrcode set code_occupied = 0 where code_value = #{device_id};
     </update>
+
+    <!--查询机器状态-->
+    <select id="queryMachineStatus" parameterType="java.util.Map" resultMap="machineStatus">
+        SELECT device_id, chip_id, model_code, model_name, update_time
+        from machine_status_view
+        WHERE 1 = 1
+        <if test="model_code != null">
+            model_code = #{modelCode}
+        </if>
+    </select>
 </mapper>
