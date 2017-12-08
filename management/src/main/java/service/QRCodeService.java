@@ -32,4 +32,6 @@ public interface QRCodeService {
 	ResultData fetchPreBindByUid(String uid);
 
 	ResultData fetchDeviceChip(String uid);
+
+	ResultData fetchQrcodeStatus(Map<String, Object> condition);
 }

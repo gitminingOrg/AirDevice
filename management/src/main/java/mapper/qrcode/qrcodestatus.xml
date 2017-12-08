@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.qrcodestatus">
+	<resultMap id="qRCodeStatusVo" type="vo.qrcode.QRCodeStatusVO">
+		<result property="codeId" column="code_id" />
+		<result property="codeValue" column="code_value" />
+		<result property="modelId" column="model_id" />
+		<result property="modelName" column="model_name" />
+		<result property="delivered" column="code_delivered" />
+		<result property="scanTime" column="scan_time" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+
+	<select id="query" parameterType="java.util.Map" resultMap="qRCodeStatusVo">
+		select code_id, code_value, qrcode.model_id, model_name, code_delivered, scan_time, qrcode.create_time
+		from qrcode, goods_model
+		where 1 = 1
+		<if test="codeId != null">
+			and code_id = #{codeId}
+		</if>
+		<if test="codeValue != null">
+			and code_value = #{codeValue}
+		</if>
+		<if test="modelId != null">
+			and qrcode.model_id = #{modelId}
+		</if>
+		<if test="modelName != null">
+			and model_name = #{modelName}
+		</if>
+		<if test="delivered != null">
+			and code_delivered = #{delivered}
+		</if>
+		<if test="scanTime != null">
+			and scan_time = #{scanTime}
+		</if>
+		order by qrcode.create_time DESC
+	</select>
+</mapper>

@@ -22,6 +22,7 @@ import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.goods.BatchVo;
+import vo.qrcode.QRCodeStatusVO;
 import vo.qrcode.QRCodeVo;
 
 @Repository
@@ -144,5 +145,22 @@ public class QRCodeDaoImpl extends BaseDao implements QRCodeDao {
 		return result;
 	}
 
+	@Override
+	public ResultData queryQrcodeStatus(Map<String, Object> condition) {
+		ResultData result = new ResultData();
+		try {
+			List<QRCodeStatusVO> list = sqlSession.selectList("management.qrcodestatus.query", condition);
+			if (list.size() == 0){
+				result.setResponseCode(ResponseCode.RESPONSE_NULL);
+			} else {
+				result.setData(list);
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
 
 }

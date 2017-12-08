@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -40,6 +41,7 @@ import utils.PathUtil;
 import utils.QRSerialGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
+import vo.qrcode.QRCodeStatusVO;
 
 @Service
 public class QRCodeServiceImpl implements QRCodeService {
@@ -256,4 +258,17 @@ public class QRCodeServiceImpl implements QRCodeService {
 	public ResultData fetchDeviceChip(String uid) {
 		return qRCodePreBindDao.selectChipDeviceByUid(uid);
 	}
+
+    @Override
+    public ResultData fetchQrcodeStatus(Map<String, Object> condition) {
+        ResultData result = new ResultData();
+        ResultData response = qRCodeDao.queryQrcodeStatus(condition);
+        if (response.getResponseCode() != ResponseCode.RESPONSE_OK){
+        	return response;
+		} else {
+			List<QRCodeStatusVO> list = (List<QRCodeStatusVO>) response.getData();
+			result.setData(list);
+			return result;
+		}
+    }
 }

@@ -421,4 +421,20 @@ public class QRCodeController {
 		return result;
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/status/list")
+	public ResultData QRCodeStatus(){
+		ResultData result = new ResultData();
+		Map<String, Object> condition = new HashMap<>();
+		ResultData response = qRCodeService.fetchQrcodeStatus(condition);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_NULL){
+			result.setResponseCode(ResponseCode.RESPONSE_NULL);
+		} else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR){
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription("未获取到二维码状态信息，请稍后重试！");
+		} else {
+			result.setData(response.getData());
+		}
+		return result;
+	}
+
 }

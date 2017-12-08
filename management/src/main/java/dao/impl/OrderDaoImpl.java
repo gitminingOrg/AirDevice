@@ -184,7 +184,7 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	}
 
 	@Override
-	public ResultData orderStatus(Map<String, Object> condition) {
+	public ResultData queryOrderStatus(Map<String, Object> condition) {
 		ResultData result = new ResultData();
 		try {
 			List<OrderStatusVo> list = sqlSession.selectList("management.orderstatus.queryOrder", condition);

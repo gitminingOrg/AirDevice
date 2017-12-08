@@ -150,7 +150,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResultData fetchOrderStatus(Map<String, Object> condition) {
 		ResultData result = new ResultData();
-		ResultData response = orderDao.orderStatus(condition);
+		ResultData response = orderDao.queryOrderStatus(condition);
 		if (response.getResponseCode() != ResponseCode.RESPONSE_OK){
 			return response;
 		} else {

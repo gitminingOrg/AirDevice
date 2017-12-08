@@ -17,4 +17,6 @@ public interface QRCodeDao {
 	ResultData query(Map<String, Object> condition, DataTableParam param);
 	
 	ResultData udpate(QRCode code);
+
+	ResultData queryQrcodeStatus(Map<String, Object> condition);
 }
