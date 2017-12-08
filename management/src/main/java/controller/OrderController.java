@@ -323,16 +323,16 @@ public class OrderController {
 		return result;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/ordercount/list")
-	public ResultData OrderCount() {
+	@RequestMapping(method = RequestMethod.GET, value = "/orderstatus/list")
+	public ResultData OrderStatus() {
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
-        ResultData response = orderService.fetchOrdercount(condition);
+        ResultData response = orderService.fetchOrderStatus(condition);
         if (response.getResponseCode() == ResponseCode.RESPONSE_NULL){
         	result.setResponseCode(ResponseCode.RESPONSE_NULL);
 		} else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR){
         	result.setResponseCode(ResponseCode.RESPONSE_ERROR);
-        	result.setDescription("未获取订单信息，请稍后重试！");
+        	result.setDescription("未获取到订单信息，请稍后重试！");
 		} else {
 			result.setData(response.getData());
 		}

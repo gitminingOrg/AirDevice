@@ -30,5 +30,5 @@ public interface OrderService {
 	
 	ResultData fetchStatus();
 
-	ResultData fetchOrdercount(Map<String, Object> condition);
+	ResultData fetchOrderStatus(Map<String, Object> condition);
 }

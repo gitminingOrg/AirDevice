@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="management.ordercount">
-	<resultMap id="OrderStaticsVo" type="vo.order.OrderStaticsVo">
+<mapper namespace="management.orderstatus">
+	<resultMap id="OrderStatusVo" type="vo.order.OrderStatusVo">
 		<result property = "orderId" column="order_id" />
 		<result property = "status" column="order_status" typeHandler="handler.OrderStatusHandler"/>
 		<result property="createTime" column="create_time"/>
 	</resultMap>
 	
-	<select id="queryOrder" parameterType="java.util.Map" resultMap = "OrderStaticsVo">
+	<select id="queryOrder" parameterType="java.util.Map" resultMap = "OrderStatusVo">
 		select order_id, order_status, create_time
 		from taobao_order
 		where 1 = 1

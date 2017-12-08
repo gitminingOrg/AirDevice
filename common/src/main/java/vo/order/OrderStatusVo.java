@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 /**
  * Created by hushe on 2017/12/8.
  */
-public class OrderStaticsVo {
+public class OrderStatusVo {
     private String orderId;
     private OrderStatus status;
     private Timestamp createTime;

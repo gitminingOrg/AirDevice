@@ -24,6 +24,7 @@ import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.consumer.ConsumerShareCodeVo;
+import vo.order.OrderStatusVo;
 import vo.order.OrderVo;
 
 @Repository
@@ -183,10 +184,10 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	}
 
 	@Override
-	public ResultData orderCount(Map<String, Object> condition) {
+	public ResultData orderStatus(Map<String, Object> condition) {
 		ResultData result = new ResultData();
 		try {
-			List<OrderVo> list = sqlSession.selectList("management.ordercount.queryOrder", condition);
+			List<OrderStatusVo> list = sqlSession.selectList("management.orderstatus.queryOrder", condition);
 			if (list.size() == 0) {
 				result.setResponseCode(ResponseCode.RESPONSE_NULL);
 				return result;

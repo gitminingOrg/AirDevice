@@ -25,5 +25,5 @@ public interface OrderDao {
 	
 	ResultData status();
 
-	ResultData orderCount(Map<String, Object> condition);
+	ResultData orderStatus(Map<String, Object> condition);
 }
