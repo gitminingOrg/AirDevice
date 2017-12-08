@@ -29,4 +29,6 @@ public interface OrderService {
 	ResultData fetchChannel();
 	
 	ResultData fetchStatus();
+
+	ResultData fetchOrdercount(Map<String, Object> condition);
 }

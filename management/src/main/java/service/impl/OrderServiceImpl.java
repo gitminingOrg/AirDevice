@@ -17,6 +17,7 @@ import pagination.DataTableParam;
 import service.OrderService;
 import utils.ResponseCode;
 import utils.ResultData;
+import vo.order.OrderVo;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -144,4 +145,17 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return result;
 	}
+
+    @Override
+    public ResultData fetchOrdercount(Map<String, Object> condition) {
+		ResultData result = new ResultData();
+		ResultData response = orderDao.orderCount(condition);
+		if (response.getResponseCode() != ResponseCode.RESPONSE_OK){
+			return response;
+		} else {
+			List<OrderVo> list = (List<OrderVo>) response.getData();
+			result.setData(list);
+			return result;
+		}
+    }
 }

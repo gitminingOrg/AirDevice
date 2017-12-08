@@ -9,8 +9,8 @@ import java.sql.Timestamp;
  */
 public class OrderStaticsVo {
     private String orderId;
-    private OrderStatus order_status;
-    private Timestamp create_time;
+    private OrderStatus status;
+    private Timestamp createTime;
 
     public String getOrderId() {
         return orderId;
@@ -20,19 +20,19 @@ public class OrderStaticsVo {
         this.orderId = orderId;
     }
 
-    public OrderStatus getOrder_status() {
-        return order_status;
+    public OrderStatus getStatus() {
+        return status;
     }
 
-    public void setOrder_status(OrderStatus order_status) {
-        this.order_status = order_status;
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 
-    public Timestamp getCreate_time() {
-        return create_time;
+    public Timestamp getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(Timestamp create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 }

@@ -26,5 +26,6 @@
 		<mapper resource="mapper/point/pointvalue.xml" />
 		<mapper resource="mapper/userlog/userlog.xml"/>
 		<mapper resource="mapper/systemlog/systemlog.xml"/>
+		<mapper resource="mapper/order/ordercount.xml"/>
 	</mappers>
 </configuration>

@@ -24,4 +24,6 @@ public interface OrderDao {
 	ResultData channel();
 	
 	ResultData status();
+
+	ResultData orderCount(Map<String, Object> condition);
 }

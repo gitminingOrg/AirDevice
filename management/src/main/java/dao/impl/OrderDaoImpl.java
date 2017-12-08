@@ -181,4 +181,22 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 		}
 		return result;
 	}
+
+	@Override
+	public ResultData orderCount(Map<String, Object> condition) {
+		ResultData result = new ResultData();
+		try {
+			List<OrderVo> list = sqlSession.selectList("management.ordercount.queryOrder", condition);
+			if (list.size() == 0) {
+				result.setResponseCode(ResponseCode.RESPONSE_NULL);
+				return result;
+			}
+			result.setData(list);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
 }
