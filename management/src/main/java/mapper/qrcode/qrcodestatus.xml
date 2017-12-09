@@ -7,12 +7,13 @@
 		<result property="modelId" column="model_id" />
 		<result property="modelName" column="model_name" />
 		<result property="delivered" column="code_delivered" />
+		<result property="scan" column="code_occupied" />
 		<result property="scanTime" column="scan_time" />
 		<result property="createTime" column="create_time" />
 	</resultMap>
 
 	<select id="query" parameterType="java.util.Map" resultMap="qRCodeStatusVo">
-		select code_id, code_value, qrcode.model_id, model_name, code_delivered, scan_time, qrcode.create_time
+		select code_id, code_value, qrcode.model_id, model_name, code_delivered, code_occupied, scan_time, qrcode.create_time
 		from qrcode, goods_model
 		where 1 = 1
 		<if test="codeId != null">
@@ -29,6 +30,9 @@
 		</if>
 		<if test="delivered != null">
 			and code_delivered = #{delivered}
+		</if>
+		<if test="scan != null">
+			and code_occupied = #{scan}
 		</if>
 		<if test="scanTime != null">
 			and scan_time = #{scanTime}

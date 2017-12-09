@@ -11,6 +11,7 @@ public class QRCodeStatusVO {
     private String modelId;
     private String modelName;
     private boolean delivered;
+    private boolean scan;
     private Timestamp scanTime;
     private Timestamp createTime;
 
@@ -52,6 +53,14 @@ public class QRCodeStatusVO {
 
     public void setDelivered(boolean delivered) {
         this.delivered = delivered;
+    }
+
+    public boolean isScan() {
+        return scan;
+    }
+
+    public void setScan(boolean scan) {
+        this.scan = scan;
     }
 
     public Timestamp getScanTime() {
