@@ -107,3 +107,16 @@ ORDER BY device_chip.update_time DESC
 
 ##2017.12.10
 CREATE view latest_device_info as select device_id, pm25, power, time from deviceStatus where time >= subdate(now(), interval 20 minute) group by device_id;
+
+CREATE view device_address
+as
+SELECT device_id,
+       `owner`,
+       phone,
+       city_name as city,
+       province_name as province,
+       address
+       from deviceName, location_city, location_province
+       WHERE deviceName.city_id = location_city.city_id
+             AND
+       deviceName.province_id = location_province.province_id

@@ -15,12 +15,9 @@
           SELECT device_id,
                  `owner`,
                  phone,
-                 city_name as city,
-                 province_name as province,
+                 city,
+                 province,
                  address
-                 from devicename, location_city, location_province
-                 WHERE devicename.city_id = location_city.city_id
-                       AND
-			           devicename.province_id = location_province.province_id
+                 from device_address
     </select>
 </mapper>
