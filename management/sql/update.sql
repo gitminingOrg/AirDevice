@@ -115,3 +115,16 @@ CREATE TABLE `airdevice`.`install_insight` (
   `block_flag` TINYINT(1) NOT NULL DEFAULT 0,
   `create_time` DATETIME NOT NULL,
   PRIMARY KEY (`insight_id`));
+
+CREATE view device_address
+as
+SELECT device_id,
+       `owner`,
+       phone,
+       city_name as city,
+       province_name as province,
+       address
+       from deviceName, location_city, location_province
+       WHERE deviceName.city_id = location_city.city_id
+             AND
+       deviceName.province_id = location_province.province_id
