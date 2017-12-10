@@ -107,3 +107,11 @@ ORDER BY device_chip.update_time DESC
 
 ##2017.12.10
 CREATE view latest_device_info as select device_id, pm25, power, time from deviceStatus where time >= subdate(now(), interval 20 minute) group by device_id;
+
+CREATE TABLE `airdevice`.`install_insight` (
+  `insight_id` VARCHAR(20) NOT NULL,
+  `code_id` VARCHAR(45) NOT NULL,
+  `insight_path` VARCHAR(200) NOT NULL,
+  `block_flag` TINYINT(1) NOT NULL DEFAULT 0,
+  `create_time` DATETIME NOT NULL,
+  PRIMARY KEY (`insight_id`));
