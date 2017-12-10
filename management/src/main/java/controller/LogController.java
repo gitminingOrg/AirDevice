@@ -29,11 +29,10 @@ public class LogController {
 	private SystemLogService systemLogService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/us_list")
-	public ResultData log4user(String userId) {
+	public ResultData log4user() {
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("blockFlag", false);
-		condition.put("userId", userId);
 		ResultData response = userLogService.fetch(condition);
 		result.setResponseCode(response.getResponseCode());
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
