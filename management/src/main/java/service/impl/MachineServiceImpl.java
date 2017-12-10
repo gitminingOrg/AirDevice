@@ -84,4 +84,17 @@ public class MachineServiceImpl implements MachineService {
 			return resultData;
 		}
 	}
+
+    @Override
+    public ResultData queryMachineStata(Map<String, Object> condition) {
+        ResultData result = new ResultData();
+        ResultData response = machineDao.query(condition);
+        result.setResponseCode(response.getResponseCode());
+        if(response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setData(response.getData());
+        }else {
+            result.setDescription(response.getDescription());
+        }
+        return result;
+    }
 }

@@ -10,6 +10,13 @@
         <result column="update_time" property="updateTime" />
     </resultMap>
 
+    <resultMap id="machineStataVo" type="vo.MachineStataVo">
+        <result column="device_id" property="machineId"/>
+        <result column="pm25" property="pm25"/>
+        <result column="power" property="isPowerOn"/>
+        <result column="time" property="createAt"/>
+    </resultMap>
+    
     <!--删除相关的机器数据-->
     <delete id="deleteDevice" parameterType="String">
         DELETE FROM airdevice.device_chip where device_id = #{device_id};
@@ -34,6 +41,15 @@
         WHERE 1 = 1
         <if test="model_code != null">
             model_code = #{modelCode}
+        </if>
+    </select>
+    
+    <select id="queryMachineStata" parameterType="java.util.Map" resultMap="machineStataVo">
+        SELECT device_id, pm25, power, `time`
+        FROM latest_device_info
+        WHERE 1 = 1
+        <if test="machineId != null">
+            AND device_id = #{machineId}
         </if>
     </select>
 </mapper>

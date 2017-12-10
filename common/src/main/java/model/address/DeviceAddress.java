@@ -1,6 +1,8 @@
 package model.address;
 
 
+import com.alibaba.fastjson.JSON;
+
 public class DeviceAddress {
     private String device_id;
     private String owner;
@@ -55,5 +57,10 @@ public class DeviceAddress {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }

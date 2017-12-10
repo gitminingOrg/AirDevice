@@ -104,3 +104,6 @@ SELECT device_id, chip_id, model_code, model_name, update_time from device_chip,
 WHERE SUBSTR(device_chip.device_id FROM 1 FOR 3) = goods_model.model_code
 AND device_chip.`status` = 1
 ORDER BY device_chip.update_time DESC
+
+##2017.12.10
+CREATE view latest_device_info as select device_id, pm25, power, time from deviceStatus where time >= subdate(now(), interval 20 minute) group by device_id;

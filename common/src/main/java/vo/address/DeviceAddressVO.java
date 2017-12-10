@@ -1,6 +1,8 @@
 package vo.address;
 
 
+import com.alibaba.fastjson.JSON;
+
 public class DeviceAddressVO {
     private String device_id;
     private String owner;
@@ -55,6 +57,11 @@ public class DeviceAddressVO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 }
 
