@@ -16,6 +16,9 @@
   <if test="codeId != null">
       AND code_id = #{codeId}
   </if>
+  <if test="insightId != null">
+      AND insight_id = #{insightId}
+  </if>
 </select>
 
 <insert id="insert" parameterType="model.machine.Insight" useGeneratedKeys="false">
