@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.machine.insight">
+<resultMap id="machineInsightVo" type="vo.machine.InsightVo">
+    <result property="insightId" column="insight_id"/>
+    <result property="codeId" column="code_id"/>
+    <result property="path" column="insight_path"/>
+    <result property="createAt" column="create_time"/>
+</resultMap>
+
+<select id="query">
+  SELECT insight_id, code_id, insight_path, create_time
+  FROM install_insight
+  WHERE 1 = 1
+  AND block_flag = FALSE
+  <if test="codeId != null">
+      AND code_id = #{codeId}
+  </if>
+  <if test="insightId != null">
+      AND insight_id = #{insightId}
+  </if>
+</select>
+
+<insert id="insert" parameterType="model.machine.Insight" useGeneratedKeys="false">
+    INSERT INTO install_insight(insight_id, code_id, insight_path, block_flag, create_time)
+    VALUES (#{insightId}, #{codeId}, #{path}, #{blockFlag}, #{createAt})
+</insert>
+</mapper>

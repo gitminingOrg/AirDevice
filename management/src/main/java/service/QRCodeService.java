@@ -2,6 +2,7 @@ package service;
 
 import java.util.Map;
 
+import model.machine.Insight;
 import model.qrcode.PreBindCodeUID;
 import model.qrcode.QRCode;
 import pagination.DataTableParam;
@@ -34,4 +35,8 @@ public interface QRCodeService {
 	ResultData fetchDeviceChip(String uid);
 
 	ResultData fetchQrcodeStatus(Map<String, Object> condition);
+
+	ResultData fetchInsight(Map<String, Object> condition);
+
+	ResultData createInsight(Insight insight);
 }
