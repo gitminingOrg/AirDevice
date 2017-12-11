@@ -8,7 +8,7 @@
     <result property="createAt" column="create_time"/>
 </resultMap>
 
-<select id="query">
+<select id="query" resultMap="machineInsightVo">
   SELECT insight_id, code_id, insight_path, create_time
   FROM install_insight
   WHERE 1 = 1

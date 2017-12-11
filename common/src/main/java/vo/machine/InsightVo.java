@@ -1,5 +1,7 @@
 package vo.machine;
 
+import java.sql.Timestamp;
+
 /**
  * Created by sunshine on 10/12/2017.
  */
@@ -9,6 +11,8 @@ public class InsightVo {
     private String codeId;
 
     private String path;
+
+    private Timestamp createAt;
 
     public String getInsightId() {
         return insightId;
@@ -32,5 +36,13 @@ public class InsightVo {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public Timestamp getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 }

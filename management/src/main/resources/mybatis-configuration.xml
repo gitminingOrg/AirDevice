@@ -28,5 +28,6 @@
 		<mapper resource="mapper/systemlog/systemlog.xml" />
 		<mapper resource="mapper/order/orderstatus.xml" />
 		<mapper resource="mapper/qrcode/qrcodestatus.xml" />
+		<mapper resource="mapper/machine/insight.xml" />
 	</mappers>
 </configuration>

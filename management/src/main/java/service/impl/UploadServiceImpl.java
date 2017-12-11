@@ -2,6 +2,7 @@ package service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import utils.IDGenerator;
 import org.springframework.web.multipart.MultipartFile;
 import service.UploadService;
@@ -15,10 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-
-/**
- * Created by hushe on 2017/12/11.
- */
+@Service
 public class UploadServiceImpl implements UploadService {
     private Logger logger = LoggerFactory.getLogger(UploadServiceImpl.class);
 
@@ -46,7 +44,12 @@ public class UploadServiceImpl implements UploadService {
         builder.append(time);
         File directory = new File(builder.toString());
         if (!directory.exists()) {
-            directory.mkdirs();
+            boolean isDone = directory.mkdirs();
+            if (isDone) {
+                logger.info("save file to " + directory.getAbsolutePath());
+            } else {
+                logger.error("cannot create directory " + directory.getAbsolutePath());
+            }
         }
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'));
         String key = IDGenerator.generate("TH");

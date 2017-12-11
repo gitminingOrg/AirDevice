@@ -14,8 +14,6 @@ public class Insight extends Entity{
 
     private String path;
 
-    private Timestamp createAt;
-
     public String getInsightId() {
         return insightId;
     }
