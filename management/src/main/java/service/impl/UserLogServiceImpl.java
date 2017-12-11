@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import service.UserLogService;
 import utils.ResponseCode;
 import utils.ResultData;
@@ -19,7 +20,7 @@ import java.util.Map;
 /**
  * Created by hushe on 2017/10/29.
  */
-@Repository
+@Service
 public class UserLogServiceImpl implements UserLogService {
     private Logger logger = LoggerFactory.getLogger(UserLogService.class);
 
