@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
 import pagination.MobilePage;
@@ -450,8 +451,15 @@ public class QRCodeController {
     }
 
 
+    @RequestMapping(method = RequestMethod.GET, value = "/insight/")
+    public ModelAndView insight() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("/backend/qrcode/insight");
+        return view;
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/insight/upload")
-    public ResultData upload(@RequestParam String codeId, @RequestParam MultipartFile file) {
+    public ResultData upload(@RequestParam MultipartFile file) {
         ResultData result = new ResultData();
         ResultData response = uploadService.upload(file, Constant.FILEBASE);
         if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
@@ -462,21 +470,26 @@ public class QRCodeController {
             result.setResponseCode(ResponseCode.RESPONSE_NULL);
             return result;
         } else {
-            String filePath = (String) response.getData();
-            Insight insight = new Insight();
-            insight.setCodeId(codeId);
-            insight.setPath(filePath);
-            response = qRCodeService.createInsight(insight);
-            if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
-                result.setResponseCode(ResponseCode.RESPONSE_ERROR);
-                result.setDescription("服务器繁忙，请稍后再试!");
-            } else if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
-                result.setResponseCode(ResponseCode.RESPONSE_NULL);
-            } else {
-                result.setData(response.getData());
-            }
+            result.setData(response.getData());
             return result;
         }
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/insight/upload/{codeId}")
+    public ResultData upload(@PathVariable("codeId") String codeId, @RequestParam("filePath") String filepath) {
+        ResultData result = new ResultData();
+        ResultData response = null;
+        String[] filepathList = filepath.split(";");
+        for (String path: filepathList) {
+            Insight insight = new Insight();
+            insight.setPath(path);
+            insight.setCodeId(codeId);
+            response = qRCodeService.createInsight(insight);
+            if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+                result.setResponseCode(response.getResponseCode());
+                return result;
+            }
+        }
+        return result;
+    }
 }
