@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
 import pagination.MobilePage;
@@ -461,7 +460,11 @@ public class QRCodeController {
     @RequestMapping(method = RequestMethod.POST, value = "/insight/upload")
     public ResultData upload(@RequestParam MultipartFile file) {
         ResultData result = new ResultData();
-        ResultData response = uploadService.upload(file, Constant.FILEBASE);
+
+        String absolutePath = this.getClass().getClassLoader().getResource("").getPath();
+        int index = absolutePath.indexOf("/WEB-INF/classes/");
+        String basePath = absolutePath.substring(0, index);
+        ResultData response = uploadService.upload(file, basePath);
         if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
             result.setDescription("服务器繁忙，请稍后再试!");
