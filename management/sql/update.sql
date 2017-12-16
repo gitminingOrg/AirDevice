@@ -128,3 +128,17 @@ SELECT device_id,
        WHERE deviceName.city_id = location_city.city_id
              AND
        deviceName.province_id = location_province.province_id
+
+##2017.12.16
+CREATE view qrcode_status_view
+as
+select code_id,
+       code_value,
+       qrcode.model_id,
+       model_name,
+       code_delivered,
+       code_occupied,
+       scan_time,
+       qrcode.create_time
+		from qrcode, goods_model
+		WHERE qrcode.model_id = goods_model.model_id
