@@ -24,6 +24,7 @@ import utils.HttpDeal;
 import utils.ResponseCode;
 import utils.ResultData;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/machine")
 public class MachineController {
