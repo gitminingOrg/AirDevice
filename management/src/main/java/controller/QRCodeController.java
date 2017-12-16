@@ -449,7 +449,6 @@ public class QRCodeController {
         return result;
     }
 
-
     @RequestMapping(method = RequestMethod.POST, value = "/insight/upload")
     public ResultData upload(@RequestParam String codeId, @RequestParam MultipartFile file) {
         ResultData result = new ResultData();
@@ -478,5 +477,4 @@ public class QRCodeController {
             return result;
         }
     }
-
 }

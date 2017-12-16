@@ -16,7 +16,7 @@ import utils.ResultData;
 @Repository
 public class MachineDaoImpl extends BaseDao implements MachineDao {
 	private Logger logger = LoggerFactory.getLogger(MachineDaoImpl.class);
-	
+
 	@Override
 	public ResultData query(Map<String, Object> condition) {
 		ResultData result = new ResultData();
