@@ -450,7 +450,6 @@ public class QRCodeController {
         return result;
     }
 
-
     @RequestMapping(method = RequestMethod.GET, value = "/insight/")
     public ModelAndView insight() {
         ModelAndView view = new ModelAndView();
@@ -461,7 +460,6 @@ public class QRCodeController {
     @RequestMapping(method = RequestMethod.POST, value = "/insight/upload")
     public ResultData upload(@RequestParam MultipartFile file) {
         ResultData result = new ResultData();
-
         String absolutePath = this.getClass().getClassLoader().getResource("").getPath();
         int index = absolutePath.indexOf("/WEB-INF/classes/");
         String basePath = absolutePath.substring(0, index);
