@@ -142,3 +142,12 @@ select code_id,
        qrcode.create_time
 		from qrcode, goods_model
 		WHERE qrcode.model_id = goods_model.model_id
+
+DROP TABLE IF EXISTS `orderChannel`;
+CREATE TABLE `airdevice`.`orderChannel` (
+  `channel_id` VARCHAR (20) NOT NULL ,
+  `channel_name` VARCHAR (50) NOT NULL ,
+  `block_flag` TINYINT(1) NOT NULL DEFAULT 0,
+  `create_time` DATETIME NOT NULL,
+  PRIMARY KEY (`channel_id`)
+);
