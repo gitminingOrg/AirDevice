@@ -449,7 +449,6 @@ public class QRCodeController {
         return result;
     }
 
-
     @RequestMapping(method = RequestMethod.GET, value = "/insight/")
     public ModelAndView insight() {
         ModelAndView view = new ModelAndView();

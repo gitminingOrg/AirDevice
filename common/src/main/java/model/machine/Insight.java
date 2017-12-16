@@ -37,12 +37,4 @@ public class Insight extends Entity{
     public void setPath(String path) {
         this.path = path;
     }
-
-    public Timestamp getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Timestamp createAt) {
-        this.createAt = createAt;
-    }
 }
