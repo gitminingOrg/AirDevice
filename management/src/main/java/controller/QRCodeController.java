@@ -415,6 +415,7 @@ public class QRCodeController {
         return result;
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "/status/list")
     public ResultData QRCodeStatus() {
         ResultData result = new ResultData();
