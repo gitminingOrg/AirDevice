@@ -45,4 +45,11 @@ public class UserServiceImpl implements UserService {
 		result.setDescription("User " + user.getUsername() + "login failed");
 		return result;
 	}
+
+	@Override
+	public ResultData create(User user) {
+		ResultData result = new ResultData();
+
+		return result;
+	}
 }
