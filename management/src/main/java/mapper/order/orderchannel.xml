@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.order.channel">
+    <resultMap id="orderchannelVo" type="vo.order.OrderChannelVo">
+        <result property="channelId" column="channel_id" />
+        <result property="channelName" column="channel_name" />
+        <result property="blockFlag" column="block_flag" />
+        <result property="createAt" column="create_time" />
+    </resultMap>
+
+    <insert id="insert" parameterType="model.order.OrderChannel" useGeneratedKeys="false">
+        insert into orderchannel (channel_id, channel_name, block_flag, create_time)
+        values
+        (#{channelId}, #{channelName}, #{blockFlag}, #{createAt})
+    </insert>
+
+    <select id="query" parameterType="java.util.Map" resultMap="orderchannelVo">
+        select channel_id, channel_name, block_flag, create_time
+        from orderchannel
+        where 1 = 1
+        <if test="channelId != null">
+            and channel_id = # {channelId}
+        </if>
+        <if test="channelName != null">
+            and channel_name = # {channelName}
+        </if>
+        <if test="blockFlag != null">
+            and block_flag = # {blockFlag}
+        </if>
+        order by create_time desc
+    </select>
+</mapper>

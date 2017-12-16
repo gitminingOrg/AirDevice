@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import model.order.CustomizeOrder;
+import model.order.OrderChannel;
 import model.order.OrderMission;
 import model.order.TaobaoOrder;
 import pagination.DataTableParam;
@@ -31,4 +32,8 @@ public interface OrderService {
 	ResultData fetchStatus();
 
 	ResultData fetchOrderStatus(Map<String, Object> condition);
+
+	ResultData create(OrderChannel orderChannel);
+
+	ResultData fetchOrderChannel(Map<String, Object> condition);
 }

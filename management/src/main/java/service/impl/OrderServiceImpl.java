@@ -3,6 +3,8 @@ package service.impl;
 import java.util.List;
 import java.util.Map;
 
+import dao.OrderChannelDao;
+import model.order.OrderChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import pagination.DataTableParam;
 import service.OrderService;
 import utils.ResponseCode;
 import utils.ResultData;
+import vo.order.OrderChannelVo;
 import vo.order.OrderStatusVo;
 import vo.order.OrderVo;
 
@@ -29,6 +32,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderMissionDao orderMissionDao;
+
+	@Autowired
+	private OrderChannelDao orderChannelDao;
 
 	@Override
 	public ResultData upload(List<TaobaoOrder> order) {
@@ -159,4 +165,30 @@ public class OrderServiceImpl implements OrderService {
 			return result;
 		}
     }
+
+    @Override
+    public ResultData create(OrderChannel orderChannel) {
+        ResultData result = new ResultData();
+        ResultData response = orderChannelDao.insert(orderChannel);
+        result.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+        	result.setData(response.getData());
+		} else {
+        	result.setDescription(response.getDescription());
+		}
+		return result;
+    }
+
+	@Override
+	public ResultData fetchOrderChannel(Map<String, Object> condition) {
+		ResultData result = new ResultData();
+		ResultData response = orderChannelDao.query(condition);
+		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+			return response;
+		} else {
+			List<OrderChannelVo> list = (List<OrderChannelVo>) response.getData();
+			result.setData(list);
+			return result;
+		}
+	}
 }

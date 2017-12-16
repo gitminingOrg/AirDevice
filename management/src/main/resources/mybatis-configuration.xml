@@ -29,5 +29,6 @@
 		<mapper resource="mapper/order/orderstatus.xml" />
 		<mapper resource="mapper/qrcode/qrcodestatus.xml" />
 		<mapper resource="mapper/machine/insight.xml" />
+		<mapper resource="mapper/order/orderchannel.xml" />
 	</mappers>
 </configuration>

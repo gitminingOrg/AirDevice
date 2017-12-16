@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.ws.rs.Path;
 
+import model.order.*;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -34,10 +35,6 @@ import com.csvreader.CsvReader;
 
 import form.OrderCreateForm;
 import form.OrderMissionForm;
-import model.order.CustomizeOrder;
-import model.order.OrderMission;
-import model.order.OrderStatus;
-import model.order.TaobaoOrder;
 import model.user.User;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
@@ -335,6 +332,38 @@ public class OrderController {
         	result.setDescription("未获取到订单信息，请稍后重试！");
 		} else {
 			result.setData(response.getData());
+		}
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/orderchannel/list")
+	public ResultData OrderChannel() {
+		ResultData result = new ResultData();
+		Map<String, Object> condition = new HashMap<>();
+		ResultData response = orderService.fetchOrderChannel(condition);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+			result.setResponseCode(ResponseCode.RESPONSE_NULL);
+		} else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription("服务器异常，请稍后重试");
+		} else {
+			result.setData(response.getData());
+		}
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/orderchannel/complete")
+	public ResultData createOrderChannel(OrderChannel orderChannel){
+		ResultData result = new ResultData();
+		ResultData response = orderService.create(orderChannel);
+		try {
+			if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+				result.setData(response.getData());
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
 		}
 		return result;
 	}
