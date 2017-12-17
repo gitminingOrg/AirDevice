@@ -1,5 +1,6 @@
 package service;
 
+import java.util.List;
 import java.util.Map;
 
 import model.machine.Insight;
@@ -39,4 +40,6 @@ public interface QRCodeService {
 	ResultData fetchInsight(Map<String, Object> condition);
 
 	ResultData createInsight(Insight insight);
+
+	ResultData createInsight(List<Insight> insights);
 }

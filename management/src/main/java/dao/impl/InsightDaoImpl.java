@@ -60,4 +60,22 @@ public class InsightDaoImpl extends BaseDao implements InsightDao {
         }
         return result;
     }
+
+    @Override
+    public ResultData insert(List<Insight> list) {
+        ResultData result = new ResultData();
+        for (Insight item : list) {
+            item.setInsightId(IDGenerator.generate("IIS"));
+        }
+        synchronized (lock) {
+            try {
+                sqlSession.insert("management.machine.insight.insertlist", list);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+                result.setDescription(e.getMessage());
+            }
+        }
+        return result;
+    }
 }

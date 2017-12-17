@@ -151,3 +151,8 @@ CREATE TABLE `airdevice`.`orderChannel` (
   `create_time` DATETIME NOT NULL,
   PRIMARY KEY (`channel_id`)
 );
+
+##2017年12月17日
+ALTER TABLE `airdevice`.`install_insight`
+ADD COLUMN `event_id` VARCHAR(20) NULL AFTER `code_id`;
+

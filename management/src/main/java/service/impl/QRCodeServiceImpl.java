@@ -296,4 +296,11 @@ public class QRCodeServiceImpl implements QRCodeService {
         }
         return result;
     }
+
+    @Override
+    public ResultData createInsight(List<Insight> insights) {
+        ResultData result = new ResultData();
+
+        return result;
+    }
 }

@@ -451,7 +451,7 @@ public class QRCodeController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/insight/")
+    @RequestMapping(method = RequestMethod.GET, value = "/insight")
     public ModelAndView insight() {
         ModelAndView view = new ModelAndView();
         view.setViewName("/backend/qrcode/insight");
@@ -481,9 +481,9 @@ public class QRCodeController {
     @RequestMapping(method = RequestMethod.POST, value = "/insight/upload/{codeId}")
     public ResultData upload(@PathVariable("codeId") String codeId, @RequestParam("filePath") String filepath) {
         ResultData result = new ResultData();
-        ResultData response = null;
+        ResultData response;
         String[] filepathList = filepath.split(";");
-        for (String path: filepathList) {
+        for (String path : filepathList) {
             Insight insight = new Insight();
             insight.setPath(path);
             insight.setCodeId(codeId);
