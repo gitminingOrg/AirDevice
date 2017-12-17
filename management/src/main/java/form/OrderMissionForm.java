@@ -6,6 +6,10 @@ public class OrderMissionForm {
 	
 	private String missionContent;
 
+	private String codeId;
+
+	private String filePath;
+
 	public String getMissionTitle() {
 		return missionTitle;
 	}
@@ -20,5 +24,21 @@ public class OrderMissionForm {
 
 	public void setMissionContent(String missionContent) {
 		this.missionContent = missionContent;
+	}
+
+	public String getCodeId() {
+		return codeId;
+	}
+
+	public void setCodeId(String codeId) {
+		this.codeId = codeId;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 }

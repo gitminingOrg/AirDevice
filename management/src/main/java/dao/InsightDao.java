@@ -3,6 +3,7 @@ package dao;
 import model.machine.Insight;
 import utils.ResultData;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,4 +13,6 @@ public interface InsightDao {
     ResultData insert(Insight insight);
 
     ResultData query(Map<String, Object> condition);
+
+    ResultData insert(List<Insight> list);
 }

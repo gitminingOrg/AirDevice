@@ -48,14 +48,6 @@ weui.uploader('#uploaderCustom', {
     onSuccess: function (ret) {
         if (ret.responseCode == 'RESPONSE_OK')
         {
-            // uploadSuccessCount++;
-            // if (uploadSuccessCount == uploadCount)
-            // {
-            //     var codeId = document.getElementById('txt_des').value;
-            //     $.post('/qrcode/insight/upload/' + codeId, function(data){
-            //         console.log("upload" + data);
-            //     });
-            // }
             uploadFilePathList.push(ret.data);
         }
     },
