@@ -4,7 +4,10 @@
 	<resultMap id="userVo" type="vo.user.UserVo">
 		<result property="userId" column="manager_id" />
 		<result property="username" column="manager_username" />
+		<result property="managername" column="manager_name" />
 		<result property="password" column="manager_password" />
+		<result property="blockFlag" column="block_flag" />
+		<result property="createAt" column="create_time" />
 		<association property="roles" column="userId = manager_id" select="rolequery" />
 	</resultMap>
 	
@@ -29,4 +32,10 @@
 			and block_flag = #{blockFlag}
 		</if>
 	</select>
+
+	<insert id="insert" parameterType="model.user.User" useGeneratedKeys="false">
+		insert into manger (manger_id, manager_username, manager_name, manager_password, block_flag, create_time)
+		values
+		(#{userId}, #{username}, #{managername}, #{password}, #{blockFlag}, #{createAt})
+	</insert>
 </mapper>

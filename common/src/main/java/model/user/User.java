@@ -14,6 +14,9 @@ public class User extends Entity {
     /* 用户名 */
     private String username;
 
+    /* 用户显示名 */
+    private String managername;
+
     /* 密码 */
     private String password;
 
@@ -27,6 +30,13 @@ public class User extends Entity {
     public User(String username, String password) {
         this();
         this.username = username;
+        this.password = password;
+    }
+
+    public User(String username, String managername, String password) {
+        this();
+        this.username = username;
+        this.managername = managername;
         this.password = password;
     }
 
@@ -52,6 +62,14 @@ public class User extends Entity {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getManagername() {
+        return managername;
+    }
+
+    public void setManagername(String managername) {
+        this.managername = managername;
     }
 
     public String getPassword() {

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import dao.BaseDao;
 import dao.UserDao;
 import model.user.User;
+import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.user.UserVo;
@@ -17,6 +18,8 @@ import vo.user.UserVo;
 @Repository
 public class UserDaoImpl extends BaseDao implements UserDao{
 	private Logger logger = LoggerFactory.getLogger(UserDaoImpl.class);
+
+	private Object lock = new Object();
 
 	@Override
 	public ResultData query(Map<String, Object> condition) {
@@ -37,7 +40,18 @@ public class UserDaoImpl extends BaseDao implements UserDao{
 
 	@Override
 	public ResultData insert(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		user.setUserId(IDGenerator.generate("MAN"));
+		ResultData result = new ResultData();
+		synchronized (lock) {
+			try {
+				sqlSession.insert("management.user.insert", user);
+				result.setData(user);
+			}catch (Exception e) {
+				logger.error(e.getMessage());
+				result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+				result.setDescription(e.getMessage());
+			}
+		}
+		return result;
 	}
 }

@@ -1,13 +1,20 @@
 package vo.user;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class UserVo {
 	private String userId;
 	
 	private String username;
+
+	private String managername;
 	
 	private String password;
+
+	private boolean blockFlag;
+
+	private Timestamp createAt;
 	
 	private List<String> roles;
 
@@ -41,5 +48,29 @@ public class UserVo {
 
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
+	}
+
+	public String getManagername() {
+		return managername;
+	}
+
+	public void setManagername(String managername) {
+		this.managername = managername;
+	}
+
+	public boolean isBlockFlag() {
+		return blockFlag;
+	}
+
+	public void setBlockFlag(boolean blockFlag) {
+		this.blockFlag = blockFlag;
+	}
+
+	public Timestamp getCreateAt() {
+		return createAt;
+	}
+
+	public void setCreateAt(Timestamp createAt) {
+		this.createAt = createAt;
 	}
 }

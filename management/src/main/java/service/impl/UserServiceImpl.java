@@ -49,7 +49,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ResultData create(User user) {
 		ResultData result = new ResultData();
-
+		ResultData response = userDao.insert(user);
+		result.setResponseCode(response.getResponseCode());
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setData(response.getData());
+		} else {
+			result.setDescription(response.getDescription());
+		}
 		return result;
 	}
 }
