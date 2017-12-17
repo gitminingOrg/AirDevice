@@ -109,14 +109,13 @@ public class OrderController {
         Map<String, Object> condition = new HashMap<>();
         condition.put("orderId", orderId);
         ResultData response = orderService.fetch(condition);
-        if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+        if (response.getResponseCode() != ResponseCode.RESPONSE_ERROR) {
             view.setViewName("redirect:/order/overview");
             return view;
         }
         OrderVo vo = ((List<OrderVo>) response.getData()).get(0);
         view.addObject("order", vo);
         view.setViewName("/backend/order/detail");
-        ;
         return view;
     }
 
@@ -183,7 +182,7 @@ public class OrderController {
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setData(response.getData());
         } else if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
-            response.setResponseCode(ResponseCode.RESPONSE_NULL);
+            result.setResponseCode(ResponseCode.RESPONSE_NULL);
             result.setDescription("当前此订单暂无任何事件记录");
         } else {
             response.setResponseCode(ResponseCode.RESPONSE_ERROR);
