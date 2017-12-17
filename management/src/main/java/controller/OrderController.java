@@ -109,7 +109,7 @@ public class OrderController {
         Map<String, Object> condition = new HashMap<>();
         condition.put("orderId", orderId);
         ResultData response = orderService.fetch(condition);
-        if (response.getResponseCode() != ResponseCode.RESPONSE_ERROR) {
+        if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
             view.setViewName("redirect:/order/overview");
             return view;
         }
@@ -239,11 +239,13 @@ public class OrderController {
         if (!StringUtils.isEmpty(form.getCodeId())) {
             codeId = form.getCodeId();
         }
+        String eventId = ((OrderMission) response.getData()).getMissionId();
         if (!StringUtils.isEmpty(form.getFilePath())) {
             String[] filepathList = form.getFilePath().split(";");
             for (String path : filepathList) {
                 Insight insight = new Insight();
                 insight.setPath(path);
+                insight.setEventId(eventId);
                 insight.setCodeId(codeId);
                 response = qRCodeService.createInsight(insight);
                 if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
