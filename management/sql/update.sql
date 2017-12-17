@@ -156,3 +156,5 @@ CREATE TABLE `airdevice`.`orderChannel` (
 ALTER TABLE `airdevice`.`install_insight`
 ADD COLUMN `event_id` VARCHAR(20) NULL AFTER `code_id`;
 
+INSERT INTO `airdevice`.`role` (`role_id`, `role_name`, `role_description`, `block_flag`, `create_time`) VALUES ('ROL00000005', 'order_viewer', '订单查看', '0', '2017-08-16 23:00:00');
+
