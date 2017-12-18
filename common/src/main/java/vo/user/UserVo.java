@@ -1,6 +1,5 @@
 package vo.user;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 public class UserVo {
@@ -14,8 +13,6 @@ public class UserVo {
 
 	private boolean blockFlag;
 
-	private Timestamp createAt;
-	
 	private List<String> roles;
 
 	public String getUserId() {
@@ -66,11 +63,4 @@ public class UserVo {
 		this.blockFlag = blockFlag;
 	}
 
-	public Timestamp getCreateAt() {
-		return createAt;
-	}
-
-	public void setCreateAt(Timestamp createAt) {
-		this.createAt = createAt;
-	}
 }
