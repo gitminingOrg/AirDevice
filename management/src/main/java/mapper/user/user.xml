@@ -34,7 +34,7 @@
 	</select>
 
 	<insert id="insert" parameterType="model.user.User" useGeneratedKeys="false">
-		insert into manger (manger_id, manager_username, manager_name, manager_password, block_flag, create_time)
+		insert into manager (manager_id, manager_username, manager_name, manager_password, block_flag, create_time)
 		values
 		(#{userId}, #{username}, #{managername}, #{password}, #{blockFlag}, #{createAt})
 	</insert>
