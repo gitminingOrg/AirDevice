@@ -7,7 +7,6 @@
 		<result property="managername" column="manager_name" />
 		<result property="password" column="manager_password" />
 		<result property="blockFlag" column="block_flag" />
-		<result property="createAt" column="create_time" />
 		<association property="roles" column="userId = manager_id" select="rolequery" />
 	</resultMap>
 	
