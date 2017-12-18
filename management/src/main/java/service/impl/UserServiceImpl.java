@@ -58,4 +58,19 @@ public class UserServiceImpl implements UserService {
 		}
 		return result;
 	}
+
+	@Override
+	public ResultData fetch(Map<String, Object> condition) {
+		ResultData result = new ResultData();
+		ResultData response = userDao.query(condition);
+		result.setResponseCode(response.getResponseCode());
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setData(response.getData());
+		} else if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+			result.setDescription("null");
+		} else {
+			result.setDescription(response.getDescription());
+		}
+		return result;
+	}
 }
