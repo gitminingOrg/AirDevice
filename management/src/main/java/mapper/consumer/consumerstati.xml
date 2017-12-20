@@ -8,8 +8,8 @@
     </resultMap>
 
     <select id="query" parameterType="java.util.Map" resultMap="consumerStatiVo">
-        select address, order_channel
-        from devicename, taobao_order
+        select address
+        from devicename
         where 1 = 1
         <if test="address != null">
             and address = # {address}
