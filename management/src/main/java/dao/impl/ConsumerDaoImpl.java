@@ -20,6 +20,7 @@ import pagination.DataTableParam;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.consumer.ConsumerGoods;
+import vo.consumer.ConsumerStatiVo;
 import vo.goods.ConsumerGoodsVo;
 import vo.qrcode.QRCodeVo;
 @Repository
@@ -61,8 +62,25 @@ public class ConsumerDaoImpl extends BaseDao implements ConsumerDao {
 		result.setData(page);
 		return result;
 	}
-	
-	private List<ConsumerGoodsVo> queryByPage(Map<String, Object> condition, int start, int length) {
+
+    @Override
+    public ResultData queryConsumer(Map<String, Object> condition) {
+        ResultData result = new ResultData();
+        try {
+        	List<ConsumerStatiVo> list = sqlSession.selectList("management.consumer.consumerStati.query", condition);
+        	if (list.isEmpty()) {
+        		result.setResponseCode(ResponseCode.RESPONSE_NULL);
+			}
+			result.setData(list);
+		} catch (Exception e) {
+        	logger.error(e.getMessage());
+        	result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+        	result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+    private List<ConsumerGoodsVo> queryByPage(Map<String, Object> condition, int start, int length) {
 		List<ConsumerGoodsVo> list = new ArrayList<>();
 		try {
 			list = sqlSession.selectList("management.consumer.consumerGoods.query", condition, new RowBounds(start, length));
