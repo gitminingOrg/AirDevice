@@ -5,8 +5,8 @@ package vo.consumer;
  */
 public class ConsumerStatiVo {
     private String address;
-    private int Counter;
-    private String Channel;
+    private int counter;
+    private String channel;
 
     public String getAddress() {
         return address;
@@ -17,18 +17,19 @@ public class ConsumerStatiVo {
     }
 
     public int getCounter() {
-        return Counter;
+        return counter;
     }
 
     public void setCounter(int counter) {
-        Counter = counter;
+        this.counter = counter;
     }
 
+
     public String getChannel() {
-        return Channel;
+        return channel;
     }
 
     public void setChannel(String channel) {
-        Channel = channel;
+        this.channel = channel;
     }
 }

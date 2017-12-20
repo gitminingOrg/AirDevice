@@ -3,8 +3,8 @@
 <mapper namespace="management.consumer.consumerStati">
     <resultMap id="consumerStatiVo" type="vo.consumer.ConsumerStatiVo">
         <result property="address" column="receiver_address" />
-        <result property="Counter" column="counter" />
-        <result property="Channel" column="order_channnel" />
+        <result property="counter" column="counter" />
+        <result property="channel" column="order_channel" />
     </resultMap>
 
     <select id="query" parameterType="java.util.Map" resultMap="consumerStatiVo">
