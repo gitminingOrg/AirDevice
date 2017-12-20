@@ -16,7 +16,7 @@ public interface MachineService {
 
     ResultData updateIdleMachine(Map<String, Object> condition);
 
-    ResultData queryMachineStatus(Map<String, Object> condition, List<String> chips);
+    ResultData queryMachineStatus(Map<String, Object> condition);
 
     ResultData queryMachineStata(Map<String, Object> condition);
 }

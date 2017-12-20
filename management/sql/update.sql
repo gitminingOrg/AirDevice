@@ -158,3 +158,13 @@ ADD COLUMN `event_id` VARCHAR(20) NULL AFTER `code_id`;
 
 INSERT INTO `airdevice`.`role` (`role_id`, `role_name`, `role_description`, `block_flag`, `create_time`) VALUES ('ROL00000005', 'order_viewer', '订单查看', '0', '2017-08-16 23:00:00');
 
+##2017年12月20日
+DROP VIEW IF EXISTS machine_status_view ;
+
+CREATE VIEW machine_status_view
+AS
+SELECT device_id, chip_id, model_code, model_name, update_time from device_chip LEFT JOIN goods_model
+on SUBSTR(device_chip.device_id FROM 1 FOR 3) = goods_model.model_code
+AND device_chip.`status` = 1
+GROUP BY device_chip.chip_id
+ORDER BY device_chip.update_time DESC

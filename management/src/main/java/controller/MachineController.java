@@ -156,7 +156,7 @@ public class MachineController {
 			logger.error(e.getMessage());
 		}
 		Map<String, Object> condition = new HashMap<>();
-		ResultData response = machineService.queryMachineStatus(condition, chips);
+		ResultData response = machineService.queryMachineStatus(condition);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
 			result.setResponseCode(ResponseCode.RESPONSE_NULL);
 		} else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {

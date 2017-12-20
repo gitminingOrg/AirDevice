@@ -1,6 +1,8 @@
 package vo.machine;
 
 
+import utils.MachineStatus;
+
 import java.sql.Timestamp;
 
 public class MachineStatusVo {
@@ -10,11 +12,11 @@ public class MachineStatusVo {
     private String modelCode;
     private String modelName;
     private Timestamp updateTime;
-    private int status;
+    private MachineStatus status;
 
     public MachineStatusVo() {
         super();
-        status = 0;
+        status = MachineStatus.OFFLINE;
     }
 
     public String getDeviceId() {
@@ -57,11 +59,11 @@ public class MachineStatusVo {
         this.updateTime = updateTime;
     }
 
-    public int getStatus() {
+    public MachineStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(MachineStatus status) {
         this.status = status;
     }
 }
