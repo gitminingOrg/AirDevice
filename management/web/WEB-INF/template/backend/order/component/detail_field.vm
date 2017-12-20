@@ -290,7 +290,7 @@
     }
 
     weui.uploader('#uploaderCustom', {
-        url: '/qrcode/insight/upload',
+        url: "${path}" + '/qrcode/insight/upload',
         auto: true,
         type: 'file',
         compress: {
