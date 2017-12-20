@@ -5,6 +5,7 @@ import dao.SystemLogDao;
 import model.systemlog.SystemLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.systemlog.SystemLogVO;
@@ -41,6 +42,7 @@ public class SystemLogDaoImpl extends BaseDao implements SystemLogDao {
     @Override
     public ResultData insert(SystemLog systemlog) {
         ResultData result = new ResultData();
+        systemlog.setLogId(IDGenerator.generate("LOG"));
         synchronized (lock) {
             try {
                 sqlSession.insert("management.systemlog.insert", systemlog);

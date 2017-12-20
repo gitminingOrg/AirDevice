@@ -5,6 +5,7 @@ import dao.UserLogDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
 
@@ -42,6 +43,7 @@ public class UserLogDaoImpl extends BaseDao implements UserLogDao {
     @Override
     public ResultData insert(UserLog userlog) {
         ResultData result = new ResultData();
+        userlog.setLogId(IDGenerator.generate("LOG"));
         synchronized (lock){
             try {
                 sqlSession.insert("management.userlog.insert", userlog);
