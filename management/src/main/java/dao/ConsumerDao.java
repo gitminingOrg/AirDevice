@@ -9,4 +9,6 @@ public interface ConsumerDao {
 	ResultData query(Map<String, Object> condition);
 	
 	ResultData query(Map<String, Object> condition, DataTableParam param);
+
+	ResultData queryConsumer(Map<String, Object> condition);
 }

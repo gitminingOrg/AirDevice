@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.consumer.consumerStati">
+    <resultMap id="consumerStatiVo" type="vo.consumer.ConsumerStatiVo">
+        <result property="address" column="receiver_address" />
+        <result property="Counter" column="counter" />
+        <result property="Channel" column="order_channnel" />
+    </resultMap>
+
+    <select id="query" parameterType="java.util.Map" resultMap="consumerStatiVo">
+        select receiver_address, order_channel
+        from taobao_order
+        where 1 = 1
+        <if test="address != null">
+            and receiver_address = # {address}
+        </if>
+        <if test="Channel != null">
+            and order_channel = # {Channel}
+        </if>
+    </select>
+</mapper>

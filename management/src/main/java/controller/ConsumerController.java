@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import service.ConsumerService;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.consumer.ConsumerGoods;
+import vo.consumer.ConsumerStatiVo;
 import vo.goods.ConsumerGoodsVo;
 import vo.qrcode.QRCodeVo;
 @RestController
@@ -59,6 +61,21 @@ public class ConsumerController {
 		ResultData response = consumerService.fetchConsumerGoods(condition, param);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			result = (DataTablePage<ConsumerGoodsVo>) response.getData();
+		}
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/goodslist")
+	public ResultData consumer_goods() {
+		ResultData result = new ResultData();
+		Map<String, Object> condition = new HashMap<>();
+		ResultData response = consumerService.fetchConsumerMachines(condition);
+		result.setResponseCode(response.getResponseCode());
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			List<ConsumerStatiVo> list = (List<ConsumerStatiVo>) response.getData();
+			result.setData(list);
+		} else {
+			result.setDescription(response.getDescription());
 		}
 		return result;
 	}
