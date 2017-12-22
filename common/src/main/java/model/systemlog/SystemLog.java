@@ -11,6 +11,16 @@ public class SystemLog extends Entity {
     private String target;
     private String message;
 
+    public SystemLog(){
+        super();
+    }
+
+    public SystemLog(String target, String message){
+        this();
+        this.target = target;
+        this.message = message;
+    }
+
     public String getLogId() {
         return logId;
     }
