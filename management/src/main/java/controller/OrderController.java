@@ -366,14 +366,10 @@ public class OrderController {
     public ResultData createOrderChannel(OrderChannel orderChannel) {
         ResultData result = new ResultData();
         ResultData response = orderService.create(orderChannel);
-        try {
-            if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                result.setData(response.getData());
-            }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
-            result.setDescription(e.getMessage());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setData(response.getData());
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setDescription(response.getDescription());
         }
         return result;
     }
