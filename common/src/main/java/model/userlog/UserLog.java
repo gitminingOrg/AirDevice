@@ -14,9 +14,8 @@ public class UserLog extends Entity{
         super();
     }
 
-    public UserLog(String logId, String userId, String target, String message){
+    public UserLog(String userId, String target, String message){
         this();
-        this.logId = logId;
         this.userId = userId;
         this.target = target;
         this.message = message;

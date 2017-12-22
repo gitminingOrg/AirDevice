@@ -42,8 +42,8 @@ public class UserLogDaoImpl extends BaseDao implements UserLogDao {
 
     @Override
     public ResultData insert(UserLog userlog) {
-        ResultData result = new ResultData();
         userlog.setLogId(IDGenerator.generate("LOG"));
+        ResultData result = new ResultData();
         synchronized (lock){
             try {
                 sqlSession.insert("management.userlog.insert", userlog);
