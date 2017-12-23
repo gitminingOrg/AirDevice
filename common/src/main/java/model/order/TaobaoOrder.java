@@ -32,12 +32,12 @@ public class TaobaoOrder extends Entity{
 	private String payTime;
 	
 	private OrderStatus status;
-	
+
 	public TaobaoOrder() {
 		super();
 		status = OrderStatus.PAYED;
 	}
-	
+
 	public TaobaoOrder(String[] param) {
 		this();
 		this.orderNo = param[0].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", ""); //订单编号
@@ -51,9 +51,9 @@ public class TaobaoOrder extends Entity{
 		this.goodsTitle = param[19];
 		this.goodsKind = param[20];
 		this.coupon = param[23];
-		
+
 	}
-	
+
 	public String getOrderId() {
 		return orderId;
 	}
