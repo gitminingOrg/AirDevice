@@ -3,10 +3,7 @@ package service;
 import java.util.List;
 import java.util.Map;
 
-import model.order.CustomizeOrder;
-import model.order.OrderChannel;
-import model.order.OrderMission;
-import model.order.TaobaoOrder;
+import model.order.*;
 import pagination.DataTableParam;
 import utils.ResultData;
 
@@ -36,4 +33,6 @@ public interface OrderService {
 	ResultData create(OrderChannel orderChannel);
 
 	ResultData fetchOrderChannel(Map<String, Object> condition);
+
+	ResultData uploadBatch(List<OrderBatch> order);
 }

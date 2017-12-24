@@ -373,4 +373,37 @@ public class OrderController {
         }
         return result;
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/BatchUpload")
+    public ModelAndView BatchUpload(MultipartHttpServletRequest request) throws IOException {
+        ModelAndView view = new ModelAndView();
+        MultipartFile file = request.getFile("orderFile");
+        if (file.isEmpty()){
+            logger.info("上传的文件为空");
+            view.setViewName("redirect:/order/overview");
+            return view;
+        }
+        InputStream stream = file.getInputStream();
+        CsvReader reader = new CsvReader(stream, Charset.forName("gbk"));
+        List<String[]> list = new ArrayList<>();
+        // 读取表头
+        reader.readHeaders();
+        while (reader.readRecord()) {
+            list.add(reader.getValues());
+        }
+        reader.close();
+        List<OrderBatch> order = new LinkedList<>();
+        for (int i = 0; i < list.size(); i++) {
+            OrderBatch item = new OrderBatch(list.get(i));
+            order.add(item);
+        }
+        ResultData response = orderService.uploadBatch(order);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            logger.info("上传订单记录成功");
+        } else {
+            logger.info("上传订单记录失败");
+        }
+        view.setViewName("redirect:/order/overview");
+        return view;
+    }
 }

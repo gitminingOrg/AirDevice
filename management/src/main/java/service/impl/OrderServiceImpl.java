@@ -3,8 +3,9 @@ package service.impl;
 import java.util.List;
 import java.util.Map;
 
+import dao.OrderBatchDao;
 import dao.OrderChannelDao;
-import model.order.OrderChannel;
+import model.order.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,6 @@ import org.springframework.stereotype.Service;
 
 import dao.OrderDao;
 import dao.OrderMissionDao;
-import model.order.CustomizeOrder;
-import model.order.OrderMission;
-import model.order.TaobaoOrder;
 import pagination.DataTableParam;
 import service.OrderService;
 import utils.ResponseCode;
@@ -35,6 +33,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderChannelDao orderChannelDao;
+
+	@Autowired
+	private OrderBatchDao orderBatchDao;
 
 	@Override
 	public ResultData upload(List<TaobaoOrder> order) {
@@ -190,5 +191,16 @@ public class OrderServiceImpl implements OrderService {
 			result.setData(list);
 			return result;
 		}
+	}
+
+	@Override
+	public ResultData uploadBatch(List<OrderBatch> order) {
+		ResultData result = new ResultData();
+		ResultData response = orderBatchDao.insert(order);
+		result.setResponseCode(response.getResponseCode());
+		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			result.setDescription(response.getDescription());
+		}
+		return result;
 	}
 }

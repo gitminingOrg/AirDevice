@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.Batch">
+	<resultMap id="orderBatchVo" type="vo.order.OrderBatchVo">
+		<result property = "orderId" column="order_id" />
+		<result property = "orderNo" column="order_no" />
+		<result property = "buyerName" column="buyer_name" />
+		<result property="price" column="order_price" />
+		<result property = "receiverName" column="receiver_name" />
+		<result property = "receiverPhone" column="receiver_phone" />
+		<result property = "receiverAddress" column="receiver_address" />
+		<result property = "coupon" column="order_coupon" />
+		<result property = "goodsTitle" column="goods_title" />
+		<result property="channel" column="order_channel" />
+		<result property = "payTime" column = "pay_time" />
+	</resultMap>
+
+	<insert id="OrderBatch" parameterType="java.util.List" useGeneratedKeys="false">
+		insert into taobao_order(order_id, order_no, buyer_name, order_price, receiver_name, receiver_phone, receiver_address, goods_title, order_channel, pay_time, order_coupon, block_flag, create_time)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.orderId}, #{item.orderNo}, #{item.buyerName}, #{item.price}, #{item.receiverName}, #{item.receiverPhone}, #{item.receiverAddress}, #{item.goodsTitle}, #{item.channel}, #{item.payTime}, #{item.coupon}, #{item.blockFlag}, #{item.createAt})
+		</foreach>
+	</insert>
+</mapper>
