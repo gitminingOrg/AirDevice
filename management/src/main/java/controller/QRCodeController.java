@@ -495,4 +495,36 @@ public class QRCodeController {
         }
         return result;
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/check")
+    public ResultData check(String candidate) {
+        ResultData result = new ResultData();
+        if (StringUtils.isEmpty(candidate)) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("请先填写二维码的前三段");
+            return result;
+        }
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("search", new StringBuffer(candidate).append("%").toString());
+        ResultData response = qRCodeService.fetch(condition);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("系统查询异常, 请稍后再试");
+            return result;
+        }
+        if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            result.setResponseCode(ResponseCode.RESPONSE_NULL);
+            result.setDescription("未查询到与" + candidate + "匹配的二维码，请确认无误后再试");
+            return result;
+        }
+        List<QRCodeVo> list = (List<QRCodeVo>) response.getData();
+        if (list.size() > 1) {
+            result.setResponseCode(ResponseCode.RESPONSE_NULL);
+            result.setDescription("请输入完成的第三段的值");
+            return result;
+        }
+        QRCodeVo vo = list.get(0);
+        result.setData(vo);
+        return result;
+    }
 }

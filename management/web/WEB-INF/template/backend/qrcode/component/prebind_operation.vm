@@ -1,12 +1,12 @@
 <div id="page-main">
-	<div id="page-main-wrapper">
-		<div id="page-header" class="clearfix">
-			<div id="page-header-wrapper" class="clearfix">
-				<div id="page-breadcrumb-wrapper">
-                	<div id="page-breadcrumb">
-                    	<a href="javascript:;">
-                        	<i class="glyph-icon icon-dashboard"></i>
-                                首页
+    <div id="page-main-wrapper">
+        <div id="page-header" class="clearfix">
+            <div id="page-header-wrapper" class="clearfix">
+                <div id="page-breadcrumb-wrapper">
+                    <div id="page-breadcrumb">
+                        <a href="javascript:;">
+                            <i class="glyph-icon icon-dashboard"></i>
+                            首页
                         </a>
                         <a href="javascript:;">
                             <i class="glyph-icon icon-laptop"></i>
@@ -17,13 +17,13 @@
                         </span>
                     </div>
                 </div>
-			</div>
-		</div>
+            </div>
+        </div>
         <div id="page-breadcrumb-wrapper">
             <div id="page-breadcrumb">
                 <a href="javascript:;">
                     <i class="glyph-icon icon-dashboard"></i>
-                        首页
+                    首页
                 </a>
                 <a href="javascript:;">
                     <i class="glyph-icon icon-laptop"></i>
@@ -36,127 +36,232 @@
         </div>
         <div id="page-content">
             <h4>待绑定主板列表</h4>
+
             <div class="row" id="idle-machine-list"></div>
-            
+
             <div id="prebind-form" title="预绑定" style="display:none;">
-            	<div id="range-deliver-form">
-                	<div class="col-md-10 center-margin">
-	                    <div class="form-row">
-	                        <div class="form-input">
-	                            <div class="row">
-	                                <div class="col-md-2">
-	                                    <label>主板编号:</label>
-	                                </div>
-	                                <div class="col-md-3">
-	                                    <input placeholder="请输入主板编号" id="uid" type="text" autocomplete="off">
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </div>
-	                    <div class="form-row">
-		                    <div class="form-input">
-		                        <div class="row">
-		                            <div class="col-md-2">
-		                                <label>二维码编号:</label>
-		                            </div>
-		                            <div class="col-md-3">
-		                                <input placeholder="请输入二维码编号" id="codeid" type="text" autocomplete="off">
-		                            </div>
-		                            <div class="col-md-2">
-		                                <button class='btn large bg-blue' id="confirm-prebind-btn">
-		                                    <span clas='button-content'>预绑定</span>
-		                                </button>
-		                            </div>
-		                        </div>
-		                    </div>
-	                    </div>
-	                </div>
+                <div id="range-deliver-form">
+                    <div class="col-md-10 center-margin">
+                        <div class="form-row">
+                            <div class="form-input">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>主板编号:</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input placeholder="请输入主板编号" id="uid" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row" id="model_row">
+                            <div class="form-input">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>型号:</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="model_no"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row" id="batch_row">
+                            <div class="form-input">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>批号:</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select id="batch_no"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row" id="value_row">
+                            <div class="form-input">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>码值:</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input id="code_value" placeholder="请输入二维码第三段的值"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row" style="display: none;" id="full_code_row">
+                            <div class="form-input">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label>二维码:</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input id="codeid" value="" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-input">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <button class="btn large bg-green" id="check-prebind-btn">
+                                            <span class="button-content">校验</span>
+                                        </button>
+                                        <button class='btn large bg-blue' id="confirm-prebind-btn"
+                                                style="display:none;">
+                                            <span class='button-content'>预绑定</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script>
-	$(document).ready(function() {
-		function confirm(imId) {
-			var confirm_url = "${path.concat('/machine/idle/update')}";
-			$.post(confirm_url, {imId: imId}, function(result) {
-				$("#idle-machine-list").empty();
-					refresh();
-			})
-		}
+    var check_url = "${path.concat('/qrcode/check')}";
 
-		refresh();
-		
-		function refresh() {
-			var idle_machine_url = "${path.concat('/machine/idle')}";
-			$.get(idle_machine_url, function(result) {
-				if(result.responseCode == "RESPONSE_OK") {
-					var data = result.data;
-					for(var i = 0; i < data.length; i ++) {
-						var uid = data[i].uid;
-						var col = $("<div class='col-md-4'></div>");
-						var dashboard = $("<div class='dashboard-panel content-box remove-border bg-blue-alt'></div>");
-	            		var content_box = $("<div class='content-box-wrapper'></div>");
-	            		var header = $("<div class='tile-header'></div>").text("主板: " + data[i].uid);
-	            		content_box.append(header);
-	            		var wrapper = $("<div class='tile-content-wrapper'></div>").attr("id", uid + "_time");
-	            		var footer = $("<div></div>");
-	            		var ignore = $("<a class='btn medium bg-red operate-btn operate-btn-confirm' id='" + data[i].imId + "'>取消</a>");
-	            		var bind = $("<a class='btn medium bg-azure operate-btn operate-btn-prebind' href='javascript:;' title='预绑定' data-value='" + data[i].uid + "' data-id='" + data[i].imId + "'>预绑</a>")
-	            		footer.append(ignore);
-	            		footer.append(bind);
-	            		content_box.append(wrapper);
-	            		content_box.append(footer);
-	            		dashboard.append(content_box);
-	            		col.append(dashboard);
-	            		$("#idle-machine-list").append(col);
-	            		detailofuid(uid);
-					}
-					$(".operate-btn-confirm").on('click', function() {
-   						var id = $(this).attr("id");
-   						confirm(id);
-   					});
-   					$(".operate-btn-prebind").on('click', function() {
-   						var value = $(this).attr("data-value");
-   						$("#idle-machine-list").hide();
-   						$("#uid").val(value);
-   						$("#prebind-form").show();
-   					})
-				}
-			})
-		}
-		
-		function detailofuid(uid) {
-			var detail_url = "${path.concat('/machine/')}" + uid + "/detail";
-			$.get(detail_url, function(result) {
-				if(result.responseCode == "RESPONSE_OK") {
-					$("#" + uid + "_time").html(result.data.time + " | " + result.data.ip + " | <span id='" + uid + "_city'></span>");	
-					ip2city(uid, result.data.ip);			
-				}
-			});
-	   	}
-	   	
-	   	function ip2city(uid, ip) {
-	   		var city_url = "${path.concat('/location/ip')}";
-	   		$.get(city_url, {ip: ip}, function(result) {
-	   			if(result.responseCode == "RESPONSE_OK") {
-	   				$("#" + uid + "_city").append(result.data.city);
-	   			}else {
-	   				$("#" + uid + "_city").append("未知");
-	   			}
-	   		})
-	   	}
-	});
+    $(document).ready(function () {
+        var model_url = "${path.concat('/model/available')}";
+        $("#model_no").empty();
+        $.get(model_url, function (result) {
+            if (result.responseCode == "RESPONSE_OK") {
+                var data = result.data;
+                for (var i = 0; i < data.length; i++) {
+                    var item = $("<option></option>").text(data[i].modelName);
+                    item.attr("value", data[i].modelId);
+                    item.attr("id", data[i].modelId);
+                    item.attr("data-value", data[i].modelCode);
+                    if (i == 0) {
+                        batchbymodel(data[i].modelId);
+                    }
+                    $("#model_no").append(item);
+                }
+            }
+        });
 
-	$("#confirm-prebind-btn").on('click', function() {
-    	var uid = $("#uid").val();
-    	var codeid = $("#codeid").val();
-   		var url = "${path.concat('/qrcode/prebind')}"
-   		$.post(url, {uid: uid, codeId: codeid}, function(result) {
-    		if(result.responseCode == "RESPONSE_OK") {
-    			window.location.href = "${path.concat('/qrcode/prebind')}";
-   			}
-   		})
-   	})
+        $("#model_no").on('change', function () {
+            $("#batch_no").empty();
+            var modelId = $("#model_no").val();
+            batchbymodel(modelId);
+        })
+
+        function confirm(imId) {
+            var confirm_url = "${path.concat('/machine/idle/update')}";
+            $.post(confirm_url, {imId: imId}, function (result) {
+                $("#idle-machine-list").empty();
+                refresh();
+            })
+        }
+
+        refresh();
+
+        function refresh() {
+            var idle_machine_url = "${path.concat('/machine/idle')}";
+            $.get(idle_machine_url, function (result) {
+                if (result.responseCode == "RESPONSE_OK") {
+                    var data = result.data;
+                    for (var i = 0; i < data.length; i++) {
+                        var uid = data[i].uid;
+                        var col = $("<div class='col-md-4'></div>");
+                        var dashboard = $("<div class='dashboard-panel content-box remove-border bg-blue-alt'></div>");
+                        var content_box = $("<div class='content-box-wrapper'></div>");
+                        var header = $("<div class='tile-header'></div>").text("主板: " + data[i].uid);
+                        content_box.append(header);
+                        var wrapper = $("<div class='tile-content-wrapper'></div>").attr("id", uid + "_time");
+                        var footer = $("<div></div>");
+                        var ignore = $("<a class='btn medium bg-red operate-btn operate-btn-confirm' id='" + data[i].imId + "'>取消</a>");
+                        var bind = $("<a class='btn medium bg-azure operate-btn operate-btn-prebind' href='javascript:;' title='预绑定' data-value='" + data[i].uid + "' data-id='" + data[i].imId + "'>预绑</a>")
+                        footer.append(ignore);
+                        footer.append(bind);
+                        content_box.append(wrapper);
+                        content_box.append(footer);
+                        dashboard.append(content_box);
+                        col.append(dashboard);
+                        $("#idle-machine-list").append(col);
+                        detailofuid(uid);
+                    }
+                    $(".operate-btn-confirm").on('click', function () {
+                        var id = $(this).attr("id");
+                        confirm(id);
+                    });
+                    $(".operate-btn-prebind").on('click', function () {
+                        var value = $(this).attr("data-value");
+                        $("#idle-machine-list").hide();
+                        $("#uid").val(value);
+                        $("#prebind-form").show();
+                    })
+                }
+            })
+        }
+
+        function detailofuid(uid) {
+            var detail_url = "${path.concat('/machine/')}" + uid + "/detail";
+            $.get(detail_url, function (result) {
+                if (result.responseCode == "RESPONSE_OK") {
+                    $("#" + uid + "_time").html(result.data.time + " | " + result.data.ip + " | <span id='" + uid + "_city'></span>");
+                    ip2city(uid, result.data.ip);
+                }
+            });
+        }
+
+        function ip2city(uid, ip) {
+            var city_url = "${path.concat('/location/ip')}";
+            $.get(city_url, {ip: ip}, function (result) {
+                if (result.responseCode == "RESPONSE_OK") {
+                    $("#" + uid + "_city").append(result.data.city);
+                } else {
+                    $("#" + uid + "_city").append("未知");
+                }
+            })
+        }
+
+        function batchbymodel(model_id) {
+            var batch_url = "${path.concat('/qrcode/batch/available')}";
+            $.get(batch_url, {modelId: model_id}, function (result) {
+                if (result.responseCode == "RESPONSE_OK") {
+                    var data = result.data;
+                    for (var i = 0; i < data.length; i++) {
+                        var item = $("<option></option>").text(data[i].batchNo);
+                        item.attr("value", data[i].batchId);
+                        $("#batch_no").append(item);
+                    }
+                }
+            });
+        }
+    });
+
+    $("#check-prebind-btn").on('click', function () {
+        var batch_no = $("#batch_no").val();
+        var candidate = batch_no + $("#code_value").val();
+        $.post(check_url, {candidate: candidate}, function (result) {
+            if (result.responseCode == "RESPONSE_OK") {
+                $("#model_row").hide();
+                $("#batch_row").hide();
+                $("#value_row").hide();
+                $("#codeid").val(result.data.value);
+                $("#full_code_row").show();
+                $("#check-prebind-btn").hide();
+                $("#confirm-prebind-btn").show();
+            } else {
+                alert(result.description);
+            }
+        })
+    })
+
+    $("#confirm-prebind-btn").on('click', function () {
+        var uid = $("#uid").val();
+        var codeid = $("#codeid").val();
+        var url = "${path.concat('/qrcode/prebind')}"
+        $.post(url, {uid: uid, codeId: codeid}, function (result) {
+            if (result.responseCode == "RESPONSE_OK") {
+                window.location.href = "${path.concat('/qrcode/prebind')}";
+            }
+        })
+    })
 </script>

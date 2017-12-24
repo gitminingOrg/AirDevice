@@ -35,10 +35,10 @@
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="cronTrigger" />
-				<ref bean="aqiTrigger" />
-				<ref bean="deviceAirTrigger" />
-				<ref bean="configTrigger" />
+				<!--<ref bean="cronTrigger" />-->
+				<!--<ref bean="aqiTrigger" />-->
+				<!--<ref bean="deviceAirTrigger" />-->
+				<!--<ref bean="configTrigger" />-->
 			</list>
 		</property>
 		<property name="taskExecutor" ref="executor" />
