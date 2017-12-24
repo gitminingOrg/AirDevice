@@ -37,6 +37,32 @@
         <div id="page-content">
             <div class="col-md-12 center-margin">
             	<h4>订单录入</h4>
+				<div class="form-row" style="margin-top: 20px">
+                    <div class="infobox warning-bg" style="margin-bottom: 0px">
+                        <p><i class="glyph-icon icon-exclamation mrg10R"></i> 批量上传订单，请单击这里进行 <a href="javascript:;" class="white-modal-80" title="添加部件"> 上传订单 </a>.</p>
+                    </div>
+                    <div class="hide" id="white-modal-80" title="添加型号">
+                        <div class="pad10A">
+                            <div class="col-md-12 center-margin">
+                                <div class="form-row">
+                                    <div class="form-label col-md-2">
+                                        <label for="goods-name">导入列表</label>
+                                    </div>
+                                    <div class="form-input col-md-10">
+                                        <form id="order-form">
+                                            <input name="orderFile" type="file">
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <button class="btn medium bg-blue-alt" id="confirm-upload">
+                                        <span class="button-content">上传</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</div>
             	<div class="form-row">
             		<label for="order-number" class="form-label col-md-2">订单编号</label>
             		<div class="form-input col-md-10">
@@ -133,6 +159,13 @@
 			})
 		});
 	});
+
+    $("#confirm-upload").on('click', function() {
+        $("#order-form").attr('action', "${path.concat('/order/BatchUpload')}");
+        $("#order-form").attr('method', "post");
+        $("#order-form").attr('enctype', 'multipart/form-data');
+        $("#order-form").submit();
+    });
 
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {
