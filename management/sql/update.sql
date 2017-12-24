@@ -168,3 +168,9 @@ on SUBSTR(device_chip.device_id FROM 1 FOR 3) = goods_model.model_code
 AND device_chip.`status` = 1
 GROUP BY device_chip.chip_id
 ORDER BY device_chip.update_time DESC
+
+##2017年12月24日
+ALTER TABLE `taobao_order`
+MODIFY COLUMN `buyer_ali_account`  varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `buyer_name`;
+
+

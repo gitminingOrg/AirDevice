@@ -31,5 +31,6 @@
 		<mapper resource="mapper/machine/insight.xml" />
 		<mapper resource="mapper/order/orderchannel.xml" />
 		<mapper resource="mapper/consumer/consumerstati.xml" />
+		<mapper resource="mapper/order/orderBatch.xml" />
 	</mappers>
 </configuration>

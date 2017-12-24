@@ -16,10 +16,18 @@
 	</resultMap>
 
 	<insert id="OrderBatch" parameterType="java.util.List" useGeneratedKeys="false">
-		insert into taobao_order(order_id, order_no, buyer_name, order_price, receiver_name, receiver_phone, receiver_address, goods_title, order_channel, pay_time, order_coupon, block_flag, create_time)
+		insert into
+		taobao_order
+		(
+			order_id, order_no, buyer_name, order_price, receiver_name, receiver_phone, receiver_address,
+			goods_title, order_channel, pay_time, order_coupon, block_flag, order_status, create_time
+		)
 		values
 		<foreach collection="list" item="item" index="index" separator=",">
-			(#{item.orderId}, #{item.orderNo}, #{item.buyerName}, #{item.price}, #{item.receiverName}, #{item.receiverPhone}, #{item.receiverAddress}, #{item.goodsTitle}, #{item.channel}, #{item.payTime}, #{item.coupon}, #{item.blockFlag}, #{item.createAt})
+			(#{item.orderId}, #{item.orderNo}, #{item.buyerName}, #{item.price}, #{item.receiverName},
+			 #{item.receiverPhone}, #{item.receiverAddress}, #{item.goodsTitle}, #{item.channel}, #{item.payTime},
+			 #{item.coupon}, #{item.blockFlag},
+			 #{item.status, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{item.createAt})
 		</foreach>
 	</insert>
 </mapper>

@@ -28,8 +28,11 @@ public class OrderBatch extends Entity {
 
     private String payTime;
 
+    private OrderStatus status;
+
     public OrderBatch(){
         super();
+        status = OrderStatus.PAYED;
     }
 
     public OrderBatch(String[] param){
@@ -134,4 +137,11 @@ public class OrderBatch extends Entity {
         this.payTime = payTime;
     }
 
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
 }
