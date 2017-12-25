@@ -22,7 +22,7 @@ import utils.ResultData;
 public class LocationController {
     private Logger logger = LoggerFactory.getLogger(LocationController.class);
 
-    @RequestMapping(method =  RequestMethod.GET, value = "/ip")
+    @RequestMapping(method = RequestMethod.GET, value = "/ip")
     public ResultData ip2city(String ip){
         ResultData result = new ResultData();
 
@@ -34,12 +34,11 @@ public class LocationController {
         String response = HttpDeal.getResponse(url);
         JSONObject json = JSON.parseObject(response);
         try {
-            if(!StringUtils.isEmpty(
-                    json.getJSONObject("result").getJSONObject("ad_info"))){
+            if(!StringUtils.isEmpty(json) && !StringUtils.isEmpty(json.getJSONObject("result").getJSONObject("ad_info"))){
                 JSONObject jo = new JSONObject();
-                jo.put("nation", json.getJSONObject("result").getJSONObject("ad_info").getJSONObject("nation"));
-                jo.put("province", json.getJSONObject("result").getJSONObject("ad_info").getJSONObject("province"));
-                jo.put("city", json.getJSONObject("result").getJSONObject("ad_info").getJSONObject("city"));
+                jo.put("nation", json.getJSONObject("result").getJSONObject("ad_info").get("nation"));
+                jo.put("province", json.getJSONObject("result").getJSONObject("ad_info").get("province"));
+                jo.put("city", json.getJSONObject("result").getJSONObject("ad_info").get("city"));
                 result.setData(jo);
             }else {
                 result.setResponseCode(ResponseCode.RESPONSE_NULL);
