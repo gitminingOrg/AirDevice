@@ -5,12 +5,18 @@
 		<result property = "orderId" column="order_id" />
 		<result property = "orderNo" column="order_no" />
 		<result property = "buyerName" column="buyer_name" />
+		<result property = "buyerAccount" column="buyer_account" />
 		<result property="price" column="order_price" />
 		<result property = "receiverName" column="receiver_name" />
 		<result property = "receiverPhone" column="receiver_phone" />
 		<result property = "receiverAddress" column="receiver_address" />
 		<result property = "coupon" column="order_coupon" />
 		<result property = "goodsTitle" column="goods_title" />
+		<result property = "goodsKind" column="goods_kind" />
+		<result property = "productSerial" column="product_serial"/>
+		<result property = "shipNo" column="ship_no" />
+		<result property = "status" column="order_status" typeHandler="handler.OrderStatusHandler" />
+		<result property="description" column="description" />
 		<result property="channel" column="order_channel" />
 		<result property = "payTime" column = "pay_time" />
 	</resultMap>
@@ -20,13 +26,13 @@
 		taobao_order
 		(
 			order_id, order_no, buyer_name, order_price, receiver_name, receiver_phone, receiver_address,
-			goods_title, order_channel, pay_time, order_coupon, block_flag, order_status, create_time
+		    order_coupon, goods_title, order_channel, pay_time, description, block_flag, order_status, create_time
 		)
 		values
 		<foreach collection="list" item="item" index="index" separator=",">
 			(#{item.orderId}, #{item.orderNo}, #{item.buyerName}, #{item.price}, #{item.receiverName},
-			 #{item.receiverPhone}, #{item.receiverAddress}, #{item.goodsTitle}, #{item.channel}, #{item.payTime},
-			 #{item.coupon}, #{item.blockFlag},
+			 #{item.receiverPhone}, #{item.receiverAddress}, #{item.coupon}, #{item.goodsTitle}, #{item.channel}, #{item.payTime},
+			 #{item.description}, #{item.blockFlag},
 			 #{item.status, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{item.createAt})
 		</foreach>
 	</insert>

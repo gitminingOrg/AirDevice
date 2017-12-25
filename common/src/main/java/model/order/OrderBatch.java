@@ -12,6 +12,8 @@ public class OrderBatch extends Entity {
 
     private String buyerName;
 
+    private String buyerAliAccount;
+
     private String price;
 
     private String receiverName;
@@ -24,9 +26,17 @@ public class OrderBatch extends Entity {
 
     private String goodsTitle;
 
+    private String goodsKind;
+
+    private String productSerial;
+
+    private String shipNo;
+
     private String channel;
 
     private String payTime;
+
+    private String description;
 
     private OrderStatus status;
 
@@ -41,12 +51,13 @@ public class OrderBatch extends Entity {
         this.buyerName = param[1];//买家姓名
         this.price = param[2];//买家实付金额
         this.receiverName = param[3];//收货人姓名
-        this.receiverPhone = param[4];//收货人手机号码
+        this.receiverPhone = param[4].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", "");//收货人手机号码
         this.receiverAddress = param[5];//收货人地址
-        this.goodsTitle = param[6];//商品名称
-        this.channel = param[7];//订单渠道
-        this.payTime = param[8];//买家付款时间
-        this.coupon = param[9];//备注
+        this.coupon = param[6];//优惠码
+        this.goodsTitle = param[7];//商品名称
+        this.channel = param[8];//订单渠道
+        this.payTime = param[9];//买家付款时间
+        this.description = param[10];//备注
     }
 
     public String getOrderId() {
@@ -71,6 +82,14 @@ public class OrderBatch extends Entity {
 
     public void setBuyerName(String buyerName) {
         this.buyerName = buyerName;
+    }
+
+    public String getBuyerAliAccount() {
+        return buyerAliAccount;
+    }
+
+    public void setBuyerAliAccount(String buyerAliAccount) {
+        this.buyerAliAccount = buyerAliAccount;
     }
 
     public String getPrice() {
@@ -121,6 +140,30 @@ public class OrderBatch extends Entity {
         this.goodsTitle = goodsTitle;
     }
 
+    public String getGoodsKind() {
+        return goodsKind;
+    }
+
+    public void setGoodsKind(String goodsKind) {
+        this.goodsKind = goodsKind;
+    }
+
+    public String getProductSerial() {
+        return productSerial;
+    }
+
+    public void setProductSerial(String productSerial) {
+        this.productSerial = productSerial;
+    }
+
+    public String getShipNo() {
+        return shipNo;
+    }
+
+    public void setShipNo(String shipNo) {
+        this.shipNo = shipNo;
+    }
+
     public String getChannel() {
         return channel;
     }
@@ -135,6 +178,14 @@ public class OrderBatch extends Entity {
 
     public void setPayTime(String payTime) {
         this.payTime = payTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public OrderStatus getStatus() {
