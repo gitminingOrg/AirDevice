@@ -204,7 +204,7 @@
             var detail_url = "${path.concat('/machine/')}" + uid + "/detail";
             $.get(detail_url, function (result) {
                 if (result.responseCode == "RESPONSE_OK") {
-                    $("#" + uid + "_time").html(result.data.time + " | " + result.data.ip + " | <span id='" + uid + "_city'></span>");
+                    $("#" + uid + "_time").html(result.data.time + " | " + result.data.ip + " | <span id='" + uid + "_city'></span>" + " | " + result.data.velocity);
                     ip2city(uid, result.data.ip);
                 }
             });

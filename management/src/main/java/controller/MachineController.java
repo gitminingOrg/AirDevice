@@ -125,6 +125,7 @@ public class MachineController {
 					&& !StringUtils.isEmpty(json.getJSONObject("contents").get("status"))) {
 				info.put("ip", json.getJSONObject("contents").getJSONObject("status").get("ip"));
 				info.put("time", json.getJSONObject("contents").getJSONObject("status").get("time"));
+				info.put("velocity", json.getJSONObject("contents").getJSONObject("status").get("velocity"));
 			}
 			result.setData(info);
 		} catch (Exception e) {
