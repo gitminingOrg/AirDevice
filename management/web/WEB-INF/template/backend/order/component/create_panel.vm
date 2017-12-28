@@ -1,4 +1,4 @@
-<div id="page-main">
+<div id="page-main" xmlns="http://java.sun.com/jsf/html">
 	<div id="page-main-wrapper">
 		<div id="page-header" class="clearfix">
 			<div id="page-header-wrapper" class="clearfix">
@@ -63,6 +63,39 @@
                         </div>
                     </div>
 				</div>
+                <div class="form-row">
+                    <label for="channel_list" class="form-label col-md-2">订单渠道</label>
+                    <div class="form-input col-md-8">
+                        <select id="channel_list">
+                            <select/>
+                    </div>
+                    <div class="form-input col-md-2">
+                        <div class="infobox warning-bg" style="margin-bottom: 0px">
+                            <p><a href="javascript:;" class="white-modal-60" title="添加部件">添加渠道</a></p>
+                        </div>
+                        <div class="hide" id="white-modal-60" title="添加渠道">
+                            <div class="pad10A">
+                                <div class="col-md-12 center-margin">
+                                    <div class="form-row">
+                                        <div class="form-label col-md-3">
+                                            <label for="goods-name">渠道名称</label>
+                                        </div>
+                                        <div class="form-input col-md-9">
+                                            <form id="order-form">
+                                                <input id="channelName" type="text">
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <button class="btn medium bg-blue-alt ui-dialog-buttonset" id="addChannel">
+                                            <span class="button-content" data-dismiss="modal">添加</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             	<div class="form-row">
             		<label for="order-number" class="form-label col-md-2">订单编号</label>
             		<div class="form-input col-md-10">
@@ -90,14 +123,25 @@
             	<div class="form-row">
             		<label for="order-receiver-phone" class="form-label col-md-2">收货人电话</label>
             		<div class="form-input col-md-10">
-            			<input id="order-receiver-phone" type="text" placeholder="请输入收货人电话"／>
+            			<input id="order-receiver-phone" type="text" placeholder="请输入收货人电话"/>
             		</div>
             	</div>
             	<div class="form-row">
             		<label for="order-receiver-address" class="form-label col-md-2">收货地址</label>
-            		<div class="form-input col-md-10">
-            			<input id="order-receiver-address" type="text" placeholder="请输入收货地址"/>
-            		</div>
+                    <div class="form-input col-md-4 select" data-toggle="distpicker">
+                        <select id="province" class="col-md-3">
+                            <option data-code="" data-text="—— 省 ——" value="">—— 省 ——</option>
+                        </select>
+                        <select id="city" class="col-md-3">
+                            <option data-code="" data-text="—— 市 ——" value="">—— 市 ——</option>
+                        </select>
+                        <select id="district" class="col-md-3">
+                            <option data-code="" data-text="—— 区 ——" value="">—— 区 ——</option>
+                        </select>
+                    </div>
+                    <div class="form-input col-md-6">
+                        <input id="order-receiver-address" type="text" placeholder="请输入详细地址"/>
+                    </div>
             	</div>
             	<div class="form-row">
             		<label for="order-coupon" class="form-label col-md-2">优惠码</label>
@@ -109,12 +153,6 @@
             		<label for="order-goods" class="form-label col-md-2">购买商品</label>
             		<div class="form-input col-md-10">
             			<input id="order-goods" type="text" placeholder="请输入商品名称"/>
-            		</div>
-            	</div>
-				<div class="form-row">
-            		<label for="order-channel" class="form-label col-md-2">订单渠道</label>
-            		<div class="form-input col-md-10">
-            			<input id="order-channel" type="text" placeholder="请输入订单渠道"/>
             		</div>
             	</div>
             	<div class="form-row">
@@ -167,6 +205,37 @@
         $("#order-form").submit();
     });
 
+    $("#addChannel").on('click', function () {
+		var channel = $("#channelName").val();
+		if (channel === '') {
+		    alert("输入不能为空");
+		    return;
+        }
+		var url = "${path.concat('/order/orderchannel/create')}";
+		$.post(url, {ChannelName: channel}, function (result) {
+		    if (result.responseCode === 'RESPONSE_OK') {
+                window.location.href = "${path.concat('/order/create')}";
+            }
+        });
+    });
+
+    function channel_reset() {
+        $("#channel_list").empty();
+        $("#channel_list").append($("<option value=''></option>").text("---请选择渠道---"));
+        var channel_url = "${path.concat('/order/orderchannel/list')}";
+        $.get(channel_url, function(result) {
+            if(result.responseCode == "RESPONSE_OK") {
+                var data = result.data;
+                for(index in data) {
+                    var item = $("<option></option>").text(data[index].channelName);
+                    item.attr("value", data[index].channelName);
+                    $("#channel_list").append(item);
+                }
+            }
+        })
+    };
+
+    channel_reset();
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {
             return false;

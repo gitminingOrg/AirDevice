@@ -1,30 +1,15 @@
 package model.order;
 
-import model.Entity;
 
-/**
- * Created by hushe on 2017/12/23.
- */
-public class OrderBatch extends Entity {
-    private String orderId;
+public class OrderBatch extends Order {
 
-    private String orderNo;
-
-    private String buyerName;
-
-    private String buyerAliAccount;
-
-    private String price;
+    private String buyerAccount;
 
     private String receiverName;
-
-    private String receiverPhone;
 
     private String receiverAddress;
 
     private String coupon;
-
-    private String goodsTitle;
 
     private String goodsKind;
 
@@ -40,64 +25,12 @@ public class OrderBatch extends Entity {
 
     private OrderStatus status;
 
-    public OrderBatch(){
-        super();
-        status = OrderStatus.PAYED;
-    }
-
-    public OrderBatch(String[] param){
-        this();
-        this.orderNo = param[0].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", ""); //订单编号
-        this.buyerName = param[1];//买家姓名
-        this.price = param[2];//买家实付金额
-        this.receiverName = param[3];//收货人姓名
-        this.receiverPhone = param[4].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", "");//收货人手机号码
-        this.receiverAddress = param[5];//收货人地址
-        this.coupon = param[6];//优惠码
-        this.goodsTitle = param[7];//商品名称
-        this.channel = param[8];//订单渠道
-        this.payTime = param[9];//买家付款时间
-        this.description = param[10];//备注
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public String getBuyerName() {
-        return buyerName;
-    }
-
-    public void setBuyerName(String buyerName) {
-        this.buyerName = buyerName;
-    }
-
     public String getBuyerAliAccount() {
-        return buyerAliAccount;
+        return buyerAccount;
     }
 
     public void setBuyerAliAccount(String buyerAliAccount) {
-        this.buyerAliAccount = buyerAliAccount;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
+        this.buyerAccount = buyerAliAccount;
     }
 
     public String getReceiverName() {
@@ -106,14 +39,6 @@ public class OrderBatch extends Entity {
 
     public void setReceiverName(String receiverName) {
         this.receiverName = receiverName;
-    }
-
-    public String getReceiverPhone() {
-        return receiverPhone;
-    }
-
-    public void setReceiverPhone(String receiverPhone) {
-        this.receiverPhone = receiverPhone;
     }
 
     public String getReceiverAddress() {
@@ -130,14 +55,6 @@ public class OrderBatch extends Entity {
 
     public void setCoupon(String coupon) {
         this.coupon = coupon;
-    }
-
-    public String getGoodsTitle() {
-        return goodsTitle;
-    }
-
-    public void setGoodsTitle(String goodsTitle) {
-        this.goodsTitle = goodsTitle;
     }
 
     public String getGoodsKind() {
@@ -195,4 +112,27 @@ public class OrderBatch extends Entity {
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
+
+    public OrderBatch(){
+        super();
+        status = OrderStatus.PAYED;
+        buyerAccount = "无账号";
+        goodsKind = "无类别";
+    }
+
+    public OrderBatch(String[] param){
+        this();
+        this.orderNo = param[0].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", ""); //订单编号
+        this.buyerName = param[1];//买家姓名
+        this.price = param[2];//买家实付金额
+        this.receiverName = param[3];//收货人姓名
+        this.receiverPhone = param[4].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", "");//收货人手机号码
+        this.receiverAddress = param[5];//收货人地址
+        this.coupon = param[6];//优惠码
+        this.goodsTitle = param[7];//商品名称
+        this.channel = param[8];//订单渠道
+        this.payTime = param[9];//买家付款时间
+        this.description = param[10];//备注
+    }
+
 }

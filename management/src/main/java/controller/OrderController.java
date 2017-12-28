@@ -362,7 +362,7 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/orderchannel/complete")
+    @RequestMapping(method = RequestMethod.POST, value = "/orderchannel/create")
     public ResultData createOrderChannel(OrderChannel orderChannel) {
         ResultData result = new ResultData();
         ResultData response = orderService.create(orderChannel);

@@ -6,6 +6,7 @@ import model.order.OrderChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.order.OrderChannelVo;
@@ -25,6 +26,7 @@ public class OrderChannelDaoImpl extends BaseDao implements OrderChannelDao {
     @Override
     public ResultData insert(OrderChannel orderChannel) {
         ResultData result = new ResultData();
+        orderChannel.setChannelId(IDGenerator.generate("OC"));
         synchronized (lock) {
             try {
                 sqlSession.insert("management.order.channel.insert", orderChannel);

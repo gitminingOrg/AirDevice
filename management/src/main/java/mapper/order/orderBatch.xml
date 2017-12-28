@@ -25,14 +25,14 @@
 		insert into
 		taobao_order
 		(
-			order_id, order_no, buyer_name, order_price, receiver_name, receiver_phone, receiver_address,
-		    order_coupon, goods_title, order_channel, pay_time, description, block_flag, order_status, create_time
+			order_id, order_no, buyer_name, buyer_ali_account, order_price, receiver_name, receiver_phone, receiver_address,
+		    order_coupon, goods_title, goods_kind, order_channel, pay_time, description, block_flag, order_status, create_time
 		)
 		values
 		<foreach collection="list" item="item" index="index" separator=",">
-			(#{item.orderId}, #{item.orderNo}, #{item.buyerName}, #{item.price}, #{item.receiverName},
-			 #{item.receiverPhone}, #{item.receiverAddress}, #{item.coupon}, #{item.goodsTitle}, #{item.channel}, #{item.payTime},
-			 #{item.description}, #{item.blockFlag},
+			(#{item.orderId}, #{item.orderNo}, #{item.buyerName}, #{item.buyerAccount}, #{item.price}, #{item.receiverName},
+			 #{item.receiverPhone}, #{item.receiverAddress}, #{item.coupon}, #{item.goodsTitle}, #{item.goodsKind},
+			 #{item.channel}, #{item.payTime}, #{item.description}, #{item.blockFlag},
 			 #{item.status, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{item.createAt})
 		</foreach>
 	</insert>

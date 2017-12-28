@@ -173,4 +173,17 @@ ORDER BY device_chip.update_time DESC
 ALTER TABLE `taobao_order`
 MODIFY COLUMN `buyer_ali_account`  varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `buyer_name`;
 
+##2017年12月27日
+CREATE TABLE `NewTable` (
+`channel_id`  char(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`channel_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`block_flag`  int(1) NOT NULL ,
+`create_time`  datetime NOT NULL ,
+PRIMARY KEY (`channel_id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+ROW_FORMAT=COMPACT
+;
+
 
