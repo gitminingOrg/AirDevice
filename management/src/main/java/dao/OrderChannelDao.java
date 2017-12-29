@@ -1,5 +1,6 @@
 package dao;
 
+import model.order.MissionChannel;
 import model.order.OrderChannel;
 import utils.ResultData;
 
@@ -12,4 +13,8 @@ public interface OrderChannelDao {
     ResultData insert(OrderChannel orderChannel);
 
     ResultData query(Map<String, Object> condition);
+
+    ResultData insert(MissionChannel missionChannel);
+
+    ResultData queryMissionChannel(Map<String, Object> condition);
 }

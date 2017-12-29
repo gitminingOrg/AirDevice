@@ -186,4 +186,15 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 ROW_FORMAT=COMPACT
 ;
 
+##2017年12月29号
+CREATE TABLE `NewTable` (
+`channel_id`  char(11) NOT NULL ,
+`channel_name`  varchar(255) NOT NULL ,
+`block_flag`  int(1) NOT NULL ,
+`create_time`  datetime NOT NULL ,
+PRIMARY KEY (`channel_id`)
+)
+;
+
+
 

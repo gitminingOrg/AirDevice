@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="management.order.channel">
-    <resultMap id="orderchannelVo" type="vo.order.OrderChannelVo">
+<mapper namespace="management.order.missionChannel">
+    <resultMap id="missionChannelVo" type="vo.order.MissionChannelVo">
         <result property="channelId" column="channel_id" />
         <result property="channelName" column="channel_name" />
         <result property="blockFlag" column="block_flag" />
         <result property="createAt" column="create_time" />
     </resultMap>
 
-    <insert id="insert" parameterType="model.order.OrderChannel" useGeneratedKeys="false">
-        insert into order_channel (channel_id, channel_name, block_flag, create_time)
+    <insert id="insert" parameterType="model.order.MissionChannel" useGeneratedKeys="false">
+        insert into mission_channel (channel_id, channel_name, block_flag, create_time)
         values
         (#{channelId}, #{channelName}, #{blockFlag}, #{createAt})
     </insert>
 
-    <select id="query" parameterType="java.util.Map" resultMap="orderchannelVo">
+    <select id="query" parameterType="java.util.Map" resultMap="missionChannelVo">
         select channel_id, channel_name, block_flag, create_time
-        from order_channel
+        from mission_channel
         where 1 = 1
         <if test="channelId != null">
             and channel_id = #{channelId}

@@ -203,4 +203,14 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return result;
 	}
+
+	@Override
+	public ResultData fetchMissionChannel(Map<String, Object> condition) {
+		return orderChannelDao.queryMissionChannel(condition);
+	}
+
+	@Override
+	public ResultData create(MissionChannel missionChannel) {
+		return orderChannelDao.insert(missionChannel);
+	}
 }

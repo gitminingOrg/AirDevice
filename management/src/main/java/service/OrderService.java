@@ -35,4 +35,8 @@ public interface OrderService {
 	ResultData fetchOrderChannel(Map<String, Object> condition);
 
 	ResultData uploadBatch(List<OrderBatch> order);
+
+	ResultData fetchMissionChannel(Map<String, Object> condition);
+
+	ResultData create(MissionChannel missionChannel);
 }

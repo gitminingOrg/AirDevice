@@ -350,6 +350,7 @@ public class OrderController {
     public ResultData OrderChannel() {
         ResultData result = new ResultData();
         Map<String, Object> condition = new HashMap<>();
+        condition.put("blockFlag", false);
         ResultData response = orderService.fetchOrderChannel(condition);
         if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
             result.setResponseCode(ResponseCode.RESPONSE_NULL);
@@ -405,5 +406,37 @@ public class OrderController {
         }
         view.setViewName("redirect:/order/overview");
         return view;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/missionChannel/list")
+    public ResultData missionChannelList() {
+        ResultData result = new ResultData();
+        Map<String, Object> map = new HashMap<>();
+        map.put("blockFlag", false);
+        ResultData response = orderService.fetchMissionChannel(map);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            result.setResponseCode(response.getResponseCode());
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("服务器忙，请稍后再试!");
+        } else {
+            result.setData(response.getData());
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/missionChannel/create")
+    public ResultData create(MissionChannel missionChannel) {
+        ResultData result = new ResultData();
+        ResultData response = orderService.create(missionChannel);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            result.setResponseCode(response.getResponseCode());
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("服务器忙，请稍后再试!");
+        } else {
+            result.setData(response.getData());
+        }
+        return result;
     }
 }
