@@ -394,7 +394,11 @@
                 if (key === 'orderStatus') {
                     result += convertStatus(item[key])
                 } else if (key == 'orderTime') {
-                    result += new Date(item[key]).toDateString();
+                    var orderDate = new Date(item[key]);
+                    var year = (orderDate.getFullYear()).toString();
+                    var month = ('0' + (orderDate.getMonth() + 1).toString()).slice(-2).toString();
+                    var date = ('0' + (orderDate.getDate()).toString()).slice(-2).toString();
+                    result += year + '-' + month + '-' + date;
                 } else{
                     result+=item[key];
                 }

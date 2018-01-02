@@ -409,19 +409,19 @@
          var missionTypeLabel = document.getElementById('missionType');
          var missionTypeContainer = document.getElementById("missionTypeContainer");
          switch (mission) {
-             case '未勘测':
+             case '1':
                  missionTypeLabel.innerHTML = '预计勘测时间';
                  missionTypeContainer.style = 'display: none';
                  break;
-             case '已勘测':
+             case '2':
                  missionTypeLabel.innerHTML = '预计安装时间';
                  missionTypeContainer.style = 'display: none';
                  break;
-             case '待安装':
+             case '3':
                  missionTypeLabel.innerHTML = '预计安装时间';
                  missionTypeContainer.style = 'display: block';
                  break;
-             case '已安装':
+             case '4':
                  missionTypeLabel.innerHTML = '安装时间';
                  missionTypeContainer.style = 'display: block';
                  break;

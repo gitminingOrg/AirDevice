@@ -370,11 +370,12 @@
             var orderCoupon = $('#orderCoupon').val();
             var orderTime = new Date($('#orderTime').val()).toISOString();
             var orderChannel = $('#order_channel_list').find(":selected").text();
+            var description = $('#orderDescription').val();
             var params = {
                             buyerName: buyerName, buyerAcccount: buyerAccount, receiverName: receiverName,
                             receiverPhone: receiverPhone, province: province, city: city, district: district,
                             receiverAddress: receiverAddress, orderCoupon: orderCoupon, orderTime: orderTime,
-                            orderChannel: orderChannel
+                            orderChannel: orderChannel, description: description
             };
 
             var commodities = document.getElementById('goods-container').getAttribute('data-commodity-number');
@@ -398,7 +399,7 @@
             });
 
             $.post(url, params, function (result) {
-                location.reload();
+                window.location.href = "${path.concat('/order/').concat("${order.orderId}")}";
             })
         })
 	});

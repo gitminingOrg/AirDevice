@@ -167,6 +167,9 @@
             <if test="shipNo != null">
                 ship_no = #{shipNo},
             </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
         </set>
         WHERE order_id = #{orderId}
     </update>

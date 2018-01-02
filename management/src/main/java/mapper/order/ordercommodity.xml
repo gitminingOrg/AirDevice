@@ -24,21 +24,22 @@
     </insert>
 
     <update id="updateBatch" parameterType="java.util.List">
-        <foreach collection="list" separator="," index="index" item="item">
+        <foreach collection="list" separator=";" index="index" item="item">
             UPDATE order_commodity
-            SET
-            <if test="item.commodityType != null">
+            <set>
+                <if test="item.commodityType != null">
                 commodity_type = #{item.commodityType},
-            </if>
-            <if test="item.commodityName != null">
+                </if>
+                <if test="item.commodityName != null">
                 commodity_name = #{item.commodityName},
-            </if>
-            <if test="item.commodityPrice != null">
+                </if>
+                <if test="item.commodityPrice != null">
                 commodity_price = #{item.commodityPrice},
-            </if>
-            <if test="item.commodityQuantity != null">
+                </if>
+                <if test="item.commodityQuantity != null">
                 commodity_quantity = #{item.commodityQuantity}
-            </if>
+                </if>
+            </set>
             WHERE commodity_id = #{item.commodityId}
         </foreach>
     </update>

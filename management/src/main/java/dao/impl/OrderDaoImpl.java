@@ -247,6 +247,9 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	public ResultData updateBatchCommodity(List<OrderCommodity> commodityList) {
 		ResultData result = new ResultData();
 		try {
+			if (commodityList.size() == 0) {
+				return result;
+			}
 			int rows = sqlSession.update("management.ordercommodity.updateBatch", commodityList);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
