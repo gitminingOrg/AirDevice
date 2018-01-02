@@ -19,7 +19,6 @@ import utils.ResponseCode;
 import utils.ResultData;
 import vo.order.OrderChannelVo;
 import vo.order.OrderStatusVo;
-import vo.order.OrderVo;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -38,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
 	private OrderBatchDao orderBatchDao;
 
 	@Override
-	public ResultData upload(List<TaobaoOrder> order) {
+	public ResultData upload(List<GuoMaiOrder> order) {
 		ResultData result = new ResultData();
 		ResultData response = orderDao.insert(order);
 		result.setResponseCode(response.getResponseCode());
@@ -46,6 +45,11 @@ public class OrderServiceImpl implements OrderService {
 			result.setDescription(response.getDescription());
 		}
 		return result;
+	}
+
+	@Override
+	public ResultData uploadCommodity(List<OrderCommodity> commodityList) {
+		return orderDao.insertCommodity(commodityList);
 	}
 
 	@Override
@@ -75,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public ResultData assign(TaobaoOrder order) {
+	public ResultData assign(GuoMaiOrder order) {
 		ResultData result = new ResultData();
 		ResultData response = orderDao.update(order);
 		result.setResponseCode(response.getResponseCode());
@@ -93,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public ResultData create(CustomizeOrder order) {
+	public ResultData create(GuoMaiOrder order) {
 		ResultData result = new ResultData();
 		ResultData response = orderDao.create(order);
 		result.setResponseCode(response.getResponseCode());
@@ -113,6 +117,11 @@ public class OrderServiceImpl implements OrderService {
 			result.setDescription(response.getDescription());
 		}
 		return result;
+	}
+
+	@Override
+	public ResultData create(OrderCommodity commodity) {
+		return orderDao.create(commodity);
 	}
 
 	@Override
@@ -194,7 +203,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public ResultData uploadBatch(List<OrderBatch> order) {
+	public ResultData uploadBatch(List<GuoMaiOrder> order) {
 		ResultData result = new ResultData();
 		ResultData response = orderBatchDao.insert(order);
 		result.setResponseCode(response.getResponseCode());
@@ -212,5 +221,15 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public ResultData create(MissionChannel missionChannel) {
 		return orderChannelDao.insert(missionChannel);
+	}
+
+	@Override
+	public ResultData assignBatchCommodity(List<OrderCommodity> commodityList) {
+		return orderDao.updateBatchCommodity(commodityList);
+	}
+
+	@Override
+	public ResultData removeCommodity(Map<String, Object> condition) {
+		return orderDao.blockCommodity(condition);
 	}
 }

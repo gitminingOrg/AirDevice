@@ -2,7 +2,7 @@ package dao.impl;
 
 import dao.BaseDao;
 import dao.OrderBatchDao;
-import model.order.OrderBatch;
+import model.order.GuoMaiOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -20,9 +20,9 @@ public class OrderBatchDaoImpl extends BaseDao implements OrderBatchDao {
     private Logger logger = LoggerFactory.getLogger(OrderBatchDaoImpl.class);
 
     @Override
-    public ResultData insert(List<OrderBatch> order) {
+    public ResultData insert(List<GuoMaiOrder> order) {
         ResultData result = new ResultData();
-        for (OrderBatch item: order){
+        for (GuoMaiOrder item: order){
             item.setOrderId(IDGenerator.generate("TBO"));
         }
         try {

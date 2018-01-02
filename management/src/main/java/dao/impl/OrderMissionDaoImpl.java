@@ -13,6 +13,7 @@ import model.order.OrderMission;
 import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
+import vo.order.OrderMissionVo;
 
 @Repository
 public class OrderMissionDaoImpl extends BaseDao implements OrderMissionDao {
@@ -36,7 +37,7 @@ public class OrderMissionDaoImpl extends BaseDao implements OrderMissionDao {
 	public ResultData query(Map<String, Object> condition) {
 		ResultData result = new ResultData();
 		try {
-			List<OrderMission> list = sqlSession.selectList("management.ordermission.query", condition);
+			List<OrderMissionVo> list = sqlSession.selectList("management.ordermission.query", condition);
 			if(list.isEmpty()) {
 				result.setResponseCode(ResponseCode.RESPONSE_NULL);
 			}

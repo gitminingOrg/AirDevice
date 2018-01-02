@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import model.order.GuoMaiOrder;
+import model.order.OrderCommodity;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.consumer.ConsumerShareCodeVo;
+import vo.order.GuoMaiOrderVo;
 import vo.order.OrderStatusVo;
 import vo.order.OrderVo;
 
@@ -34,13 +37,29 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	private Object lock = new Object();
 
 	@Override
-	public ResultData insert(List<TaobaoOrder> order) {
+	public ResultData insert(List<GuoMaiOrder> order) {
 		ResultData result = new ResultData();
-		for (TaobaoOrder item : order) {
+		for (GuoMaiOrder item : order) {
 			item.setOrderId(IDGenerator.generate("TBO"));
 		}
 		try {
-			sqlSession.insert("management.externalorder.insertTaobaoBatch", order);
+			sqlSession.insert("management.guomaiorder.insertBatch", order);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public ResultData insertCommodity(List<OrderCommodity> commodityList) {
+		ResultData result = new ResultData();
+		for (OrderCommodity item : commodityList) {
+			item.setCommodityId(IDGenerator.generate("GMC"));
+		}
+		try {
+			sqlSession.insert("management.ordercommodity.insertBatch", commodityList);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -53,7 +72,7 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	public ResultData query(Map<String, Object> condition) {
 		ResultData result = new ResultData();
 		try {
-			List<OrderVo> list = sqlSession.selectList("management.externalorder.query", condition);
+			List<GuoMaiOrderVo> list = sqlSession.selectList("management.guomaiorder.query", condition);
 			if (list.isEmpty()) {
 				result.setResponseCode(ResponseCode.RESPONSE_NULL);
 			}
@@ -69,17 +88,26 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	@Override
 	public ResultData query(Map<String, Object> condition, DataTableParam param) {
 		ResultData result = new ResultData();
-		DataTablePage<OrderVo> page = new DataTablePage<>(param);
+		DataTablePage<GuoMaiOrder> page = new DataTablePage<>(param);
 		if (!StringUtils.isEmpty(param.getsSearch())) {
 			condition.put("search", new StringBuffer("%").append(param.getsSearch()).append("%").toString());
 		}
 		JSONObject params = JSON.parseObject(param.getParams());
 		if(!StringUtils.isEmpty(params)) {
 			if(!StringUtils.isEmpty(params.get("channel"))) {
-				condition.put("channel", params.getString("channel"));
+				condition.put("orderChannel", params.getString("channel"));
 			}
 			if(!StringUtils.isEmpty(params.get("status"))) {
-				condition.put("status", params.getString("status"));
+				condition.put("orderStatus", params.getString("status"));
+			}
+			if (!StringUtils.isEmpty(params.get("startDate"))) {
+				condition.put("startTime", params.getString("startDate"));
+			}
+			if (!StringUtils.isEmpty(params.get("endDate"))) {
+				condition.put("endTime", params.getString("endDate"));
+			}
+			if (!StringUtils.isEmpty(params.get("province"))) {
+				condition.put("province", params.getString("province"));
 			}
 		}
 		ResultData total = query(condition);
@@ -90,7 +118,7 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 		}
 		page.setiTotalRecords(((List) total.getData()).size());
 		page.setiTotalDisplayRecords(((List) total.getData()).size());
-		List<OrderVo> current = queryByPage(condition, param.getiDisplayStart(), param.getiDisplayLength());
+		List<GuoMaiOrder> current = queryByPage(condition, param.getiDisplayStart(), param.getiDisplayLength());
 		if (current.size() == 0) {
 			result.setResponseCode(ResponseCode.RESPONSE_NULL);
 		}
@@ -99,10 +127,10 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 		return result;
 	}
 
-	private List<OrderVo> queryByPage(Map<String, Object> condition, int start, int length) {
-		List<OrderVo> list = new ArrayList<>();
+	private List<GuoMaiOrder> queryByPage(Map<String, Object> condition, int start, int length) {
+		List<GuoMaiOrder> list = new ArrayList<>();
 		try {
-			list = sqlSession.selectList("management.externalorder.query", condition, new RowBounds(start, length));
+			list = sqlSession.selectList("management.guomaiorder.query", condition, new RowBounds(start, length));
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -110,10 +138,10 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	}
 
 	@Override
-	public ResultData update(TaobaoOrder order) {
+	public ResultData update(GuoMaiOrder order) {
 		ResultData result = new ResultData();
 		try {
-			sqlSession.update("management.externalorder.update", order);
+			sqlSession.update("management.guomaiorder.update", order);
 		}catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -136,11 +164,25 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	}
 
 	@Override
-	public ResultData create(CustomizeOrder order) {
+	public ResultData create(GuoMaiOrder order) {
 		ResultData result = new ResultData();
-		order.setOrderId(IDGenerator.generate("CSO"));
+		order.setOrderId(IDGenerator.generate("GMO"));
 		try {
-			sqlSession.insert("management.customizeorder.insert", order);
+			sqlSession.insert("management.guomaiorder.insert", order);
+		}catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public ResultData create(OrderCommodity commodity) {
+		ResultData result = new ResultData();
+		commodity.setCommodityId(IDGenerator.generate("GMC"));
+		try {
+			sqlSession.insert("management.ordercommodity.insert", commodity);
 		}catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -193,6 +235,33 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 				return result;
 			}
 			result.setData(list);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+	@Override
+	public ResultData updateBatchCommodity(List<OrderCommodity> commodityList) {
+		ResultData result = new ResultData();
+		try {
+			int rows = sqlSession.update("management.ordercommodity.updateBatch", commodityList);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+
+		return result;
+	}
+
+	@Override
+	public ResultData blockCommodity(Map<String, Object> condition) {
+		ResultData result = new ResultData();
+		try {
+			int rows = sqlSession.update("management.ordercommodity.blockcommodity", condition);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);

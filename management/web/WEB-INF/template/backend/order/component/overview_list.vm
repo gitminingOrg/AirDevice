@@ -60,28 +60,45 @@
                 </div>
             </div>
             <div class="col-md-12 center-margin">
-            	<div class="col-md-10 center-margin">
+##            	<div class="col-md-10 center-margin">
 	                <div class="form-row">
 	                    <div class="form-input">
-	                        <div class="row">
-	                            <div class="col-md-5">
+	                        <div class="row" style="margin-left: 0px">
+	                            <div class="col-md-2">
 	                                <select id="channel_list">
 	                                    <option>---请选择渠道---</option>
 	                                </select>
 	                            </div>
-	                            <div class="col-md-5">
+	                            <div class="col-md-2">
 	                                <select id="status_list">
 	                                    <option>---请选择订单状态---</option>
 	                                </select>
 	                            </div>
+                                <div class="col-md-4">
+                                    <div class="col-md-6 form-input">
+                                        <input id="startDate" type="date" placeholder="起始时间">
+                                    </div>
+##                                    <div class="col-md-1">至</div>
+                                    <div class="col-md-6 form-input">
+                                        <input id="endDate" type="date" placeholder="结束时间">
+                                    </div>
+                                </div>
+                                <div class="col-md-2" data-toggle="distpicker">
+                                    <select id="province" style="border-radius: 5px">
+                                        <option data-code="" data-text="— 省 —" value="">—— 省 ——</option>
+                                    </select>
+                                </div>
 	                            <div class="col-md-2">
 	                                <button id="search_btn" type="button" data-loading-text="查询中" class="btn large loading-button bg-blue">
 	                                    查询
 	                                </button>
+                                    <button id="export_btn" class="btn large loading-button bg-blue" style="margin-left: 10px">
+                                        导出
+                                    </button>
 	                            </div>
 	                        </div>
 	                    </div>
-	                </div>
+##	                </div>
 	            </div>
                 <table id="order-list-table" class="table table-condensed"></table>
             </div>
@@ -98,13 +115,13 @@
 	function channel_reset() {
 		$("#channel_list").empty();
 		$("#channel_list").append($("<option value=''></option>").text("---请选择渠道---"));
-		var channel_url = "${path.concat('/order/channel/list')}";
+		var channel_url = "${path.concat('/order/orderchannel/list')}";
 		$.get(channel_url, function(result) {
 			if(result.responseCode == "RESPONSE_OK") {
 				var data = result.data;
 				for(index in data) {
-					var item = $("<option></option>").text(data[index]);
-					item.attr("value", data[index]);
+					var item = $("<option></option>").text(data[index].channelName);
+					item.attr("value", data[index].channelName);
 					$("#channel_list").append(item);
 				}
 			}
@@ -115,7 +132,7 @@
 		$("#status_list").empty();
 		var param = {};
 		$("#status_list").append($("<option value=''></option>").text("---请选择订单类型---"));
-		var status_url = "${path.concat('/order/status/list')}";
+		var status_url = "${path.concat('/order/orderstatus/list')}";
 		$.get(status_url, function(result) {
 			if(result.responseCode == "RESPONSE_OK") {
 				var data = result.data;
@@ -126,12 +143,6 @@
 					}
 					if(data[index] == 2) {
 						item.text("已发货");
-					}
-					if(data[index] == 2) {
-						item.text("已发货");
-					}
-					if(data[index] == 4) {
-						item.text("正在安装");
 					}
 					if(data[index] == 4) {
 						item.text("正在安装");
@@ -199,6 +210,27 @@
                         delete param.status;
                     }
                 }
+                var startDate = $("#startDate").val();
+                if(param.startDate != startDate) {
+                    param.startDate = startDate;
+                    if(!not_null(startDate)) {
+                        delete param.startDate;
+                    }
+                }
+                var endDate = $("#endDate").val();
+                if(param.endDate != endDate) {
+                    param.endDate = endDate;
+                    if(!not_null(endDate)) {
+                        delete param.endDate;
+                    }
+                }
+                var province = $("#province").find(':selected').val();
+                if(param.province != province) {
+                    param.province = province;
+                    if(!not_null(province)) {
+                        delete param.province;
+                    }
+                }
                 aoData.push({"name": "params", "value": JSON.stringify(param)});
             },
             "fnServerData": function (sSource, aoData, fnCallback) {
@@ -214,10 +246,20 @@
                 {title: "订单编号", "mData": "orderNo"},
                 {title: "收件人", "mRender": function(data, type, full) {
                     return full.receiverName + "(" + full.receiverPhone + ")";
-                }}, 
-                {title: "渠道", "mData": "channel"},
+                }},
+                {title: '地区', "mRender": function (data, type, full) {
+                    return full.province + full.city + full.district
+                }},
+                {title: '下单日期', "mRender": function(data, type, full){
+                    var orderTime = new Date(full.orderTime);
+                    var year = (orderTime.getFullYear()).toString();
+                    var month = ("0" + orderTime.getMonth() + 1).slice(-2).toString();
+                    var day = ("0" + orderTime.getDay()).slice(-2).toString();
+                    return year + '-' + month + '-' + day;
+                }},
+                {title: "渠道", "mData": "orderChannel"},
                 {title: "当前进度", "mRender": function(data, type, full) {
-                	var status = full.status;
+                	var status = full.orderStatus;
                 	if(status == "PAYED") {
                 		return "待发货";
                 	}
@@ -260,6 +302,108 @@
             }
         });
     });
+
+	$('#export_btn').on('click', function () {
+        var url = "${path.concat('/order/list')}";
+        var export_param = {};
+
+        var channel = $("#channel_list").val();
+        if(not_null(channel)) {
+            export_param.channel = channel;
+        }
+        var status = $("#status_list").val();
+        if(not_null(status)) {
+            export_param.status = status;
+        }
+        var startDate = $("#startDate").val();
+        if(not_null(startDate)) {
+            export_param.startDate = startDate;
+        }
+        var endDate = $("#endDate").val();
+        if(not_null(endDate)) {
+            export_param.endDate = endDate;
+        }
+        var province = $("#province").find(':selected').val();
+        if(not_null(province)) {
+            export_param.province = province;
+        }
+        $.get(url + "?param=" + JSON.stringify(export_param), function (response) {
+            if (response.responseCode === 'RESPONSE_OK') {
+                var args, headers, keys, filename;
+                keys = ['orderNo', 'buyerName', 'receiverName', 'receiverPhone', 'province',
+                        'city', 'district', 'receiverAddress', 'orderPrice', 'orderChannel',
+                        'orderCoupon', 'orderTime', 'orderStatus', 'shipNo',  'description'];
+                header = ['订单号', '买家昵称', '收货人', '收货人手机', '省份', '城市', '地区',
+                            '收获地址', '订单总价', '订单渠道', '优惠码', '下单时间', '订单状态',
+                            '物流单号', '备注'];
+                args = {keys: keys, header: header, data: response.data};
+                var csv = convertDataToCSV(args);
+                if (csv == null) return;
+
+                filename = 'export.csv';
+                if (!csv.match(/^data:text\/csv/i)) {
+                    csv = 'data:text/csv;charset=utf-8,' + csv;
+                }
+                data = encodeURI(csv);
+
+                link = document.createElement('a');
+                link.setAttribute('href', data);
+                link.setAttribute('download', filename);
+                link.click();
+            }
+        })
+    });
+
+	function convertStatus(status) {
+	    var result;
+        switch (status){
+            case 'NOT_PAYED': result = '未付款'; break;
+            case 'PAYED': result = '已付款'; break;
+            case 'SHIPPED': result = '已发货'; break;
+            case 'RECEIVED': result = '已收货'; break;
+            case 'INSTALLING': result = '正在安装'; break;
+            case 'SUCCEED': result = '已完成'; break;
+            case 'REFUNDING': result = '退款中'; break;
+            case 'REFUNDED': result = '已退款'; break;
+            case 'CLOSED': result = '已取消'; break;
+            default: break;
+        }
+        return result;
+    }
+	
+	function convertDataToCSV(args) {
+        var result, columnDelimiter, lineDelimiter, data, header ,ctr, keys;
+        header = args.header;
+        keys = args.keys;
+        data = args.data || null;
+        if (data == null || !data.length) {
+            return null;
+        }
+
+        columnDelimiter = args.columnDelimiter || ',';
+        lineDelimiter = args.lineDelimiter || '\n';
+
+        result = '';
+        result += header.join(columnDelimiter);
+        result += lineDelimiter;
+
+        data.forEach(function (item) {
+            ctr = 0;
+            keys.forEach(function (key) {
+                if (ctr > 0) result += columnDelimiter;
+                if (key === 'orderStatus') {
+                    result += convertStatus(item[key])
+                } else if (key == 'orderTime') {
+                    result += new Date(item[key]).toDateString();
+                } else{
+                    result+=item[key];
+                }
+                ctr++;
+            })
+            result += lineDelimiter;
+        })
+        return result;
+    }
 
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {

@@ -1,7 +1,10 @@
 package controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.csvreader.CsvReader;
+import form.OrderCommodityForm;
+import form.OrderCommodityWrapper;
 import form.OrderCreateForm;
 import form.OrderMissionForm;
 import model.machine.Insight;
@@ -23,6 +26,7 @@ import service.OrderService;
 import service.QRCodeService;
 import utils.ResponseCode;
 import utils.ResultData;
+import vo.order.GuoMaiOrderVo;
 import vo.order.OrderVo;
 import vo.user.UserVo;
 
@@ -30,6 +34,13 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @CrossOrigin
@@ -51,6 +62,7 @@ public class OrderController {
         return view;
     }
 
+    /**
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
     public ModelAndView upload(MultipartHttpServletRequest request) throws IOException {
         ModelAndView view = new ModelAndView();
@@ -83,6 +95,7 @@ public class OrderController {
         view.setViewName("redirect:/order/overview");
         return view;
     }
+     **/
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/list")
@@ -95,6 +108,41 @@ public class OrderController {
         ResultData response = orderService.fetch(condition, param);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result = (DataTablePage<OrderVo>) response.getData();
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/list")
+    public ResultData list(@RequestParam String param) {
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("blockFlag", false);
+        JSONObject params = JSON.parseObject(param);
+        if(!StringUtils.isEmpty(params)) {
+            if(!StringUtils.isEmpty(params.get("channel"))) {
+                condition.put("orderChannel", params.getString("channel"));
+            }
+            if(!StringUtils.isEmpty(params.get("status"))) {
+                condition.put("orderStatus", params.getString("status"));
+            }
+            if (!StringUtils.isEmpty(params.get("startDate"))) {
+                condition.put("startTime", params.getString("startDate"));
+            }
+            if (!StringUtils.isEmpty(params.get("endDate"))) {
+                condition.put("endTime", params.getString("endDate"));
+            }
+            if (!StringUtils.isEmpty(params.get("province"))) {
+                condition.put("province", params.getString("province"));
+            }
+        }
+        ResultData response = orderService.fetch(condition);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            result.setResponseCode(response.getResponseCode());
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setResponseCode(response.getResponseCode());
+            result.setDescription("服务器忙，请稍后再试！");
+        } else {
+            result.setData(response.getData());
         }
         return result;
     }
@@ -113,11 +161,16 @@ public class OrderController {
             view.setViewName("redirect:/order/overview");
             return view;
         }
-        OrderVo vo = ((List<OrderVo>) response.getData()).get(0);
+        GuoMaiOrderVo vo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
+        LocalDateTime time = LocalDateTime.ofInstant(vo.getOrderTime().toInstant(), TimeZone.getDefault().toZoneId());
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String orderTime = time.format(format);
         view.addObject("order", vo);
+        view.addObject("orderTime", orderTime);
         view.setViewName("/backend/order/detail");
         return view;
     }
+
 
     @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/deliver")
     public ResultData deliver(@PathVariable("orderId") String orderId, String productSerial, String shipNo) {
@@ -127,11 +180,10 @@ public class OrderController {
             result.setDescription("订单编号和产品编号不正确");
             return result;
         }
-        TaobaoOrder order = new TaobaoOrder();
+        GuoMaiOrder order = new GuoMaiOrder();
         order.setOrderId(orderId);
-        order.setProductSerial(productSerial);
         order.setShipNo(shipNo);
-        order.setStatus(OrderStatus.SHIPPED);
+        order.setOrderStatus(OrderStatus.SHIPPED);
         ResultData response = orderService.assign(order);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setResponseCode(ResponseCode.RESPONSE_OK);
@@ -157,11 +209,115 @@ public class OrderController {
             result.setDescription(JSONObject.toJSONString(br.getAllErrors()));
             return result;
         }
-        CustomizeOrder order = new CustomizeOrder(form.getOrderNo(), form.getOrderBuyer(),
-                Double.parseDouble(form.getOrderPrice()), form.getReceiverName(), form.getReceiverPhone(),
-                form.getReceiverAddress(), form.getOrderCoupon(), form.getGoodsName(), form.getPayTime(),
-                form.getOrderChannel(), form.getDescription());
+        GuoMaiOrder order = new
+                GuoMaiOrder(form.getOrderNo(), form.getBuyerName(), form.getBuyerAccount(), form.getReceiverName(),
+                            form.getReceiverPhone(), form.getOrderPrice(), form.getProvince(), form.getCity(),
+                            form.getDistrict(), form.getReceiverAddress(), form.getOrderChannel(),
+                            form.getOrderCoupon(), Timestamp.valueOf(form.getOrderTime()), form.getDescription());
+        if (form.getOrderDiversion() != null) {
+            order.setOrderDiversion(form.getOrderDiversion());
+        }
         ResultData response = orderService.create(order);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_OK);
+        } else {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(response.getDescription());
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "{orderId}/update")
+    public ResultData upload(@PathVariable String orderId, @Valid OrderCreateForm form, BindingResult br) {
+        ResultData result = new ResultData();
+        if (br.hasErrors()) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(JSONObject.toJSONString(br.getAllErrors()));
+            return result;
+        }
+        GuoMaiOrder order = new
+                GuoMaiOrder(form.getOrderNo(), form.getBuyerName(), form.getBuyerAccount(), form.getReceiverName(),
+                form.getReceiverPhone(), form.getOrderPrice(), form.getProvince(), form.getCity(),
+                form.getDistrict(), form.getReceiverAddress(), form.getOrderChannel(),
+                form.getOrderCoupon(), Timestamp.valueOf(form.getOrderTime()), form.getDescription());
+        order.setOrderId(orderId);
+        if (form.getOrderDiversion() != null) {
+            order.setOrderDiversion(form.getOrderDiversion());
+        }
+        if (form.getOrderStatus() != null) {
+            order.setOrderStatus(form.getOrderStatus());
+        }
+        ResultData response = orderService.assign(order);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_OK);
+        } else {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(response.getDescription());
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/commodity/create", consumes = "application/json")
+    public ResultData createCommodity(@RequestBody OrderCommodityWrapper commodityWrapper, BindingResult br) {
+        ResultData result = new ResultData();
+        if (br.hasErrors()) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(JSONObject.toJSONString(br.getAllErrors()));
+            return result;
+        }
+        List<OrderCommodity> commodityList = new LinkedList<>();
+        for (OrderCommodityForm form : commodityWrapper.getCommodities()) {
+            form.setOrderId(commodityWrapper.getOrderId());
+            OrderCommodity commodity = new
+                    OrderCommodity(form.getOrderId(), form.getCommodityType(), form.getCommodityName(),
+                    form.getCommodityPrice(), form.getCommodityQuantity());
+            commodityList.add(commodity);
+        }
+
+        ResultData response = orderService.uploadCommodity(commodityList);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_OK);
+        } else {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(response.getDescription());
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/commodity/update", consumes = "application/json")
+    public ResultData updateCommodity(@RequestBody OrderCommodityWrapper commodityWrapper, BindingResult br) {
+        ResultData result = new ResultData();
+        if (br.hasErrors()) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(JSONObject.toJSONString(br.getAllErrors()));
+            return result;
+        }
+        List<OrderCommodity> commodityList = new LinkedList<>();
+        for (OrderCommodityForm form : commodityWrapper.getCommodities()) {
+            form.setOrderId(commodityWrapper.getOrderId());
+            OrderCommodity commodity = new
+                    OrderCommodity(form.getOrderId(), form.getCommodityType(), form.getCommodityName(),
+                    form.getCommodityPrice(), form.getCommodityQuantity());
+            commodity.setCommodityId(form.getCommodityId());
+            commodityList.add(commodity);
+        }
+
+        ResultData response = orderService.assignBatchCommodity(commodityList);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_OK);
+        } else {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(response.getDescription());
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/commodity/delete")
+    public ResultData deleteCommodity(@RequestParam String commodityId) {
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("commodityId", commodityId);
+        ResultData response = orderService.removeCommodity(condition);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setResponseCode(ResponseCode.RESPONSE_OK);
         } else {
@@ -191,6 +347,7 @@ public class OrderController {
         return result;
     }
 
+
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/mission/create")
     public ResultData missionCreate(@Valid OrderMissionForm form, BindingResult br,
@@ -217,12 +374,9 @@ public class OrderController {
             logger.error(result.getDescription());
             return result;
         }
-        OrderVo vo = ((List<OrderVo>) response.getData()).get(0);
-        TaobaoOrder order = new TaobaoOrder();
+        GuoMaiOrder order = new GuoMaiOrder();
         order.setOrderId(orderId);
-        order.setProductSerial(vo.getProductSerial());
-        order.setShipNo(vo.getShipNo());
-        order.setStatus(OrderStatus.INSTALLING);
+        order.setOrderStatus(OrderStatus.INSTALLING);
         orderService.assign(order);
         UserVo user = (UserVo) subject.getPrincipal();
         OrderMission mission = new OrderMission(orderId, form.getMissionTitle(), form.getMissionContent(),
@@ -271,15 +425,17 @@ public class OrderController {
             logger.error(result.getDescription());
             return result;
         }
-        OrderVo vo = ((List<OrderVo>) response.getData()).get(0);
-        TaobaoOrder order = new TaobaoOrder();
+        GuoMaiOrderVo vo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
+        GuoMaiOrder order = new GuoMaiOrder();
         order.setOrderId(orderId);
-        order.setProductSerial(vo.getProductSerial());
         order.setShipNo(vo.getShipNo());
-        order.setStatus(OrderStatus.SUCCEED);
+        order.setOrderStatus(OrderStatus.SUCCEED);
+        order.setOrderPrice(vo.getOrderPrice());
         orderService.assign(order);
         return result;
     }
+
+
 
     @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/cancel")
     public ResultData cancel(@PathVariable("orderId") String orderId) {
@@ -294,12 +450,12 @@ public class OrderController {
             logger.error(result.getDescription());
             return result;
         }
-        OrderVo vo = ((List<OrderVo>) response.getData()).get(0);
-        TaobaoOrder order = new TaobaoOrder();
+        GuoMaiOrderVo vo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
+        GuoMaiOrder order = new GuoMaiOrder();
         order.setOrderId(orderId);
-        order.setProductSerial(vo.getProductSerial());
+//        order.setProductSerial(vo.getProductSerial());
         order.setShipNo(vo.getShipNo());
-        order.setStatus(OrderStatus.REFUNDED);
+        order.setOrderStatus(OrderStatus.REFUNDED);
         orderService.assign(order);
         return result;
     }
@@ -308,19 +464,6 @@ public class OrderController {
     public ResultData status() {
         ResultData result = new ResultData();
         ResultData response = orderService.fetchStatus();
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-            result.setData(response.getData());
-        } else {
-            result.setResponseCode(ResponseCode.RESPONSE_NULL);
-            result.setDescription(response.getDescription());
-        }
-        return result;
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value = "/channel/list")
-    public ResultData channel() {
-        ResultData result = new ResultData();
-        ResultData response = orderService.fetchChannel();
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setData(response.getData());
         } else {
@@ -393,9 +536,9 @@ public class OrderController {
             list.add(reader.getValues());
         }
         reader.close();
-        List<OrderBatch> order = new LinkedList<>();
+        List<GuoMaiOrder> order = new LinkedList<>();
         for (int i = 0; i < list.size(); i++) {
-            OrderBatch item = new OrderBatch(list.get(i));
+            GuoMaiOrder item = new GuoMaiOrder(list.get(i));
             order.add(item);
         }
         ResultData response = orderService.uploadBatch(order);

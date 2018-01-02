@@ -19,10 +19,6 @@ public class OrderVo {
 	
 	private String coupon;
 	
-	private String goodsTitle;
-	
-	private String goodsKind;
-	
 	private String productSerial;
 	
 	private String shipNo;
@@ -95,22 +91,6 @@ public class OrderVo {
 
 	public void setCoupon(String coupon) {
 		this.coupon = coupon;
-	}
-
-	public String getGoodsTitle() {
-		return goodsTitle;
-	}
-
-	public void setGoodsTitle(String goodsTitle) {
-		this.goodsTitle = goodsTitle;
-	}
-
-	public String getGoodsKind() {
-		return goodsKind;
-	}
-
-	public void setGoodsKind(String goodsKind) {
-		this.goodsKind = goodsKind;
 	}
 	
 	public String getProductSerial() {

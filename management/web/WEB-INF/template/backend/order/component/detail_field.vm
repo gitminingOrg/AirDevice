@@ -43,67 +43,124 @@
             	</div>
             	<div class="form-row">
             		<div class="form-label col-md-2">购买人</div>
-            		<div class="form-input col-md-10">${order.buyerName}</div>
+            		<div class="form-input col-md-10">
+                        <input id="buyerName" type="text" value="${order.buyerName}"/>
+                    </div>
             	</div> 
             	<div class="form-row">
             		<div class="form-label col-md-2">交易帐号</div>
-            		<div class="form-input col-md-10">${order.buyerAccount}</div>
+            		<div class="form-input col-md-10">
+                        #if(${order.buyerAccount})
+                            <input id="buyerAccount" type="text" value="${order.buyerAccount}"/>
+                        #else
+                            <input id="buyerAccount" type="text" value="无账号"/>
+                        #end
+                    </div>
             	</div> 
             	<div class="form-row">
             		<div class="form-label col-md-2">收货人</div>
-            		<div class="form-input col-md-10">${order.receiverName}(${order.receiverPhone})</div>
+            		<div class="form-input col-md-10">
+                        <input id="receiverName" type="text" value="${order.receiverName}"/>
+                    </div>
             	</div>
+                <div class="form-row">
+                    <div class="form-label col-md-2">收货人手机</div>
+                    <div class="form-input col-md-10">
+                        <input id="receiverPhone" type="text" value="${order.receiverPhone}"/>
+                    </div>
+                </div>
             	<div class="form-row">
-            		<div class="form-label col-md-2">收货地址</div>
-            		<div class="form-input col-md-10">${order.receiverAddress}</div>
+                    <div class="form-label col-md-2">收货人地址</div>
+                    <div class="form-input col-md-4 select" data-toggle="distpicker">
+                        <select id="province" class="col-md-4" data-province="${order.province}" style="border-radius: 5px">
+                            <option data-code="" data-text="—— 省 ——">—— 省 ——</option>
+                        </select>
+                        <select id="city" class="col-md-3" style="border-radius: 5px" data-city="${order.city}">
+                            <option data-code="" data-text="—— 市 ——" value="${order.city}">—— 市 ——</option>
+                        </select>
+                        <select id="district" class="col-md-3" style="border-radius: 5px" data-district="${order.district}">
+                            <option data-code="" data-text="—— 区 ——" value="${order.district}">—— 区 ——</option>
+                        </select>
+                    </div>
+                    <div class="form-input col-md-6">
+                        <input id="receiverAddress" type="text" value="${order.receiverAddress}"/>
+                    </div>
             	</div>
-            	#if($!{order.coupon})
-            		<div class="form-row">
-            			<div class="form-label col-md-2">优惠码</div>
-            			<div class="form-input col-md-10">${order.coupon}</div>
-            		</div>
-            	#end
+                <div class="form-row">
+                    <div class="form-label col-md-2">优惠码</div>
+                    <div class="form-input col-md-10">
+                        <input id="orderCoupon" type="text" value="${order.orderCoupon}">
+                    </div>
+                </div>
             	<div class="form-row">
             		<div class="form-label col-md-2">购买商品</div>
-            		<div class="form-input col-md-10">${order.goodsTitle} (${order.goodsKind})</div>
+                    <div class="form-input col-md-10" id="goods-container" data-commodity-number="${order.commodityList.size()}">
+                        #foreach($commodity in ${order.commodityList})
+                            <div class="form-row" style="margin-left: 0px; margin-right: 0px" id="commodity$velocityCount" data-commodityId="${commodity.commodityId}">
+                                <div class="form-input col-md-8" style="padding-left: 0px">
+                                    <input id="order-goods$velocityCount" type="text" value="${commodity.commodityName}"/>
+                                </div>
+                                <label for="order-goods" class="form-label col-md-1">数量</label>
+                                <div class="form-input col-md-2" style="padding-right: 0px">
+                                    <input id="goods-number$velocityCount" type="number" min="1"  value="${commodity.commodityQuantity}"/>
+                                </div>
+                                <button id="delGoods$velocityCount" class="btn medium bg-red" style="float: right" onclick="commodityDel(this.id)">删除</button>
+                            </div>
+                        #end
+                    </div>
             	</div>
             	<div class="form-row">
             		<div class="form-label col-md-2">付款时间</div>
-            		<div class="form-input col-md-10">${order.payTime}</div>
+            		<div class="form-input col-md-10">
+                        <input id="orderTime" type="date" value="${orderTime}">
+                    </div>
             	</div>
 				<div class="form-row">
             		<div class="form-label col-md-2">订单渠道</div>
-            		<div class="form-input col-md-10">${order.channel}</div>
+            		<div class="form-input col-md-10">
+                        <select id="order_channel_list">
+                            <option>${order.orderChannel}</option>
+                        </select>
+                    </div>
             	</div>
+                <div class="form-row">
+                    <div class="form-label col-md-2">订单备注</div>
+                    <div class="form-input col-md-10">
+                        <textarea id="orderDescription" type="text">${order.description} </textarea>
+                    </div>
+                </div>
             	<div class="form-row">
             		<div class="form-label col-md-2">订单状态</div>
             		<div class="form-input col-md-10">
-            			#if(${order.status} == "PAYED")
+            			#if(${order.orderStatus} == "PAYED")
             				待发货
-            			#elseif(${order.status} == "SHIPPED")
+            			#elseif(${order.orderStatus} == "SHIPPED")
             				已发货
-            			#elseif(${order.status} == "INSTALLING")
+            			#elseif(${order.orderStatus} == "INSTALLING")
             				安装中
-            			#elseif(${order.status} == "SUCCEED")
+            			#elseif(${order.orderStatus} == "SUCCEED")
             				已关闭
-            			#elseif(${order.status} == "REFUNDED")
+            			#elseif(${order.orderStatus} == "REFUNDED")
             				已取消
             			#end
             		</div>
             	</div>
-            	#if(${order.status} == "SHIPPED" || ${order.status} == "INSTALLING" || ${order.status} == "SUCCEED")
+                <div class="form-row">
+                    <button id = "updateOrder" class="btn medium bg-blue" style="margin-left: 15px">更新订单信息</button>
+                </div>
+            	#if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
             	<hr />
             	<h4>订单进度</h4>
             	<div id="mission-area"></div>
             	<a href="javascript:;" class="btn medium bg-blue white-modal-80" title="添加订单进度记录">
            			<span class="button-content">添加事件</span>
         		</a>
-        		#if(${order.status} == "SHIPPED" || ${order.status} == "INSTALLING")
+        		#if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING")
         		<a id="order-complete" class="btn medium bg-green">
            			<span class="button-content">订单完成</span>
         		</a>
         		#end
-        		#elseif(${order.status} == "PAYED")
+        		#elseif(${order.orderStatus} == "PAYED")
         		<hr />
             	<div class="form-row">
             		<a class="btn medium bg-blue white-modal-80" title="发货">
@@ -118,7 +175,7 @@
             	</div>
             	#end
             </div>
-            #if(${order.status} == "SHIPPED" || ${order.status} == "INSTALLING" || ${order.status} == "SUCCEED")
+            #if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
             <div class="hide" id="white-modal-80" title="新增订单事件">
                 <div class="pad10A">
                     <div class="col-md-12 center-margin">
@@ -189,14 +246,33 @@
 	            				var span = $("<span></span>").text(missions[i].missionRecorder);
 	            				var float_right = $("<div class='glyph-icon icon-separator transparent float-right'></div>")
 	            				var icon_comment = $("<i class='glyph-icon icon-comments'></i>");
+                                var picture_row = $("<div class='content-box-wrapper' style='overflow: hidden;'></div>");
+                                for (var j = 0; j < missions[i].insightList.length; j++) {
+                                    if (j == 0) {
+//                                        picture_row.append($("<div class='row'><h5 class='bg-gray-alt'>相关图片</h5></div>"));
+                                    }
+                                    var picture_single_row = $("<div class='row' style='padding-left: 15px'></div>");
+                                    var picture_url = "${path}" + missions[i].insightList[j].path;
+                                    var img_li = $("<li style='float: left; border: 2px solid #F0F0F0; padding: 2px; margin-right: 6px; position: relative'></li>");
+                                    var img = $("<image src=" + picture_url + " style='height: 80px; width: 80px'></image>")
+                                    img_li.append(img);
+//                                    picture_single_row.append(img_li);
+                                    picture_row.append(img_li);
+                                }
+                                var picture = $("<div class='col-md-2'></div>")
 	            				float_right.append(icon_comment);
 	            				separator.append(comment);
 	            				head.append(separator);
 	            				head.append(span);
 	            				head.append(float_right);
 	            				content_box.append(head);
-	            				var wrapper = $("<div class='content-box-wrapper'></div>").text(missions[i].missionTitle + ": " + missions[i].missionContent);
+	            				var wrapper = $("<div class='content-box-wrapper' style='font-size: 15px; line-height: 1.4'></div>");
+	            				var missionTitle = $("<div class='col-md-2'></div>").text(missions[i].missionTitle + ':');
+	            				var missionContent = $("<div class='col-md-10'></div>").text(missions[i].missionContent);
+	            				wrapper.append(missionTitle);
+	            				wrapper.append(missionContent);
 	            				content_box.append(wrapper);
+	            				content_box.append(picture_row);
 	            				row.append(content_box);
 	            				$("#mission-area").append(row);
             				}
@@ -204,7 +280,7 @@
             		});
             	});
             </script>
-            #elseif(${order.status} == "PAYED")
+            #elseif(${order.orderStatus} == "PAYED")
             <div class="hide" id="white-modal-80" title="填写产品编号">
                 <div class="pad10A">
                     <div class="col-md-12 center-margin">
@@ -280,7 +356,87 @@
 				location.reload();
 			})
 		})
+
+        $("#updateOrder").on('click', function () {
+            var url = "${path.concat('/order/')}" + "${order.orderId}" + "/update";
+            var buyerName = $('#buyerName').val();
+            var buyerAccount = $('#buyerAccount').val();
+            var receiverName = $('#receiverName').val();
+            var receiverPhone = $('#receiverPhone').val();
+            var province = $('#province').find(":selected").text();
+            var city = $('#city').find(":selected").text();
+            var district = $('#district').find(":selected").text();
+            var receiverAddress = $('#receiverAddress').val();
+            var orderCoupon = $('#orderCoupon').val();
+            var orderTime = new Date($('#orderTime').val()).toISOString();
+            var orderChannel = $('#order_channel_list').find(":selected").text();
+            var params = {
+                            buyerName: buyerName, buyerAcccount: buyerAccount, receiverName: receiverName,
+                            receiverPhone: receiverPhone, province: province, city: city, district: district,
+                            receiverAddress: receiverAddress, orderCoupon: orderCoupon, orderTime: orderTime,
+                            orderChannel: orderChannel
+            };
+
+            var commodities = document.getElementById('goods-container').getAttribute('data-commodity-number');
+            var commodityParams = {orderNo: "${order.orderNo}", commodities: []}
+            for (var index = 1; index <= commodities; index++) {
+                var commodity = document.getElementById('commodity' + index);
+                if (not_null(commodity)) {
+                    var commodityId = commodity.getAttribute('data-commodityId');
+                    var commodityName = document.getElementById('order-goods' + index.toString()).value;
+                    var commodityQuantity = document.getElementById('goods-number' + index.toString()).value;
+                    commodityParams.commodities.push(
+                        {commodityId : commodityId, commodityName: commodityName, commodityQuantity: commodityQuantity});
+                }
+            }
+            $.ajax({
+                url: "${path.concat('/order/commodity/update')}",
+                type: 'POST',
+                data: JSON.stringify(commodityParams),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            });
+
+            $.post(url, params, function (result) {
+                location.reload();
+            })
+        })
 	});
+
+	function commodityDel(id) {
+        var index = id.replace("delGoods", "");
+        var commodityContainer = document.getElementById("goods-container");
+        if (commodityContainer.children.length == 1) {
+            alert('至少保留一个商品！');
+            return;
+        }
+        var commodity = document.getElementById('commodity' + index);
+        var commodityId = commodity.getAttribute('data-commodityId');
+        commodityContainer.removeChild(commodity);
+        var url = "${path.concat('/order/commodity/delete')}";
+        $.post(url, {commodityId: commodityId}, function () {
+            return;
+        });
+    }
+	
+	function orderChannelReset() {
+        var url = "${path.concat('/order/orderchannel/list')}";
+        var currentChannel = $('#order_channel_list').find(":selected").text();
+        $.get(url, function (result) {
+            if (result.responseCode = 'RESPONSE_OK') {
+                var currentOrderChannel = $('#order_channel_list')
+                for (var index in result.data) {
+                    if (currentChannel === result.data[index].channelName) {
+                        continue;
+                    }
+                    var option = document.createElement('option');
+                    option.textContent = result.data[index].channelName;
+                    currentOrderChannel.append(option);
+                }
+            }
+        })
+    }
+    orderChannelReset();
 
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {

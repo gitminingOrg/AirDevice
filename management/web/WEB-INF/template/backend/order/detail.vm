@@ -4,6 +4,7 @@
     #parse("/backend/init/weui.vm")
     #parse("/backend/init/init.vm")        
     #parse("/backend/common/datatable.lib.vm")
+    <script src="${path.concat("/plugins/distpicker/distpicker.js")}"></script>
     <title>订单详情</title>
 </head>
 <body class="fixed-sidebar fixed-header" ontouchstart>

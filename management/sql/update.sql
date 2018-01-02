@@ -196,5 +196,28 @@ PRIMARY KEY (`channel_id`)
 )
 ;
 
+##2017年12月30号
+CREATE TABLE `order_commodity` (
+`commodity_id`  char(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`order_id`  char(11) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`commodity_type`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`commodity_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`commodity_price`  decimal(10,2) NULL DEFAULT NULL ,
+`commodity_quantity`  int(11) NOT NULL ,
+`block_flag`  int(11) NOT NULL ,
+`create_time`  datetime NOT NULL ,
+PRIMARY KEY (`commodity_id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+ROW_FORMAT=COMPACT
+;
+
+ALTER TABLE `taobao_order`
+DROP COLUMN `goods_title`,
+DROP COLUMN `product_serial`,
+DROP COLUMN `goods_kind`;
+
+
 
 

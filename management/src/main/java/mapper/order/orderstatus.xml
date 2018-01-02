@@ -7,16 +7,9 @@
 		<result property="createTime" column="create_time"/>
 	</resultMap>
 	
-	<select id="queryOrder" parameterType="java.util.Map" resultMap = "OrderStatusVo">
-		select order_id, order_status, create_time
-		from taobao_order
-		where 1 = 1
-		<if test="orderId != null">
-			and order_id = #{orderId}
-		</if>
-		<if test="status != null">
-			and order_status = #{status}
-		</if>
-		order by create_time desc
+	<select id="queryOrder" parameterType="java.util.Map" resultType = "java.lang.String">
+		select distinct order_status
+		from guomai_order
+		order by order_status asc
 	</select>
 </mapper>

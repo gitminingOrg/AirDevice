@@ -8,19 +8,25 @@ import pagination.DataTableParam;
 import utils.ResultData;
 
 public interface OrderService {
-	ResultData upload(List<TaobaoOrder> order);
+	ResultData upload(List<GuoMaiOrder> order);
+
+	ResultData uploadCommodity(List<OrderCommodity> commodityList);
 
 	ResultData fetch(Map<String, Object> condition, DataTableParam param);
 	
 	ResultData fetch(Map<String, Object> condition);
 	
-	ResultData assign(TaobaoOrder order);
+	ResultData assign(GuoMaiOrder order);
+
+	ResultData assignBatchCommodity(List<OrderCommodity> commodityList);
 
 	ResultData blockOrder(Map<String, Object> condition);
 	
-	ResultData create(CustomizeOrder order);
+	ResultData create(GuoMaiOrder order);
 	
 	ResultData create(OrderMission mission);
+
+	ResultData create(OrderCommodity commodity);
 	
 	ResultData fetchMission4Order(Map<String, Object> condition);
 	
@@ -34,9 +40,11 @@ public interface OrderService {
 
 	ResultData fetchOrderChannel(Map<String, Object> condition);
 
-	ResultData uploadBatch(List<OrderBatch> order);
+	ResultData uploadBatch(List<GuoMaiOrder> order);
 
 	ResultData fetchMissionChannel(Map<String, Object> condition);
 
 	ResultData create(MissionChannel missionChannel);
+
+	ResultData removeCommodity(Map<String, Object> condition);
 }

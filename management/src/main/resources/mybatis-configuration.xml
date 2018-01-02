@@ -33,5 +33,7 @@
 		<mapper resource="mapper/order/missionChannel.xml" />
 		<mapper resource="mapper/consumer/consumerstati.xml" />
 		<mapper resource="mapper/order/orderBatch.xml"  />
+		<mapper resource="mapper/order/guomaiorder.xml"  />
+		<mapper resource="mapper/order/ordercommodity.xml"  />
 	</mappers>
 </configuration>

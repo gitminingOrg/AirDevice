@@ -64,16 +64,16 @@
                     </div>
 				</div>
                 <div class="form-row">
-                    <label for="channel_list" class="form-label col-md-2">订单渠道</label>
+                    <label for="order_channel_list" class="form-label col-md-2">订单渠道</label>
                     <div class="form-input col-md-8">
-                        <select id="channel_list">
+                        <select id="order_channel_list">
                             <select/>
                     </div>
                     <div class="form-input col-md-2">
                         <div class="infobox warning-bg" style="margin-bottom: 0px">
                             <p><a href="javascript:;" class="white-modal-60" title="添加部件">添加渠道</a></p>
                         </div>
-                        <div class="hide" id="white-modal-60" title="添加渠道">
+                        <div class="hide" id="white-modal-60">
                             <div class="pad10A">
                                 <div class="col-md-12 center-margin">
                                     <div class="form-row">
@@ -87,8 +87,10 @@
                                         </div>
                                     </div>
                                     <div class="form-row">
-                                        <button class="btn medium bg-blue-alt ui-dialog-buttonset" id="addChannel">
-                                            <span class="button-content" data-dismiss="modal">添加</span>
+                                        <button class="btn medium bg-blue-alt" id="addOrderChannel">
+                                            <span class="button-content" data-dismiss="modal">
+                                                添加
+                                            </span>
                                         </button>
                                     </div>
                                 </div>
@@ -97,50 +99,63 @@
                     </div>
                 </div>
             	<div class="form-row">
-            		<label for="order-number" class="form-label col-md-2">订单编号</label>
+            		<label for="order-number" class="form-label col-md-2">
+                        订单编号
+                    </label>
             		<div class="form-input col-md-10">
-            			<input id="order-number" type="text" placeholder="请输入订单编号"/>
+            			<input id="order-number" type="text" required="required" placeholder="请输入订单编号"/>
             		</div>
             	</div>
             	<div class="form-row">
-            		<label for="order-buyer" class="form-label col-md-2">购买人</label>
+            		<label for="order-buyer" class="form-label col-md-2">
+                        购买人
+##                        <sup class="glyph-icon icon-asterisk" style="color: red; margin-left: 5px"/>
+                    </label>
             		<div class="form-input col-md-10">
-            			<input id="order-buyer" type="text" placeholder="请输入购买人姓名" />
+            			<input id="order-buyer" type="text" required="required" placeholder="请输入购买人姓名" />
             		</div>
             	</div>
             	<div class="form-row">
-            		<label for="order-price" class="form-label col-md-2">订单价格</label>
+            		<label for="order-price" class="form-label col-md-2">
+                        订单价格
+                    </label>
             		<div class="form-input col-md-10">
-            			<input id="order-price" type="text" placeholder="请输入订单实付金额" />
+            			<input id="order-price" type="text" required="required" placeholder="请输入订单实付金额" />
             		</div>
             	</div> 
             	<div class="form-row">
-            		<label for="order-receiver-name" class="form-label col-md-2">收货人姓名</label>
+            		<label for="order-receiver-name" class="form-label col-md-2">
+                        收货人姓名
+                    </label>
             		<div class="form-input col-md-10">
-            			<input id="order-receiver-name" type="text" placeholder="请输入收货人姓名"/>
+            			<input id="order-receiver-name" type="text" required = "required" placeholder="请输入收货人姓名" />
             		</div>
             	</div> 
             	<div class="form-row">
-            		<label for="order-receiver-phone" class="form-label col-md-2">收货人电话</label>
+            		<label for="order-receiver-phone" class="form-label col-md-2">
+                        收货人电话
+                    </label>
             		<div class="form-input col-md-10">
-            			<input id="order-receiver-phone" type="text" placeholder="请输入收货人电话"/>
+            			<input id="order-receiver-phone" type="text" required="required" placeholder="请输入收货人电话"/>
             		</div>
             	</div>
             	<div class="form-row">
-            		<label for="order-receiver-address" class="form-label col-md-2">收货地址</label>
+            		<label for="order-receiver-address" class="form-label col-md-2">
+                        收货地址
+                    </label>
                     <div class="form-input col-md-4 select" data-toggle="distpicker">
-                        <select id="province" class="col-md-3">
+                        <select id="province" class="col-md-4" style="border-radius: 5px">
                             <option data-code="" data-text="—— 省 ——" value="">—— 省 ——</option>
                         </select>
-                        <select id="city" class="col-md-3">
+                        <select id="city" class="col-md-3" style="border-radius: 5px">
                             <option data-code="" data-text="—— 市 ——" value="">—— 市 ——</option>
                         </select>
-                        <select id="district" class="col-md-3">
+                        <select id="district" class="col-md-3" style="border-radius: 5px">
                             <option data-code="" data-text="—— 区 ——" value="">—— 区 ——</option>
                         </select>
                     </div>
                     <div class="form-input col-md-6">
-                        <input id="order-receiver-address" type="text" placeholder="请输入详细地址"/>
+                        <input id="order-receiver-address" type="text" required="required" placeholder="请输入详细地址"/>
                     </div>
             	</div>
             	<div class="form-row">
@@ -149,28 +164,85 @@
             			<input id="order-coupon" type="text" placeholder="请输入优惠码" />
                      </div>
             	</div>
+
             	<div class="form-row">
-            		<label for="order-goods" class="form-label col-md-2">购买商品</label>
+            		<label for="pay-time" class="form-label col-md-2">下单时间</label>
             		<div class="form-input col-md-10">
-            			<input id="order-goods" type="text" placeholder="请输入商品名称"/>
+            			<input id="pay-time" type="date" required="required" placeholder="请输入下单时间"/>
             		</div>
             	</div>
-            	<div class="form-row">
-            		<label for="pay-time" class="form-label col-md-2">付款时间</label>
-            		<div class="form-input col-md-10">
-            			<input id="pay-time" type="text" placeholder="请输入付款时间"/>
-            		</div>
-            	</div>
-            	<div class="form-row">
-            		<label for="description" class="form-label col-md-2">订单备注</label>
-            		<div class="form-input col-md-10">
-            			<input id="description" type="text" placeholder="请输入订单备注"/>
-            		</div>
-            	</div>
+                <hr />
+                <div class="form-row" style="padding-top: 5px; margin-bottom: 5px">
+                    <label for="order-goods" class="form-label col-md-2">商品清单</label>
+                    <div class="col-md-10">
+                        <div id="goodsContainer" data-commodityNum=1>
+                            <div id="goods1" class="form-row" style="margin-left: 0px; margin-right: 0px">
+                                <div class="form-input col-md-8" style="padding-left: 0px">
+                                    <input id="goods-name1" type="text" placeholder="请输入商品名称"/>
+                                </div>
+                                <label for="order-goods" class="form-label col-md-1">数量</label>
+                                <div class="form-input col-md-2" style="padding-right: 0px">
+                                    <input id="goods-number1" type="number" min="1" placeholder="请输入商品数量" value="1"/>
+                                </div>
+                                <button id="delGoods1" type="button" class="btn medium bg-red" style="float: right">删除</button>
+                            </div>
+                        </div>
+                        <button id="goodsAdd" class="btn medium bg-blue" style="float: right; margin-top: 10px;">添加商品</button>
+                    </div>
+                </div>
             	<hr />
+                <div class="form-row">
+                    <label for="status" class="form-label col-md-2">订单状态</label>
+                    <div class="form-input col-md-10">
+                        <select id="orderStatus" type="text">
+                            <option>---请选择订单状态---</option>
+                            <option value="0">未付款</option>
+                            <option value="1">已付款</option>
+                            <option value="2">已发货</option>
+                            <option value="3">已签收</option>
+                            <option value="5">订单完成</option>
+                            <option value="8">已退货</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="installMission" class="form-label col-md-2">安装状态</label>
+                    <div class="form-input col-md-4">
+                        <select id="installMission" type="text">
+                            <option>---请选择安装状态---</option>
+                            <option value="1">未勘测</option>
+                            <option value="2">已勘测</option>
+                            <option value="3">待安装</option>
+                            <option value="4">已安装</option>
+                        </select>
+                    </div>
+                    <div class="form-input col-md-6">
+                        <div class="form-row">
+                            <label id="missionType" class="form-label col-md-4">预计安装时间</label>
+                            <div class="form-input col-md-8">
+                                <input id = "missionDate" type="date" id="installDate"/>
+                            </div>
+                        </div>
+                        <div class="form-row" id="missionTypeContainer" style="display: none">
+                            <label id="missionType" class="form-label col-md-4">安装服务商</label>
+                            <div class="form-input col-md-8">
+                                <select id="missionChannel">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="form-row">
+                    <label for="description" class="form-label col-md-2">订单备注</label>
+                    <div class="form-input col-md-10">
+                        <textarea id="description" style="height: 60px"> </textarea>
+                    </div>
+                </div>
+                <hr />
             	<div class="form-row">
             		<button id="confirm-add" class="btn medium bg-blue" title="填写产品编号">
-           				<span class="button-content">添加</span>
+           				<span class="button-content">上传订单</span>
         			</button>
             	</div>
             </div>
@@ -183,16 +255,74 @@
 			var order_no = $("#order-number").val();
 			var order_buyer = $("#order-buyer").val();
 			var order_price = $("#order-price").val();
+			var province = $("#province").find(":selected").val();
+			var city = $("#city").find(":selected").val();
+			var district = $("#district").find(":selected").val();
 			var receiver_name = $("#order-receiver-name").val();
 			var receiver_phone = $("#order-receiver-phone").val();
 			var receiver_address = $("#order-receiver-address").val();
 			var order_coupon = $("#order-coupon").val();
-			var goods_name = $("#order-goods").val();
-			var order_channel = $("#order-channel").val();
-			var pay_time = $("#pay-time").val();
+			var order_channel = $("#order_channel_list").find(":selected").val();
+			var pay_time = $("#pay-time").val()
+            var order_status = $('#orderStatus').find(':selected').val();
 			var description = $("#description").val();
 			var url = "${path.concat('/order/create')}";
-			$.post(url, {orderNo: order_no, orderBuyer: order_buyer, orderPrice: order_price, receiverName: receiver_name, receiverPhone: receiver_phone, receiverAddress: receiver_address, orderCoupon: order_coupon, goodsName: goods_name, orderChannel: order_channel, payTime: pay_time, description: description}, function(result) {
+            if (!not_null(order_channel)) {alert("请填写订单渠道！"); return;}
+			if (!not_null(order_no)) {alert("请填写订单编号！"); return;}
+			if (!not_null(order_no)) {alert("请填写订单编号！"); return;}
+			if (!not_null(order_price)) {
+			    alert("请填写订单总价！");
+			    return;
+			} else {
+                var result = parseFloat(order_price)
+                if(isNaN(result)){
+                    alert("请正确填写订单总价！");
+                    return;
+                }
+            }
+			if (!not_null(receiver_name)) {alert("请填写订单收货人！"); return;}
+			if (!not_null(receiver_phone)) {alert("请填写订单收货人电话！"); return;}
+			if (!not_null(receiver_address)) {alert("请填写订单收货人地址！"); return;}
+			if (!not_null(pay_time)) {
+                alert("请填写订单下单时间！");
+                return;
+			} else {
+                try {
+                    pay_time = new Date(pay_time).toISOString();
+                } catch(err) {
+                    alert("请正确填写订单下单时间！");
+                    return;
+                }
+            }
+			if (!not_null(province)) { alert("请选择省份!"); return;}
+            if (!not_null(city)) {alert("请选择城市！"); return; }
+            if (!not_null(district)) {alert("请选择地区！"); return;}
+			var orderParams = {
+			    orderNo: order_no, buyerName: order_buyer, orderPrice: order_price, receiverName: receiver_name,
+                receiverPhone: receiver_phone, province: province, city: city, district: district,
+                receiverAddress: receiver_address, orderCoupon: order_coupon, orderStatus: order_status,
+                orderChannel: order_channel, description: description, orderTime: pay_time
+            }
+            var commodityParams = {orderId: order_no, commodities: []};
+            var commodityCount = Number(document.getElementById('goodsContainer').getAttribute('data-commodityNum'));
+		    for (var i = 0; i <= commodityCount; i++) {
+                var goods = document.getElementById('goods' + i);
+                if (not_null(goods)) {
+                    var goods_name = document.getElementById('goods-name' + i).value;
+                    if (!not_null(goods_name)) {
+                        alert("请正确填写商品名称！");
+                    }
+                    var goods_number = document.getElementById('goods-number' + i).value;
+                    commodityParams.commodities.push({commodityName: goods_name, commodityQuantity: goods_number})
+                }
+            }
+            $.ajax({
+                url: "${path.concat('/order/commodity/create')}",
+                type: 'POST',
+                data: JSON.stringify(commodityParams),
+                contentType: 'application/json; charset=utf-8'
+            });
+			$.post(url, orderParams, function(result) {
 				window.location.href = "${path.concat('/order/overview')}";
 			})
 		});
@@ -204,8 +334,62 @@
         $("#order-form").attr('enctype', 'multipart/form-data');
         $("#order-form").submit();
     });
+    
+    $("#goodsAdd").on('click', function () {
+        var goodsContainer = document.getElementById('goodsContainer');
+        var index = Number(goodsContainer.getAttribute('data-commodityNum')) + 1;
+        goodsContainer.setAttribute('data-commodityNum', index);
+        var divRow = document.createElement('div');
+        divRow.className = 'form-row';
+        divRow.style = 'margin-left: 0px; margin-right: 0px';
+        divRow.setAttribute('id', 'goods' + index);
 
-    $("#addChannel").on('click', function () {
+        //col-md-8
+        var goodsDiv = document.createElement('div');
+        goodsDiv.className = 'form-input col-md-8';
+        goodsDiv.style = 'padding-left: 0px';
+        var goodsInput = document.createElement('input');
+        goodsInput.setAttribute('id', 'goods-name' + index);
+        goodsInput.setAttribute('type', 'text');
+        goodsInput.setAttribute('placeholder', '请输入商品名称');
+        goodsDiv.appendChild(goodsInput);
+
+        //col-md-1
+        var label = document.createElement('label');
+        label.innerHTML = '数量';
+        label.className = 'form-label col-md-1';
+
+        //col-md-2
+        var numDiv = document.createElement('div');
+        numDiv.className = 'form-input col-md-2';
+        numDiv.style = 'padding-right: 0px';
+        var numInput = document.createElement('input');
+        numInput.setAttribute('id', 'goods-number' + index);
+        numInput.setAttribute('type', 'number');
+        numInput.setAttribute('min', 1);
+        numInput.setAttribute('placeholder', '请输入商品数量');
+        numDiv.appendChild(numInput);
+
+        //col-md-1
+        var delButton = document.createElement('button');
+        delButton.className = 'btn medium bg-red';
+        delButton.style = 'float: right';
+        delButton.innerHTML = '删除';
+        delButton.setAttribute('id', 'delGoods' + index);
+        delButton.addEventListener('click', function () {
+            document.getElementById('goodsContainer').removeChild(document.getElementById('goods' + index));
+        });
+
+        //add these into div row
+        divRow.appendChild(goodsDiv);
+        divRow.appendChild(label);
+        divRow.appendChild(numDiv);
+        divRow.appendChild(delButton);
+
+        goodsContainer.appendChild(divRow);
+    });
+
+    $("#addOrderChannel").on('click', function () {
 		var channel = $("#channelName").val();
 		if (channel === '') {
 		    alert("输入不能为空");
@@ -219,9 +403,36 @@
         });
     });
 
-    function channel_reset() {
-        $("#channel_list").empty();
-        $("#channel_list").append($("<option value=''></option>").text("---请选择渠道---"));
+    $("#installMission").on('change', function () {
+         var installMission = document.getElementById('installMission');
+         var mission = installMission.value;
+         var missionTypeLabel = document.getElementById('missionType');
+         var missionTypeContainer = document.getElementById("missionTypeContainer");
+         switch (mission) {
+             case '未勘测':
+                 missionTypeLabel.innerHTML = '预计勘测时间';
+                 missionTypeContainer.style = 'display: none';
+                 break;
+             case '已勘测':
+                 missionTypeLabel.innerHTML = '预计安装时间';
+                 missionTypeContainer.style = 'display: none';
+                 break;
+             case '待安装':
+                 missionTypeLabel.innerHTML = '预计安装时间';
+                 missionTypeContainer.style = 'display: block';
+                 break;
+             case '已安装':
+                 missionTypeLabel.innerHTML = '安装时间';
+                 missionTypeContainer.style = 'display: block';
+                 break;
+             default:
+                 break;
+         }
+    });
+
+    function order_channel_reset() {
+        $("#order_channel_list").empty();
+        $("#order_channel_list").append($("<option value=''></option>").text("---请选择渠道---"));
         var channel_url = "${path.concat('/order/orderchannel/list')}";
         $.get(channel_url, function(result) {
             if(result.responseCode == "RESPONSE_OK") {
@@ -229,13 +440,30 @@
                 for(index in data) {
                     var item = $("<option></option>").text(data[index].channelName);
                     item.attr("value", data[index].channelName);
-                    $("#channel_list").append(item);
+                    $("#order_channel_list").append(item);
                 }
             }
         })
     };
 
-    channel_reset();
+    function mission_channel_reset() {
+        $("#missionChannel").empty();
+        $("#missionChannel").append($("<option value=''></option>").text("---请选择安装商---"));
+        var channel_url = "${path.concat('/order/missionChannel/list')}";
+        $.get(channel_url, function(result) {
+            if(result.responseCode == "RESPONSE_OK") {
+                var data = result.data;
+                for(index in data) {
+                    var item = $("<option></option>").text(data[index].channelName);
+                    item.attr("value", data[index].channelName);
+                    $("#missionChannel").append(item);
+                }
+            }
+        })
+    };
+
+    mission_channel_reset();
+    order_channel_reset();
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {
             return false;

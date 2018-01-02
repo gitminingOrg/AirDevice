@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.guomaiorder">
+
+    <resultMap id="guomaiOrderVo" type="vo.order.GuoMaiOrderVo">
+        <result property="orderId" column="order_id" />
+        <result property="orderNo" column="order_no" />
+        <result property="orderStatus" column="order_status" typeHandler="handler.OrderStatusHandler"/>
+        <result property="description" column="description" />
+        <result property="buyerName" column="buyer_name" />
+        <result property="buyerAccount" column="buyer_account" />
+        <result property="receiverName" column="receiver_name" />
+        <result property="receiverPhone" column="receiver_phone" />
+        <result property="orderPrice" column="order_price" />
+        <result property="province" column="province" />
+        <result property="city" column="city" />
+        <result property="district" column="district" />
+        <result property="receiverAddress" column="receiver_address" />
+        <result property="orderChannel" column="order_channel" />
+        <result property="orderDiversion" column="order_diversion" />
+        <result property="orderCoupon" column="order_coupon" />
+        <result property="orderTime" column="order_time" />
+        <result property="shipNo" column="ship_no" />
+        <result property="createTime" column="create_time" />
+        <collection property="commodityList" column="orderId = order_no" select="ordercommodityquery"/>
+    </resultMap>
+
+    <resultMap id="orderCommodityVo" type="vo.order.OrderCommodityVo">
+        <result property="commodityId" column="commodity_id" />
+        <result property="orderId" column="order_id" />
+        <result property="commodityType" column="commodity_type" />
+        <result property="commodityName" column="commodity_name" />
+        <result property="commodityPrice" column="commodity_price" />
+        <result property="commodityQuantity" column="commodity_quantity" />
+        <result property="blockFlag" column="block_flag"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO guomai_order
+        (
+          order_id, order_no, buyer_name, buyer_account, order_price, receiver_name, receiver_phone,
+          province, city, district, receiver_address, order_coupon, ship_no, order_time, order_status,
+          order_channel, order_diversion, description, block_flag, create_time
+        )
+         VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+         (
+            #{item.orderId}, #{item.orderNo}, #{item.buyerName}, #{item.buyerAccount}, #{item.orderPrice},
+            #{item.receiverName}, #{item.receiverPhone}, #{item.province}, #{item.city}, #{item.district},
+            #{item.receiverAddress}, #{item.orderCoupon}, #{item.shipNo}, #{item.orderTime},
+            #{item.orderStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+            #{item.orderChannel}, #{item.orderDiversion}, #{item.description}, #{item.blockFlag}, #{item.createAt}
+         )
+        </foreach>
+    </insert>
+
+    <insert id="insert" parameterType="model.order.GuoMaiOrder">
+        INSERT INTO guomai_order
+        (
+        order_id, order_no, buyer_name, buyer_account, order_price, receiver_name, receiver_phone,
+        province, city, district, receiver_address, order_coupon, ship_no, order_time, order_status,
+        order_channel, order_diversion, description, block_flag, create_time
+        )
+        VALUES
+       (
+        #{orderId}, #{orderNo}, #{buyerName}, #{buyerAccount}, #{orderPrice}, #{receiverName},
+        #{receiverPhone}, #{province}, #{city}, #{district}, #{receiverAddress}, #{orderCoupon},
+        #{shipNo}, #{orderTime}, #{orderStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+        #{orderChannel}, #{orderDiversion}, #{description}, #{blockFlag}, #{createAt}
+        )
+    </insert>
+
+    <select id="ordercommodityquery" resultMap="orderCommodityVo">
+        select
+            commodity_id, order_id, commodity_type, commodity_name, commodity_price,
+            commodity_quantity, block_flag, create_time
+        from order_commodity WHERE order_id = #{orderId} AND block_flag = 0
+    </select>
+
+    <select id="query" resultMap="guomaiOrderVo" parameterType="java.util.Map">
+        select
+        order_id, order_no, order_status, description, buyer_name,
+        buyer_account, receiver_name, receiver_phone, order_price,
+        province, city, district, receiver_address, order_channel, order_diversion,
+        order_coupon, order_time, ship_no, create_time
+        from guomai_order
+        WHERE 1 = 1
+        <if test="orderId != null" >
+            AND order_id = #{orderId}
+        </if>
+        <if test="orderNo != null">
+            AND order_no = #{orderNo}
+        </if>
+        <if test="orderStatus != null">
+            AND order_status = #{orderStatus}
+        </if>
+        <if test="orderChannel != null">
+            AND order_channel = #{orderChannel}
+        </if>
+        <if test="orderDiversion != null">
+            AND order_diversion = #{orderDiversion}
+        </if>
+        <if test="province != null">
+            AND province = #{province}
+        </if>
+        <if test="city != null">
+            AND city = #{city}
+        </if>
+        <if test="startTime != null">
+            AND DATE(order_time) >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND <![CDATA[DATE(order_time) <= #{endTime}]]>
+        </if>
+        <if test="blockFlag != null">
+            AND block_flag = #{blockFlag}
+        </if>
+        ORDER BY order_time DESC
+    </select>
+
+    <update id="update" parameterType="model.order.GuoMaiOrder">
+        UPDATE guomai_order
+        <set>
+            <if test="orderStatus != null">
+                order_status = #{orderStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+            </if>
+            <if test="buyerName != null">
+                buyer_name = #{buyerName},
+            </if>
+            <if test="buyerAccount != null">
+                buyer_account = #{buyerAccount},
+            </if>
+            <if test="receiverName != null">
+                receiver_name = #{receiverName},
+            </if>
+            <if test="receiverPhone != null">
+                receiver_phone = #{receiverPhone},
+            </if>
+            <if test="orderPrice != null">
+                order_price = #{orderPrice},
+            </if>
+            <if test="province != null">
+                province = #{province},
+            </if>
+            <if test="city != null">
+                city = #{city},
+            </if>
+            <if test="district != null">
+                district = #{district},
+            </if>
+            <if test="receiverAddress != null">
+                receiver_address = #{receiverAddress},
+            </if>
+            <if test="orderChannel != null">
+                order_channel = #{orderChannel},
+            </if>
+            <if test="orderDiversion != null">
+                order_diversion = #{orderDiversion},
+            </if>
+            <if test="orderCoupon != null">
+                order_coupon = #{orderCoupon},
+            </if>
+            <if test="orderTime != null">
+                order_time = #{orderTime},
+            </if>
+            <if test="shipNo != null">
+                ship_no = #{shipNo},
+            </if>
+        </set>
+        WHERE order_id = #{orderId}
+    </update>
+
+</mapper>

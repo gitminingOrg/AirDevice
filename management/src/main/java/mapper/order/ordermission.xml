@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="management.ordermission">
-	<resultMap id="missionVo" type="model.order.OrderMission">
+	<resultMap id="missionVo" type="vo.order.OrderMissionVo">
 		<result property="missionId" column="mission_id"/>
 		<result property="missionTitle" column="mission_title"/>
 		<result property="missionContent" column="mission_content"/>
 		<result property="missionRecorder" column="mission_recorder"/>
-		<result property="blockFlag" column="block_flag"/>
-		<result property="createAt" column="create_time"/>
+		<collection property="insightList" column="missionId = mission_id" select="missioninsightquery"/>
 	</resultMap>
+
+	<resultMap id="insightVo" type="vo.machine.InsightVo">
+		<result property="insightId" column="insight_id" />
+		<result property="codeId" column="code_id" />
+		<result property="path" column="insight_path" />
+	</resultMap>
+
+	<select id="missioninsightquery" resultMap="insightVo">
+		select insight_id, code_id, insight_path
+		 FROM install_insight
+		WHERE event_id = #{missionId};
+	</select>
 	
 	<insert id="insert" parameterType="model.order.OrderMission" useGeneratedKeys="false">
 		insert into order_mission(mission_id, order_id, mission_title, mission_content, mission_recorder, block_flag, create_time)

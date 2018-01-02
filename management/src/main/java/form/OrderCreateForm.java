@@ -1,5 +1,11 @@
 package form;
 
+import model.order.OrderStatus;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+
 /**
  * @author sunshine
  *
@@ -7,23 +13,34 @@ package form;
 public class OrderCreateForm {
 	private String orderNo;
 	
-	private String orderBuyer;
+	private String buyerName;
+
+	private String buyerAccount;
 	
-	private String orderPrice;
+	private double orderPrice;
 	
 	private String receiverName;
 	
 	private String receiverPhone;
+
+	private String province;
+
+	private String city;
+
+	private String district;
 	
 	private String receiverAddress;
 	
 	private String orderCoupon;
 	
-	private String goodsName;
-	
 	private String orderChannel;
-	
-	private String payTime;
+
+	private String orderDiversion;
+
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private LocalDateTime orderTime;
+
+	private OrderStatus orderStatus;
 	
 	private String description;
 
@@ -35,19 +52,27 @@ public class OrderCreateForm {
 		this.orderNo = orderNo;
 	}
 
-	public String getOrderBuyer() {
-		return orderBuyer;
+	public String getBuyerName() {
+		return buyerName;
 	}
 
-	public void setOrderBuyer(String orderBuyer) {
-		this.orderBuyer = orderBuyer;
+	public void setBuyerName(String buyerName) {
+		this.buyerName = buyerName;
 	}
 
-	public String getOrderPrice() {
+	public String getBuyerAccount() {
+		return buyerAccount;
+	}
+
+	public void setBuyerAccount(String buyerAccount) {
+		this.buyerAccount = buyerAccount;
+	}
+
+	public double getOrderPrice() {
 		return orderPrice;
 	}
 
-	public void setOrderPrice(String orderPrice) {
+	public void setOrderPrice(double orderPrice) {
 		this.orderPrice = orderPrice;
 	}
 
@@ -67,6 +92,30 @@ public class OrderCreateForm {
 		this.receiverPhone = receiverPhone;
 	}
 
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
 	public String getReceiverAddress() {
 		return receiverAddress;
 	}
@@ -83,14 +132,6 @@ public class OrderCreateForm {
 		this.orderCoupon = orderCoupon;
 	}
 
-	public String getGoodsName() {
-		return goodsName;
-	}
-
-	public void setGoodsName(String goodsName) {
-		this.goodsName = goodsName;
-	}
-
 	public String getOrderChannel() {
 		return orderChannel;
 	}
@@ -99,12 +140,28 @@ public class OrderCreateForm {
 		this.orderChannel = orderChannel;
 	}
 
-	public String getPayTime() {
-		return payTime;
+	public String getOrderDiversion() {
+		return orderDiversion;
 	}
 
-	public void setPayTime(String payTime) {
-		this.payTime = payTime;
+	public void setOrderDiversion(String orderDiversion) {
+		this.orderDiversion = orderDiversion;
+	}
+
+	public LocalDateTime getOrderTime() {
+		return orderTime;
+	}
+
+	public void setOrderTime(LocalDateTime orderTime) {
+		this.orderTime = orderTime;
+	}
+
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
 	}
 
 	public String getDescription() {
