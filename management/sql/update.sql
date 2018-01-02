@@ -144,7 +144,7 @@ select code_id,
 		WHERE qrcode.model_id = goods_model.model_id
 
 DROP TABLE IF EXISTS `orderChannel`;
-CREATE TABLE `airdevice`.`orderChannel` (
+CREATE TABLE `airdevice`.`order_Channel` (
   `channel_id` VARCHAR (20) NOT NULL ,
   `channel_name` VARCHAR (50) NOT NULL ,
   `block_flag` TINYINT(1) NOT NULL DEFAULT 0,
