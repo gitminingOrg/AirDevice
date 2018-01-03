@@ -123,7 +123,7 @@
                         </a>
                         <a href="${path.concat('/order/overview')}">
                             <i class="glyph-icon icon-chevron-right"></i>
-                            淘宝订单
+                            订单列表
                         </a>
                     </li>
                 </ul>

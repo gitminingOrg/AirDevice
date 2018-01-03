@@ -171,6 +171,12 @@
             			<input id="pay-time" type="date" required="required" placeholder="请输入下单时间"/>
             		</div>
             	</div>
+                <div class="form-row">
+                    <label for="description" class="form-label col-md-2">订单备注</label>
+                    <div class="form-input col-md-10">
+                        <textarea id="description" style="height: 60px"> </textarea>
+                    </div>
+                </div>
                 <hr />
                 <div class="form-row" style="padding-top: 5px; margin-bottom: 5px">
                     <label for="order-goods" class="form-label col-md-2">商品清单</label>
@@ -190,55 +196,51 @@
                         <button id="goodsAdd" class="btn medium bg-blue" style="float: right; margin-top: 10px;">添加商品</button>
                     </div>
                 </div>
-            	<hr />
-                <div class="form-row">
-                    <label for="status" class="form-label col-md-2">订单状态</label>
-                    <div class="form-input col-md-10">
-                        <select id="orderStatus" type="text">
-                            <option>---请选择订单状态---</option>
-                            <option value="0">未付款</option>
-                            <option value="1">已付款</option>
-                            <option value="2">已发货</option>
-                            <option value="3">已签收</option>
-                            <option value="5">订单完成</option>
-                            <option value="8">已退货</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <label for="installMission" class="form-label col-md-2">安装状态</label>
-                    <div class="form-input col-md-4">
-                        <select id="installMission" type="text">
-                            <option>---请选择安装状态---</option>
-                            <option value="1">未勘测</option>
-                            <option value="2">已勘测</option>
-                            <option value="3">待安装</option>
-                            <option value="4">已安装</option>
-                        </select>
-                    </div>
-                    <div class="form-input col-md-6">
-                        <div class="form-row">
-                            <label id="missionType" class="form-label col-md-4">预计安装时间</label>
-                            <div class="form-input col-md-8">
-                                <input id = "missionDate" type="date" id="installDate"/>
-                            </div>
-                        </div>
-                        <div class="form-row" id="missionTypeContainer" style="display: none">
-                            <label id="missionType" class="form-label col-md-4">安装服务商</label>
-                            <div class="form-input col-md-8">
-                                <select id="missionChannel">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr />
-                <div class="form-row">
-                    <label for="description" class="form-label col-md-2">订单备注</label>
-                    <div class="form-input col-md-10">
-                        <textarea id="description" style="height: 60px"> </textarea>
-                    </div>
-                </div>
+
+##            	<hr />
+##                <div class="form-row">
+##                    <label for="status" class="form-label col-md-2">订单状态</label>
+##                    <div class="form-input col-md-10">
+##                        <select id="orderStatus" type="text">
+##                            <option>---请选择订单状态---</option>
+##                            <option value="0">未付款</option>
+##                            <option value="1">已付款</option>
+##                            <option value="2">已发货</option>
+##                            <option value="3">已签收</option>
+##                            <option value="5">订单完成</option>
+##                            <option value="8">已退货</option>
+##                        </select>
+##                    </div>
+##                </div>
+##                <div class="form-row">
+##                    <label for="installMission" class="form-label col-md-2">安装状态</label>
+##                    <div class="form-input col-md-4">
+##                        <select id="installMission" type="text">
+##                            <option>---请选择安装状态---</option>
+##                            <option value="1">未勘测</option>
+##                            <option value="2">已勘测</option>
+##                            <option value="3">待安装</option>
+##                            <option value="4">已安装</option>
+##                        </select>
+##                    </div>
+##                    <div class="form-input col-md-6">
+##                        <div class="form-row">
+##                            <label id="missionType" class="form-label col-md-4">预计安装时间</label>
+##                            <div class="form-input col-md-8">
+##                                <input id = "missionDate" type="date" id="installDate"/>
+##                            </div>
+##                        </div>
+##                        <div class="form-row" id="missionTypeContainer" style="display: none">
+##                            <label id="missionType" class="form-label col-md-4">安装服务商</label>
+##                            <div class="form-input col-md-8">
+##                                <select id="missionChannel">
+##                                </select>
+##                            </div>
+##                        </div>
+##                    </div>
+##                </div>
+##                <hr />
+
                 <hr />
             	<div class="form-row">
             		<button id="confirm-add" class="btn medium bg-blue" title="填写产品编号">
