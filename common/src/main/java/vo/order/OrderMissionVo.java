@@ -3,6 +3,7 @@ package vo.order;
 
 import vo.machine.InsightVo;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class OrderMissionVo {
@@ -16,6 +17,12 @@ public class OrderMissionVo {
     private String missionContent;
 
     private String missionRecorder;
+
+    private String missionChannel;
+
+    private String missionInstallType;
+
+    private Timestamp missionDate;
 
     private List<InsightVo> insightList;
 
@@ -57,6 +64,30 @@ public class OrderMissionVo {
 
     public void setMissionRecorder(String missionRecorder) {
         this.missionRecorder = missionRecorder;
+    }
+
+    public String getMissionChannel() {
+        return missionChannel;
+    }
+
+    public void setMissionChannel(String missionChannel) {
+        this.missionChannel = missionChannel;
+    }
+
+    public String getMissionInstallType() {
+        return missionInstallType;
+    }
+
+    public void setMissionInstallType(String missionInstallType) {
+        this.missionInstallType = missionInstallType;
+    }
+
+    public Timestamp getMissionDate() {
+        return missionDate;
+    }
+
+    public void setMissionDate(Timestamp missionDate) {
+        this.missionDate = missionDate;
     }
 
     public List<InsightVo> getInsightList() {

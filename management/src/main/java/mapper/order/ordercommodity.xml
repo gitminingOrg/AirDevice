@@ -14,11 +14,11 @@
     <insert id="insertBatch" parameterType="java.util.List">
         INSERT INTO order_commodity
         (commodity_id, order_id, commodity_type, commodity_name, commodity_price,
-         commodity_quantity, block_flag, create_time)
+         commodity_quantity, commodity_qrcode, block_flag, create_time)
          VALUES
-         <foreach collection="list" separator="," index="index" item="item">
+         <foreach collection="list" separator=";" index="index" item="item">
              (#{item.commodityId}, #{item.orderId}, #{item.commodityType}, #{item.commodityName}, #{item.commodityPrice},
-             #{item.commodityQuantity}, #{item.blockFlag}, #{item.createAt})
+             #{item.commodityQuantity}, #{item.commodityQrcode}, #{item.blockFlag}, #{item.createAt})
          </foreach>
 
     </insert>
@@ -28,16 +28,19 @@
             UPDATE order_commodity
             <set>
                 <if test="item.commodityType != null">
-                commodity_type = #{item.commodityType},
+                    commodity_type = #{item.commodityType},
                 </if>
                 <if test="item.commodityName != null">
-                commodity_name = #{item.commodityName},
+                    commodity_name = #{item.commodityName},
                 </if>
                 <if test="item.commodityPrice != null">
-                commodity_price = #{item.commodityPrice},
+                    commodity_price = #{item.commodityPrice},
+                </if>
+                <if test="item.commodityQrcode != null">
+                    commodity_qrcode = #{item.commodityQrcode},
                 </if>
                 <if test="item.commodityQuantity != null">
-                commodity_quantity = #{item.commodityQuantity}
+                    commodity_quantity = #{item.commodityQuantity}
                 </if>
             </set>
             WHERE commodity_id = #{item.commodityId}
@@ -46,19 +49,23 @@
 
     <update id="update" parameterType="model.order.OrderCommodity">
         UPDATE order_commodity
-        SET
-        <if test="commodityType != null">
-            commodity_type = #{commodityType},
-        </if>
-        <if test="commodityName != null">
-            commodity_name = #{commodityName},
-        </if>
-        <if test="commodityPrice != null">
-            commodity_price = #{commodityPrice},
-        </if>
-        <if test="commodityQuantity != null">
-            commodity_quantity = #{commodityQuantity},
-        </if>
+        <set>
+            <if test="commodityType != null">
+                commodity_type = #{commodityType},
+            </if>
+            <if test="commodityName != null">
+                commodity_name = #{commodityName},
+            </if>
+            <if test="commodityPrice != null">
+                commodity_price = #{commodityPrice},
+            </if>
+            <if test="item.commodityQrcode != null">
+                commodity_qrcode = #{item.commodityQrcode},
+            </if>
+            <if test="commodityQuantity != null">
+                commodity_quantity = #{commodityQuantity},
+            </if>
+        </set>
         WHERE commodity_id = #{commodityId}
     </update>
 

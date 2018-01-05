@@ -2,6 +2,8 @@ package model.order;
 
 import model.Entity;
 
+import java.sql.Timestamp;
+
 public class OrderMission extends Entity{
 	private String missionId;
 	
@@ -12,6 +14,12 @@ public class OrderMission extends Entity{
 	private String missionContent;
 	
 	private String missionRecorder;
+
+	private String missionChannel;
+
+	private String missionInstallType;
+
+	private Timestamp missionDate;
 
 	public OrderMission() {
 		super();
@@ -24,7 +32,18 @@ public class OrderMission extends Entity{
 		this.missionContent = missionContent;
 		this.missionRecorder = missionRecorder;
 	}
-	
+
+	public OrderMission(String orderId, String missionTitle, String missionContent, String missionRecorder,
+						String missionChannel, String missionInstallType, Timestamp missionDate) {
+		this.orderId = orderId;
+		this.missionTitle = missionTitle;
+		this.missionContent = missionContent;
+		this.missionRecorder = missionRecorder;
+		this.missionChannel = missionChannel;
+		this.missionInstallType = missionInstallType;
+		this.missionDate = missionDate;
+	}
+
 	public String getMissionId() {
 		return missionId;
 	}
@@ -63,5 +82,29 @@ public class OrderMission extends Entity{
 
 	public void setMissionRecorder(String missionRecorder) {
 		this.missionRecorder = missionRecorder;
+	}
+
+	public String getMissionChannel() {
+		return missionChannel;
+	}
+
+	public void setMissionChannel(String missionChannel) {
+		this.missionChannel = missionChannel;
+	}
+
+	public String getMissionInstallType() {
+		return missionInstallType;
+	}
+
+	public void setMissionInstallType(String missionInstallType) {
+		this.missionInstallType = missionInstallType;
+	}
+
+	public Timestamp getMissionDate() {
+		return missionDate;
+	}
+
+	public void setMissionDate(Timestamp missionDate) {
+		this.missionDate = missionDate;
 	}
 }
