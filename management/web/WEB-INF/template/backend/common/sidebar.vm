@@ -1,66 +1,73 @@
 <div id="page-sidebar">
-	<div id="header-logo">
-		果麦科技
-        	<a href="javascript:;" class="tooltip-button" data-placement="bottom" title="Close sidebar" id="close-sidebar">
-            	<i class="glyph-icon icon-align-justify"></i>
-            </a>
-            <a href="javascript:;" class="tooltip-button hidden" data-placement="bottom" title="Open sidebar" id="rm-close-sidebar">
-                <i class="glyph-icon icon-align-justify"></i>
-            </a>
-            <a href="javascript:;" class="tooltip-button hidden" title="Navigation Menu" id="responsive-open-menu">
-                <i class="glyph-icon icon-align-justify"></i>
-            </a>
+    <div id="header-logo">
+        果麦科技
+        <a href="javascript:;" class="tooltip-button" data-placement="bottom" title="Close sidebar" id="close-sidebar">
+            <i class="glyph-icon icon-align-justify"></i>
+        </a>
+        <a href="javascript:;" class="tooltip-button hidden" data-placement="bottom" title="Open sidebar"
+           id="rm-close-sidebar">
+            <i class="glyph-icon icon-align-justify"></i>
+        </a>
+        <a href="javascript:;" class="tooltip-button hidden" title="Navigation Menu" id="responsive-open-menu">
+            <i class="glyph-icon icon-align-justify"></i>
+        </a>
     </div>
-	<div id="sidebar-menu" class="scrollable-content">
-    	<ul>
-        	<li>
-	            <a href="${path.concat('/dashboard')}">
-	            	<i class="glyph-icon icon-dashboard"></i>
-	                首页
-	            </a>
+    <div id="sidebar-menu" class="scrollable-content">
+        <ul>
+            <li>
+                <a href="${path.concat('/dashboard')}">
+                    <i class="glyph-icon icon-dashboard"></i>
+                    首页
+                </a>
             </li>
             <li>
-            	<a href="javascript:;">
-                	<i class="glyph-icon icon-qrcode"></i>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-qrcode"></i>
                     二维码
                 </a>
                 <ul>
-                	<li>
-                    	<a href="${path.concat('/qrcode/create')}">
-	                        <i class="glyph-icon icon-chevron-right"></i>
-	                        生成二维码
+                    <li>
+                        <a href="${path.concat('/qrcode/create')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            生成二维码
                         </a>
                     </li>
                     <li>
-                    	<a href="${path.concat('/qrcode/overview')}">
-                        	<i class="glyph-icon icon-chevron-right"></i>
-                           	出库
+                        <a href="${path.concat('/qrcode/overview')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            出库
                         </a>
                     </li>
                     <li>
-                    	<a href="${path.concat('/qrcode/batch')}">
-	                        <i class="glyph-icon icon-chevron-right"></i>
-	                        批次列表
+                        <a href="${path.concat('/qrcode/batch')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            批次列表
                         </a>
                     </li>
                     <li>
-                    	<a href="${path.concat('/qrcode/prebind')}">
-	                        <i class="glyph-icon icon-chevron-right"></i>
-	                        预绑定
+                        <a href="${path.concat('/qrcode/prebind')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            预绑定
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${path.concat('/qrcode/prebind')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            预绑汇总
                         </a>
                     </li>
                 </ul>
             </li>
             <li>
-            	<a href="javascript:;">
-                	<i class="glyph-icon icon-tags"></i>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-tags"></i>
                     型号
                 </a>
                 <ul>
-                	<li>
-                    	<a href="${path.concat('/model/overview')}">
-	                        <i class="glyph-icon icon-chevron-right"></i>
-	                        型号概览
+                    <li>
+                        <a href="${path.concat('/model/overview')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            型号概览
                         </a>
                     </li>
                     <li>
@@ -72,8 +79,8 @@
                 </ul>
             </li>
             <li>
-            	<a href="javascript:;">
-                	<i class="glyph-icon icon-users"></i>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-users"></i>
                     用户
                 </a>
                 <ul>
@@ -83,30 +90,30 @@
                             分享码
                         </a>
                     </li>
-                	<li>
-                    	<a href="${path.concat('/consumer/overview')}">
-	                        <i class="glyph-icon icon-chevron-right"></i>
-	                        用户设备
+                    <li>
+                        <a href="${path.concat('/consumer/overview')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            用户设备
                         </a>
                     </li>
                 </ul>
             </li>
             <li>
-            	<a href="javascript:;">
-                	<i class="glyph-icon icon-laptop"></i>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-laptop"></i>
                     设备
                 </a>
                 <ul>
-                	<li>
-                    	<a href="${path.concat('/goods/create')}">
-	                        <i class="glyph-icon icon-chevron-right"></i>
-	                        设备添加
+                    <li>
+                        <a href="${path.concat('/goods/create')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            设备添加
                         </a>
                     </li>
                     <li>
-                    	<a href="${path.concat('/goods/overview')}">
-                        	<i class="glyph-icon icon-chevron-right"></i>
-                           	设备概览
+                        <a href="${path.concat('/goods/overview')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            设备概览
                         </a>
                     </li>
                 </ul>
@@ -117,7 +124,7 @@
                 </a>
                 <ul>
                     <li>
-                    	<a href="${path.concat('/order/create')}">
+                        <a href="${path.concat('/order/create')}">
                             <i class="glyph-icon icon-chevron-right"></i>
                             添加订单
                         </a>
