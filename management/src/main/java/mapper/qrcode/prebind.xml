@@ -33,11 +33,11 @@
 			AND block_flag = #{blockFlag}
 		</if>
 		<if test="startTime != null">
-			AND create_time >= #{startTime}
+			AND DATE(create_time) >= #{startTime}
 		</if>
 		<if test="endTime != null">
 			<![CDATA[
-			  AND create_time <= #{endTime}
+			  AND DATE(create_time) <= #{endTime}
 			]]>
 		</if>
 		<if test="search != null">

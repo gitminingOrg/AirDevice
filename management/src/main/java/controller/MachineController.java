@@ -1,9 +1,6 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
@@ -23,6 +20,7 @@ import service.QRCodeService;
 import utils.HttpDeal;
 import utils.ResponseCode;
 import utils.ResultData;
+import vo.machine.IdleMachineVo;
 
 @CrossOrigin
 @RestController
@@ -49,6 +47,7 @@ public class MachineController {
 	public ResultData idle() {
 		ResultData result = new ResultData();
 		String listUrl = "http://commander.gmair.net/AirCleanerOperation/device/all";
+		Set<String> onlineMachine = new HashSet<>();
 		try {
 			String response = HttpDeal.getResponse(listUrl);
 			JSONObject json = JSONObject.parseObject(response);
@@ -58,6 +57,7 @@ public class MachineController {
 				for (int i = 0; i < uids.size(); i++) {
 					String session = uids.getString(i);
 					String uid = session.replaceAll("session.", "");
+					onlineMachine.add(uid);
 					ResultData rs = qRCodeService.fetchPreBindByUid(uid);
 					if (rs.getResponseCode() == ResponseCode.RESPONSE_OK) {
 						continue;
@@ -86,7 +86,9 @@ public class MachineController {
 		}
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			result.setResponseCode(ResponseCode.RESPONSE_OK);
-			result.setData(response.getData());
+			List<IdleMachineVo> list = (List<IdleMachineVo>) response.getData();
+			list = list.stream().filter(e -> onlineMachine.contains(e.getUid())).collect(Collectors.toList());
+			result.setData(list);
 			return result;
 		}
 		return result;
