@@ -10,6 +10,7 @@ import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.MachineStataVo;
+import vo.machine.EverydayRecordVo;
 import vo.machine.IdleMachineVo;
 import vo.machine.MachineStatusVo;
 
@@ -116,6 +117,23 @@ public class MachineDaoImpl extends BaseDao implements MachineDao {
         ResultData result = new ResultData();
         try {
             sqlSession.update("management.machine.idle.updateidle", condition);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public ResultData queryEverydayRecord(Map<String, Object> condition) {
+        ResultData result = new ResultData();
+        try {
+            List<EverydayRecordVo> list = sqlSession.selectList("management.everydayrecord.query", condition);
+            if (list.isEmpty()) {
+                result.setResponseCode(ResponseCode.RESPONSE_NULL);
+            }
+            result.setData(list);
         } catch (Exception e) {
             logger.error(e.getMessage());
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);

@@ -135,4 +135,17 @@ public class MachineServiceImpl implements MachineService {
 		}
 		return result;
     }
+
+    @Override
+    public ResultData fetchRecord(Map<String, Object> condtion) {
+        ResultData result = new ResultData();
+        ResultData response = machineDao.queryEverydayRecord(condtion);
+        result.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK){
+        	result.setData(response.getData());
+		} else {
+        	result.setDescription(response.getDescription());
+		}
+		return result;
+    }
 }

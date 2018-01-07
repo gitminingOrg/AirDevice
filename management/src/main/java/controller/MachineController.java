@@ -173,4 +173,21 @@ public class MachineController {
 		}
 		return result;
 	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/record/list")
+	public ResultData Record() {
+		ResultData result = new ResultData();
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("blockFlag", false);
+		ResultData response = machineService.fetchRecord(condition);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+			result.setResponseCode(ResponseCode.RESPONSE_NULL);
+		} else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription("服务器忙，请稍后再试");
+		} else {
+			result.setData(response.getData());
+		}
+		return result;
+	}
 }

@@ -20,4 +20,6 @@ public interface MachineDao {
 	ResultData query(Map<String, Object> condition);
 
 	ResultData updateidle(Map<String, Object> condition);
+
+	ResultData queryEverydayRecord(Map<String, Object> condition);
 }

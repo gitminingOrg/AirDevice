@@ -36,5 +36,6 @@
 		<mapper resource="mapper/order/guomaiorder.xml"  />
 		<mapper resource="mapper/order/ordercommodity.xml"  />
 		<mapper resource="mapper/order/orderoperation.xml"  />
+		<mapper resource="mapper/machine/everydayrecord.xml" />
 	</mappers>
 </configuration>

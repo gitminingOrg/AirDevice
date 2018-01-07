@@ -21,4 +21,6 @@ public interface MachineService {
     ResultData queryMachineStata(Map<String, Object> condition);
 
     ResultData mdifyidle(Map<String, Object> condition);
+
+    ResultData fetchRecord(Map<String, Object> condtion);
 }
