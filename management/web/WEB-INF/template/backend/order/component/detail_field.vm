@@ -97,12 +97,20 @@
                     <div class="form-input col-md-10" id="goods-container" data-commodity-number="${order.commodityList.size()}">
                         #foreach($commodity in ${order.commodityList})
                             <div class="form-row" style="margin-left: 0px; margin-right: 0px" id="commodity$velocityCount" data-commodityId="${commodity.commodityId}">
-                                <div class="form-input col-md-8" style="padding-left: 0px">
+                                <div class="form-input col-md-5" style="padding-left: 0px">
                                     <input id="order-goods$velocityCount" type="text" value="${commodity.commodityName}"/>
                                 </div>
                                 <label for="order-goods" class="form-label col-md-1">数量</label>
-                                <div class="form-input col-md-2" style="padding-right: 0px">
+                                <div class="form-input col-md-1" style="padding-right: 0px">
                                     <input id="goods-number$velocityCount" type="number" min="1"  value="${commodity.commodityQuantity}"/>
+                                </div>
+                                <label for="order-goods" class="form-label col-md-1" style="padding-right: 0px">二维码</label>
+                                <div class="form-input col-md-2" style="padding-right: 0px">
+                                    #if(${commodity.commodityQrcode})
+                                        <input id="goods-qrcode$velocityCount" type="text"  value="${commodity.commodityQrcode}"/>
+                                    #else
+                                        <input id="goods-qrcode$velocityCount" type="text"/>
+                                    #end
                                 </div>
                                 <button id="delGoods$velocityCount" class="btn medium bg-red" style="float: right" onclick="commodityDel(this.id)">删除</button>
                             </div>
@@ -184,7 +192,11 @@
                                 <label for="mission-name">事件名称</label>
                             </div>
                             <div class="form-input col-md-10">
-                                <input id="mission-name" type="text">
+                                <select id="mission-name" type="text">
+                                    <option>---请选择事件类型---</option>
+                                    <option value="1">勘测事件</option>
+                                    <option value="2">安装事件</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-row">
@@ -192,7 +204,32 @@
                                 <label for="mission-content" autocomplete="off">事件详情</label>
                             </div>
                             <div class="form-input col-md-10">
-                                <input id="mission-content" type="text" autocomplete="off">
+                                <textarea id="mission-content" type="text" autocomplete="off"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label id="mission-type" class="form-label col-md-2">勘测日期</label>
+                            <div class="form-input col-md-10">
+                                <input id = "mission-date" type="date"/>
+                            </div>
+                        </div>
+                        <div class="form-row" id="mission-channel-container" style="display: none">
+                            <div class="form-row" style="margin-left: 0px; margin-right: 0px">
+                                <label class="form-label col-md-2">安装服务商</label>
+                                <div class="form-input col-md-10">
+                                    <select id="mission-channel" style="border-radius: 2px">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-left: 0px; margin-right: 0px">
+                                <label class="form-label col-md-2">安装方式</label>
+                                <div class="form-input col-md-10">
+                                    <select id="mission-install-type" style="border-radius: 2px">
+                                        <option>---请选择安装方式---</option>
+                                        <option>墙体安装</option>
+                                        <option>玻璃安装</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 						<div class="form-row">
@@ -203,6 +240,17 @@
                                 <input id="mission-codeId" type="text" autocomplete="off">
                             </div>
 						</div>
+                        <div class="form-row">
+                            <div class="form-label col-md-2">
+                                <label>订单状态</label>
+                            </div>
+                            <div class="form-input col-md-10">
+                                <select id="mission-status">
+                                    <option>---订单状态---</option>
+                                    <option value="10">安装完成</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-row">
                             <div class="form-label col-md-2">
                                 <label for="mission-content" autocomplete="off">图片上传</label>
@@ -267,7 +315,7 @@
 	            				head.append(float_right);
 	            				content_box.append(head);
 	            				var wrapper = $("<div class='content-box-wrapper' style='font-size: 15px; line-height: 1.4'></div>");
-	            				var missionTitle = $("<div class='col-md-2'></div>").text(missions[i].missionTitle + ':');
+	            				var missionTitle = $("<div class='col-md-2' style='font-weight: bold;'></div>").text(missions[i].missionTitle + ':');
 	            				var missionContent = $("<div class='col-md-10'></div>").text(missions[i].missionContent);
 	            				wrapper.append(missionTitle);
 	            				wrapper.append(missionContent);
@@ -316,6 +364,24 @@
     var uploadList = [];
     var uploadFilePathList = [];
 
+    function convertOrderStatus(status){
+        var convertResult;
+        switch(status) {
+            case 'NOT_PAYED' : convertResult = 0; break;
+            case 'PAYED': convertResult = 1; break;
+            case 'SHIPPED': convertResult = 2; break;
+            case 'RECEIVED': convertResult = 3; break;
+            case 'INSTALLING': convertResult = 4; break;
+            case 'SUCCEED': convertResult = 5; break;
+            case 'EXCHANGED': convertResult = 6; break;
+            case 'REFUNDING': convertResult = 7; break;
+            case 'REFUNDED': convertResult = 8; break;
+            case 'CLOSED': convertResult = 9; break;
+            default: convertResult = 1; break;
+        }
+        return convertResult;
+    }
+
 	$(document).ready(function() {
 		$("#confirm-deliver").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/deliver";
@@ -329,19 +395,76 @@
 				}
 			});
 		})
+
+        $("#mission-name").on('change', function () {
+            var installMission = document.getElementById('mission-name');
+            var mission = installMission.value;
+            var missionTypeLabel = document.getElementById('mission-type');
+            var missionTypeContainer = document.getElementById("mission-channel-container");
+            switch (mission) {
+                case '1':
+                    missionTypeLabel.innerHTML = '勘测日期';
+                    missionTypeContainer.style = 'display: none';
+                    break;
+                case '2':
+                    missionTypeLabel.innerHTML = '安装日期';
+                    missionTypeContainer.style = 'display: block';
+                    break;
+                default:
+                    break;
+            }
+        });
+
 		
 		$("#confirm-event").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/mission/create";
-			var mission_title = $("#mission-name").val();
+			var mission_title = $("#mission-name").find(':selected').val();
 			var mission_content = $("#mission-content").val();
+			var mission_date = new Date($("#mission-date").val()).toISOString();
+			var mission_channel = $("#mission-channel").find(':selected').val();
 			var codeId = $("#mission-codeId").val();
+			var mission_install_type = $("#mission-install-type").find(':selected').val();
 			var filepath = uploadFilePathList.join(";");
-			
-			$.post(url, {missionTitle: mission_title, missionContent: mission_content, codeId: codeId, filePath: filepath}, function(result) {
+
+			if (!not_null(mission_title)) {
+			    alert("请选择事件类型!");
+			    return;
+            }
+            if (!not_null(mission_date)) {
+			    alert("请正确填写事件时间！");
+			    return;
+            }
+
+			var mission_params = {
+			    missionTitle: mission_title, missionContent: mission_content, missionDate: mission_date,
+                missionChannel: mission_channel, missionInstallType: mission_install_type, codeId: codeId,
+                filePath: filepath
+			};
+
+			if (mission_title != 2) {
+                delete mission_params.missionChannel;
+                delete mission_params.missionInstallType;
+            } else {
+			    if (!not_null(mission_channel)) {
+                    alert("请正确填写安装服务商！");
+                    return;
+                }
+                if (!not_null(mission_install_type)) {
+                    alert("请正确填写安装方式！");
+                    return;
+                }
+            }
+            mission_params.missionTitle = $("#mission-name").find(':selected').text();
+			if ('missionChannel' in mission_params)
+                mission_params.missionChannel = $("#mission-channel").find(':selected').text();
+            if ('missionInstallType' in mission_params)
+                mission_params.missionInstallType = $("#mission-install-type").find(':selected').text();
+
+			$.post(url, mission_params, function(result) {
                 uploadFilePathList = [];
-				location.reload();
+//				location.reload();.
 			})
-		})
+		});
 		
 		$("#order-complete").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/complete";
@@ -375,7 +498,8 @@
                             buyerName: buyerName, buyerAcccount: buyerAccount, receiverName: receiverName,
                             receiverPhone: receiverPhone, province: province, city: city, district: district,
                             receiverAddress: receiverAddress, orderCoupon: orderCoupon, orderTime: orderTime,
-                            orderChannel: orderChannel, description: description
+                            orderChannel: orderChannel, description: description,
+                            orderStatus: convertOrderStatus("${order.orderStatus}")
             };
 
             var commodities = document.getElementById('goods-container').getAttribute('data-commodity-number');
@@ -386,8 +510,10 @@
                     var commodityId = commodity.getAttribute('data-commodityId');
                     var commodityName = document.getElementById('order-goods' + index.toString()).value;
                     var commodityQuantity = document.getElementById('goods-number' + index.toString()).value;
+                    var commodityQrcode = document.getElementById('goods-qrcode' + index.toString()).value;
                     commodityParams.commodities.push(
-                        {commodityId : commodityId, commodityName: commodityName, commodityQuantity: commodityQuantity});
+                        {commodityId : commodityId, commodityName: commodityName,
+                            commodityQuantity: commodityQuantity, commodityQrcode: commodityQrcode});
                 }
             }
             $.ajax({
@@ -403,6 +529,22 @@
             })
         })
 	});
+
+    function mission_channel_reset() {
+        $("#mission-channel").empty();
+        $("#mission-channel").append($("<option value=''></option>").text("---请选择安装商---"));
+        var channel_url = "${path.concat('/order/missionChannel/list')}";
+        $.get(channel_url, function(result) {
+            if(result.responseCode == "RESPONSE_OK") {
+                var data = result.data;
+                for(index in data) {
+                    var item = $("<option></option>").text(data[index].channelName);
+                    item.attr("value", data[index].channelName);
+                    $("#mission-channel").append(item);
+                }
+            }
+        })
+    };
 
 	function commodityDel(id) {
         var index = id.replace("delGoods", "");
@@ -437,7 +579,9 @@
             }
         })
     }
+
     orderChannelReset();
+	mission_channel_reset();
 
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {

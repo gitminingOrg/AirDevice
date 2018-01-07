@@ -1,11 +1,12 @@
 package dao.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Condition;
 
-import model.order.GuoMaiOrder;
-import model.order.OrderCommodity;
+import model.order.*;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +18,6 @@ import com.alibaba.fastjson.JSONObject;
 
 import dao.BaseDao;
 import dao.OrderDao;
-import model.order.CustomizeOrder;
-import model.order.TaobaoOrder;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
 import sun.font.EAttribute;
@@ -141,6 +140,21 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	public ResultData update(GuoMaiOrder order) {
 		ResultData result = new ResultData();
 		try {
+//			new Thread(() -> {
+			Map<String, Object> condition = new HashMap<>();
+			condition.put("orderId", order.getOrderId());
+			condition.put("blockFlag", false);
+			GuoMaiOrderVo guoMaiOrder =
+					(GuoMaiOrderVo) sqlSession.selectList("management.guomaiorder.query", condition).get(0);
+			if (guoMaiOrder.getOrderStatus() != order.getOrderStatus()) {
+				OrderOperation orderOperation = new OrderOperation();
+				orderOperation.setOperationId(IDGenerator.generate("OP"));
+				orderOperation.setOrderId(order.getOrderId());
+				orderOperation.setPreStatus(guoMaiOrder.getOrderStatus());
+				orderOperation.setCurStatus(order.getOrderStatus());
+				sqlSession.insert("management.guomaiorderoperation.insert", orderOperation);
+			}
+//			});
 			sqlSession.update("management.guomaiorder.update", order);
 		}catch (Exception e) {
 			logger.error(e.getMessage());

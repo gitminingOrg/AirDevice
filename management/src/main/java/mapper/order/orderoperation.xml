@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.guomaiorderoperation">
+
+    <insert id="insert" parameterType="model.order.OrderOperation">
+        INSERT INTO order_operation
+        (operation_id, order_id, pre_status, cur_status, block_flag, create_time)
+        VALUES
+        (#{operationId}, #{orderId},
+         #{preStatus, typeHandler = org.apache.ibatis.type.EnumOrdinalTypeHandler},
+         #{curStatus, typeHandler = org.apache.ibatis.type.EnumOrdinalTypeHandler},
+         #{blockFlag}, #{createAt})
+    </insert>
+
+</mapper>

@@ -10,6 +10,7 @@ public class OrderCommodityVo {
     private String commodityName;
     private double commodityPrice;
     private int commodityQuantity;
+    private String commodityQrcode;
     private Boolean blockFlag;
     private Timestamp createTime;
 
@@ -61,6 +62,14 @@ public class OrderCommodityVo {
         this.commodityQuantity = commodityQuantity;
     }
 
+    public String getCommodityQrcode() {
+        return commodityQrcode;
+    }
+
+    public void setCommodityQrcode(String commodityQrcode) {
+        this.commodityQrcode = commodityQrcode;
+    }
+
     public Boolean getBlockFlag() {
         return blockFlag;
     }
@@ -69,11 +78,11 @@ public class OrderCommodityVo {
         this.blockFlag = blockFlag;
     }
 
-    public Timestamp getCreateAt() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateAt(Timestamp createAt) {
-        this.createTime = createAt;
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 }

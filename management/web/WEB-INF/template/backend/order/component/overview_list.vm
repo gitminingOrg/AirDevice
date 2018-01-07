@@ -30,35 +30,69 @@
                     订单
                 </a>
                 <span class="current">
-                    淘宝订单
+                    订单列表
                 </span>
             </div>
         </div>
         <div id="page-content">
-            <div class="infobox warning-bg">
-                <p><i class="glyph-icon icon-exclamation mrg10R"></i> 若您需要导入新的订单，请单击这里进行 <a href="javascript:;" class="white-modal-80" title="添加部件"> 上传订单 </a>.</p>
-            </div>
-            <div class="hide" id="white-modal-80" title="添加型号">
-                <div class="pad10A">
-                    <div class="col-md-12 center-margin">
-                        <div class="form-row">
-                            <div class="form-label col-md-2">
-                                <label for="goods-name">导入列表</label>
-                            </div>
-                            <div class="form-input col-md-10">
-                                <form id="order-form">
-                                    <input name="orderFile" type="file">
-                                </form>
-                            </div>
+##            <div class="infobox warning-bg">
+##                <p><i class="glyph-icon icon-exclamation mrg10R"></i> 若您需要导入新的订单，请单击这里进行 <a href="javascript:;" class="white-modal-80" title="添加部件"> 上传订单 </a>.</p>
+##            </div>
+##            <div class="hide" id="white-modal-80" title="添加型号">
+##                <div class="pad10A">
+##                    <div class="col-md-12 center-margin">
+##                        <div class="form-row">
+##                            <div class="form-label col-md-2">
+##                                <label for="goods-name">导入列表</label>
+##                            </div>
+##                            <div class="form-input col-md-10">
+##                                <form id="order-form">
+##                                    <input name="orderFile" type="file">
+##                                </form>
+##                            </div>
+##                        </div>
+##                        <div class="form-row">
+##                            <button class="btn medium bg-blue-alt" id="confirm-upload">
+##                                <span class="button-content">上传</span>
+##                            </button>
+##                        </div>
+##                    </div>
+##                </div>
+##            </div>
+
+            <div class="row col-md-12">
+                <div class="col-md-4" style="height: 180px; padding: 20px;">
+                    <div style="width: 100%; height: 100%; background: #00b297; border-radius: 5px; padding: 20px; align-items: center; display: flex;">
+                        <i class="glyph-icon icon-check-circle-o" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                        <div style="margin-left: 30px">
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">已经完成订单</p>
+                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-success">12</p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range">2017/12/01~2017/12/31</p>
                         </div>
-                        <div class="form-row">
-                            <button class="btn medium bg-blue-alt" id="confirm-upload">
-                                <span class="button-content">上传</span>
-                            </button>
+                    </div>
+                </div>
+                <div class="col-md-4" style="height: 180px; padding: 20px; border-radius: 5px">
+                    <div style="width: 100%; height: 100%; background: #dc3545; border-radius: 5px; padding: 20px; align-items: center; display: flex;">
+                        <i class="glyph-icon icon-gavel" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                        <div style="margin-left: 30px">
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">正在安装订单</p>
+                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-installing">12</p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range">2017/12/01~2017/12/31</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" style="height: 180px; padding: 20px; border-radius: 5px; ">
+                    <div style="width: 100%; height: 100%; background: #0866C6; border-radius: 5px; padding: 20px; align-items: center; display: flex">
+                        <i class="glyph-icon icon-ban" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                        <div style="margin-left: 30px">
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">未安装订单</p>
+                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-insuccess">12</p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range">2017/12/01~2017/12/31</p>
                         </div>
                     </div>
                 </div>
             </div>
+##            <hr />
             <div class="col-md-12 center-margin">
 ##            	<div class="col-md-10 center-margin">
 	                <div class="form-row">

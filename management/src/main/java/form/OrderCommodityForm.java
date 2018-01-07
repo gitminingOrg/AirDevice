@@ -10,6 +10,7 @@ public class OrderCommodityForm {
     private String commodityName;
     private double commodityPrice;
     private int commodityQuantity;
+    private String commodityQrcode;
 
     public String getCommodityId() {
         return commodityId;
@@ -57,5 +58,13 @@ public class OrderCommodityForm {
 
     public void setCommodityQuantity(int commodityQuantity) {
         this.commodityQuantity = commodityQuantity;
+    }
+
+    public String getCommodityQrcode() {
+        return commodityQrcode;
+    }
+
+    public void setCommodityQrcode(String commodityQrcode) {
+        this.commodityQrcode = commodityQrcode;
     }
 }

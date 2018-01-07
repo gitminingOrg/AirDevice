@@ -10,6 +10,7 @@ public class OrderCommodity extends Entity{
     private String commodityName;
     private double commodityPrice;
     private int commodityQuantity;
+    private String commodityQrcode;
 
 
     public String getCommodityId() {
@@ -60,15 +61,24 @@ public class OrderCommodity extends Entity{
         this.commodityQuantity = commodityQuantity;
     }
 
+    public String getCommodityQrcode() {
+        return commodityQrcode;
+    }
+
+    public void setCommodityQrcode(String commodityQrcode) {
+        this.commodityQrcode = commodityQrcode;
+    }
+
     public OrderCommodity() {super();}
 
     public OrderCommodity(String orderId, String commodityType, String commodityName,
-                          double commodityPrice, int commodityQuantity) {
+                          double commodityPrice, int commodityQuantity, String commodityQrcode) {
         super();
         this.orderId = orderId;
         this.commodityType = commodityType;
         this.commodityName = commodityName;
         this.commodityPrice = commodityPrice;
         this.commodityQuantity = commodityQuantity;
+        this.commodityQrcode = commodityQrcode;
     }
 }

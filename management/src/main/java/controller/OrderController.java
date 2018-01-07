@@ -244,9 +244,9 @@ public class OrderController {
         if (form.getOrderDiversion() != null) {
             order.setOrderDiversion(form.getOrderDiversion());
         }
-        if (form.getOrderStatus() != null) {
-            order.setOrderStatus(form.getOrderStatus());
-        }
+//        if (form.getOrderStatus() != null) {
+        order.setOrderStatus(OrderStatus.convertToOrderStatus(form.getOrderStatus()));
+//        }
         ResultData response = orderService.assign(order);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setResponseCode(ResponseCode.RESPONSE_OK);
@@ -270,7 +270,7 @@ public class OrderController {
             form.setOrderId(commodityWrapper.getOrderId());
             OrderCommodity commodity = new
                     OrderCommodity(form.getOrderId(), form.getCommodityType(), form.getCommodityName(),
-                    form.getCommodityPrice(), form.getCommodityQuantity());
+                    form.getCommodityPrice(), form.getCommodityQuantity(), form.getCommodityQrcode());
             commodityList.add(commodity);
         }
 
@@ -297,7 +297,7 @@ public class OrderController {
             form.setOrderId(commodityWrapper.getOrderId());
             OrderCommodity commodity = new
                     OrderCommodity(form.getOrderId(), form.getCommodityType(), form.getCommodityName(),
-                    form.getCommodityPrice(), form.getCommodityQuantity());
+                    form.getCommodityPrice(), form.getCommodityQuantity(), form.getCommodityQrcode());
             commodity.setCommodityId(form.getCommodityId());
             commodityList.add(commodity);
         }
@@ -380,7 +380,8 @@ public class OrderController {
         orderService.assign(order);
         UserVo user = (UserVo) subject.getPrincipal();
         OrderMission mission = new OrderMission(orderId, form.getMissionTitle(), form.getMissionContent(),
-                user.getUsername());
+                user.getUsername(), form.getMissionChannel(), form.getMissionInstallType(),
+                Timestamp.valueOf(form.getMissionDate()));
         response = orderService.create(mission);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setResponseCode(ResponseCode.RESPONSE_OK);

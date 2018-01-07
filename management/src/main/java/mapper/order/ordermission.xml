@@ -6,6 +6,9 @@
 		<result property="missionTitle" column="mission_title"/>
 		<result property="missionContent" column="mission_content"/>
 		<result property="missionRecorder" column="mission_recorder"/>
+		<result property="missionChannel" column="mission_channel" />
+		<result property="missionInstallType" column="mission_install_type"/>
+		<result property="missionDate" column="mission_date" />
 		<collection property="insightList" column="missionId = mission_id" select="missioninsightquery"/>
 	</resultMap>
 
@@ -18,16 +21,19 @@
 	<select id="missioninsightquery" resultMap="insightVo">
 		select insight_id, code_id, insight_path
 		 FROM install_insight
-		WHERE event_id = #{missionId};
+		WHERE event_id = #{missionId} AND block_flag = 0;
 	</select>
 	
 	<insert id="insert" parameterType="model.order.OrderMission" useGeneratedKeys="false">
-		insert into order_mission(mission_id, order_id, mission_title, mission_content, mission_recorder, block_flag, create_time)
-		values (#{missionId}, #{orderId}, #{missionTitle}, #{missionContent}, #{missionRecorder}, #{blockFlag}, #{createAt})
+		insert into order_mission(mission_id, order_id, mission_title, mission_content, mission_recorder,
+									mission_channel, mission_install_type, mission_date, block_flag, create_time)
+		values (#{missionId}, #{orderId}, #{missionTitle}, #{missionContent}, #{missionRecorder},
+				#{missionChannel}, #{missionInstallType}, #{missionDate}, #{blockFlag}, #{createAt})
 	</insert>
 	
 	<select id="query" parameterType="java.util.Map" resultMap = "missionVo">
-		select mission_id, order_id, mission_title, mission_content, mission_recorder, block_flag, create_time
+		select mission_id, order_id, mission_title, mission_content, mission_recorder,
+				mission_channel, mission_install_type, mission_date, block_flag, create_time
 		from order_mission
 		where 1 = 1
 		<if test="missionId != null">

@@ -1,6 +1,7 @@
 package form;
 
 import model.order.OrderStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -40,7 +41,7 @@ public class OrderCreateForm {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime orderTime;
 
-	private OrderStatus orderStatus;
+	private int orderStatusCode;
 	
 	private String description;
 
@@ -156,12 +157,12 @@ public class OrderCreateForm {
 		this.orderTime = orderTime;
 	}
 
-	public OrderStatus getOrderStatus() {
-		return orderStatus;
+	public int getOrderStatus() {
+		return orderStatusCode;
 	}
 
-	public void setOrderStatus(OrderStatus orderStatus) {
-		this.orderStatus = orderStatus;
+	public void setOrderStatus(int orderStatusCode) {
+		this.orderStatusCode = orderStatusCode;
 	}
 
 	public String getDescription() {

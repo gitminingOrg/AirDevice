@@ -32,6 +32,7 @@
         <result property="commodityName" column="commodity_name" />
         <result property="commodityPrice" column="commodity_price" />
         <result property="commodityQuantity" column="commodity_quantity" />
+        <result property="commodityQrcode" column="commodity_qrcode" />
         <result property="blockFlag" column="block_flag"/>
         <result property="createTime" column="create_time"/>
     </resultMap>
@@ -74,7 +75,7 @@
     <select id="ordercommodityquery" resultMap="orderCommodityVo">
         select
             commodity_id, order_id, commodity_type, commodity_name, commodity_price,
-            commodity_quantity, block_flag, create_time
+            commodity_quantity, commodity_qrcode, block_flag, create_time
         from order_commodity WHERE order_id = #{orderId} AND block_flag = 0
     </select>
 
