@@ -1,8 +1,11 @@
 #parse("/common/util.vm")
 <html lang="zh_CN">
 <head>
+    <meta name="full-screen" content="yes">
+    <meta name="x5-fullscreen" content="true">
     #parse("/backend/init/init.vm")
-    <title>预绑定</title>
+    <link rel="stylesheet" href="${path.concat('/plugins/dropload/dropload.css')}"></link>
+    <title>预绑定列表</title>
 </head>
 <body class="fixed-sidebar fixed-header" ontouchstart>
 <div id="loading" class="ui-front loader ui-widget-overlay bg-white opacity-100">
@@ -13,5 +16,5 @@
     #parse("/backend/qrcode/component/prebind_list.vm")
 </div>
 </body>
-<script type="text/javascript"></script>
+<script type="text/javascript" src="${path.concat('/plugins/dropload/dropload.min.js')}"></script>
 </html>

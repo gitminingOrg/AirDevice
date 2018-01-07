@@ -353,6 +353,13 @@ public class QRCodeController {
         return view;
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/prebind/overview")
+    public ModelAndView prebindOverview() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("/backend/qrcode/prebind_overview");
+        return view;
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/prebind")
     public ResultData prebind(String uid, String codeId) {
         ResultData result = new ResultData();
