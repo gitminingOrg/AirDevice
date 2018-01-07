@@ -218,6 +218,24 @@ DROP COLUMN `goods_title`,
 DROP COLUMN `product_serial`,
 DROP COLUMN `goods_kind`;
 
+CREATE TABLE `airdevice`.`wechat_text_msg_history` (
+  `msg_id` VARCHAR(20) NOT NULL,
+  `msg_type` VARCHAR(45) NOT NULL DEFAULT 'text',
+  `to_user` VARCHAR(100) NOT NULL,
+  `from_user` VARCHAR(100) NOT NULL,
+  `content` VARCHAR(45) NOT NULL,
+  `block_flag` TINYINT(1) NOT NULL DEFAULT 0,
+  `create_time` DATETIME NULL,
+  PRIMARY KEY (`msg_id`));
 
+ALTER TABLE `airdevice`.`wechat_text_msg_history`
+DROP COLUMN `create_time`,
+DROP COLUMN `block_flag`,
+DROP COLUMN `content`,
+CHANGE COLUMN `msg_id` `template_id` VARCHAR(20) NOT NULL ,
+CHANGE COLUMN `msg_type` `keyword` VARCHAR(45) NOT NULL DEFAULT 'text' ,
+CHANGE COLUMN `to_user` `block_flag` TINYINT(1) NOT NULL DEFAULT 0 ,
+CHANGE COLUMN `from_user` `create_time` DATETIME NOT NULL ,
+ADD COLUMN `reply_content` LONGTEXT NULL AFTER `keyword`, RENAME TO  `airdevice`.`wechat_text_msg_template` ;
 
 
