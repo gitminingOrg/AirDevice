@@ -1,5 +1,7 @@
 package dao.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import model.device.DeviceChip;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
@@ -126,6 +128,16 @@ public class QRCodePreBindDaoImpl extends BaseDao implements QRCodePreBindDao{
 		ResultData result = new ResultData();
 		DataTablePage<PreBindVO> page = new DataTablePage<>(param);
 
+		JSONObject jsonObject = JSON.parseObject(param.getParams());
+		if (!StringUtils.isEmpty(jsonObject)) {
+			if (!StringUtils.isEmpty(jsonObject.getString("startDate"))) {
+				condition.put("startTime", jsonObject.getString("startDate"));
+			}
+			if (!StringUtils.isEmpty(jsonObject.getString("endDate"))) {
+				condition.put("endTime", jsonObject.getString("endDate"));
+			}
+		}
+
 		if (!StringUtils.isEmpty(param.getsSearch())) {
 			condition.put("search", new StringBuilder("%").append(param.getsSearch()).append("%").toString());
 		}
@@ -151,6 +163,16 @@ public class QRCodePreBindDaoImpl extends BaseDao implements QRCodePreBindDao{
 	public ResultData query(Map<String, Object> condition, MobilePageParam param) {
 		ResultData result = new ResultData();
 		MobilePage<PreBindVO> page = new MobilePage<>();
+
+		JSONObject jsonObject = JSON.parseObject(param.getParams());
+		if (!StringUtils.isEmpty(jsonObject)) {
+			if (!StringUtils.isEmpty(jsonObject.getString("startDate"))) {
+				condition.put("startTime", jsonObject.getString("startDate"));
+			}
+			if (!StringUtils.isEmpty(jsonObject.getString("endDate"))) {
+				condition.put("endTime", jsonObject.getString("endDate"));
+			}
+		}
 
 		ResultData total = query(condition);
 		if (total.getResponseCode() != ResponseCode.RESPONSE_OK) {

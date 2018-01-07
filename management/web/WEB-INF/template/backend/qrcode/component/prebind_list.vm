@@ -1,0 +1,188 @@
+<div id="page-main">
+    <div id="page-main-wrapper">
+        <div id="page-header" class="clearfix">
+            <div id="page-header-wrapper" class="clearfix">
+                <div id="page-breadcrumb-wrapper">
+                    <div id="page-breadcrumb">
+                        <a href="javascript:;">
+                            <i class="glyph-icon icon-dashboard"></i>
+                            首页
+                        </a>
+                        <a href="javascript:;">
+                            <i class="glyph-icon icon-laptop"></i>
+                            二维码
+                        </a>
+                        <span class="current">
+                            预绑定预览
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="page-breadcrumb-wrapper">
+            <div id="page-breadcrumb">
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-dashboard"></i>
+                    首页
+                </a>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-laptop"></i>
+                    二维码
+                </a>
+                <span class="current">
+                    预绑定预览
+                </span>
+            </div>
+        </div>
+        <div id="page-content">
+            <h4>预绑定预览列表</h4>
+            <div class="row" style="margin-left: 0px; margin-right: 0px">
+                <div class="col-xs-6">
+                    <div class="form-input form-row" style="margin: 0px">
+                        <select id="startDate" class="date-input">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-input form-row" style="margin: 0px">
+                        <select id="endDate" class="date-input">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="prebind-content">
+                <div id="prebind-lists">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var timer;
+
+        $('.date-input').on('change', function() {
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                $('#prebind-lists').html('');
+                $('.dropload-down').remove();
+
+                var start = 0;
+                var length = 10;
+                $('#prebind-content').dropload({
+                    scrollArea : window,
+                    loadDownFn : function (me) {
+                        var startDate = $('#startDate').find(':selected').val();
+                        var endDate = $('#endDate').find(':selected').val();
+                        var dateParams = {startDate: startDate, endDate: endDate};
+                        if (!not_null(startDate)) {
+                            delete dateParams.startDate;
+                        }
+                        if (!not_null(endDate)) {
+                            delete dateParams.endDate;
+                        }
+                        var params = {start: start, length: length, params: JSON.stringify(dateParams)};
+                        var result = '';
+                        $.ajax({
+                            type : 'POST',
+                            url: "${path.concat('/qrcode/prebind/list/mobile')}",
+                            data: params,
+                            dataType: 'json',
+                            success: function (response) {
+                                var data = response.data;
+                                var dataLen = data.length;
+                                if (dataLen > 0) {
+                                    for (var i = 0; i < dataLen; i++) {
+                                        var bindDate = new Date(data[i].createAt);
+                                        var year = bindDate.getFullYear();
+                                        var month = ('0' + (bindDate.getMonth() + 1).toString()).slice(-2).toString();
+                                        var day = ('0' + bindDate.getDate().toString()).slice(-2).toString();
+                                        var hour = ('0' + bindDate.getHours().toString()).slice(-2).toString();
+                                        var minute = ('0' + bindDate.getMinutes().toString()).slice(-2).toString();
+                                        var second = ('0' + bindDate.getSeconds().toString()).slice(-2).toString();
+                                        var dateString = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+                                        result += '<div class="col-md-4"><div class="dashboard-panel content-box remove-border bg-blue-alt">' +
+                                                '<div class="row" style="padding: 5px"><div class="col-xs-4" style="text-align: right">主板：</div><div class="col-xs-8" style="text-align: left">' + data[i].uid + '</div></div>' +
+                                                '<div class="row" style="padding: 5px"><div class="col-xs-4" style="text-align: right">二维码：</div><div class="col-xs-8" style="text-align: left">' + data[i].codeId + '</div></div>' +
+                                                '<div class="row" style="padding: 5px"><div class="col-xs-4" style="text-align: right">绑定日期：</div><div class="col-xs-8" style="text-align: left">' + dateString + '</div></div>' +
+                                                '</div></div></div>'
+                                    }
+                                } else {
+                                    me.lock();
+                                    me.noData();
+                                }
+                                setTimeout(function () {
+                                    $('#prebind-lists').append(result);
+                                    me.resetload();
+                                }, 1000);
+                            },
+                            error: function (xhr, type) {
+                                alert('error!');
+                                me.resetload();
+                            }
+                        });
+                        start += 10;
+                    }
+                });
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        function resetStartDate() {
+            $("#startDate").empty();
+            $("#startDate").append($("<option value=''></option>").text("---开始日期---"));
+
+            var monthBefore = new Date();
+            monthBefore.setMonth(monthBefore.getMonth() - 1);
+
+            for (var date = new Date(); date > monthBefore;) {
+                var dateFormat = formatDate(date);
+                var item = $("<option></option>").text(dateFormat);
+                item.attr("value", dateFormat);
+                $("#startDate").append(item);
+
+                date.setDate(date.getDate() - 1);
+            }
+
+        }
+
+        function resetEndDate() {
+            $("#endDate").empty();
+            $("#endDate").append($("<option value=''></option>").text("---结束日期---"));
+
+            var today = new Date();
+            var monthBefore = new Date();
+            monthBefore.setMonth(monthBefore.getMonth() - 1);
+
+            for (var date = today; date > monthBefore;) {
+                var dateFormat = formatDate(date);
+                var item = $("<option></option>").text(dateFormat);
+                item.attr("value", dateFormat);
+                $("#endDate").append(item);
+
+                date.setDate(date.getDate() - 1);
+            }
+
+        }
+        resetStartDate();
+        resetEndDate();
+    });
+
+    function not_null(item) {
+        if (item == null || item == "" || item.length <= 0) {
+            return false;
+        }
+        return true;
+    }
+
+    function formatDate(date) {
+        var year = date.getFullYear().toString();
+        var month = ("0" + (date.getMonth() + 1).toString()).slice(-2).toString();
+        var day = ("0" + date.getDate().toString()).slice(-2).toString();
+
+        return year + '-' + month + '-' + day;
+    }
+</script>
