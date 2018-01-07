@@ -122,4 +122,17 @@ public class MachineServiceImpl implements MachineService {
         }
         return result;
     }
+
+    @Override
+    public ResultData mdifyidle(Map<String, Object> condition) {
+        ResultData result = new ResultData();
+        ResultData response = machineDao.updateidle(condition);
+        result.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+        	result.setData(response.getData());
+		} else {
+        	result.setDescription(response.getDescription());
+		}
+		return result;
+    }
 }

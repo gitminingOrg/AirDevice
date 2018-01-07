@@ -18,4 +18,6 @@ public interface MachineDao {
 	ResultData queryMachineStatus(Map<String, Object> condition);
 
 	ResultData query(Map<String, Object> condition);
+
+	ResultData updateidle(Map<String, Object> condition);
 }

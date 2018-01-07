@@ -110,4 +110,17 @@ public class MachineDaoImpl extends BaseDao implements MachineDao {
         }
         return result;
     }
+
+    @Override
+    public ResultData updateidle(Map<String, Object> condition) {
+        ResultData result = new ResultData();
+        try {
+            sqlSession.update("management.machine.idle.updateidle", condition);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(e.getMessage());
+        }
+        return result;
+    }
 }
