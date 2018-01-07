@@ -4,5 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="userService" class="service.impl.UserServiceImpl"></bean>
+	<bean id="userLogService" class="service.impl.UserLogServiceImpl"></bean>
+	<bean id="systemLogService" class="service.impl.SystemLogServiceImpl"></bean>
 
 </beans>
