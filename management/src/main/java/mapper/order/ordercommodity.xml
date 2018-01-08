@@ -16,7 +16,7 @@
         (commodity_id, order_id, commodity_type, commodity_name, commodity_price,
          commodity_quantity, commodity_qrcode, block_flag, create_time)
          VALUES
-         <foreach collection="list" separator=";" index="index" item="item">
+         <foreach collection="list" separator="," index="index" item="item">
              (#{item.commodityId}, #{item.orderId}, #{item.commodityType}, #{item.commodityName}, #{item.commodityPrice},
              #{item.commodityQuantity}, #{item.commodityQrcode}, #{item.blockFlag}, #{item.createAt})
          </foreach>
