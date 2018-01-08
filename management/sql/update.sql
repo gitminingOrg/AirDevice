@@ -238,4 +238,20 @@ CHANGE COLUMN `to_user` `block_flag` TINYINT(1) NOT NULL DEFAULT 0 ,
 CHANGE COLUMN `from_user` `create_time` DATETIME NOT NULL ,
 ADD COLUMN `reply_content` LONGTEXT NULL AFTER `keyword`, RENAME TO  `airdevice`.`wechat_text_msg_template` ;
 
+##2018-01-08
+CREATE TABLE `NewTable` (
+`commodity_id`  char(63) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`commodity_type`  tinyint(11) NOT NULL ,
+`commodity_name`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`commodity_price`  decimal(10,2) NOT NULL ,
+`commodity_bonus`  decimal(10,2) NOT NULL ,
+`block_flag`  tinyint(11) NOT NULL ,
+`create_time`  datetime NOT NULL ,
+PRIMARY KEY (`commodity_id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+ROW_FORMAT=COMPACT
+;
+
 
