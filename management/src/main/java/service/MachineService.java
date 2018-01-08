@@ -19,4 +19,8 @@ public interface MachineService {
     ResultData queryMachineStatus(Map<String, Object> condition);
 
     ResultData queryMachineStata(Map<String, Object> condition);
+
+    ResultData mdifyidle(Map<String, Object> condition);
+
+    ResultData fetchRecord(Map<String, Object> condtion);
 }

@@ -31,4 +31,9 @@
 	SET block_flag = 1
 	WHERE im_id = #{im_id}
 </update>
+	<update id="updateidle">
+		UPDATE idle_machine
+		SET block_flag = 1
+		WHERE idle_machine.uid IN (SELECT chip_id FROM device_chip)
+	</update>
 </mapper>
