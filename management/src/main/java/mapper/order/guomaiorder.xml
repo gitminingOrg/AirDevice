@@ -21,6 +21,7 @@
         <result property="orderCoupon" column="order_coupon" />
         <result property="orderTime" column="order_time" />
         <result property="shipNo" column="ship_no" />
+        <result property="serviceName" column="service_name" />
         <result property="createTime" column="create_time" />
         <collection property="commodityList" column="orderId = order_no" select="ordercommodityquery"/>
     </resultMap>
@@ -84,8 +85,8 @@
         order_id, order_no, order_status, description, buyer_name,
         buyer_account, receiver_name, receiver_phone, order_price,
         province, city, district, receiver_address, order_channel, order_diversion,
-        order_coupon, order_time, ship_no, create_time
-        from guomai_order
+        order_coupon, order_time, ship_no, service_name, create_time
+        from guomai_order_view
         WHERE 1 = 1
         <if test="orderId != null" >
             AND order_id = #{orderId}
@@ -107,6 +108,9 @@
         </if>
         <if test="city != null">
             AND city = #{city}
+        </if>
+        <if test="serviceName != null">
+            AND service_name = #{serviceName}
         </if>
         <if test="startTime != null">
             AND DATE(order_time) >= #{startTime}

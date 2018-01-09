@@ -27,6 +27,7 @@ public class GuoMaiOrderVo {
     private String orderCoupon;
     private Timestamp orderTime;
     private String shipNo;
+    private String serviceName;
     private List<OrderCommodity> commodityList;
 
     private boolean blockFlag;
@@ -190,6 +191,14 @@ public class GuoMaiOrderVo {
 
     public void setBlockFlag(boolean blockFlag) {
         this.blockFlag = blockFlag;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 
     public Timestamp getCreateTime() {
