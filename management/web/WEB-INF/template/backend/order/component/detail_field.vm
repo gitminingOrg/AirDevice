@@ -502,7 +502,7 @@
                             orderStatus: convertOrderStatus("${order.orderStatus}")
             };
 
-            var commodities = document.getElementById('goods-container').getAttribute('data-commodity-number');
+            var commodities = document.getElementById('goods-container').getAttribute('data-Commodity-number');
             var commodityParams = {orderNo: "${order.orderNo}", commodities: []}
             for (var index = 1; index <= commodities; index++) {
                 var commodity = document.getElementById('commodity' + index);
