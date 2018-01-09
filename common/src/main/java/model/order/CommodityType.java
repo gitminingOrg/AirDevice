@@ -12,7 +12,11 @@ public enum CommodityType {
         this.code = code;
     }
 
-    public CommodityType convertToCommodityType(int code) {
+    public int getCode() {
+        return this.code;
+    }
+
+    public static CommodityType convertToCommodityType(int code) {
         CommodityType commodityType = CommodityType.GUOMAI_XINFENG;
         switch (code) {
             case 0: commodityType = CommodityType.GUOMAI_XINFENG; break;
