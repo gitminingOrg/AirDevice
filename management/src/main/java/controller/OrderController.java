@@ -380,8 +380,7 @@ public class OrderController {
         orderService.assign(order);
         UserVo user = (UserVo) subject.getPrincipal();
         OrderMission mission = new OrderMission(orderId, form.getMissionTitle(), form.getMissionContent(),
-                user.getUsername(), form.getMissionChannel(), form.getMissionInstallType(),
-                Timestamp.valueOf(form.getMissionDate()));
+                user.getUsername());
         response = orderService.create(mission);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setResponseCode(ResponseCode.RESPONSE_OK);
@@ -389,25 +388,6 @@ public class OrderController {
         } else {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
             result.setDescription(response.getDescription());
-        }
-        String codeId = "";
-        if (!StringUtils.isEmpty(form.getCodeId())) {
-            codeId = form.getCodeId();
-        }
-        String eventId = ((OrderMission) response.getData()).getMissionId();
-        if (!StringUtils.isEmpty(form.getFilePath())) {
-            String[] filepathList = form.getFilePath().split(";");
-            for (String path : filepathList) {
-                Insight insight = new Insight();
-                insight.setPath(path);
-                insight.setEventId(eventId);
-                insight.setCodeId(codeId);
-                response = qRCodeService.createInsight(insight);
-                if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
-                    result.setResponseCode(response.getResponseCode());
-                    return result;
-                }
-            }
         }
 
         return result;

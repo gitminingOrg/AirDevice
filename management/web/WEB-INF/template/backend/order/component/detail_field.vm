@@ -192,11 +192,7 @@
                                 <label for="mission-name">事件名称</label>
                             </div>
                             <div class="form-input col-md-10">
-                                <select id="mission-name" type="text">
-                                    <option>---请选择事件类型---</option>
-                                    <option value="1">勘测事件</option>
-                                    <option value="2">安装事件</option>
-                                </select>
+                                <input id="mission-name" type="text" />
                             </div>
                         </div>
                         <div class="form-row">
@@ -207,69 +203,69 @@
                                 <textarea id="mission-content" type="text" autocomplete="off"></textarea>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <label id="mission-type" class="form-label col-md-2">勘测日期</label>
-                            <div class="form-input col-md-10">
-                                <input id = "mission-date" type="date"/>
-                            </div>
-                        </div>
-                        <div class="form-row" id="mission-channel-container" style="display: none">
-                            <div class="form-row" style="margin-left: 0px; margin-right: 0px">
-                                <label class="form-label col-md-2">安装服务商</label>
-                                <div class="form-input col-md-10">
-                                    <select id="mission-channel" style="border-radius: 2px">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-left: 0px; margin-right: 0px">
-                                <label class="form-label col-md-2">安装方式</label>
-                                <div class="form-input col-md-10">
-                                    <select id="mission-install-type" style="border-radius: 2px">
-                                        <option>---请选择安装方式---</option>
-                                        <option>墙体安装</option>
-                                        <option>玻璃安装</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-						<div class="form-row">
-                            <div class="form-label col-md-2">
-                                <label for="mission-content" autocomplete="off">二维码</label>
-                            </div>
-                            <div class="form-input col-md-10">
-                                <input id="mission-codeId" type="text" autocomplete="off">
-                            </div>
-						</div>
-                        <div class="form-row">
-                            <div class="form-label col-md-2">
-                                <label>订单状态</label>
-                            </div>
-                            <div class="form-input col-md-10">
-                                <select id="mission-status">
-                                    <option>---订单状态---</option>
-                                    <option value="10">安装完成</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label col-md-2">
-                                <label for="mission-content" autocomplete="off">图片上传</label>
-                            </div>
-                            <div class="weui-cells weui-cells_form" id="uploaderCustom">
-                                <div class="weui-cell">
-                                    <div class="weui-cell__bd">
-                                        <div class="weui-uploader">
-                                            <div class="weui-uploader__bd">
-                                                <ul class="weui-uploader__files" id="uploaderCustomFiles"></ul>
-                                                <div class="weui-uploader__input-box">
-                                                    <input id="uploaderCustomInput" name="photo" class="weui-uploader__input" type="file" accept="image/*" multiple="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+##                        <div class="form-row">
+##                            <label id="mission-type" class="form-label col-md-2">勘测日期</label>
+##                            <div class="form-input col-md-10">
+##                                <input id = "mission-date" type="date"/>
+##                            </div>
+##                        </div>
+##                        <div class="form-row" id="mission-channel-container" style="display: none">
+##                            <div class="form-row" style="margin-left: 0px; margin-right: 0px">
+##                                <label class="form-label col-md-2">安装服务商</label>
+##                                <div class="form-input col-md-10">
+##                                    <select id="mission-channel" style="border-radius: 2px">
+##                                    </select>
+##                                </div>
+##                            </div>
+##                            <div class="form-row" style="margin-left: 0px; margin-right: 0px">
+##                                <label class="form-label col-md-2">安装方式</label>
+##                                <div class="form-input col-md-10">
+##                                    <select id="mission-install-type" style="border-radius: 2px">
+##                                        <option>---请选择安装方式---</option>
+##                                        <option>墙体安装</option>
+##                                        <option>玻璃安装</option>
+##                                    </select>
+##                                </div>
+##                            </div>
+##                        </div>
+##						<div class="form-row">
+##                            <div class="form-label col-md-2">
+##                                <label for="mission-content" autocomplete="off">二维码</label>
+##                            </div>
+##                            <div class="form-input col-md-10">
+##                                <input id="mission-codeId" type="text" autocomplete="off">
+##                            </div>
+##						</div>
+##                        <div class="form-row">
+##                            <div class="form-label col-md-2">
+##                                <label>订单状态</label>
+##                            </div>
+##                            <div class="form-input col-md-10">
+##                                <select id="mission-status">
+##                                    <option>---订单状态---</option>
+##                                    <option value="10">安装完成</option>
+##                                </select>
+##                            </div>
+##                        </div>
+##                        <div class="form-row">
+##                            <div class="form-label col-md-2">
+##                                <label for="mission-content" autocomplete="off">图片上传</label>
+##                            </div>
+##                            <div class="weui-cells weui-cells_form" id="uploaderCustom">
+##                                <div class="weui-cell">
+##                                    <div class="weui-cell__bd">
+##                                        <div class="weui-uploader">
+##                                            <div class="weui-uploader__bd">
+##                                                <ul class="weui-uploader__files" id="uploaderCustomFiles"></ul>
+##                                                <div class="weui-uploader__input-box">
+##                                                    <input id="uploaderCustomInput" name="photo" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+##                                                </div>
+##                                            </div>
+##                                        </div>
+##                                    </div>
+##                                </div>
+##                            </div>
+##                        </div>
                         <div class="form-row">
                             <button class="btn medium bg-blue-alt" id="confirm-event">
                                 <span class="button-content">新增</span>
@@ -294,33 +290,18 @@
 	            				var span = $("<span></span>").text(missions[i].missionRecorder);
 	            				var float_right = $("<div class='glyph-icon icon-separator transparent float-right'></div>")
 	            				var icon_comment = $("<i class='glyph-icon icon-comments'></i>");
-                                var picture_row = $("<div class='content-box-wrapper' style='overflow: hidden;'></div>");
-                                for (var j = 0; j < missions[i].insightList.length; j++) {
-                                    if (j == 0) {
-//                                        picture_row.append($("<div class='row'><h5 class='bg-gray-alt'>相关图片</h5></div>"));
-                                    }
-                                    var picture_single_row = $("<div class='row' style='padding-left: 15px'></div>");
-                                    var picture_url = "${path}" + missions[i].insightList[j].path;
-                                    var img_li = $("<li style='float: left; border: 2px solid #F0F0F0; padding: 2px; margin-right: 6px; position: relative'></li>");
-                                    var img = $("<image src=" + picture_url + " style='height: 80px; width: 80px'></image>")
-                                    img_li.append(img);
-//                                    picture_single_row.append(img_li);
-                                    picture_row.append(img_li);
-                                }
-                                var picture = $("<div class='col-md-2'></div>")
 	            				float_right.append(icon_comment);
 	            				separator.append(comment);
 	            				head.append(separator);
 	            				head.append(span);
 	            				head.append(float_right);
 	            				content_box.append(head);
-	            				var wrapper = $("<div class='content-box-wrapper' style='font-size: 15px; line-height: 1.4'></div>");
+	            				var wrapper = $("<div class='content-box-wrapper' style='font-size: 15px; line-height: 1.4; overflow: hidden'></div>");
 	            				var missionTitle = $("<div class='col-md-2' style='font-weight: bold;'></div>").text(missions[i].missionTitle + ':');
 	            				var missionContent = $("<div class='col-md-10'></div>").text(missions[i].missionContent);
 	            				wrapper.append(missionTitle);
 	            				wrapper.append(missionContent);
 	            				content_box.append(wrapper);
-	            				content_box.append(picture_row);
 	            				row.append(content_box);
 	            				$("#mission-area").append(row);
             				}
@@ -418,47 +399,18 @@
 		
 		$("#confirm-event").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/mission/create";
-			var mission_title = $("#mission-name").find(':selected').val();
+			var mission_title = $("#mission-name").val();
 			var mission_content = $("#mission-content").val();
-			var mission_date = new Date($("#mission-date").val()).toISOString();
-			var mission_channel = $("#mission-channel").find(':selected').val();
-			var codeId = $("#mission-codeId").val();
-			var mission_install_type = $("#mission-install-type").find(':selected').val();
 			var filepath = uploadFilePathList.join(";");
 
 			if (!not_null(mission_title)) {
 			    alert("请选择事件类型!");
 			    return;
             }
-            if (!not_null(mission_date)) {
-			    alert("请正确填写事件时间！");
-			    return;
-            }
 
 			var mission_params = {
-			    missionTitle: mission_title, missionContent: mission_content, missionDate: mission_date,
-                missionChannel: mission_channel, missionInstallType: mission_install_type, codeId: codeId,
-                filePath: filepath
+			    missionTitle: mission_title, missionContent: mission_content,
 			};
-
-			if (mission_title != 2) {
-                delete mission_params.missionChannel;
-                delete mission_params.missionInstallType;
-            } else {
-			    if (!not_null(mission_channel)) {
-                    alert("请正确填写安装服务商！");
-                    return;
-                }
-                if (!not_null(mission_install_type)) {
-                    alert("请正确填写安装方式！");
-                    return;
-                }
-            }
-            mission_params.missionTitle = $("#mission-name").find(':selected').text();
-			if ('missionChannel' in mission_params)
-                mission_params.missionChannel = $("#mission-channel").find(':selected').text();
-            if ('missionInstallType' in mission_params)
-                mission_params.missionInstallType = $("#mission-install-type").find(':selected').text();
 
 			$.post(url, mission_params, function(result) {
                 uploadFilePathList = [];
@@ -580,8 +532,8 @@
         })
     }
 
-    orderChannelReset();
-	mission_channel_reset();
+//    orderChannelReset();
+//	mission_channel_reset();
 
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {
