@@ -192,7 +192,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public ResultData fetchOrderChannel(Map<String, Object> condition) {
 		ResultData result = new ResultData();
-		ResultData response = orderChannelDao.query(condition);
+		ResultData response = orderChannelDao.queryOrderChannel(condition);
 		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
 			return response;
 		} else {
@@ -200,6 +200,25 @@ public class OrderServiceImpl implements OrderService {
 			result.setData(list);
 			return result;
 		}
+	}
+
+    @Override
+    public ResultData modifyOrderChannel(OrderChannel orderChannel) {
+        ResultData result = new ResultData();
+        ResultData response = orderChannelDao.updateOrderChannel(orderChannel);
+        result.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+        	result.setData(response.getData());
+		} else {
+        	result.setDescription(response.getDescription());
+		}
+		return result;
+    }
+
+	@Override
+	public ResultData deleteOrderChannel(String channelId) {
+		ResultData result = orderChannelDao.deleteOrderChannel(channelId);
+		return result;
 	}
 
 	@Override
@@ -221,6 +240,25 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public ResultData create(MissionChannel missionChannel) {
 		return orderChannelDao.insert(missionChannel);
+	}
+
+    @Override
+    public ResultData modifyMissionChannel(MissionChannel missionChannel) {
+        ResultData result = new ResultData();
+        ResultData response = orderChannelDao.updateMissionChannel(missionChannel);
+        result.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+        	result.setData(response.getData());
+		} else {
+        	result.setDescription(response.getDescription());
+		}
+		return result;
+    }
+
+	@Override
+	public ResultData deleteMissionChannel(String channelId) {
+		ResultData result = orderChannelDao.deleteMissionChannel(channelId);
+		return result;
 	}
 
 	@Override

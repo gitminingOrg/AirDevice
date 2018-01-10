@@ -40,11 +40,19 @@ public interface OrderService {
 
 	ResultData fetchOrderChannel(Map<String, Object> condition);
 
+	ResultData modifyOrderChannel(OrderChannel orderChannel);
+
+	ResultData deleteOrderChannel(String channelId);
+
 	ResultData uploadBatch(List<GuoMaiOrder> order);
 
 	ResultData fetchMissionChannel(Map<String, Object> condition);
 
 	ResultData create(MissionChannel missionChannel);
+
+	ResultData modifyMissionChannel(MissionChannel missionChannel);
+
+	ResultData deleteMissionChannel(String channelId);
 
 	ResultData removeCommodity(Map<String, Object> condition);
 }

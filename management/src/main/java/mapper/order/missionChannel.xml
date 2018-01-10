@@ -29,4 +29,20 @@
         </if>
         order by create_time desc
     </select>
+
+    <!--更新mission_channel相关信息-->
+    <update id="update" parameterType="model.order.MissionChannel">
+        update airdevice.mission_channel
+        <set>
+            <if test="channelName != null">
+                channel_name = #{channelName},
+            </if>
+        </set>
+        where channel_id = #{channelId}
+    </update>
+
+    <!--删除mission_channel相关信息-->
+    <delete id="delete" parameterType="String">
+        delete from airdevice.mission_channel where channel_id = #{channelId}
+    </delete>
 </mapper>

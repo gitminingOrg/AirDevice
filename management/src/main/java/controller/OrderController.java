@@ -490,7 +490,7 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/orderchannel/list")
+    @RequestMapping(method = RequestMethod.GET, value = "/orderChannel/list")
     public ResultData OrderChannel() {
         ResultData result = new ResultData();
         Map<String, Object> condition = new HashMap<>();
@@ -507,15 +507,37 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/orderchannel/create")
+    @RequestMapping(method = RequestMethod.POST, value = "/orderChannel/create")
     public ResultData createOrderChannel(OrderChannel orderChannel) {
         ResultData result = new ResultData();
         ResultData response = orderService.create(orderChannel);
+        result.setResponseCode(response.getResponseCode());
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setData(response.getData());
         } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
-            result.setDescription(response.getDescription());
+            result.setDescription("服务器忙，请稍后再试!");
         }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/orderChannel/update")
+    public ResultData updateOrderChannel(OrderChannel orderChannel) {
+        ResultData result = new ResultData();
+        ResultData response = orderService.modifyOrderChannel(orderChannel);
+        result.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setData(response.getData());
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setDescription("服务器忙，请稍后再试!");
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/orderChannel/delete/{channelId}")
+    public ResultData deleteOrderChannel(@PathVariable String channelId) {
+
+        ResultData result = orderService.deleteOrderChannel(channelId);
+        logger.info("delete orderChannel using channelId: " + channelId);
         return result;
     }
 
@@ -581,6 +603,27 @@ public class OrderController {
         } else {
             result.setData(response.getData());
         }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/missionChannel/update")
+    public ResultData updateMissionChannel(MissionChannel missionChannel) {
+        ResultData result = new ResultData();
+        ResultData response = orderService.modifyMissionChannel(missionChannel);
+        result.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setData(response.getData());
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setDescription("服务器忙，请稍后再试!");
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/missionChannel/delete/{channelId}")
+    public ResultData deleteMissionChannel(@PathVariable String channelId) {
+
+        ResultData result = orderService.deleteMissionChannel(channelId);
+        logger.info("delete missionChannel using channelId: " + channelId);
         return result;
     }
 }

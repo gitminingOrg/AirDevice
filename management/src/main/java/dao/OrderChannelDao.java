@@ -12,9 +12,17 @@ import java.util.Map;
 public interface OrderChannelDao {
     ResultData insert(OrderChannel orderChannel);
 
-    ResultData query(Map<String, Object> condition);
+    ResultData queryOrderChannel(Map<String, Object> condition);
+
+    ResultData updateOrderChannel(OrderChannel orderChannel);
+
+    ResultData deleteOrderChannel(String channelId);
 
     ResultData insert(MissionChannel missionChannel);
 
     ResultData queryMissionChannel(Map<String, Object> condition);
+
+    ResultData updateMissionChannel(MissionChannel missionChannel);
+
+    ResultData deleteMissionChannel(String channelId);
 }

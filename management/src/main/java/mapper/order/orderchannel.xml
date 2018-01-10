@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="management.order.channel">
+<mapper namespace="management.order.orderChannel">
     <resultMap id="orderchannelVo" type="vo.order.OrderChannelVo">
         <result property="channelId" column="channel_id" />
         <result property="channelName" column="channel_name" />
@@ -29,4 +29,20 @@
         </if>
         order by create_time desc
     </select>
+
+    <!--更新order_channel相关数据-->
+    <update id="update" parameterType="model.order.OrderChannel">
+        update airdevice.order_channel
+        <set>
+            <if test="channelName != null">
+                channel_name = #{channelName},
+            </if>
+        </set>
+        where channel_id = #{channelId}
+    </update>
+
+    <!--删除order_channel相关数据-->
+    <delete id="delete" parameterType="String">
+        delete from airdevice.order_channel where channel_id = #{channelId}
+    </delete>
 </mapper>

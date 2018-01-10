@@ -29,7 +29,7 @@ public class OrderChannelDaoImpl extends BaseDao implements OrderChannelDao {
         orderChannel.setChannelId(IDGenerator.generate("OC"));
         synchronized (lock) {
             try {
-                sqlSession.insert("management.order.channel.insert", orderChannel);
+                sqlSession.insert("management.order.orderChannel.insert", orderChannel);
                 result.setData(orderChannel);
             } catch (Exception e) {
                 logger.error(e.getMessage());
@@ -41,14 +41,44 @@ public class OrderChannelDaoImpl extends BaseDao implements OrderChannelDao {
     }
 
     @Override
-    public ResultData query(Map<String, Object> condition) {
+    public ResultData queryOrderChannel(Map<String, Object> condition) {
         ResultData result = new ResultData();
         try {
-            List <OrderChannelVo> list = sqlSession.selectList("management.order.channel.query", condition);
+            List <OrderChannelVo> list = sqlSession.selectList("management.order.orderChannel.query", condition);
             if (list.isEmpty()) {
                 result.setResponseCode(ResponseCode.RESPONSE_NULL);
             }
             result.setData(list);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public ResultData updateOrderChannel(OrderChannel orderChannel) {
+        ResultData result = new ResultData();
+        synchronized (lock) {
+            try {
+                sqlSession.update("management.order.orderChannel.update", orderChannel);
+                result.setData(orderChannel);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+                result.setDescription(e.getMessage());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public ResultData deleteOrderChannel(String channelId) {
+        ResultData result = new ResultData();
+        try {
+            sqlSession.delete("management.order.orderChannel.delete", channelId);
+            result.setDescription("已删除相关信息");
         } catch (Exception e) {
             logger.error(e.getMessage());
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -83,6 +113,36 @@ public class OrderChannelDaoImpl extends BaseDao implements OrderChannelDao {
                 result.setResponseCode(ResponseCode.RESPONSE_NULL);
             }
             result.setData(list);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public ResultData updateMissionChannel(MissionChannel missionChannel) {
+        ResultData result = new ResultData();
+        synchronized (lock) {
+            try {
+                sqlSession.update("management.order.missionChannel.update", missionChannel);
+                result.setData(missionChannel);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+                result.setDescription(e.getMessage());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public ResultData deleteMissionChannel(String channelId) {
+        ResultData result = new ResultData();
+        try {
+            sqlSession.delete("management.order.missionChannel.delete", channelId);
+            result.setDescription("已删除相关信息");
         } catch (Exception e) {
             logger.error(e.getMessage());
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
