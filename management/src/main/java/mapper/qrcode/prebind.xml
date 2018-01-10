@@ -59,4 +59,15 @@
 		select * from pre_binding WHERE uid = #{uid}
 	</select>
 
+	<!--删除预绑定，更新idlemachine-->
+	<update id="updateIdleMachine" parameterType="String">
+		update airdevice.idle_machine set block_flag = 0 where uid =
+		(select uid from airdevice.pre_binding where code_id = #{codeId});
+	</update>
+
+	<!--根据qrcode删除相应预绑定-->
+	<delete id="deletePrebind" parameterType="String">
+		delete from airdevice.pre_binding where code_id = #{codeId};
+	</delete>
+
 </mapper>

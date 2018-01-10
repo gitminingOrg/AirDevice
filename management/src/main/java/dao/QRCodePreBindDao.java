@@ -21,4 +21,6 @@ public interface QRCodePreBindDao {
 	ResultData query(Map<String, Object> condition, DataTableParam param);
 
 	ResultData query(Map<String, Object> condition, MobilePageParam param);
+
+	ResultData deletePreBindByQrcode(String codeId);
 }

@@ -534,4 +534,12 @@ public class QRCodeController {
         result.setData(vo);
         return result;
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/prebind/delete/{codeId}")
+    public ResultData deletePrebind(@PathVariable String codeId) {
+
+        ResultData result = qRCodeService.deletePrebindByQrcode(codeId);
+        logger.info("delete prebind using codeId: " + codeId);
+        return result;
+    }
 }

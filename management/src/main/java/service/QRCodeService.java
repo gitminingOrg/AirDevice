@@ -42,4 +42,6 @@ public interface QRCodeService {
 	ResultData createInsight(Insight insight);
 
 	ResultData createInsight(List<Insight> insights);
+
+	ResultData deletePrebindByQrcode(String codeId);
 }

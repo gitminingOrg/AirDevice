@@ -190,7 +190,21 @@ public class QRCodePreBindDaoImpl extends BaseDao implements QRCodePreBindDao{
 		return result;
 	}
 
-	private List<PreBindVO> queryByPage(Map<String, Object> condition, int start, int length) {
+	@Override
+	public ResultData deletePreBindByQrcode(String codeId) {
+		ResultData result = new ResultData();
+		try {
+			sqlSession.update("management.qrcode.prebind.updateIdleMachine", codeId);
+			sqlSession.delete("management.qrcode.prebind.deletePrebind", codeId);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription(e.getMessage());
+		}
+		return result;
+	}
+
+    private List<PreBindVO> queryByPage(Map<String, Object> condition, int start, int length) {
 		List<PreBindVO> list = new ArrayList<>();
 		try {
 			list = sqlSession.selectList("management.qrcode.prebind.query", condition, new RowBounds(start, length));

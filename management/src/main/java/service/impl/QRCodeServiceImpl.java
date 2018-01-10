@@ -303,4 +303,10 @@ public class QRCodeServiceImpl implements QRCodeService {
 
         return result;
     }
+
+    @Override
+    public ResultData deletePrebindByQrcode(String codeId) {
+        ResultData result = qRCodePreBindDao.deletePreBindByQrcode(codeId);
+        return result;
+    }
 }
