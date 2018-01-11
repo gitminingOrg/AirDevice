@@ -149,7 +149,7 @@
 	function channel_reset() {
 		$("#channel_list").empty();
 		$("#channel_list").append($("<option value=''></option>").text("---请选择渠道---"));
-		var channel_url = "${path.concat('/order/orderchannel/list')}";
+		var channel_url = "${path.concat('/order/orderChannel/list')}";
 		$.get(channel_url, function(result) {
 			if(result.responseCode == "RESPONSE_OK") {
 				var data = result.data;
