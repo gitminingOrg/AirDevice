@@ -360,6 +360,13 @@ public class QRCodeController {
         return view;
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/prebind/unbind")
+    public ModelAndView unbindPrebind() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("/backend/qrcode/prebind_del");
+        return view;
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/prebind")
     public ResultData prebind(String uid, String codeId) {
         ResultData result = new ResultData();
@@ -535,11 +542,48 @@ public class QRCodeController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/prebind/delete/{codeId}")
-    public ResultData deletePrebind(@PathVariable String codeId) {
+    @RequestMapping(method = RequestMethod.POST, value = "/prebind/check")
+    public ResultData prebindCheck(String candidate) {
+        ResultData result = new ResultData();
+        if (StringUtils.isEmpty(candidate)) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("请先填写二维码的前三段");
+            return result;
+        }
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("search", new StringBuilder(candidate).append("%").toString());
+        ResultData response = qRCodeService.fetchPreBind(condition);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            result.setResponseCode(ResponseCode.RESPONSE_NULL);
+            result.setDescription("未查询到与" + candidate + "匹配的预绑定记录");
+            return result;
+        }
+        List<PreBindVO> list = (List<PreBindVO>) response.getData();
+        if (list.size() > 1) {
+            result.setResponseCode(ResponseCode.RESPONSE_NULL);
+            result.setDescription("请输入完成的第三段的值");
+            return result;
+        }
+        PreBindVO preBindVO = list.get(0);
+        result.setData(preBindVO);
+        return result;
+    }
 
-        ResultData result = qRCodeService.deletePrebindByQrcode(codeId);
-        logger.info("delete prebind using codeId: " + codeId);
+    @RequestMapping(method = RequestMethod.POST, value = "/prebind/unbind/{codeId}")
+    public ResultData deletePrebind(@PathVariable String codeId) {
+        ResultData result = new ResultData();
+
+        ResultData response = qRCodeService.deletePrebindByQrcode(codeId);
+
+        if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            result.setResponseCode(ResponseCode.RESPONSE_NULL);
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("服务器忙，请稍后再试!");
+        } else {
+            result.setData(response.getData());
+            logger.info("delete prebind using codeId: " + codeId);
+        }
         return result;
     }
 }
