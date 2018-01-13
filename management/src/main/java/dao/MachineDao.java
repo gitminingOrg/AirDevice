@@ -3,6 +3,7 @@ package dao;
 import java.util.Map;
 
 import model.machine.IdleMachine;
+import pagination.DataTableParam;
 import utils.ResultData;
 
 public interface MachineDao {
@@ -16,6 +17,8 @@ public interface MachineDao {
 	ResultData updateIdleMachine(Map<String, Object> condition);
 
 	ResultData queryMachineStatus(Map<String, Object> condition);
+
+	ResultData queryMachineStatus(Map<String, Object> condition, DataTableParam param);
 
 	ResultData query(Map<String, Object> condition);
 

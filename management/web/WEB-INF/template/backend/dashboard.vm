@@ -2,6 +2,7 @@
 <html lang="zh_CN">
 <head>
     #parse("/backend/init/init.vm")
+    #parse("/backend/common/datatable.lib.vm")
     <title>首页</title>
 </head>
 <body class="fixed-sidebar fixed-header" ontouchstart>
@@ -10,6 +11,7 @@
     </div>
     <div id="page-wrapper">
     	#parse("/backend/common/sidebar.vm")
+        #parse("/backend/home/dashboard.vm")
     </div>
 </body>
 <script type="text/javascript"></script>

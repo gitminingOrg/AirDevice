@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import model.machine.IdleMachine;
+import pagination.DataTableParam;
 import utils.ResultData;
 
 public interface MachineService {
@@ -17,6 +18,8 @@ public interface MachineService {
     ResultData updateIdleMachine(Map<String, Object> condition);
 
     ResultData queryMachineStatus(Map<String, Object> condition);
+
+    ResultData queryMachineStatus(Map<String, Object> condition, DataTableParam param);
 
     ResultData queryMachineStata(Map<String, Object> condition);
 

@@ -287,8 +287,8 @@
                 {title: '下单日期', "mRender": function(data, type, full){
                     var orderTime = new Date(full.orderTime);
                     var year = (orderTime.getFullYear()).toString();
-                    var month = ("0" + orderTime.getMonth() + 1).slice(-2).toString();
-                    var day = ("0" + orderTime.getDay()).slice(-2).toString();
+                    var month = ("0" + (orderTime.getMonth() + 1)).slice(-2).toString();
+                    var day = ("0" + orderTime.getDate()).slice(-2).toString();
                     return year + '-' + month + '-' + day;
                 }},
                 {title: "渠道", "mData": "orderChannel"},

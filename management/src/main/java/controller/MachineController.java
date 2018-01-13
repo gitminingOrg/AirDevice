@@ -15,12 +15,15 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import model.machine.IdleMachine;
+import pagination.DataTablePage;
+import pagination.DataTableParam;
 import service.MachineService;
 import service.QRCodeService;
 import utils.HttpDeal;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.machine.IdleMachineVo;
+import vo.machine.MachineStatusVo;
 
 @CrossOrigin
 @RestController
@@ -140,9 +143,18 @@ public class MachineController {
 
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.GET, value = "/device/status")
-	public ResultData status() {
+	public ResultData status(@RequestParam(required = false) String param) {
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
+		if (!StringUtils.isEmpty(param)) {
+			JSONObject paramJsonObject = JSON.parseObject(param);
+			if (!StringUtils.isEmpty(paramJsonObject.get("startDate"))) {
+				condition.put("startTime", paramJsonObject.getString("startDate"));
+			}
+			if (!StringUtils.isEmpty(paramJsonObject.get("endDate"))) {
+				condition.put("endTime", paramJsonObject.getString("endDate"));
+			}
+		}
 		ResultData response = machineService.queryMachineStatus(condition);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
 			result.setResponseCode(ResponseCode.RESPONSE_NULL);
@@ -151,6 +163,20 @@ public class MachineController {
 			result.setDescription("服务器忙，请稍后再试！");
 		} else {
 			result.setData(response.getData());
+		}
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/device/status/table")
+	public DataTablePage<MachineStatusVo> machineStatusByPage(DataTableParam param) {
+		DataTablePage<MachineStatusVo> result = new DataTablePage<>(param);
+		if (StringUtils.isEmpty(param)) {
+			return result;
+		}
+		Map<String, Object> condition = new HashMap<>();
+		ResultData response = machineService.queryMachineStatus(condition, param);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result = (DataTablePage<MachineStatusVo>) response.getData();
 		}
 		return result;
 	}

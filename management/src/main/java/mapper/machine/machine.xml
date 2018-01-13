@@ -39,9 +39,21 @@
         SELECT device_id, chip_id, model_code, model_name, update_time
         from machine_status_view
         WHERE 1 = 1
-        <if test="model_code != null">
-            model_code = #{modelCode}
+        <if test="modelCode != null">
+            and model_code = #{modelCode}
         </if>
+        <if test="startTime != null">
+            AND DATE(update_time) >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[
+                AND DATE(update_time) <= #{endTime}
+            ]]>
+        </if>
+        <if test="search != null">
+            AND (device_id LIKE #{search} or chip_id LIKE #{search})
+        </if>
+        ORDER BY update_time DESC
     </select>
     
     <select id="queryMachineStata" parameterType="java.util.Map" resultMap="machineStataVo">
