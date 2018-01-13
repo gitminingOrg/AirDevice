@@ -216,4 +216,11 @@ public class MachineController {
 		}
 		return result;
 	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/detail/{deviceId}")
+	public ResultData machineDetail(@PathVariable String deviceId) {
+		ResultData result = new ResultData();
+
+		return result;
+	}
 }

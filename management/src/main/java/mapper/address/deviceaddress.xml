@@ -11,13 +11,26 @@
         <result property="address" column="address" />
     </resultMap>
 
-    <select id="selectDeviceAddress" resultMap="DeviceAddress" >
+    <select id="selectDeviceAddress" resultMap="DeviceAddress" parameterType="java.util.Map">
           SELECT device_id,
                  `owner`,
                  phone,
                  city,
                  province,
                  address
-                 from device_address
+          from device_address
+          WHERE  1 = 1
+          <if test="deviceId != null">
+              AND device_id = #{deviceId}
+          </if>
+          <if test="city != null">
+              AND city = #{city}
+          </if>
+          <if test="province != null">
+              AND province = #{province}
+          </if>
+          <if test="search != null">
+              AND address like #{search}
+          </if>
     </select>
 </mapper>

@@ -8,6 +8,7 @@ import service.DeviceAddressService;
 import utils.ResultData;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -17,7 +18,7 @@ public class DeviceAddressServiceImpl implements DeviceAddressService {
     private DeviceAddressDao addressDao;
 
     @Override
-    public ResultData getDeviceAddress() {
-        return addressDao.getDeviceAddress();
+    public ResultData getDeviceAddress(Map<String, Object> condition) {
+        return addressDao.getDeviceAddress(condition);
     }
 }

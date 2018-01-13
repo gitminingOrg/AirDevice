@@ -2,7 +2,9 @@ package service;
 
 import utils.ResultData;
 
+import java.util.Map;
+
 public interface DeviceAddressService {
 
-    ResultData getDeviceAddress();
+    ResultData getDeviceAddress(Map<String, Object> condition);
 }

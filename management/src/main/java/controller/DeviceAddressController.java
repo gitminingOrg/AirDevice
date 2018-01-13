@@ -34,7 +34,7 @@ public class DeviceAddressController {
     @RequestMapping(method = RequestMethod.GET, value = "/all")
     public ResultData getDeviceAddress() {
         ResultData result = new ResultData();
-        ResultData response = deviceAddressService.getDeviceAddress();
+        ResultData response = deviceAddressService.getDeviceAddress(new HashMap<String, Object>());
         if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
             result.setDescription("服务器异常，请稍后尝试");
