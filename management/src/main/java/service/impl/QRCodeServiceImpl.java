@@ -218,14 +218,24 @@ public class QRCodeServiceImpl implements QRCodeService {
     @Override
     public ResultData prebind(PreBindCodeUID pb) {
         ResultData result = new ResultData();
-        ResultData response = qRCodePreBindDao.insert(pb);
-        result.setResponseCode(response.getResponseCode());
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-            result.setData(response.getData());
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("uId", pb.getUid());
+        condition.put("codeId", pb.getCodeId());
+        ResultData rs = qRCodePreBindDao.query(condition);
+        if (rs.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            ResultData response = qRCodePreBindDao.insert(pb);
+            result.setResponseCode(response.getResponseCode());
+            if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                result.setData(response.getData());
+            } else {
+                result.setDescription(response.getDescription());
+            }
+            return result;
         } else {
-            result.setDescription(response.getDescription());
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("该机器已预绑定，无需重复！");
+            return result;
         }
-        return result;
     }
 
     @Override
