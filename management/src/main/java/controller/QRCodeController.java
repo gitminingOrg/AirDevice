@@ -1,5 +1,7 @@
 package controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import form.QRCodeGenerateForm;
 import model.machine.Insight;
 import model.qrcode.PreBindCodeUID;
@@ -391,22 +393,6 @@ public class QRCodeController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/prebind/list")
-    public ResultData preBindList() {
-        ResultData result = new ResultData();
-        Map<String, Object> condition = new HashMap<>();
-        ResultData response = qRCodeService.fetchPreBind(condition);
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-            result.setData(response.getData());
-            return result;
-        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
-            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
-            result.setDescription("服务器异常，请稍后再试");
-            return result;
-        }
-        return result;
-    }
-
     @RequestMapping(method = RequestMethod.POST, value = "/prebind/list")
     public DataTablePage<PreBindVO> getPreBindList(DataTableParam param) {
         DataTablePage<PreBindVO> result = new DataTablePage<>(param);
@@ -422,10 +408,36 @@ public class QRCodeController {
     public MobilePage<PreBindVO> getPreBindList(MobilePageParam param) {
         MobilePage<PreBindVO> result = new MobilePage<>();
         Map<String, Object> condition = new HashMap<>();
-        condition.put("block", 0);
+        condition.put("blockFlag", 0);
         ResultData response = qRCodeService.fetchPreBind(condition, param);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result = (MobilePage<PreBindVO>) response.getData();
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/prebind/list")
+    public ResultData getPreBindList(@RequestParam(required = false) String param) {
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        if (!StringUtils.isEmpty(param)) {
+            JSONObject paramJson = JSON.parseObject(param);
+            if (!StringUtils.isEmpty(paramJson.get("startDate"))) {
+                condition.put("startTime", paramJson.getString("startDate"));
+            }
+            if (!StringUtils.isEmpty(paramJson.get("endDate"))) {
+                condition.put("endTime", paramJson.getString("endDate"));
+            }
+        }
+        condition.put("blockFlag", 0);
+        ResultData response = qRCodeService.fetchPreBind(condition);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            result.setResponseCode(ResponseCode.RESPONSE_NULL);
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("服务器忙，请稍后再试！");
+        } else {
+            result.setData(response.getData());
         }
         return result;
     }

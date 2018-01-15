@@ -35,7 +35,10 @@
             </div>
         </div>
         <div id="page-content">
-            <h4>预绑定预览列表</h4>
+            <div style="display: flex; padding: 0 15 15 15">
+                <h4>预绑定预览列表</h4>
+                <button id="export-csv" class="btn medium bg-blue" style="margin-left: auto;">导出</button>
+            </div>
             <div class="row" style="margin-left: 0px; margin-right: 0px">
                 <div class="col-xs-6">
                     <div class="form-input form-row" style="margin: 0px">
@@ -92,8 +95,8 @@
                             dataType: 'json',
                             success: function (response) {
                                 var data = response.data;
-                                var dataLen = data.length;
-                                if (dataLen > 0) {
+                                if (response.total > 0) {
+                                    var dataLen = data.length;
                                     for (var i = 0; i < dataLen; i++) {
                                         var bindDate = new Date(data[i].createAt);
                                         var year = bindDate.getFullYear();
@@ -170,6 +173,75 @@
         resetStartDate();
         resetEndDate();
     });
+
+    $('#export-csv').on('click', function () {
+        var export_param = {};
+
+        var startDate = $("#startDate").val();
+        if(not_null(startDate)) {
+            export_param.startDate = startDate;
+        }
+        var endDate = $("#endDate").val();
+        if(not_null(endDate)) {
+            export_param.endDate = endDate;
+        }
+        var prebindUrl = "${path.concat("/qrcode/prebind/list")}"
+        $.get(prebindUrl + "?param=" + JSON.stringify(export_param), function (response) {
+            if (response.responseCode === 'RESPONSE_OK') {
+                var args, headers, keys, filename;
+                keys = ['codeId', 'uid', 'createAt'];
+                header = ['codeId', 'uid', 'date'];
+                args = {keys: keys, header: header, data: response.data};
+                var csv = convertDataToCSV(args);
+                if (csv == null) return;
+
+                filename = 'export.csv';
+                if (!csv.match(/^data:text\/csv/i)) {
+                    csv = 'data:text/csv;charset=utf-8,' + csv;
+                }
+                data = encodeURI(csv);
+
+                link = document.createElement('a');
+                link.setAttribute('href', data);
+                link.setAttribute('download', filename);
+                link.click();
+            }
+        })
+    });
+
+    function convertDataToCSV(args) {
+        var result, columnDelimiter, lineDelimiter, data, header ,ctr, keys;
+        header = args.header;
+        keys = args.keys;
+        data = args.data || null;
+        if (data == null || !data.length) {
+            return null;
+        }
+
+        columnDelimiter = args.columnDelimiter || ',';
+        lineDelimiter = args.lineDelimiter || '\n';
+
+        result = '';
+        result += header.join(columnDelimiter);
+        result += lineDelimiter;
+
+        data.forEach(function (item) {
+            ctr = 0;
+            keys.forEach(function (key) {
+                if (ctr > 0) result += columnDelimiter;
+                if  (key == 'createAt') {
+                    result += formatDate(new Date(item[key]));
+                } else if (key == 'uid') {
+                    result += ('`' +  item[key]);
+                } else {
+                    result+=item[key];
+                }
+                ctr++;
+            })
+            result += lineDelimiter;
+        })
+        return result;
+    }
 
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {
