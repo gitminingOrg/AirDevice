@@ -17,11 +17,13 @@ import com.alibaba.fastjson.JSONObject;
 import model.machine.IdleMachine;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
+import service.DeviceAddressService;
 import service.MachineService;
 import service.QRCodeService;
 import utils.HttpDeal;
 import utils.ResponseCode;
 import utils.ResultData;
+import vo.address.DeviceAddressVO;
 import vo.machine.IdleMachineVo;
 import vo.machine.MachineStatusVo;
 
@@ -37,6 +39,9 @@ public class MachineController {
 
 	@Autowired
 	private QRCodeService qRCodeService;
+
+	@Autowired
+	private DeviceAddressService deviceAddressService;
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/device/delete/{deviceId}")
 	public ResultData delete(@PathVariable String deviceId) {
@@ -217,10 +222,40 @@ public class MachineController {
 		return result;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/detail/{deviceId}")
-	public ResultData machineDetail(@PathVariable String deviceId) {
+	@RequestMapping(method = RequestMethod.GET, value = "/detail")
+	public ResultData machineDetail(@RequestParam String deviceId, @RequestParam String uid) {
 		ResultData result = new ResultData();
-
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("deviceId", deviceId);
+		ResultData response = deviceAddressService.getDeviceAddress(condition);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription("服务器忙，请稍后再试");
+		} else if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+			result.setResponseCode(ResponseCode.RESPONSE_NULL);
+		} else {
+			JSONObject jsonObject = JSON.parseObject(((List<DeviceAddressVO>) response.getData()).get(0).toString());
+			String url = "http://commander.gmair.net/AirCleanerOperation/device/status/device?token=" + uid;
+			String machineStatus = HttpDeal.getResponse(url);
+			JSONObject machineStatusObject = JSON.parseObject(machineStatus);
+			JSONObject machineData = new JSONObject();
+			machineData.put("deviceInfo", jsonObject);
+			if (machineStatusObject.getString("status").equals("1")
+					&& !StringUtils.isEmpty(machineStatusObject.get("contents")))
+			{
+				if (!StringUtils.isEmpty(machineStatusObject.getJSONObject("contents").get("status"))) {
+					machineData.put("deviceStatus", machineStatusObject.getJSONObject("contents").get("status"));
+				}
+			}
+			result.setData(machineData);
+		}
 		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/device")
+	public ModelAndView machineView() {
+		ModelAndView machineView = new ModelAndView();
+		machineView.setViewName("/backend/machine/machine_detail");
+		return machineView;
 	}
 }

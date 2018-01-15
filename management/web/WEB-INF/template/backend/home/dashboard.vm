@@ -228,7 +228,8 @@
                 }},
                 {title: "详情", "mRender": function (data, type, full) {
                     var node = "";
-                    var edit = "<a href='" + "${path.concat('/machine/detail/')}" + full.deviceId + "'class='btn small bg-blue-alt tooltip-button' data-placement='top' ><i class='glyph-icon icon-arrow-right'></i></a>";
+                    var edit = "<a href='" + "${path.concat('/machine/device/?deviceId=')}" +full.deviceId + "&uid=" + full.chipId
+                            + "'class='btn small bg-blue-alt tooltip-button' data-placement='top' ><i class='glyph-icon icon-arrow-right'></i></a>";
                     node += edit;
                     return node;
                 }}

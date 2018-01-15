@@ -35,9 +35,97 @@
             </div>
         </div>
         <div id="page-content">
-
+            <h4>机器信息</h4>
+            <div style="margin-left: 20px; margin-top: 20px; font-size: 15px">
+                <div class="row form-row" >
+                    <div class="col-md-2">
+                        <label class="form-label">机器二维码：</label>
+                    </div>
+                    <div class="col-md-10">
+                        <label class="form-label" id="deviceId"></label>
+                    </div>
+                </div>
+                <div class="row form-row" >
+                    <div class="col-md-2">
+                        <label class="form-label">用户姓名：</label>
+                    </div>
+                    <div class="col-md-10">
+                        <label class="form-label" id="consumer-name"></label>
+                    </div>
+                </div>
+                <div class="row form-row">
+                    <div class="col-md-2">
+                        <label class="form-label">用户地址：</label>
+                    </div>
+                    <div class="col-md-10">
+                        <label class="form-label" id="consumer-address"></label>
+                    </div>
+                </div>
+                <div class="row form-row">
+                    <div class="col-md-2">
+                        <label class="form-label">各项指标：</label>
+                    </div>
+                    <div class="col-md-10">
+                        <table id="machine-status" class="table" style="text-align: center"></table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <script>
+    var current_url = new URL(window.location.href.toString());
+    var device_id = current_url.searchParams.get("deviceId");
+    var uid = current_url.searchParams.get("uid");
+
+    function initMachineInfo() {
+        var url = "${path.concat("/machine/detail?deviceId=")}" + device_id + "&uid=" + uid;
+        $.get(url, function (response) {
+            if (response.responseCode === 'RESPONSE_OK') {
+                var data = response.data;
+                var deviceInfo = data.deviceInfo;
+                var deviceStatus = data.deviceStatus;
+
+                $("#deviceId").html(device_id);
+                $("#consumer-name").html(deviceInfo.owner + "(" + deviceInfo.phone + ")");
+                $("#consumer-address").html(deviceInfo.province + " " + deviceInfo.city + " " + deviceInfo.address);
+                var thead = $("<thead><td>电源</td><td>模式</td><td>循环</td><td>辅热</td>" +
+                        "<td>杀菌</td><td>pm25</td><td>风量</td><td>亮度</td><td>温度</td><td>湿度</td></thead>");
+                thead.css("background","#e4e9f0");
+                var tbody = $("<tbody></tbody>");
+                var tr = ''
+                if ("deviceStatus" in data) {
+                    var power = deviceStatus.power == '0' ? "关" : "开";
+                    var workMode = '';
+                    if (deviceStatus.workMode == 0) {
+                        workMode = "自动模式";
+                    } else if (deviceStatus.workMode == 1) {
+                        workMode = "手动模式";
+                    } else {
+                        workMode = "睡眠模式";
+                    }
+                    var cycle = deviceStatus.cycle == '0' ? '内循环': '外循环';
+                    var heat = deviceStatus.heat == '0' ? '关闭': '开启';
+                    var uv = deviceStatus.uv == '0' ? '关闭': '开启';
+                    var pm25 = deviceStatus.pm25;
+                    var velocity = deviceStatus.velocity;
+                    var light = deviceStatus.light;
+                    var temperature = deviceStatus.temperature;
+                    var humidity = deviceStatus.humidity;
+                    tr = $("<tr><td>" + power + " </td><td>" + workMode + "</td><td>" + cycle + "</td><td>" + heat + "</td>" +
+                            "<td>" + uv + "</td><td>" + pm25 + " </td><td>" + velocity + "</td><td>" + light +
+                            "</td><td>" + temperature + "</td><td>" + humidity + "</td></tr>");
+                    tbody.append(tr);
+                } else {
+                    tr = $("<tr><td colspan='10'>机器离线</td></tr>");
+
+                    tbody.append(tr);
+                }
+                $("#machine-status").append(thead);
+                $("#machine-status").append(tbody);
+            }
+        });
+    }
+
+    initMachineInfo();
 </script>
