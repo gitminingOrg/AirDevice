@@ -4,10 +4,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
+import form.MachineMissionForm;
+import model.order.MachineMission;
+import model.order.MachineMissionStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,6 +22,7 @@ import model.machine.IdleMachine;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
 import service.DeviceAddressService;
+import service.MachineMissionService;
 import service.MachineService;
 import service.QRCodeService;
 import utils.HttpDeal;
@@ -26,6 +31,8 @@ import utils.ResultData;
 import vo.address.DeviceAddressVO;
 import vo.machine.IdleMachineVo;
 import vo.machine.MachineStatusVo;
+
+import javax.validation.Valid;
 
 @CrossOrigin
 @RestController
@@ -42,6 +49,9 @@ public class MachineController {
 
 	@Autowired
 	private DeviceAddressService deviceAddressService;
+
+	@Autowired
+	private MachineMissionService machineMissionService;
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/device/delete/{deviceId}")
 	public ResultData delete(@PathVariable String deviceId) {
@@ -257,5 +267,42 @@ public class MachineController {
 		ModelAndView machineView = new ModelAndView();
 		machineView.setViewName("/backend/machine/machine_detail");
 		return machineView;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/mission/list")
+	public ResultData machineMissionlist() {
+		ResultData result = new ResultData();
+		Map<String, Object> condition = new HashMap<>();
+		condition.put("blockFlag", false);
+		ResultData response = machineMissionService.fetch(condition);
+		result.setResponseCode(response.getResponseCode());
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setData(response.getData());
+		} else {
+			result.setDescription(response.getDescription());
+		}
+		return result;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/mission/create")
+	public ResultData createMachineMission(@Valid MachineMissionForm form, BindingResult br) {
+		ResultData result = new ResultData();
+		if (br.hasErrors()) {
+			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+			result.setDescription("表单中含有非法数据");
+			logger.error(JSON.toJSONString(br.getAllErrors()));
+			return result;
+		}
+		MachineMission machineMission =
+				new MachineMission(form.getOrderId(), form.getDeviceId(), form.getMissionTitle(), form.getMissionContent(),
+						form.getMissionRecorder(), MachineMissionStatus.convertToMissionStatus(form.getMachineStatus()));
+		ResultData response = machineMissionService.create(machineMission);
+		result.setResponseCode(response.getResponseCode());
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setData(response.getData());
+		} else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+			result.setDescription(response.getDescription());
+		}
+		return result;
 	}
 }

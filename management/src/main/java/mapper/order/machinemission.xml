@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.order.machineMission">
+    <resultMap id="machineMissionVo" type="vo.order.MachineMissionVo">
+        <result property="mmId" column="mmid" />
+        <result property="orderId" column="order_id" />
+        <result property="deviceId" column="device_id" />
+        <result property="missionTitle" column="mission_title" />
+        <result property="missionContent" column="mission_content" />
+        <result property="missionRecorder" column="machine_recorder" />
+        <result property="machineMissionStatus" column="machine_status" typeHandler="handler.MachineMissionStatusHandler" />
+        <result property="blockFlag" column="block_flag" />
+        <result property="createTime" column="create_time" />
+    </resultMap>
+
+    <select id="query" parameterType="java.util.Map" resultMap="machineMissionVo">
+        select mmid, order_id, device_id, mission_title, mission_content, machine_recorder, machine_status, block_flag, create_time
+        from airdevice.machine_mission
+        where 1 = 1
+        <if test="mmId != null">
+            and mmid = #{mmId}
+        </if>
+        <if test="orderId != null">
+            and order_id = #{orderId}
+        </if>
+        <if test="deviceId != null">
+            and device_id = #{deviceId}
+        </if>
+        <if test="missionTitle != null">
+            and mission_title = #{missionTitle}
+        </if>
+        <if test="missionContent != null">
+            and mission_content = #{missionContent}
+        </if>
+        <if test="missionRecorder != null">
+            and machine_recorder = #{missionRecorder}
+        </if>
+        <if test="machineMissionStatus != null">
+            and machine_status = #{machineMissionStatus}
+        </if>
+        <if test="blockFlag != null">
+            and block_flag = #{blockFlag}
+        </if>
+        <if test="createTime != null">
+            and create_time = #{createTime}
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="model.order.MachineMission" useGeneratedKeys="false">
+        insert into machine_mission(mmid, order_id, device_id, mission_title, mission_content, machine_recorder, machine_status, block_flag, create_time)
+        values
+        (#{mmId}, #{orderId}, #{deviceId}, #{missionTitle}, #{missionContent}, #{missionRecorder}, #{machineMissionStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{blockFlag}, #{createAt})
+    </insert>
+</mapper>
