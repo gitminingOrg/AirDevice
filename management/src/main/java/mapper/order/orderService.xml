@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.orderService">
+
+    <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="false">
+        insert into
+        order_service
+        (
+            os_id, order_id, service_id, block_flag, create_time
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.osId}, #{item.orderId}, #{item.serviceId}, #{item.blockFlag}, #{item.createAt})
+        </foreach>
+    </insert>
+
+    <insert id="insert" parameterType="model.order.OrderService">
+        insert into order_service
+    </insert>
+</mapper>
