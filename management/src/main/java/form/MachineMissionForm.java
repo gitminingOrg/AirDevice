@@ -4,7 +4,6 @@ package form;
  * Created by XXH on 2018/1/17.
  */
 public class MachineMissionForm {
-    private String mmId;
     private String orderId;
     private String deviceId;
     private String missionTitle;
@@ -12,13 +11,6 @@ public class MachineMissionForm {
     private String missionRecorder;
     private int machineStatus;
 
-    public String getMmId() {
-        return mmId;
-    }
-
-    public void setMmId(String mmId) {
-        this.mmId = mmId;
-    }
 
     public String getOrderId() {
         return orderId;
