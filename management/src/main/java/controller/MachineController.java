@@ -4,9 +4,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
-import form.MachineMissionForm;
-import model.order.MachineMission;
-import model.order.MachineMissionStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +47,6 @@ public class MachineController {
 	@Autowired
 	private DeviceAddressService deviceAddressService;
 
-	@Autowired
-	private MachineMissionService machineMissionService;
-	
 	@RequestMapping(method = RequestMethod.POST, value = "/device/delete/{deviceId}")
 	public ResultData delete(@PathVariable String deviceId) {
 
@@ -269,40 +263,4 @@ public class MachineController {
 		return machineView;
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/mission/list")
-	public ResultData machineMissionlist() {
-		ResultData result = new ResultData();
-		Map<String, Object> condition = new HashMap<>();
-		condition.put("blockFlag", false);
-		ResultData response = machineMissionService.fetch(condition);
-		result.setResponseCode(response.getResponseCode());
-		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-			result.setData(response.getData());
-		} else {
-			result.setDescription(response.getDescription());
-		}
-		return result;
-	}
-
-	@RequestMapping(method = RequestMethod.POST, value = "/mission/create")
-	public ResultData createMachineMission(@Valid MachineMissionForm form, BindingResult br) {
-		ResultData result = new ResultData();
-		if (br.hasErrors()) {
-			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
-			result.setDescription("表单中含有非法数据");
-			logger.error(JSON.toJSONString(br.getAllErrors()));
-			return result;
-		}
-		MachineMission machineMission =
-				new MachineMission(form.getOrderId(), form.getDeviceId(), form.getMissionTitle(), form.getMissionContent(),
-						form.getMissionRecorder(), MachineMissionStatus.convertToMissionStatus(form.getMachineStatus()));
-		ResultData response = machineMissionService.create(machineMission);
-		result.setResponseCode(response.getResponseCode());
-		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-			result.setData(response.getData());
-		} else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
-			result.setDescription(response.getDescription());
-		}
-		return result;
-	}
 }

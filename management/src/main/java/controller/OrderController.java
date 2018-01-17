@@ -3,10 +3,7 @@ package controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.csvreader.CsvReader;
-import form.OrderCommodityForm;
-import form.OrderCommodityWrapper;
-import form.OrderCreateForm;
-import form.OrderMissionForm;
+import form.*;
 import model.machine.Insight;
 import model.order.*;
 import org.apache.shiro.SecurityUtils;
@@ -22,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
+import service.MachineMissionService;
 import service.OrderService;
 import service.QRCodeService;
 import utils.ResponseCode;
@@ -54,6 +52,9 @@ public class OrderController {
 
     @Autowired
     private QRCodeService qRCodeService;
+
+    @Autowired
+    private MachineMissionService machineMissionService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/overview")
     public ModelAndView overview() {
@@ -604,6 +605,43 @@ public class OrderController {
 
         ResultData result = orderService.deleteMissionChannel(channelId);
         logger.info("delete missionChannel using channelId: " + channelId);
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/machinemission/list")
+    public ResultData machineMissionlist() {
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("blockFlag", false);
+        ResultData response = machineMissionService.fetch(condition);
+        result.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setData(response.getData());
+        } else {
+            result.setDescription(response.getDescription());
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/machinemission/create")
+    public ResultData createMachineMission(@Valid MachineMissionForm form, BindingResult br) {
+        ResultData result = new ResultData();
+        if (br.hasErrors()) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("表单中含有非法数据");
+            logger.error(JSON.toJSONString(br.getAllErrors()));
+            return result;
+        }
+        MachineMission machineMission =
+                new MachineMission(form.getOrderId(), form.getDeviceId(), form.getMissionTitle(), form.getMissionContent(),
+                        form.getMissionRecorder(), MachineMissionStatus.convertToMissionStatus(form.getMachineStatus()));
+        ResultData response = machineMissionService.create(machineMission);
+        result.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setData(response.getData());
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setDescription(response.getDescription());
+        }
         return result;
     }
 }
