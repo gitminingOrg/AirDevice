@@ -34,7 +34,7 @@ public class MachineDaoImpl extends BaseDao implements MachineDao {
         ResultData result = new ResultData();
         try {
             sqlSession.delete("management.machine.deleteDevice", deviceId);
-            sqlSession.delete("management.machine.releaseQrcode", deviceId);
+            sqlSession.update("management.machine.releaseQrcode", deviceId);
         } catch (Exception e) {
             logger.error(e.getMessage());
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
