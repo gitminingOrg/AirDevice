@@ -8,7 +8,6 @@
         <result property="orderStatus" column="order_status" typeHandler="handler.OrderStatusHandler"/>
         <result property="description" column="description" />
         <result property="buyerName" column="buyer_name" />
-        <result property="buyerAccount" column="buyer_account" />
         <result property="receiverName" column="receiver_name" />
         <result property="receiverPhone" column="receiver_phone" />
         <result property="orderPrice" column="order_price" />
@@ -21,7 +20,6 @@
         <result property="orderCoupon" column="order_coupon" />
         <result property="orderTime" column="order_time" />
         <result property="shipNo" column="ship_no" />
-        <result property="serviceName" column="service_name" />
         <result property="createTime" column="create_time" />
         <collection property="commodityList" column="orderId = order_no" select="ordercommodityquery"/>
     </resultMap>
@@ -31,7 +29,6 @@
         <result property="orderId" column="order_id" />
         <result property="commodityType" column="commodity_type" />
         <result property="commodityName" column="commodity_name" />
-        <result property="commodityPrice" column="commodity_price" />
         <result property="commodityQuantity" column="commodity_quantity" />
         <result property="commodityQrcode" column="commodity_qrcode" />
         <result property="blockFlag" column="block_flag"/>
@@ -41,14 +38,14 @@
     <insert id="insertBatch" parameterType="java.util.List">
         INSERT INTO guomai_order
         (
-          order_id, order_no, buyer_name, buyer_account, order_price, receiver_name, receiver_phone,
-          province, city, district, receiver_address, order_coupon, ship_no, order_time, order_status,
-          order_channel, order_diversion, description, block_flag, create_time
+            order_id, order_no, buyer_name, order_price, receiver_name, receiver_phone,
+            receiver_province, receiver_city, receiver_district, receiver_address, coupon_no, ship_no, order_time, order_status,
+            channel_id, diversion_id, description, block_flag, create_time
         )
          VALUES
         <foreach collection="list" item="item" index="index" separator=",">
          (
-            #{item.orderId}, #{item.orderNo}, #{item.buyerName}, #{item.buyerAccount}, #{item.orderPrice},
+            #{item.orderId}, #{item.orderNo}, #{item.buyerAccount}, #{item.orderPrice},
             #{item.receiverName}, #{item.receiverPhone}, #{item.province}, #{item.city}, #{item.district},
             #{item.receiverAddress}, #{item.orderCoupon}, #{item.shipNo}, #{item.orderTime},
             #{item.orderStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
@@ -60,13 +57,13 @@
     <insert id="insert" parameterType="model.order.GuoMaiOrder">
         INSERT INTO guomai_order
         (
-        order_id, order_no, buyer_name, buyer_account, order_price, receiver_name, receiver_phone,
-        province, city, district, receiver_address, order_coupon, ship_no, order_time, order_status,
-        order_channel, order_diversion, description, block_flag, create_time
+        order_id, order_no, buyer_name, order_price, receiver_name, receiver_phone,
+        receiver_province, receiver_city, receiver_district, receiver_address, coupon_no, ship_no, order_time, order_status,
+        channel_id, diversion_id, description, block_flag, create_time
         )
         VALUES
        (
-        #{orderId}, #{orderNo}, #{buyerName}, #{buyerAccount}, #{orderPrice}, #{receiverName},
+        #{orderId}, #{orderNo}, #{buyerName}, #{orderPrice}, #{receiverName},
         #{receiverPhone}, #{province}, #{city}, #{district}, #{receiverAddress}, #{orderCoupon},
         #{shipNo}, #{orderTime}, #{orderStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
         #{orderChannel}, #{orderDiversion}, #{description}, #{blockFlag}, #{createAt}
@@ -75,15 +72,14 @@
 
     <select id="ordercommodityquery" resultMap="orderCommodityVo">
         select
-            commodity_id, order_id, commodity_type, commodity_name, commodity_price,
-            commodity_quantity, commodity_qrcode, block_flag, create_time
-        from order_commodity WHERE order_id = #{orderId} AND block_flag = 0
+            commodity_id, order_id, commodity_type, commodity_name,
+            commodity_quantity, block_flag, create_time
+        from order_item_view WHERE order_id = #{orderId} AND block_flag = 0
     </select>
 
     <select id="query" resultMap="guomaiOrderVo" parameterType="java.util.Map">
         select
-        order_id, order_no, order_status, description, buyer_name,
-        buyer_account, receiver_name, receiver_phone, order_price,
+        order_id, order_no, order_status, description, buyer_name, receiver_name, receiver_phone, order_price,
         province, city, district, receiver_address, order_channel, order_diversion,
         order_coupon, order_time, ship_no, service_name, create_time
         from guomai_order_view
@@ -133,9 +129,6 @@
             <if test="buyerName != null">
                 buyer_name = #{buyerName},
             </if>
-            <if test="buyerAccount != null">
-                buyer_account = #{buyerAccount},
-            </if>
             <if test="receiverName != null">
                 receiver_name = #{receiverName},
             </if>
@@ -146,13 +139,13 @@
                 order_price = #{orderPrice},
             </if>
             <if test="province != null">
-                province = #{province},
+                receiver_province = #{province},
             </if>
             <if test="city != null">
-                city = #{city},
+                receiver_city = #{city},
             </if>
             <if test="district != null">
-                district = #{district},
+                receiver_district = #{district},
             </if>
             <if test="receiverAddress != null">
                 receiver_address = #{receiverAddress},
@@ -161,10 +154,10 @@
                 order_channel = #{orderChannel},
             </if>
             <if test="orderDiversion != null">
-                order_diversion = #{orderDiversion},
+                diversion_id = #{orderDiversion},
             </if>
             <if test="orderCoupon != null">
-                order_coupon = #{orderCoupon},
+                coupon_no = #{orderCoupon},
             </if>
             <if test="orderTime != null">
                 order_time = #{orderTime},

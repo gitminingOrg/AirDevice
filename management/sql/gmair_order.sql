@@ -204,12 +204,14 @@ from machine_item
 CREATE view order_item_view
 AS
 SELECT
-order_item.order_item_id,
-order_item.order_id,
-order_commodity.com_type,
-order_commodity.com_name,
-order_item.order_item_quantity,
-order_item.order_item_status
+order_item.order_item_id as commodity_id,
+order_item.order_id as order_id,
+order_commodity.com_type as commodity_type,
+order_commodity.com_name as commodity_name,
+order_item.order_item_quantity as commodity_quantity,
+order_item.order_item_status as commodity_status,
+order_item.block_flag as block_flag,
+order_item.create_time as create_time
 from order_item LEFT JOIN order_commodity ON order_item.com_id = order_commodity.com_id
 
 CREATE view guomai_order_view
