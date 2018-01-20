@@ -183,8 +183,18 @@
                     <div class="col-md-10">
                         <div id="goodsContainer" data-commodityNum=1>
                             <div id="goods1" class="form-row" style="margin-left: 0px; margin-right: 0px">
-                                <div class="form-input col-md-8" style="padding-left: 0px">
-                                    <input id="goods-name1" type="text" placeholder="请输入商品名称"/>
+                                <div class="form-input col-md-3" style="padding-left: 0px">
+                                    <select id="goods-type1" onchange="typeChange(this.id)">
+                                        <option>---请选择商品种类---</option>
+                                        <option value="GUOMAI_XINFENG">果麦新风机</option>
+                                        <option value="GUOMAI_SCREEN">果麦滤网</option>
+                                        <option value="GUOMAI_OTHER">其他商品</option>
+                                    </select>
+                                </div>
+                                <div class="form-input col-md-5" style="padding-left: 0px">
+                                    <select id="goods-name1">
+                                        <option>---请选择具体商品---</option>
+                                    </select>
                                 </div>
                                 <label for="order-goods" class="form-label col-md-1">数量</label>
                                 <div class="form-input col-md-2" style="padding-right: 0px">
@@ -196,51 +206,6 @@
                         <button id="goodsAdd" class="btn medium bg-blue" style="float: right; margin-top: 10px;">添加商品</button>
                     </div>
                 </div>
-
-##            	<hr />
-##                <div class="form-row">
-##                    <label for="status" class="form-label col-md-2">订单状态</label>
-##                    <div class="form-input col-md-10">
-##                        <select id="orderStatus" type="text">
-##                            <option>---请选择订单状态---</option>
-##                            <option value="0">未付款</option>
-##                            <option value="1">已付款</option>
-##                            <option value="2">已发货</option>
-##                            <option value="3">已签收</option>
-##                            <option value="5">订单完成</option>
-##                            <option value="8">已退货</option>
-##                        </select>
-##                    </div>
-##                </div>
-##                <div class="form-row">
-##                    <label for="installMission" class="form-label col-md-2">安装状态</label>
-##                    <div class="form-input col-md-4">
-##                        <select id="installMission" type="text">
-##                            <option>---请选择安装状态---</option>
-##                            <option value="1">未勘测</option>
-##                            <option value="2">已勘测</option>
-##                            <option value="3">待安装</option>
-##                            <option value="4">已安装</option>
-##                        </select>
-##                    </div>
-##                    <div class="form-input col-md-6">
-##                        <div class="form-row">
-##                            <label id="missionType" class="form-label col-md-4">预计安装时间</label>
-##                            <div class="form-input col-md-8">
-##                                <input id = "missionDate" type="date" id="installDate"/>
-##                            </div>
-##                        </div>
-##                        <div class="form-row" id="missionTypeContainer" style="display: none">
-##                            <label id="missionType" class="form-label col-md-4">安装服务商</label>
-##                            <div class="form-input col-md-8">
-##                                <select id="missionChannel">
-##                                </select>
-##                            </div>
-##                        </div>
-##                    </div>
-##                </div>
-##                <hr />
-
                 <hr />
             	<div class="form-row">
             		<button id="confirm-add" class="btn medium bg-blue" title="填写产品编号">
@@ -252,6 +217,42 @@
 	</div>
 </div>
 <script>
+
+    var commodities = {};
+    var commodityTypeMap = {
+        GUOMAI_OTHER: {name: '其他商品', value: 2},
+        GUOMAI_SCREEN: {name: '滤网', value: 1},
+        GUOMAI_XINFENG: {name: '果麦新风机', value: 0}
+    };
+    function createTypeSelect() {
+        var typeSelect = document.createElement('select');
+        var defaultOption = document.createElement('option');
+        defaultOption.setAttribute('value', '');
+        defaultOption.innerHTML = '---请选择商品种类---';
+        typeSelect.append(defaultOption);
+        for (type in commodityTypeMap) {
+            var option = document.createElement('option');
+            option.innerHTML = commodityTypeMap[type].name;
+            option.setAttribute('value', type);
+            typeSelect.append(option);
+        }
+        return typeSelect;
+    }
+
+    function initCommodityList() {
+        var url = "${path.concat("/commodity/list")}"
+        $.get(url, function (response) {
+            if (response.responseCode == 'RESPONSE_OK') {
+                var data = response.data;
+                for (var i = 0; i < data.length; i++) {
+                    commodities = response.data;
+                }
+            }
+        })
+    }
+
+    initCommodityList();
+
 	$(document).ready(function() {
 		$("#confirm-add").click(function() {
 			var order_no = $("#order-number").val();
@@ -310,12 +311,17 @@
 		    for (var i = 0; i <= commodityCount; i++) {
                 var goods = document.getElementById('goods' + i);
                 if (not_null(goods)) {
-                    var goods_name = document.getElementById('goods-name' + i).value;
+                    var goods_type = $('#goods-type' + i).find(":selected").val();
+                    var goods_name = $('#goods-name' + i).find(":selected").val();
                     if (!not_null(goods_name)) {
                         alert("请正确填写商品名称！");
                     }
+                    if (!not_null(goods_type)) {
+                        alert("请正确填写商品类型！");
+                    }
                     var goods_number = document.getElementById('goods-number' + i).value;
-                    commodityParams.commodities.push({commodityName: goods_name, commodityQuantity: goods_number})
+                    commodityParams.commodities.push(
+                        {commodityName: goods_name, commodityQuantity: goods_number, commodityType: commodityTypeMap[goods_type].value})
                 }
             }
             $.ajax({
@@ -346,15 +352,26 @@
         divRow.style = 'margin-left: 0px; margin-right: 0px';
         divRow.setAttribute('id', 'goods' + index);
 
-        //col-md-8
+        //col-md-3
+        var goodsTypeDiv = document.createElement('div');
+        goodsTypeDiv.className = 'form-input col-md-3';
+        goodsTypeDiv.style = 'padding-left: 0px';
+        var goodsTypeSelect = createTypeSelect();
+        goodsTypeSelect.setAttribute('id', 'goods-type' + index);
+        goodsTypeSelect.addEventListener('change', function() {typeChange('goods-type' + index)}, false);
+        goodsTypeDiv.appendChild(goodsTypeSelect);
+
+        //col-md-5
         var goodsDiv = document.createElement('div');
-        goodsDiv.className = 'form-input col-md-8';
+        goodsDiv.className = 'form-input col-md-5';
         goodsDiv.style = 'padding-left: 0px';
-        var goodsInput = document.createElement('input');
-        goodsInput.setAttribute('id', 'goods-name' + index);
-        goodsInput.setAttribute('type', 'text');
-        goodsInput.setAttribute('placeholder', '请输入商品名称');
-        goodsDiv.appendChild(goodsInput);
+        var goodsSelect = document.createElement('select');
+        var defaultOption = document.createElement('option');
+        defaultOption.setAttribute('value', '');
+        defaultOption.innerHTML = '---请选择具体商品---';
+        goodsSelect.appendChild(defaultOption);
+        goodsSelect.setAttribute('id', 'goods-name' + index);
+        goodsDiv.appendChild(goodsSelect);
 
         //col-md-1
         var label = document.createElement('label');
@@ -383,6 +400,7 @@
         });
 
         //add these into div row
+        divRow.appendChild(goodsTypeDiv);
         divRow.appendChild(goodsDiv);
         divRow.appendChild(label);
         divRow.appendChild(numDiv);
@@ -405,32 +423,19 @@
         });
     });
 
-    $("#installMission").on('change', function () {
-         var installMission = document.getElementById('installMission');
-         var mission = installMission.value;
-         var missionTypeLabel = document.getElementById('missionType');
-         var missionTypeContainer = document.getElementById("missionTypeContainer");
-         switch (mission) {
-             case '1':
-                 missionTypeLabel.innerHTML = '预计勘测时间';
-                 missionTypeContainer.style = 'display: none';
-                 break;
-             case '2':
-                 missionTypeLabel.innerHTML = '预计安装时间';
-                 missionTypeContainer.style = 'display: none';
-                 break;
-             case '3':
-                 missionTypeLabel.innerHTML = '预计安装时间';
-                 missionTypeContainer.style = 'display: block';
-                 break;
-             case '4':
-                 missionTypeLabel.innerHTML = '安装时间';
-                 missionTypeContainer.style = 'display: block';
-                 break;
-             default:
-                 break;
-         }
-    });
+    function typeChange(goods_type_id) {
+        var goods_type = $('#' + goods_type_id).find(":selected").val();
+        var goods_name_id = goods_type_id.replace('goods-type', 'goods-name');
+        $('#' + goods_name_id).empty();
+        var defaultOption = $('<option></option>').val("").text('---请选择具体商品---');
+        $('#' + goods_name_id).append(defaultOption);
+        for (var i = 0; i < commodities.length; i++) {
+            if (goods_type == commodities[i].type) {
+                var option = $('<option></option>').val(commodities[i].commodityName).text(commodities[i].commodityName);
+                $('#' + goods_name_id).append(option);
+            }
+        }
+    }
 
     function order_channel_reset() {
         $("#order_channel_list").empty();
@@ -448,23 +453,6 @@
         })
     };
 
-    function mission_channel_reset() {
-        $("#missionChannel").empty();
-        $("#missionChannel").append($("<option value=''></option>").text("---请选择安装商---"));
-        var channel_url = "${path.concat('/order/missionChannel/list')}";
-        $.get(channel_url, function(result) {
-            if(result.responseCode == "RESPONSE_OK") {
-                var data = result.data;
-                for(index in data) {
-                    var item = $("<option></option>").text(data[index].channelName);
-                    item.attr("value", data[index].channelName);
-                    $("#missionChannel").append(item);
-                }
-            }
-        })
-    };
-
-    mission_channel_reset();
     order_channel_reset();
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {

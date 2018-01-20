@@ -171,3 +171,69 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+ALTER TABLE `guomai_order`
+ADD COLUMN `order_price`  decimal(10,2) NULL AFTER `coupon_no`;
+
+ALTER TABLE `guomai_order`
+ADD COLUMN `ship_no`  varchar(45) NULL AFTER `coupon_no`;
+
+ALTER TABLE `guomai_order`
+ADD COLUMN `order_time`  datetime NULL AFTER `receiver_address`;
+
+ALTER TABLE `guomai_order`
+ADD COLUMN `description`  varchar(255) NULL AFTER `create_time`;
+
+create view order_item_machine_view
+as
+SELECT
+order_item.order_id,
+machine_item.machine_item_id,
+machine_item.order_item_id,
+setup_provider.provider_name,
+machine_item.machine_code,
+machine_item.machine_status,
+machine_item.block_flag,
+machine_item.create_time
+from machine_item
+	LEFT JOIN setup_provider on machine_item.provider_id = setup_provider.provider_id
+	LEFT JOIN order_item on machine_item.order_item_id = order_item.order_item_id
+
+
+CREATE view order_item_view
+AS
+SELECT
+order_item.order_item_id,
+order_item.order_id,
+order_commodity.com_type,
+order_commodity.com_name,
+order_item.order_item_quantity,
+order_item.order_item_status
+from order_item LEFT JOIN order_commodity ON order_item.com_id = order_commodity.com_id
+
+CREATE view guomai_order_view
+as
+SELECT
+	guomai_order.order_id as order_id,
+	guomai_order.order_no as order_no,
+	guomai_order.buyer_name as buyer_name,
+	guomai_order.order_price as order_price,
+	guomai_order.receiver_name as receiver_name,
+	guomai_order.receiver_province as province,
+	guomai_order.receiver_city as city,
+	guomai_order.receiver_district as district,
+	guomai_order.receiver_phone as receiver_phone,
+	guomai_order.receiver_address as receiver_address,
+	guomai_order.coupon_no as order_coupon,
+	guomai_order.ship_no as ship_no,
+	guomai_order.order_time as order_time,
+	guomai_order.order_status as order_status,
+	order_channel.channel_name as order_channel,
+	order_diversion.diversion_name as order_diversion,
+	guomai_order.description as description,
+	guomai_order.create_time,
+	guomai_order.block_flag
+FROM
+	guomai_order LEFT JOIN order_channel ON guomai_order.channel_id = order_channel.channel_id
+	LEFT JOIN order_diversion on guomai_order.diversion_id = order_diversion.diversion_id
