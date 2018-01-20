@@ -2,70 +2,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="management.order.machineMission">
     <resultMap id="machineMissionVo" type="vo.order.MachineMissionVo">
-        <result property="mmId" column="mmid" />
-        <result property="orderId" column="order_id" />
-        <result property="deviceId" column="device_id" />
+        <result property="missionId" column="mission_id" />
+        <result property="machineId" column="machine_item_id" />
         <result property="missionTitle" column="mission_title" />
         <result property="missionContent" column="mission_content" />
         <result property="missionRecorder" column="machine_recorder" />
-        <result property="machineMissionStatus" column="machine_status" typeHandler="handler.MachineMissionStatusHandler" />
         <result property="machineDate" column="mission_date" />
-        <result property="missionChannel" column="mission_channel" />
         <result property="blockFlag" column="block_flag" />
         <result property="createTime" column="create_time" />
     </resultMap>
 
     <select id="query" parameterType="java.util.Map" resultMap="machineMissionVo">
-        select mmid, order_id, device_id, mission_title, mission_content, machine_recorder,
-        install_type, mission_date, mission_channel, machine_status, block_flag, create_time
-        from airdevice.machine_mission
+        select mission_id, machine_item_id, mission_title, mission_content, machine_recorder,
+        mission_date, block_flag, create_time
+        from gmair_order.machine_mission
         where 1 = 1
-        <if test="mmId != null">
-            and mmid = #{mmId}
+        <if test="missionId != null">
+            and mission_id = #{missionId}
         </if>
-        <if test="orderId != null">
-            and order_id = #{orderId}
-        </if>
-        <if test="deviceId != null">
-            and device_id = #{deviceId}
+        <if test="machineId != null">
+            and machine_item_id = #{machineId}
         </if>
         <if test="missionTitle != null">
             and mission_title = #{missionTitle}
         </if>
-        <if test="missionContent != null">
-            and mission_content = #{missionContent}
-        </if>
         <if test="missionRecorder != null">
             and machine_recorder = #{missionRecorder}
-        </if>
-        <if test="machineMissionStatus != null">
-            and machine_status = #{machineMissionStatus}
-        </if>
-        <if test="installType != null">
-            AND install_type = #{installType}
-        </if>
-        <if test="machineChannel != null">
-            AND machine_channel = #{machineChannel}
         </if>
         <if test="blockFlag != null">
             and block_flag = #{blockFlag}
         </if>
         <if test="startTime != null">
-            and create_time >= #{startTime}
+            and mission_date >= #{startTime}
         </if>
         <if test="endTime != null">
             <![CDATA[
-              AND create_time <= #{endTime}
+              AND mission_date <= #{endTime}
             ]]>
         </if>
     </select>
 
     <insert id="insert" parameterType="model.order.MachineMission" useGeneratedKeys="false">
-        insert into machine_mission(mmid, order_id, device_id, mission_title, mission_content, machine_recorder,
-        mission_channel, mission_date, install_type, machine_status, block_flag, create_time)
+        insert into gmair_order.machine_mission(mission_id, machine_id, mission_title, mission_content,
+        machine_recorder, mission_date, block_flag, create_time)
         values
-        (#{mmId}, #{orderId}, #{deviceId}, #{missionTitle}, #{missionContent}, #{missionRecorder},
-         #{missionChannel}, #{missionDate}, #{installType},
-        #{machineMissionStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{blockFlag}, #{createAt})
+        (#{missionId}, #{machineId}, #{missionTitle}, #{missionContent}, #{missionRecorder},
+         #{missionDate}, #{installType}, #{blockFlag}, #{createAt})
     </insert>
 </mapper>

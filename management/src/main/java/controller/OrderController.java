@@ -630,20 +630,19 @@ public class OrderController {
             logger.error(JSON.toJSONString(br.getAllErrors()));
             return result;
         }
-        MachineMission machineMission =
-                new MachineMission(form.getOrderId(), form.getDeviceId(), form.getMissionTitle(), form.getMissionContent(),
-                        Timestamp.valueOf(form.getMissionDate()), form.getInstallType(),
-                        form.getMissionChannel(), MachineMissionStatus.convertToMissionStatus(form.getMachineStatus()));
+
         Subject subject = SecurityUtils.getSubject();
         UserVo userVo = (UserVo) subject.getPrincipal();
-        machineMission.setMissionRecorder(userVo.getUsername());
+        MachineMission machineMission =
+                new MachineMission(form.getMachineId(), form.getMissionTitle(), form.getMissionContent(),
+                        userVo.getUsername(), Timestamp.valueOf(form.getMissionDate()));
         ResultData response = machineMissionService.create(machineMission);
         result.setResponseCode(response.getResponseCode());
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setData(response.getData());
             MachineMission mission = (MachineMission) response.getData();
-            String codeId = mission.getDeviceId();
-            String missionId = mission.getMmId();
+            String codeId = mission.getMachineId();
+            String missionId = mission.getMissionId();
             JSONArray filepathList = JSON.parseArray(form.getFilePathList());
             for (Object filepath: filepathList) {
                 Insight insight = new Insight();
