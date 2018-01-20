@@ -4,6 +4,7 @@ import dao.BaseDao;
 import dao.SalesChannelDao;
 import model.order.SetupProvider;
 import model.order.OrderChannel;
+import mybatis.DataSourceContextHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -29,6 +30,7 @@ public class OrderChannelDaoImpl extends BaseDao implements SalesChannelDao {
         channel.setChannelId(IDGenerator.generate("OCL"));
         synchronized (lock) {
             try {
+                DataSourceContextHolder.setDbType("event");
                 sqlSession.insert("management.order.channel.insert", channel);
                 result.setData(new OrderChannelVo(channel));
             } catch (Exception e) {
@@ -44,6 +46,7 @@ public class OrderChannelDaoImpl extends BaseDao implements SalesChannelDao {
     public ResultData query(Map<String, Object> condition) {
         ResultData result = new ResultData();
         try {
+            DataSourceContextHolder.setDbType("event");
             List <OrderChannelVo> list = sqlSession.selectList("management.order.channel.query", condition);
             if (list.isEmpty()) {
                 result.setResponseCode(ResponseCode.RESPONSE_NULL);
@@ -62,6 +65,7 @@ public class OrderChannelDaoImpl extends BaseDao implements SalesChannelDao {
         ResultData result = new ResultData();
         synchronized (lock) {
             try {
+                DataSourceContextHolder.setDbType("event");
                 sqlSession.update("management.order.channel.update", channel);
                 result.setData(channel);
             } catch (Exception e) {
@@ -77,8 +81,9 @@ public class OrderChannelDaoImpl extends BaseDao implements SalesChannelDao {
     public ResultData delete(String channelId) {
         ResultData result = new ResultData();
         try {
+            DataSourceContextHolder.setDbType("event");
             sqlSession.delete("management.order.channel.delete", channelId);
-            result.setDescription("已删除相关信息");
+            //result.setDescription("已删除相关信息");
         } catch (Exception e) {
             logger.error(e.getMessage());
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
