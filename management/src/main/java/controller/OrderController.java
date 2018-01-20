@@ -35,10 +35,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -544,7 +540,7 @@ public class OrderController {
             GuoMaiOrder item = new GuoMaiOrder(list.get(i));
             order.add(item);
         }
-        ResultData response = orderService.uploadBatch(order);
+        ResultData response = orderService.upload(order);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             logger.info("上传订单记录成功");
         } else {
@@ -572,7 +568,7 @@ public class OrderController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/missionChannel/create")
-    public ResultData create(MissionChannel missionChannel) {
+    public ResultData create(SetupProvider missionChannel) {
         ResultData result = new ResultData();
         ResultData response = orderService.create(missionChannel);
         if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
@@ -587,7 +583,7 @@ public class OrderController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/missionChannel/update")
-    public ResultData updateMissionChannel(MissionChannel missionChannel) {
+    public ResultData updateMissionChannel(SetupProvider missionChannel) {
         ResultData result = new ResultData();
         ResultData response = orderService.modifyMissionChannel(missionChannel);
         result.setResponseCode(response.getResponseCode());

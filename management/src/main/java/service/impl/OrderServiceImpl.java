@@ -3,16 +3,13 @@ package service.impl;
 import java.util.List;
 import java.util.Map;
 
-import dao.OrderBatchDao;
-import dao.OrderChannelDao;
+import dao.*;
 import model.order.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dao.OrderDao;
-import dao.OrderMissionDao;
 import pagination.DataTableParam;
 import service.OrderService;
 import utils.ResponseCode;
@@ -31,21 +28,25 @@ public class OrderServiceImpl implements OrderService {
 	private OrderMissionDao orderMissionDao;
 
 	@Autowired
-	private OrderChannelDao orderChannelDao;
+	private SalesChannelDao salesChannelDao;
 
 	@Autowired
 	private OrderBatchDao orderBatchDao;
 
+	@Autowired
+	private SetupProviderDao setupProviderDao;
+
 	@Override
 	public ResultData upload(List<GuoMaiOrder> order) {
 		ResultData result = new ResultData();
-		ResultData response = orderDao.insert(order);
+		ResultData response = orderBatchDao.insert(order);
 		result.setResponseCode(response.getResponseCode());
 		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
 			result.setDescription(response.getDescription());
 		}
 		return result;
 	}
+
 
 	@Override
 	public ResultData uploadCommodity(List<OrderCommodity> commodityList) {
@@ -179,7 +180,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResultData create(OrderChannel orderChannel) {
         ResultData result = new ResultData();
-        ResultData response = orderChannelDao.insert(orderChannel);
+        ResultData response = salesChannelDao.insert(orderChannel);
         result.setResponseCode(response.getResponseCode());
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
         	result.setData(response.getData());
@@ -192,7 +193,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public ResultData fetchOrderChannel(Map<String, Object> condition) {
 		ResultData result = new ResultData();
-		ResultData response = orderChannelDao.queryOrderChannel(condition);
+		ResultData response = salesChannelDao.query(condition);
 		if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
 			return response;
 		} else {
@@ -205,7 +206,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResultData modifyOrderChannel(OrderChannel orderChannel) {
         ResultData result = new ResultData();
-        ResultData response = orderChannelDao.updateOrderChannel(orderChannel);
+        ResultData response = salesChannelDao.update(orderChannel);
         result.setResponseCode(response.getResponseCode());
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
         	result.setData(response.getData());
@@ -217,35 +218,24 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public ResultData deleteOrderChannel(String channelId) {
-		ResultData result = orderChannelDao.deleteOrderChannel(channelId);
-		return result;
-	}
-
-	@Override
-	public ResultData uploadBatch(List<GuoMaiOrder> order) {
-		ResultData result = new ResultData();
-		ResultData response = orderBatchDao.insert(order);
-		result.setResponseCode(response.getResponseCode());
-		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
-			result.setDescription(response.getDescription());
-		}
+		ResultData result = salesChannelDao.delete(channelId);
 		return result;
 	}
 
 	@Override
 	public ResultData fetchMissionChannel(Map<String, Object> condition) {
-		return orderChannelDao.queryMissionChannel(condition);
+		return salesChannelDao.query(condition);
 	}
 
 	@Override
-	public ResultData create(MissionChannel missionChannel) {
-		return orderChannelDao.insert(missionChannel);
+	public ResultData create(SetupProvider provider) {
+		return setupProviderDao.insert(provider);
 	}
 
     @Override
-    public ResultData modifyMissionChannel(MissionChannel missionChannel) {
+    public ResultData modifyMissionChannel(SetupProvider provider) {
         ResultData result = new ResultData();
-        ResultData response = orderChannelDao.updateMissionChannel(missionChannel);
+        ResultData response = setupProviderDao.update(provider);
         result.setResponseCode(response.getResponseCode());
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
         	result.setData(response.getData());
@@ -257,7 +247,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public ResultData deleteMissionChannel(String channelId) {
-		ResultData result = orderChannelDao.deleteMissionChannel(channelId);
+		ResultData result = salesChannelDao.delete(channelId);
 		return result;
 	}
 

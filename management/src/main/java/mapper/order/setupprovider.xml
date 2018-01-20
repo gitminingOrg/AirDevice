@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.setup.provider">
+
+    <resultMap id="providerVo" type="vo.order.SetupProviderVo">
+        <result property="providerId" column="provider_id" />
+        <result property="providerName" column="provider_name" />
+        <result property="blockFlag" column="block_flag" />
+        <result property="createAt" column="create_time" />
+    </resultMap>
+
+    <insert id="insert" parameterType="model.order.SetupProvider" useGeneratedKeys="false">
+        insert into gmair_order.setup_provider (provider_id, provider_name, block_flag, create_time)
+        values (#{providerId}, #{providerName}, #{blockFlag}, #{createAt})
+    </insert>
+
+    <select id="query" parameterType="java.util.Map" resultMap="providerVo">
+        select provider_id, provider_name, block_flag, create_time
+        from gmair_order.setup_provider
+        where 1 = 1
+        <if test="providerId != null">
+            and provider_id = #{providerId}
+        </if>
+        <if test="channelName != null">
+            and provider_name = #{providerName}
+        </if>
+        <if test="blockFlag != null">
+            and block_flag = #{blockFlag}
+        </if>
+        order by create_time desc
+    </select>
+
+    <!--更新mission_channel相关信息-->
+    <update id="update" parameterType="model.order.SetupProvider">
+        update gmair_order.setup_provider
+        <set>
+            <if test="providerName != null">
+                provider_name = #{providerName},
+            </if>
+        </set>
+        where provider_id = #{providerId}
+    </update>
+
+    <!--删除mission_channel相关信息-->
+    <delete id="delete" parameterType="String">
+        UPDATE gmair_order.setup_provider
+        SET block_flag = TRUE
+        where provider_id = #{providerId}
+    </delete>
+</mapper>

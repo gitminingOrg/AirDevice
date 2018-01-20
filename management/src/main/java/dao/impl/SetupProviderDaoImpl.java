@@ -1,9 +1,8 @@
 package dao.impl;
 
 import dao.BaseDao;
-import dao.SalesChannelDao;
+import dao.SetupProviderDao;
 import model.order.SetupProvider;
-import model.order.OrderChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -11,26 +10,24 @@ import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.order.SetupProviderVo;
-import vo.order.OrderChannelVo;
 
 import java.util.List;
 import java.util.Map;
 
-
 @Repository
-public class OrderChannelDaoImpl extends BaseDao implements SalesChannelDao {
-    private Logger logger = LoggerFactory.getLogger(OrderChannelDaoImpl.class);
+public class SetupProviderDaoImpl extends BaseDao implements SetupProviderDao {
+    private Logger logger = LoggerFactory.getLogger(SetupProviderDaoImpl.class);
 
-    private final Object lock = new Object();
+    private Object lock = new Object();
 
     @Override
-    public ResultData insert(OrderChannel channel) {
+    public ResultData insert(SetupProvider provider) {
         ResultData result = new ResultData();
-        channel.setChannelId(IDGenerator.generate("OCL"));
+        provider.setProviderId(IDGenerator.generate("SPR"));
         synchronized (lock) {
             try {
-                sqlSession.insert("management.order.channel.insert", channel);
-                result.setData(new OrderChannelVo(channel));
+                sqlSession.insert("management.setup.provider.insert", provider);
+                result.setData(new SetupProviderVo(provider));
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -44,7 +41,7 @@ public class OrderChannelDaoImpl extends BaseDao implements SalesChannelDao {
     public ResultData query(Map<String, Object> condition) {
         ResultData result = new ResultData();
         try {
-            List <OrderChannelVo> list = sqlSession.selectList("management.order.channel.query", condition);
+            List<SetupProviderVo> list = sqlSession.selectList("management.setup.provider.query", condition);
             if (list.isEmpty()) {
                 result.setResponseCode(ResponseCode.RESPONSE_NULL);
             }
@@ -58,12 +55,12 @@ public class OrderChannelDaoImpl extends BaseDao implements SalesChannelDao {
     }
 
     @Override
-    public ResultData update(OrderChannel channel) {
+    public ResultData update(SetupProvider provider) {
         ResultData result = new ResultData();
         synchronized (lock) {
             try {
-                sqlSession.update("management.order.channel.update", channel);
-                result.setData(channel);
+                sqlSession.update("management.setup.provider.update", provider);
+                result.setData(new SetupProviderVo(provider));
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -74,10 +71,10 @@ public class OrderChannelDaoImpl extends BaseDao implements SalesChannelDao {
     }
 
     @Override
-    public ResultData delete(String channelId) {
+    public ResultData delete(String providerId) {
         ResultData result = new ResultData();
         try {
-            sqlSession.delete("management.order.channel.delete", channelId);
+            sqlSession.delete("management.setup.provider.delete", providerId);
             result.setDescription("已删除相关信息");
         } catch (Exception e) {
             logger.error(e.getMessage());

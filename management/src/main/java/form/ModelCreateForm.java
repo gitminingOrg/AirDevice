@@ -1,70 +1,71 @@
 package form;
 
-import com.sun.istack.internal.NotNull;
+
+import javax.validation.constraints.NotNull;
 
 public class ModelCreateForm {
-	@NotNull
-	private String goodsId;
-	
-	@NotNull
-	private String modelCode;
-	
-	@NotNull
-	private String modelName;
-	
-	@NotNull
-	private boolean advanced;
-	
-	private String description;
-	
-	@NotNull
-	private String param;
+    @NotNull
+    private String goodsId;
 
-	public String getGoodsId() {
-		return goodsId;
-	}
+    @NotNull
+    private String modelCode;
 
-	public void setGoodsId(String goodsId) {
-		this.goodsId = goodsId;
-	}
+    @NotNull
+    private String modelName;
 
-	public String getModelCode() {
-		return modelCode;
-	}
+    @NotNull
+    private boolean advanced;
 
-	public void setModelCode(String modelCode) {
-		this.modelCode = modelCode;
-	}
+    private String description;
 
-	public String getModelName() {
-		return modelName;
-	}
+    @NotNull
+    private String param;
 
-	public void setModelName(String modelName) {
-		this.modelName = modelName;
-	}
-	
-	public boolean isAdvanced() {
-		return advanced;
-	}
+    public String getGoodsId() {
+        return goodsId;
+    }
 
-	public void setAdvanced(boolean advanced) {
-		this.advanced = advanced;
-	}
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
 
-	public String getParam() {
-		return param;
-	}
+    public String getModelCode() {
+        return modelCode;
+    }
 
-	public void setParam(String param) {
-		this.param = param;
-	}
+    public void setModelCode(String modelCode) {
+        this.modelCode = modelCode;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getModelName() {
+        return modelName;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public boolean isAdvanced() {
+        return advanced;
+    }
+
+    public void setAdvanced(boolean advanced) {
+        this.advanced = advanced;
+    }
+
+    public String getParam() {
+        return param;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

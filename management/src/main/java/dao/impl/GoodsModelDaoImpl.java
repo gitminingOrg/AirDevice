@@ -1,25 +1,20 @@
 package dao.impl;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.locks.Lock;
-
-import org.apache.ibatis.type.Alias;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import dao.BaseDao;
 import dao.GoodsModelDao;
 import model.goods.GoodsModel;
 import model.goods.ModelComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.goods.GoodsModelVo;
 import vo.goods.ModelDetailVo;
+
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class GoodsModelDaoImpl extends BaseDao implements GoodsModelDao {
