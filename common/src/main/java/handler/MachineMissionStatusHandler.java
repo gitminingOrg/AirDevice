@@ -35,7 +35,7 @@ public class MachineMissionStatusHandler extends BaseTypeHandler<MachineMissionS
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, MachineMissionStatus status, JdbcType jdbcType)
             throws SQLException {
-        ps.setInt(i, status.getCodeId());
+        ps.setInt(i, status.getCode());
     }
 
     @Override
@@ -70,7 +70,7 @@ public class MachineMissionStatusHandler extends BaseTypeHandler<MachineMissionS
 
     private MachineMissionStatus locateEnumStatus(int code) {
         for (MachineMissionStatus status : enums) {
-            if (status.getCodeId() == (Integer.valueOf(code))) {
+            if (status.getCode() == (Integer.valueOf(code))) {
                 return status;
             }
         }
