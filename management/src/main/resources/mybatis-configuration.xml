@@ -39,5 +39,6 @@
 		<mapper resource="mapper/machine/everydayrecord.xml" />
 		<mapper resource="mapper/guomai/Commodity.xml" />
 		<mapper resource="mapper/order/machinemission.xml" />
+		<mapper resource="mapper/order/machineitem.xml" />
 	</mappers>
 </configuration>

@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 public class InsightVo {
     private String insightId;
 
-    private String codeId;
+    private String machineId;
 
     private String path;
 
@@ -22,12 +22,12 @@ public class InsightVo {
         this.insightId = insightId;
     }
 
-    public String getCodeId() {
-        return codeId;
+    public String getMachineId() {
+        return machineId;
     }
 
-    public void setCodeId(String codeId) {
-        this.codeId = codeId;
+    public void setMachineId(String machineId) {
+        this.machineId = machineId;
     }
 
     public String getPath() {

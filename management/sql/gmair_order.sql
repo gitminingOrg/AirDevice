@@ -262,3 +262,17 @@ machine_item.create_time
 from machine_item
 	LEFT JOIN setup_provider on machine_item.provider_id = setup_provider.provider_id
 	LEFT JOIN order_item on machine_item.order_item_id = order_item.order_item_id
+
+CREATE TABLE `machine_insight` (
+`insight_id`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`event_id`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`machine_id`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`path`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`block_flag`  tinyint(11) NOT NULL ,
+`create_time`  datetime NOT NULL ,
+PRIMARY KEY (`insight_id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+ROW_FORMAT=COMPACT
+;

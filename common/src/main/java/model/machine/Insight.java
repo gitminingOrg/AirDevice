@@ -8,19 +8,19 @@ import model.Entity;
 public class Insight extends Entity {
     private String insightId;
 
-    private String codeId;
+    private String machineId;
 
     private String eventId;
 
-    private String path;
+        private String path;
 
     public Insight() {
         super();
     }
 
-    public Insight(String codeId, String path) {
+    public Insight(String machineId, String path) {
         this();
-        this.codeId = codeId;
+        this.machineId = machineId;
         this.path = path;
     }
 
@@ -37,12 +37,12 @@ public class Insight extends Entity {
         this.insightId = insightId;
     }
 
-    public String getCodeId() {
-        return codeId;
+    public String getMachineId() {
+        return machineId;
     }
 
-    public void setCodeId(String codeId) {
-        this.codeId = codeId;
+    public void setMachineId(String machineId) {
+        this.machineId = machineId;
     }
 
     public String getEventId() {
