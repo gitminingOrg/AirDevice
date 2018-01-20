@@ -138,10 +138,12 @@
             $("#startDate").empty();
             $("#startDate").append($("<option value=''></option>").text("---开始日期---"));
 
-            var monthBefore = new Date();
-            monthBefore.setMonth(monthBefore.getMonth() - 1);
+            var startDate = new Date();
+            startDate.setFullYear(2017);
+            startDate.setMonth(9);
+            startDate.setDate(1);
 
-            for (var date = new Date(); date > monthBefore;) {
+            for (var date = new Date(); date >= startDate;) {
                 var dateFormat = formatDate(date);
                 var item = $("<option></option>").text(dateFormat);
                 item.attr("value", dateFormat);
@@ -156,11 +158,12 @@
             $("#endDate").empty();
             $("#endDate").append($("<option value=''></option>").text("---结束日期---"));
 
-            var today = new Date();
-            var monthBefore = new Date();
-            monthBefore.setMonth(monthBefore.getMonth() - 1);
+            var endDate = new Date();
+            endDate.setFullYear(2017);
+            endDate.setMonth(9);
+            endDate.setDate(1);
 
-            for (var date = today; date > monthBefore;) {
+            for (var date = new Date(); date >= endDate;) {
                 var dateFormat = formatDate(date);
                 var item = $("<option></option>").text(dateFormat);
                 item.attr("value", dateFormat);
