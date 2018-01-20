@@ -13,8 +13,11 @@ public class MachineMissionVo {
     private String deviceId;
     private String missionTitle;
     private String missionContent;
+    private String installType;
     private String missionRecorder;
     private MachineMissionStatus machineMissionStatus;
+    private Timestamp missionDate;
+    private String missionChannel;
     private boolean blockFlag;
     private Timestamp createTime;
 
@@ -59,6 +62,14 @@ public class MachineMissionVo {
         this.missionContent = missionContent;
     }
 
+    public String getInstallType() {
+        return installType;
+    }
+
+    public void setInstallType(String installType) {
+        this.installType = installType;
+    }
+
     public String getMissionRecorder() {
         return missionRecorder;
     }
@@ -89,5 +100,21 @@ public class MachineMissionVo {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+
+    public Timestamp getMissionDate() {
+        return missionDate;
+    }
+
+    public void setMissionDate(Timestamp missionDate) {
+        this.missionDate = missionDate;
+    }
+
+    public String getMissionChannel() {
+        return missionChannel;
+    }
+
+    public void setMissionChannel(String missionChannel) {
+        this.missionChannel = missionChannel;
     }
 }

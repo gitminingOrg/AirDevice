@@ -2,6 +2,8 @@ package model.order;
 
 import model.Entity;
 
+import java.sql.Timestamp;
+
 /**
  * Created by XXH on 2018/1/17.
  */
@@ -13,6 +15,9 @@ public class MachineMission extends Entity{
     private String missionTitle;
     private String missionContent;
     private String missionRecorder;
+    private Timestamp missionDate;
+    private String installType;
+    private String missionChannel;
     private MachineMissionStatus machineMissionStatus;
 
     public String getMmId() {
@@ -63,6 +68,14 @@ public class MachineMission extends Entity{
         this.missionRecorder = missionRecorder;
     }
 
+    public String getInstallType() {
+        return installType;
+    }
+
+    public void setInstallType(String installType) {
+        this.installType = installType;
+    }
+
     public MachineMissionStatus getMachineMissionStatus() {
         return machineMissionStatus;
     }
@@ -71,13 +84,32 @@ public class MachineMission extends Entity{
         this.machineMissionStatus = machineMissionStatus;
     }
 
+    public Timestamp getMissionDate() {
+        return missionDate;
+    }
+
+    public void setMissionDate(Timestamp missionDate) {
+        this.missionDate = missionDate;
+    }
+
+    public String getMissionChannel() {
+        return missionChannel;
+    }
+
+    public void setMissionChannel(String missionChannel) {
+        this.missionChannel = missionChannel;
+    }
+
     public MachineMission(String orderId, String deviceId, String missionTitle, String missionContent,
-                          String missionRecorder, MachineMissionStatus machineMissionStatus) {
+                          Timestamp missionDate, String installType, String missionChannel,
+                          MachineMissionStatus machineMissionStatus) {
         this.orderId = orderId;
         this.deviceId = deviceId;
         this.missionTitle = missionTitle;
         this.missionContent = missionContent;
-        this.missionRecorder = missionRecorder;
+        this.missionDate = missionDate;
+        this.installType = installType;
+        this.missionChannel = missionChannel;
         this.machineMissionStatus = machineMissionStatus;
     }
 }

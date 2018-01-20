@@ -1,6 +1,7 @@
 package controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.csvreader.CsvReader;
 import form.*;
@@ -25,6 +26,7 @@ import service.QRCodeService;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.order.GuoMaiOrderVo;
+import vo.order.MachineMissionVo;
 import vo.order.OrderVo;
 import vo.user.UserVo;
 
@@ -348,7 +350,6 @@ public class OrderController {
         return result;
     }
 
-
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/mission/create")
     public ResultData missionCreate(@Valid OrderMissionForm form, BindingResult br,
@@ -416,8 +417,6 @@ public class OrderController {
         orderService.assign(order);
         return result;
     }
-
-
 
     @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/cancel")
     public ResultData cancel(@PathVariable("orderId") String orderId) {
@@ -608,19 +607,22 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/machinemission/list")
-    public ResultData machineMissionlist() {
-        ResultData result = new ResultData();
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("blockFlag", false);
-        ResultData response = machineMissionService.fetch(condition);
-        result.setResponseCode(response.getResponseCode());
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-            result.setData(response.getData());
-        } else {
-            result.setDescription(response.getDescription());
-        }
-        return result;
+    @RequestMapping(method = RequestMethod.GET, value = "/{orderId}/{deviceId}")
+    public ModelAndView machineMissionlist(@PathVariable String orderId, @PathVariable String deviceId) {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("/backend/order/orderMachine");
+        Map<String, Object> missionCondition = new HashMap<>();
+        Map<String, Object> orderCondition = new HashMap<>();
+        missionCondition.put("blockFlag", false);
+        missionCondition.put("deviceId", deviceId);
+        ResultData response = machineMissionService.fetch(missionCondition);
+        view.addObject("machineMission", ((List<MachineMissionVo>) response.getData()).get(0));
+
+        orderCondition.put("blockFlag", false);
+        orderCondition.put("orderId", orderId);
+        response = orderService.fetch(orderCondition);
+        view.addObject("order", ((List<GuoMaiOrderVo>) response.getData()).get(0));
+        return view;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/machinemission/create")
@@ -634,11 +636,26 @@ public class OrderController {
         }
         MachineMission machineMission =
                 new MachineMission(form.getOrderId(), form.getDeviceId(), form.getMissionTitle(), form.getMissionContent(),
-                        form.getMissionRecorder(), MachineMissionStatus.convertToMissionStatus(form.getMachineStatus()));
+                        Timestamp.valueOf(form.getMissionDate()), form.getInstallType(),
+                        form.getMissionChannel(), MachineMissionStatus.convertToMissionStatus(form.getMachineStatus()));
+        Subject subject = SecurityUtils.getSubject();
+        UserVo userVo = (UserVo) subject.getPrincipal();
+        machineMission.setMissionRecorder(userVo.getUsername());
         ResultData response = machineMissionService.create(machineMission);
         result.setResponseCode(response.getResponseCode());
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setData(response.getData());
+            MachineMission mission = (MachineMission) response.getData();
+            String codeId = mission.getDeviceId();
+            String missionId = mission.getMmId();
+            JSONArray filepathList = JSON.parseArray(form.getFilePathList());
+            for (Object filepath: filepathList) {
+                Insight insight = new Insight();
+                insight.setCodeId(codeId);
+                insight.setEventId(missionId);
+                insight.setPath((String) filepath);
+                qRCodeService.createInsight(insight);
+            }
         } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
             result.setDescription(response.getDescription());
         }
