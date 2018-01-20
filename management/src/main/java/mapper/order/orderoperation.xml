@@ -3,7 +3,7 @@
 <mapper namespace="management.guomaiorderoperation">
 
     <insert id="insert" parameterType="model.order.OrderOperation">
-        INSERT INTO order_operation
+        INSERT INTO `gmair_order`.order_operation
         (operation_id, order_id, pre_status, cur_status, block_flag, create_time)
         VALUES
         (#{operationId}, #{orderId},

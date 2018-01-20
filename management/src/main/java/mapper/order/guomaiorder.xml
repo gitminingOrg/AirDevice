@@ -36,7 +36,7 @@
     </resultMap>
 
     <insert id="insertBatch" parameterType="java.util.List">
-        INSERT INTO guomai_order
+        INSERT INTO `gmair_order`.guomai_order
         (
             order_id, order_no, buyer_name, order_price, receiver_name, receiver_phone,
             receiver_province, receiver_city, receiver_district, receiver_address, coupon_no, ship_no, order_time, order_status,
@@ -55,7 +55,7 @@
     </insert>
 
     <insert id="insert" parameterType="model.order.GuoMaiOrder">
-        INSERT INTO guomai_order
+        INSERT INTO `gmair_order`.guomai_order
         (
         order_id, order_no, buyer_name, order_price, receiver_name, receiver_phone,
         receiver_province, receiver_city, receiver_district, receiver_address, coupon_no, ship_no, order_time, order_status,
@@ -74,7 +74,7 @@
         select
             commodity_id, order_id, commodity_type, commodity_name,
             commodity_quantity, block_flag, create_time
-        from order_item_view WHERE order_id = #{orderId} AND block_flag = 0
+        from `gmair_order`.order_item_view WHERE order_id = #{orderId} AND block_flag = 0
     </select>
 
     <select id="query" resultMap="guomaiOrderVo" parameterType="java.util.Map">
@@ -82,7 +82,7 @@
         order_id, order_no, order_status, description, buyer_name, receiver_name, receiver_phone, order_price,
         province, city, district, receiver_address, order_channel, order_diversion,
         order_coupon, order_time, ship_no, service_name, create_time
-        from guomai_order_view
+        from `gmair_order`.guomai_order_view
         WHERE 1 = 1
         <if test="orderId != null" >
             AND order_id = #{orderId}
@@ -121,7 +121,7 @@
     </select>
 
     <update id="update" parameterType="model.order.GuoMaiOrder">
-        UPDATE guomai_order
+        UPDATE `gmair_order`.guomai_order
         <set>
             <if test="orderStatus != null">
                 order_status = #{orderStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
