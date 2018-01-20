@@ -20,6 +20,7 @@ import model.wechat.Article;
 import model.wechat.Articles;
 import model.wechat.InMessage;
 
+import model.wechat.TextOutMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ import util.Configuration;
 import util.WechatUtil;
 import utils.Encryption;
 import utils.HttpDeal;
+import utils.ResultData;
 import utils.XStreamFactory;
 import vip.service.ConsumerSerivce;
 import vo.vip.ConsumerVo;
@@ -80,7 +82,6 @@ public class WechatController {
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, value = "/wechat", produces="text/xml;charset=utf-8")
 	public String handle(HttpServletRequest request, HttpServletRequest response) {
-		logger.info("weadsfdsafhisfnLIANDFIULABSDFILUBNAWLFN");
 		try {
 			ServletInputStream stream = request.getInputStream();
 			String input = WechatUtil.inputStream2String(stream);
@@ -93,58 +94,73 @@ public class WechatController {
             logger.info("message: " + JSONObject.toJSONString(message));
             switch (message.getMsgType()) {
             	case "event":
+            		if (message.getEvent().equals("subscribe")) {
+						content.alias("xml", TextOutMessage.class);
+						TextOutMessage result = new TextOutMessage();
+						result.setFromUserName(message.getToUserName());
+						result.setToUserName(message.getFromUserName());
+						result.setContent("Hey,您终于来了！\n恭喜您找到新鲜至净空气提供者:\n果麦新风\n这里只跟您分享室内好空气的秘密。\n您可以点击下方菜单自助查阅所需要的内容,若想获取更多帮助,请发送文字、语音、视频告诉我们，或拨打客服热线400-994-6898(客服在线时间周一到周五9:00-18:00),感谢您的支持，祝您生活愉快!");
+						String xml = content.toXML(result);
+						return xml;
+					}
             		if(message.getEventKey().equals("gmair")){
             			String openId = message.getFromUserName();
-                        content.alias("xml", Articles.class);
-                        content.alias("item", Article.class);
-                        Articles result = new Articles();
-                        result.setFromUserName(message.getToUserName());
-                        result.setToUserName(message.getFromUserName());
-                        result.setCreateTime(new Date().getTime());
-                        List<Article> list = new ArrayList<>();
-                        Article welcome = new Article();
-                        welcome.setTitle("果麦新风");
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-                        Calendar c = Calendar.getInstance();
-                        String time = sdf.format(c.getTime());
-                        welcome.setPicUrl("http://commander.gmair.net/reception/www/img/logo_blue.png?"+time);
-                        welcome.setUrl("http://commander.gmair.net/reception/www/index.html#/home/device");
                         ConsumerVo consumerVo = consumerSerivce.login(openId);
-                        welcome.setDescription("");
                         if(consumerVo != null && consumerVo.getCustomerId() != null){
-                        	StringBuffer sb = new StringBuffer();
                         	List<DeviceStatus> deviceStatus = deviceVipService.getUserCleaner(consumerVo.getCustomerId());
-                        	for (DeviceStatus status : deviceStatus) {
-								sb.append("设备名称:"+status.getDeviceName()+"\n");
-								if(status.getCleanerStatus() == null){
-									sb.append("设备状态:离线\n");
-								}else{
-									sb.append("PM2.5 :"+status.getCleanerStatus().getPm25()+"µg/m³\n");
-									sb.append("室内温度:"+status.getCleanerStatus().getTemperature()+"℃\n");
-									sb.append("室内湿度:"+status.getCleanerStatus().getHumidity()+"%\n");
-									if(status.getCleanerStatus().getCo2() > 0 && status.getCleanerStatus().getCo2() != 2000){
-										sb.append("二氧化碳:"+status.getCleanerStatus().getCo2()+"ppm\n");
-									}
-									sb.append("风机风量:"+status.getCleanerStatus().getVelocity()+"m³/h\n");
-									if(status.getCleanerStatus().getHeat() > 0){
-										sb.append("设备辅热:开\n");
+							if(deviceStatus.size() > 0) {
+								content.alias("xml", Articles.class);
+								content.alias("item", Article.class);
+								Articles result = new Articles();
+								result.setFromUserName(message.getToUserName());
+								result.setToUserName(message.getFromUserName());
+								result.setCreateTime(new Date().getTime());
+								List<Article> list = new ArrayList<>();
+								Article welcome = new Article();
+								welcome.setTitle("果麦新风");
+								SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+								Calendar c = Calendar.getInstance();
+								String time = sdf.format(c.getTime());
+								welcome.setPicUrl("http://commander.gmair.net/reception/www/img/logo_blue.png?"+time);
+								welcome.setUrl("http://commander.gmair.net/reception/www/index.html#/home/device");
+								StringBuffer sb = new StringBuffer();
+								welcome.setDescription("");
+								for (DeviceStatus status : deviceStatus) {
+									sb.append("设备名称:"+status.getDeviceName()+"\n");
+									if(status.getCleanerStatus() == null){
+										sb.append("设备状态:离线\n");
 									}else{
-										sb.append("设备辅热:关\n");
+										sb.append("PM2.5 :"+status.getCleanerStatus().getPm25()+"µg/m³\n");
+										sb.append("室内温度:"+status.getCleanerStatus().getTemperature()+"℃\n");
+										sb.append("室内湿度:"+status.getCleanerStatus().getHumidity()+"%\n");
+										if(status.getCleanerStatus().getCo2() > 0 && status.getCleanerStatus().getCo2() != 2000){
+											sb.append("二氧化碳:"+status.getCleanerStatus().getCo2()+"ppm\n");
+										}
+										sb.append("风机风量:"+status.getCleanerStatus().getVelocity()+"m³/h\n");
+										if(status.getCleanerStatus().getHeat() > 0){
+											sb.append("设备辅热:开\n");
+										}else{
+											sb.append("设备辅热:关\n");
+										}
+
 									}
-									
+									sb.append("\n\n");
 								}
-								sb.append("\n\n");
+								welcome.setDescription(sb.toString());
+								list.add(welcome);
+								result.setArticles(list);
+								result.setArticleCount(list.size());
+								content.processAnnotations(Article.class);
+								String xml = content.toXML(result);
+								return xml;
 							}
-                        	welcome.setDescription(sb.toString());
                         }
-                       
-                        
-                        list.add(welcome);
-                        result.setArticles(list);
-                        result.setArticleCount(list.size());
-                        content.processAnnotations(Article.class);
-                        String xml = content.toXML(result);
-                        logger.info(JSON.toJSONString(xml));
+						content.alias("xml", TextOutMessage.class);
+						TextOutMessage result = new TextOutMessage();
+						result.setFromUserName(message.getToUserName());
+						result.setToUserName(message.getFromUserName());
+						result.setContent("您尚未绑定果麦新风设备,暂不提供空气数据支持");
+						String xml = content.toXML(result);
                         return xml;
             		}
             		break;
@@ -197,11 +213,7 @@ public class WechatController {
 					e.printStackTrace();
 				}
 			} else {
-				logger.info("request 2nd, code: " + code);
-				String openId = WechatUtil.queryOauthOpenId(ReceptionConfig.getValue("wechat_appid"), ReceptionConfig.getValue("wechat_secret"), code);
-				result.setStatus(ResultMap.STATUS_SUCCESS);
-				result.addContent("openId", openId);
-				return result;
+				return oauth(result, code);
 			}
 		}
 		result.setStatus(ResultMap.STATUS_SUCCESS);
@@ -230,11 +242,7 @@ public class WechatController {
 					e.printStackTrace();
 				}
 			} else {
-				logger.info("request 2nd, code: " + code);
-				String openId = WechatUtil.queryOauthOpenId(ReceptionConfig.getValue("wechat_appid"), ReceptionConfig.getValue("wechat_secret"), code);
-				result.setStatus(ResultMap.STATUS_SUCCESS);
-				result.addContent("openId", openId);
-				return result;
+				return oauth(result, code);
 			}
 		}
 		return result;
@@ -258,5 +266,12 @@ public class WechatController {
 		
 		return resultMap;
 		
+	}
+
+	private ResultMap oauth(ResultMap result, String code) {
+		String openId = WechatUtil.queryOauthOpenId(ReceptionConfig.getValue("wechat_appid"), ReceptionConfig.getValue("wechat_secret"), code);
+		result.setStatus(ResultMap.STATUS_SUCCESS);
+		result.addContent("openId", openId);
+		return result;
 	}
 }
