@@ -113,6 +113,11 @@
                                     #end
                                 </div>
                                 <button id="delGoods$velocityCount" class="btn medium bg-red" style="float: right" onclick="commodityDel(this.id)">删除</button>
+                                #if(${commodity.commodityQrcode} != "")
+                                    <a href="${path.concat("/order/")}${order.orderId}/${commodity.commodityQrcode}" class="btn medium bg-blue" style="float: right; margin-right: 10px">
+                                        <i class="glyph-icon icon-arrow-right"></i>
+                                    </a>
+                                #end
                             </div>
                         #end
                     </div>
@@ -160,9 +165,12 @@
             	<hr />
             	<h4>订单进度</h4>
             	<div id="mission-area"></div>
-            	<a href="javascript:;" class="btn medium bg-blue white-modal-80" title="添加订单进度记录">
-           			<span class="button-content">添加事件</span>
+            	<a href="javascript:;" class="btn medium bg-blue white-modal-60" title="添加订单进度记录">
+           			<span class="button-content">添加安装事件</span>
         		</a>
+                <a href="javascript:;" class="btn medium bg-blue white-modal-80" title="添加订单进度记录">
+                    <span class="button-content">添加订单事件</span>
+                </a>
         		#if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING")
         		<a id="order-complete" class="btn medium bg-green">
            			<span class="button-content">订单完成</span>
@@ -189,85 +197,119 @@
                     <div class="col-md-12 center-margin">
                         <div class="form-row">
                             <div class="form-label col-md-2">
-                                <label for="mission-name">事件名称</label>
+                                <label for="order-mission-name">事件名称</label>
                             </div>
                             <div class="form-input col-md-10">
-                                <input id="mission-name" type="text" />
+                                <input id="order-mission-name" type="text" />
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-label col-md-2">
-                                <label for="mission-content" autocomplete="off">事件详情</label>
+                                <label for="order-mission-content" autocomplete="off">事件详情</label>
                             </div>
                             <div class="form-input col-md-10">
-                                <textarea id="mission-content" type="text" autocomplete="off"></textarea>
+                                <textarea id="order-mission-content" type="text" autocomplete="off"></textarea>
                             </div>
                         </div>
-##                        <div class="form-row">
-##                            <label id="mission-type" class="form-label col-md-2">勘测日期</label>
-##                            <div class="form-input col-md-10">
-##                                <input id = "mission-date" type="date"/>
-##                            </div>
-##                        </div>
-##                        <div class="form-row" id="mission-channel-container" style="display: none">
-##                            <div class="form-row" style="margin-left: 0px; margin-right: 0px">
-##                                <label class="form-label col-md-2">安装服务商</label>
-##                                <div class="form-input col-md-10">
-##                                    <select id="mission-channel" style="border-radius: 2px">
-##                                    </select>
-##                                </div>
-##                            </div>
-##                            <div class="form-row" style="margin-left: 0px; margin-right: 0px">
-##                                <label class="form-label col-md-2">安装方式</label>
-##                                <div class="form-input col-md-10">
-##                                    <select id="mission-install-type" style="border-radius: 2px">
-##                                        <option>---请选择安装方式---</option>
-##                                        <option>墙体安装</option>
-##                                        <option>玻璃安装</option>
-##                                    </select>
-##                                </div>
-##                            </div>
-##                        </div>
-##						<div class="form-row">
-##                            <div class="form-label col-md-2">
-##                                <label for="mission-content" autocomplete="off">二维码</label>
-##                            </div>
-##                            <div class="form-input col-md-10">
-##                                <input id="mission-codeId" type="text" autocomplete="off">
-##                            </div>
-##						</div>
-##                        <div class="form-row">
-##                            <div class="form-label col-md-2">
-##                                <label>订单状态</label>
-##                            </div>
-##                            <div class="form-input col-md-10">
-##                                <select id="mission-status">
-##                                    <option>---订单状态---</option>
-##                                    <option value="10">安装完成</option>
-##                                </select>
-##                            </div>
-##                        </div>
-##                        <div class="form-row">
-##                            <div class="form-label col-md-2">
-##                                <label for="mission-content" autocomplete="off">图片上传</label>
-##                            </div>
-##                            <div class="weui-cells weui-cells_form" id="uploaderCustom">
-##                                <div class="weui-cell">
-##                                    <div class="weui-cell__bd">
-##                                        <div class="weui-uploader">
-##                                            <div class="weui-uploader__bd">
-##                                                <ul class="weui-uploader__files" id="uploaderCustomFiles"></ul>
-##                                                <div class="weui-uploader__input-box">
-##                                                    <input id="uploaderCustomInput" name="photo" class="weui-uploader__input" type="file" accept="image/*" multiple="">
-##                                                </div>
-##                                            </div>
-##                                        </div>
-##                                    </div>
-##                                </div>
-##                            </div>
-##                        </div>
                         <div class="form-row">
-                            <button class="btn medium bg-blue-alt" id="confirm-event">
+                            <button class="btn medium bg-blue-alt" id="order-confirm-event">
+                                <span class="button-content">新增</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hide" id="white-modal-60" title="新增安装事件">
+                <div class="pad10A">
+                    <div class="col-md-12 center-margin">
+                        <div class="form-row">
+                            <div class="form-label col-md-3">
+                                <label for="machine-mission-name">事件名称</label>
+                            </div>
+                            <div class="form-input col-md-9">
+                                <select id="machine-mission-name">
+                                    <option>---请选择安装事件---</option>
+                                    <option value="1">勘测事件</option>
+                                    <option value="2">安装事件</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label col-md-3">
+                                <label for="machine-mission-content" autocomplete="off">事件详情</label>
+                            </div>
+                            <div class="form-input col-md-9">
+                                <textarea id="machine-mission-content" type="text" autocomplete="off"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <label id="mission-type" class="form-label col-md-3">勘测日期</label>
+                            <div class="form-input col-md-9">
+                                <input id = "machine-mission-date" type="date"/>
+                            </div>
+                        </div>
+                        <div class="row" id="mission-channel-container" style="display: none">
+                            <div class="form-row" style="margin-left: 0px; margin-right: 0px">
+                                <label class="form-label col-md-3">安装服务商</label>
+                                <div class="form-input col-md-9">
+                                    <select id="machine-mission-channel" style="border-radius: 2px">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-left: 0px; margin-right: 0px">
+                                <label class="form-label col-md-3">安装方式</label>
+                                <div class="form-input col-md-9">
+                                    <select id="machine-install-type" style="border-radius: 2px">
+                                        <option>---请选择安装方式---</option>
+                                        <option>墙体安装</option>
+                                        <option>玻璃安装</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label col-md-3">
+                                <label for="machine-mission-codeId" autocomplete="off">二维码</label>
+                            </div>
+                            <div class="form-input col-md-9">
+                                <input id="machine-mission-codeId" type="text" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label col-md-3">
+                                <label>机器状态</label>
+                            </div>
+                            <div class="form-input col-md-9">
+                                <select id="machine-mission-status">
+                                    <option>---机器状态---</option>
+                                    <option value="0">预勘测</option>
+                                    <option value="1">预安装</option>
+                                    <option value="2">安装完成</option>
+                                    <option value="3">安装取消</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-label col-md-3">
+                                <label for="mission-content" autocomplete="off">图片上传</label>
+                            </div>
+                            <div class="weui-cells weui-cells_form" id="uploaderCustom">
+                                <div class="weui-cell">
+                                    <div class="weui-cell__bd">
+                                        <div class="weui-uploader">
+                                            <div class="weui-uploader__bd">
+                                                <ul class="weui-uploader__files" id="uploaderCustomFiles"></ul>
+                                                <div class="weui-uploader__input-box">
+                                                    <input id="uploaderCustomInput" name="photo" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <button class="btn medium bg-blue-alt" id="machine-confirm-event">
                                 <span class="button-content">新增</span>
                             </button>
                         </div>
@@ -377,8 +419,8 @@
 			});
 		})
 
-        $("#mission-name").on('change', function () {
-            var installMission = document.getElementById('mission-name');
+        $("#machine-mission-name").on('change', function () {
+            var installMission = document.getElementById('machine-mission-name');
             var mission = installMission.value;
             var missionTypeLabel = document.getElementById('mission-type');
             var missionTypeContainer = document.getElementById("mission-channel-container");
@@ -396,11 +438,10 @@
             }
         });
 
-		
-		$("#confirm-event").on('click', function() {
+		$("#order-confirm-event").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/mission/create";
-			var mission_title = $("#mission-name").val();
-			var mission_content = $("#mission-content").val();
+			var mission_title = $("#order-mission-name").val();
+			var mission_content = $("#order-mission-content").val();
 			var filepath = uploadFilePathList.join(";");
 
 			if (!not_null(mission_title)) {
@@ -413,24 +454,72 @@
 			};
 
 			$.post(url, mission_params, function(result) {
-                uploadFilePathList = [];
-//				location.reload();.
+				location.reload();
 			})
 		});
+		
+		$("#machine-confirm-event").on('click', function () {
+            var url = "${path.concat('/order/')}" + "machinemission/create"
+            var param = {filePathList : []};
+            var machine_mission_title = $("#machine-mission-name").find(":selected").val();
+            if (!not_null(machine_mission_title)) {
+                alert("请填写事件的类型");
+                return;
+            }
+            var machine_mission_content = $("#machine-mission-content").val();
+            var machine_mission_date = $("#machine-mission-date").val();
+            if (!not_null(machine_mission_date)) {
+                alert("请填写时间日期");
+                return;
+            }
+            machine_mission_date = new Date(machine_mission_date).toISOString();
+            var machine_qrcode = $("#machine-mission-codeId").val();
+            if (!not_null(machine_qrcode)) {
+                alert("请填写机器的二维码");
+                return;
+            }
+            var machine_mission_status = $("#machine-mission-status").find(":selected").val();
+            var machine_mission_channel = $("#machine-mission-channel").find(":selected").val();
+            var machine_install_type = $("#machine-install-type").find(":selected").val();
+            param = {orderId: "${order.orderId}", deviceId: machine_qrcode, missionTitle: machine_mission_title,
+                    missionContent: machine_mission_content, machineStatus: machine_mission_status,
+                    missionDate: machine_mission_date, missionChannel: machine_mission_channel, installType: machine_install_type
+            }
+            if (machine_mission_title == 1) {
+                delete param.missionChannel;
+                delete param.installType;
+            } else {
+                if (!not_null(param.missionChannel)) {
+                    alert("请填写安装服务商");
+                    return;
+                }
+                if (!not_null(param.installType)) {
+                    alert("请填写安装方式");
+                    return;
+                }
+                param.missionChannel = $("#machine-mission-channel").find(":selected").text();
+                param.installType = $("#machine-install-type").find(":selected").text();
+            }
+            param.missionTitle = $("#machine-mission-name").find(":selected").text();
+            param.filePathList = JSON.stringify(uploadFilePathList);
+            $.post(url, param, function (response) {
+
+            });
+        })
 		
 		$("#order-complete").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/complete";
 			$.post(url, function(result) {
 				location.reload();
 			})
-		})
+		});
 		
 		$("#order-cancel").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/cancel";
 			$.post(url, function(result) {
 				location.reload();
 			})
-		})
+		});
 
         $("#updateOrder").on('click', function () {
             var url = "${path.concat('/order/')}" + "${order.orderId}" + "/update";
@@ -478,21 +567,28 @@
 
             $.post(url, params, function (result) {
                 window.location.href = "${path.concat('/order/').concat("${order.orderId}")}";
-            })
+            });
         })
 	});
 
     function mission_channel_reset() {
-        $("#mission-channel").empty();
-        $("#mission-channel").append($("<option value=''></option>").text("---请选择安装商---"));
+        $("#machine-mission-channel").empty();
+        #if(${order.serviceName})
+            $("#machine-mission-channel").append($("<option value='${order.serviceName}'></option>").text("${order.serviceName}"));
+            var default_channel = "${order.serviceName}";
+        #else
+            $("#machine-mission-channel").append($("<option value=''></option>").text("---请选择安装商---"));
+        #end
         var channel_url = "${path.concat('/order/missionChannel/list')}";
         $.get(channel_url, function(result) {
             if(result.responseCode == "RESPONSE_OK") {
                 var data = result.data;
                 for(index in data) {
-                    var item = $("<option></option>").text(data[index].channelName);
-                    item.attr("value", data[index].channelName);
-                    $("#mission-channel").append(item);
+                    if (default_channel != data[index].channelName) {
+                        var item = $("<option></option>").text(data[index].channelName);
+                        item.attr("value", data[index].channelName);
+                        $("#machine-mission-channel").append(item);
+                    }
                 }
             }
         })
@@ -515,7 +611,7 @@
     }
 	
 	function orderChannelReset() {
-        var url = "${path.concat('/order/orderchannel/list')}";
+        var url = "${path.concat('/order/orderChannel/list')}";
         var currentChannel = $('#order_channel_list').find(":selected").text();
         $.get(url, function (result) {
             if (result.responseCode = 'RESPONSE_OK') {
@@ -532,8 +628,8 @@
         })
     }
 
-//    orderChannelReset();
-//	mission_channel_reset();
+    orderChannelReset();
+	mission_channel_reset();
 
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {

@@ -4,32 +4,24 @@ package model.order;
  * Created by XXH on 2018/1/17.
  */
 public enum MachineMissionStatus {
-    PRE_SURVEY(0), PRE_INSTALL(1), INSTALLED(2), INSTALL_CANCEL(3);
+    PRE_SURVEY(0), SURVEYED(1), SHIPPING(2), SHIPPED(3), NEGOTIATE_INSTALL(4), INSTALLED(5), INSTALL_CANCEL(6);
 
-    private int codeId;
+    static MachineMissionStatus[] status = new MachineMissionStatus[]{
+            MachineMissionStatus.PRE_SURVEY, MachineMissionStatus.SURVEYED,
+            MachineMissionStatus.SHIPPING, MachineMissionStatus.SHIPPED,
+            MachineMissionStatus.NEGOTIATE_INSTALL, MachineMissionStatus.INSTALLED, MachineMissionStatus.INSTALL_CANCEL};
 
-    MachineMissionStatus(int codeId) {
-        this.codeId = codeId;
+    private int code;
+
+    MachineMissionStatus(int code) {
+        this.code = code;
     }
 
-    public int getCodeId() {
-        return this.codeId;
+    public int getCode() {
+        return this.code;
     }
 
-    public static MachineMissionStatus convertToMissionStatus(int codeId) {
-        MachineMissionStatus status = MachineMissionStatus.PRE_SURVEY;
-        switch (codeId) {
-            case 0: status = MachineMissionStatus.PRE_SURVEY;
-                    break;
-            case 1: status = MachineMissionStatus.PRE_INSTALL;
-                    break;
-            case 2: status = MachineMissionStatus.INSTALLED;
-                    break;
-            case 3: status = MachineMissionStatus.INSTALL_CANCEL;
-                    break;
-            default:
-                    break;
-        }
-        return status;
+    public static MachineMissionStatus convertToMissionStatus(int code) {
+        return status[code];
     }
 }

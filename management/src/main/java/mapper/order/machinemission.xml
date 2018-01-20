@@ -9,12 +9,15 @@
         <result property="missionContent" column="mission_content" />
         <result property="missionRecorder" column="machine_recorder" />
         <result property="machineMissionStatus" column="machine_status" typeHandler="handler.MachineMissionStatusHandler" />
+        <result property="machineDate" column="mission_date" />
+        <result property="missionChannel" column="mission_channel" />
         <result property="blockFlag" column="block_flag" />
         <result property="createTime" column="create_time" />
     </resultMap>
 
     <select id="query" parameterType="java.util.Map" resultMap="machineMissionVo">
-        select mmid, order_id, device_id, mission_title, mission_content, machine_recorder, machine_status, block_flag, create_time
+        select mmid, order_id, device_id, mission_title, mission_content, machine_recorder,
+        install_type, mission_date, mission_channel, machine_status, block_flag, create_time
         from airdevice.machine_mission
         where 1 = 1
         <if test="mmId != null">
@@ -38,17 +41,31 @@
         <if test="machineMissionStatus != null">
             and machine_status = #{machineMissionStatus}
         </if>
+        <if test="installType != null">
+            AND install_type = #{installType}
+        </if>
+        <if test="machineChannel != null">
+            AND machine_channel = #{machineChannel}
+        </if>
         <if test="blockFlag != null">
             and block_flag = #{blockFlag}
         </if>
-        <if test="createTime != null">
-            and create_time = #{createTime}
+        <if test="startTime != null">
+            and create_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[
+              AND create_time <= #{endTime}
+            ]]>
         </if>
     </select>
 
     <insert id="insert" parameterType="model.order.MachineMission" useGeneratedKeys="false">
-        insert into machine_mission(mmid, order_id, device_id, mission_title, mission_content, machine_recorder, machine_status, block_flag, create_time)
+        insert into machine_mission(mmid, order_id, device_id, mission_title, mission_content, machine_recorder,
+        mission_channel, mission_date, install_type, machine_status, block_flag, create_time)
         values
-        (#{mmId}, #{orderId}, #{deviceId}, #{missionTitle}, #{missionContent}, #{missionRecorder}, #{machineMissionStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{blockFlag}, #{createAt})
+        (#{mmId}, #{orderId}, #{deviceId}, #{missionTitle}, #{missionContent}, #{missionRecorder},
+         #{missionChannel}, #{missionDate}, #{installType},
+        #{machineMissionStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{blockFlag}, #{createAt})
     </insert>
 </mapper>
