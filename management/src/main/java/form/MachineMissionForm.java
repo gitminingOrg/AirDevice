@@ -1,42 +1,29 @@
 package form;
 
-import org.springframework.beans.factory.annotation.Required;
+
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Created by XXH on 2018/1/17.
  */
 public class MachineMissionForm {
-    private String orderId;
-    private String deviceId;
+    private String machineId;
     private String missionTitle;
     private String missionContent;
-    private String installType;
+    private String missionRecorder;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime missionDate;
-    private String missionChannel;
-    private int machineStatus;
     private String filePathList;
 
-    public String getOrderId() {
-        return orderId;
+    public String getMachineId() {
+        return machineId;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setMachineId(String machineId) {
+        this.machineId = machineId;
     }
 
     public String getMissionTitle() {
@@ -55,20 +42,12 @@ public class MachineMissionForm {
         this.missionContent = missionContent;
     }
 
-    public String getInstallType() {
-        return installType;
+    public String getMissionRecorder() {
+        return missionRecorder;
     }
 
-    public void setInstallType(String installType) {
-        this.installType = installType;
-    }
-
-    public int getMachineStatus() {
-        return machineStatus;
-    }
-
-    public void setMachineStatus(int machineStatus) {
-        this.machineStatus = machineStatus;
+    public void setMissionRecorder(String missionRecorder) {
+        this.missionRecorder = missionRecorder;
     }
 
     public LocalDateTime getMissionDate() {
@@ -77,14 +56,6 @@ public class MachineMissionForm {
 
     public void setMissionDate(LocalDateTime missionDate) {
         this.missionDate = missionDate;
-    }
-
-    public String getMissionChannel() {
-        return missionChannel;
-    }
-
-    public void setMissionChannel(String missionChannel) {
-        this.missionChannel = missionChannel;
     }
 
     public String getFilePathList() {

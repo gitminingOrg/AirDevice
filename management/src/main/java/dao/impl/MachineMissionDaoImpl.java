@@ -20,7 +20,7 @@ import java.util.Map;
 @Repository
 public class MachineMissionDaoImpl extends BaseDao implements MachineMissionDao {
     private Logger logger = LoggerFactory.getLogger(MachineMissionDaoImpl.class);
-    private Object lock = new Object();
+    private final Object lock = new Object();
 
     @Override
     public ResultData query(Map<String, Object> condition) {
@@ -43,7 +43,7 @@ public class MachineMissionDaoImpl extends BaseDao implements MachineMissionDao 
     @Override
     public ResultData insert(MachineMission machineMission) {
         ResultData result = new ResultData();
-        machineMission.setMmId(IDGenerator.generate("MM"));
+        machineMission.setMachineId(IDGenerator.generate("MM"));
         synchronized (lock) {
             try {
                 sqlSession.insert("management.order.machineMission.insert", machineMission);

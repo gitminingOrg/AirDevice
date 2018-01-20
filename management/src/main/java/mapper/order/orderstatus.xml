@@ -9,7 +9,7 @@
 	
 	<select id="queryOrder" parameterType="java.util.Map" resultType = "java.lang.String">
 		select distinct order_status
-		from guomai_order
+		from `gmair_order`.guomai_order
 		order by order_status asc
 	</select>
 </mapper>

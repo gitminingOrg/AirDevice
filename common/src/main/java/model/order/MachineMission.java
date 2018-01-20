@@ -9,39 +9,27 @@ import java.sql.Timestamp;
  */
 public class MachineMission extends Entity{
 
-    private String mmId;
-    private String orderId;
-    private String deviceId;
+    private String missionId;
+    private String machineId;
     private String missionTitle;
     private String missionContent;
     private String missionRecorder;
     private Timestamp missionDate;
-    private String installType;
-    private String missionChannel;
-    private MachineMissionStatus machineMissionStatus;
 
-    public String getMmId() {
-        return mmId;
+    public String getMissionId() {
+        return missionId;
     }
 
-    public void setMmId(String mmId) {
-        this.mmId = mmId;
+    public void setMissionId(String missionId) {
+        this.missionId = missionId;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getMachineId() {
+        return machineId;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setMachineId(String machineId) {
+        this.machineId = machineId;
     }
 
     public String getMissionTitle() {
@@ -68,22 +56,6 @@ public class MachineMission extends Entity{
         this.missionRecorder = missionRecorder;
     }
 
-    public String getInstallType() {
-        return installType;
-    }
-
-    public void setInstallType(String installType) {
-        this.installType = installType;
-    }
-
-    public MachineMissionStatus getMachineMissionStatus() {
-        return machineMissionStatus;
-    }
-
-    public void setMachineMissionStatus(MachineMissionStatus machineMissionStatus) {
-        this.machineMissionStatus = machineMissionStatus;
-    }
-
     public Timestamp getMissionDate() {
         return missionDate;
     }
@@ -92,24 +64,14 @@ public class MachineMission extends Entity{
         this.missionDate = missionDate;
     }
 
-    public String getMissionChannel() {
-        return missionChannel;
-    }
-
-    public void setMissionChannel(String missionChannel) {
-        this.missionChannel = missionChannel;
-    }
-
-    public MachineMission(String orderId, String deviceId, String missionTitle, String missionContent,
-                          Timestamp missionDate, String installType, String missionChannel,
-                          MachineMissionStatus machineMissionStatus) {
-        this.orderId = orderId;
-        this.deviceId = deviceId;
+    public MachineMission(String machineId, String missionTitle, String missionContent,
+                          String missionRecorder, Timestamp missionDate)
+    {
+        super();
+        this.machineId = machineId;
         this.missionTitle = missionTitle;
         this.missionContent = missionContent;
+        this.missionRecorder = missionRecorder;
         this.missionDate = missionDate;
-        this.installType = installType;
-        this.missionChannel = missionChannel;
-        this.machineMissionStatus = machineMissionStatus;
     }
 }

@@ -8,42 +8,30 @@ import java.sql.Timestamp;
  * Created by XXH on 2018/1/17.
  */
 public class MachineMissionVo {
-    private String mmId;
-    private String orderId;
-    private String deviceId;
+    private String missionId;
+    private String machineId;
     private String missionTitle;
     private String missionContent;
-    private String installType;
     private String missionRecorder;
-    private MachineMissionStatus machineMissionStatus;
     private Timestamp missionDate;
-    private String missionChannel;
     private boolean blockFlag;
     private Timestamp createTime;
 
 
-    public String getMmId() {
-        return mmId;
+    public String getMissionId() {
+        return missionId;
     }
 
-    public void setMmId(String mmId) {
-        this.mmId = mmId;
+    public void setMissionId(String missionId) {
+        this.missionId = missionId;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getMachineId() {
+        return machineId;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setMachineId(String machineId) {
+        this.machineId = machineId;
     }
 
     public String getMissionTitle() {
@@ -62,14 +50,6 @@ public class MachineMissionVo {
         this.missionContent = missionContent;
     }
 
-    public String getInstallType() {
-        return installType;
-    }
-
-    public void setInstallType(String installType) {
-        this.installType = installType;
-    }
-
     public String getMissionRecorder() {
         return missionRecorder;
     }
@@ -78,12 +58,12 @@ public class MachineMissionVo {
         this.missionRecorder = missionRecorder;
     }
 
-    public MachineMissionStatus getMachineMissionStatus() {
-        return machineMissionStatus;
+    public Timestamp getMissionDate() {
+        return missionDate;
     }
 
-    public void setMachineMissionStatus(MachineMissionStatus machineMissionStatus) {
-        this.machineMissionStatus = machineMissionStatus;
+    public void setMissionDate(Timestamp missionDate) {
+        this.missionDate = missionDate;
     }
 
     public boolean isBlockFlag() {
@@ -100,21 +80,5 @@ public class MachineMissionVo {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
-    }
-
-    public Timestamp getMissionDate() {
-        return missionDate;
-    }
-
-    public void setMissionDate(Timestamp missionDate) {
-        this.missionDate = missionDate;
-    }
-
-    public String getMissionChannel() {
-        return missionChannel;
-    }
-
-    public void setMissionChannel(String missionChannel) {
-        this.missionChannel = missionChannel;
     }
 }
