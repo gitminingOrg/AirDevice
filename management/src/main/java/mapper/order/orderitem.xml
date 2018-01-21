@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="management.ordercommodity">
 
-    <insert id="insert" parameterType="model.order.OrderCommodity">
+    <insert id="insert" parameterType="model.order.OrderItem">
         INSERT INTO gmair_order.order_item
         (order_item_id, order_id, com_id, order_item_quantity, block_flag, create_time)
          VALUES
@@ -32,7 +32,7 @@
         </foreach>
     </update>
 
-    <update id="update" parameterType="model.order.OrderCommodity">
+    <update id="update" parameterType="model.order.OrderItem">
         UPDATE gmair_order.order_item
         <set>
             <if test="item.blockFlag != null">

@@ -13,7 +13,7 @@
         <result property="createTime" column="create_time" />
     </resultMap>
 
-    <select id="query" resultType="machineItemVo">
+    <select id="query" resultMap="machineItemVo">
         select
         order_id, machine_item_id, order_item_id, provider_name, machine_code, machine_status,
         install_type, block_flag, create_time

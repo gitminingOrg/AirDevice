@@ -10,7 +10,7 @@ import utils.ResultData;
 public interface OrderService {
     ResultData upload(List<GuoMaiOrder> order);
 
-    ResultData uploadCommodity(List<OrderCommodity> commodityList);
+    ResultData uploadCommodity(List<OrderItem> commodityList);
 
     ResultData fetch(Map<String, Object> condition, DataTableParam param);
 
@@ -18,7 +18,7 @@ public interface OrderService {
 
     ResultData assign(GuoMaiOrder order);
 
-    ResultData assignBatchCommodity(List<OrderCommodity> commodityList);
+    ResultData assignBatchCommodity(List<OrderItem> commodityList);
 
     ResultData blockOrder(Map<String, Object> condition);
 
@@ -26,7 +26,7 @@ public interface OrderService {
 
     ResultData create(OrderMission mission);
 
-    ResultData create(OrderCommodity commodity);
+    ResultData create(OrderItem commodity);
 
     ResultData fetchMission4Order(Map<String, Object> condition);
 

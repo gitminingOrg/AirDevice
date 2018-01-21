@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import dao.BaseDao;
 import dao.OrderDao;
 import model.order.GuoMaiOrder;
-import model.order.OrderCommodity;
+import model.order.OrderItem;
 import model.order.OrderOperation;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
@@ -48,9 +48,9 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	}
 
 	@Override
-	public ResultData insertCommodity(List<OrderCommodity> commodityList) {
+	public ResultData insertCommodity(List<OrderItem> commodityList) {
 		ResultData result = new ResultData();
-		for (OrderCommodity item : commodityList) {
+		for (OrderItem item : commodityList) {
 			item.setCommodityId(IDGenerator.generate("GMC"));
 		}
 		try {
@@ -188,7 +188,7 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	}
 
 	@Override
-	public ResultData create(OrderCommodity commodity) {
+	public ResultData create(OrderItem commodity) {
 		ResultData result = new ResultData();
 		commodity.setCommodityId(IDGenerator.generate("GMC"));
 		try {
@@ -254,7 +254,7 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	}
 
 	@Override
-	public ResultData updateBatchCommodity(List<OrderCommodity> commodityList) {
+	public ResultData updateBatchCommodity(List<OrderItem> commodityList) {
 		ResultData result = new ResultData();
 		try {
 			if (commodityList.size() == 0) {

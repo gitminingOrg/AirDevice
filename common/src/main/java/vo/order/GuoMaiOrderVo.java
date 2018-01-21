@@ -1,6 +1,6 @@
 package vo.order;
 
-import model.order.OrderCommodity;
+import model.order.OrderItem;
 import model.order.OrderStatus;
 
 import java.sql.Timestamp;
@@ -28,7 +28,7 @@ public class GuoMaiOrderVo {
     private Timestamp orderTime;
     private String shipNo;
     private String serviceName;
-    private List<OrderCommodity> commodityList;
+    private List<OrderItem> commodityList;
 
     private boolean blockFlag;
     private Timestamp createTime;
@@ -177,11 +177,11 @@ public class GuoMaiOrderVo {
         this.shipNo = shipNo;
     }
 
-    public List<OrderCommodity> getCommodityList() {
+    public List<OrderItem> getCommodityList() {
         return commodityList;
     }
 
-    public void setCommodityList(List<OrderCommodity> commodityList) {
+    public void setCommodityList(List<OrderItem> commodityList) {
         this.commodityList = commodityList;
     }
 

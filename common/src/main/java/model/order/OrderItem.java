@@ -3,7 +3,7 @@ package model.order;
 
 import model.Entity;
 
-public class OrderCommodity extends Entity{
+public class OrderItem extends Entity{
     private String orderItemId;
     private String orderId;
     private String commodityId;
@@ -41,7 +41,7 @@ public class OrderCommodity extends Entity{
         this.commodityQuantity = commodityQuantity;
     }
 
-    public OrderCommodity(String orderId, String commodityId, int commodityQuantity) {
+    public OrderItem(String orderId, String commodityId, int commodityQuantity) {
         this.orderId = orderId;
         this.commodityId = commodityId;
         this.commodityQuantity = commodityQuantity;

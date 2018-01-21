@@ -10,7 +10,7 @@ import utils.ResultData;
 public interface OrderDao {
 	ResultData insert(List<GuoMaiOrder> order);
 
-	ResultData insertCommodity(List<OrderCommodity> commodityList);
+	ResultData insertCommodity(List<OrderItem> commodityList);
 
 	ResultData query(Map<String, Object> condition);
 
@@ -22,7 +22,7 @@ public interface OrderDao {
 	
 	ResultData create(GuoMaiOrder order);
 
-	ResultData create(OrderCommodity commodity);
+	ResultData create(OrderItem commodity);
 
 	ResultData channel();
 	
@@ -30,7 +30,7 @@ public interface OrderDao {
 
 	ResultData queryOrderStatus(Map<String, Object> condition);
 
-	ResultData updateBatchCommodity(List<OrderCommodity> commodity);
+	ResultData updateBatchCommodity(List<OrderItem> commodity);
 
 	ResultData blockCommodity(Map<String, Object> condition);
 }

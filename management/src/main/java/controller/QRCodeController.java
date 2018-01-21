@@ -512,7 +512,7 @@ public class QRCodeController {
         for (String path : filepathList) {
             Insight insight = new Insight();
             insight.setPath(path);
-            insight.setCodeId(codeId);
+            insight.setMachineId(codeId);
             response = qRCodeService.createInsight(insight);
             if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
                 result.setResponseCode(response.getResponseCode());

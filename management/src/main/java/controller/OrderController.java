@@ -264,11 +264,11 @@ public class OrderController {
             result.setDescription(JSONObject.toJSONString(br.getAllErrors()));
             return result;
         }
-        List<OrderCommodity> commodityList = new LinkedList<>();
+        List<OrderItem> commodityList = new LinkedList<>();
         for (OrderCommodityForm form : commodityWrapper.getCommodities()) {
             form.setOrderId(commodityWrapper.getOrderId());
-            OrderCommodity commodity = new
-                    OrderCommodity(form.getOrderId(), form.getCommodityId(), form.getCommodityQuantity());
+            OrderItem commodity = new
+                    OrderItem(form.getOrderId(), form.getCommodityId(), form.getCommodityQuantity());
             commodityList.add(commodity);
         }
 
@@ -290,11 +290,11 @@ public class OrderController {
             result.setDescription(JSONObject.toJSONString(br.getAllErrors()));
             return result;
         }
-        List<OrderCommodity> commodityList = new LinkedList<>();
+        List<OrderItem> commodityList = new LinkedList<>();
         for (OrderCommodityForm form : commodityWrapper.getCommodities()) {
             form.setOrderId(commodityWrapper.getOrderId());
-            OrderCommodity commodity = new
-                    OrderCommodity(form.getOrderId(), form.getCommodityId(), form.getCommodityQuantity());
+            OrderItem commodity = new
+                    OrderItem(form.getOrderId(), form.getCommodityId(), form.getCommodityQuantity());
             commodity.setCommodityId(form.getCommodityId());
             commodityList.add(commodity);
         }
