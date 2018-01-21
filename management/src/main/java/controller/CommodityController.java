@@ -54,7 +54,7 @@ public class CommodityController {
             logger.error(JSON.toJSONString(br.getAllErrors()));
             return result;
         }
-        Commodity commodity = new Commodity(CommodityType.convertToCommodityType(form.getType()), form.getName(), form.getPrice(), form.getBonus());
+        Commodity commodity = new Commodity(CommodityType.convertToCommodityType(form.getType()), form.getName(), form.getPrice());
         ResultData response = commodityService.create(commodity);
         result.setResponseCode(response.getResponseCode());
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {

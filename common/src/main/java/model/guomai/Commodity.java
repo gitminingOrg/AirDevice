@@ -13,8 +13,6 @@ public class Commodity extends Entity{
 
     private int commodityPrice;
 
-    private int commodityBonus;
-
     private CommodityType type;
 
     public String getCommodityId() {
@@ -41,14 +39,6 @@ public class Commodity extends Entity{
         this.commodityPrice = commodityPrice;
     }
 
-    public int getCommodityBonus() {
-        return commodityBonus;
-    }
-
-    public void setCommodityBonus(int commodityBonus) {
-        this.commodityBonus = commodityBonus;
-    }
-
     public CommodityType getType() {
         return type;
     }
@@ -61,11 +51,10 @@ public class Commodity extends Entity{
         super();
     }
 
-    public Commodity(CommodityType type, String commodityName, int commodityPrice, int commodityBonus){
+    public Commodity(CommodityType type, String commodityName, int commodityPrice){
         super();
         this.type = type;
         this.commodityName = commodityName;
         this.commodityPrice = commodityPrice;
-        this.commodityBonus = commodityBonus;
     }
 }
