@@ -68,7 +68,7 @@ public class DeviceReceiveService {
 		if (!update) {
 			LOG.warn("update cleaner status cache failed");
 		}else {
-			LOG.info("update succeed");
+			//LOG.info("update succeed");
 		}
 	}
 	

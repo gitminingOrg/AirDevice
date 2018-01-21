@@ -15,7 +15,7 @@ public class SessionCacheManager {
 	public static final String SESSION_ = "session."; 
 	public static Logger LOG = LoggerFactory.getLogger(SessionCacheManager.class);
 	
-	private ExpiringMap<String, IoSession> sessionMap = new ExpiringMap<>(2*60);
+	private ExpiringMap<String, IoSession> sessionMap = new ExpiringMap(2*60);
 	@PostConstruct
 	public void init(){
 		sessionMap.getExpirer().startExpiring();
