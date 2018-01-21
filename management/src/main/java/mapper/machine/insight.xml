@@ -3,13 +3,13 @@
 <mapper namespace="management.machine.insight">
     <resultMap id="machineInsightVo" type="vo.machine.InsightVo">
         <result property="insightId" column="insight_id"/>
-        <result property="codeId" column="code_id"/>
+        <result property="machineId" column="machine_id"/>
         <result property="path" column="insight_path"/>
         <result property="createAt" column="create_time"/>
     </resultMap>
 
     <select id="query" parameterType="java.util.Map" resultMap="machineInsightVo">
-        SELECT insight_id, code_id, insight_path, create_time
+        SELECT insight_id, machine_id, insight_path, create_time
         FROM gmair_order.machine_insight
         WHERE 1 = 1
         AND block_flag = FALSE

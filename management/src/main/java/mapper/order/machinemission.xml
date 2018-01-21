@@ -6,14 +6,30 @@
         <result property="machineId" column="machine_item_id" />
         <result property="missionTitle" column="mission_title" />
         <result property="missionContent" column="mission_content" />
-        <result property="missionRecorder" column="machine_recorder" />
-        <result property="machineDate" column="mission_date" />
+        <result property="missionRecorder" column="mission_recorder" />
+        <result property="missionDate" column="mission_date" />
         <result property="blockFlag" column="block_flag" />
         <result property="createTime" column="create_time" />
+        <collection property="insightList" column="missionId = mission_id" select="missionInsightQuery" />
     </resultMap>
 
+    <resultMap id="machineInsightVo" type="vo.machine.InsightVo">
+        <result property="insightId" column="insight_id"/>
+        <result property="machineId" column="machine_id"/>
+        <result property="path" column="insight_path"/>
+        <result property="createAt" column="create_time"/>
+    </resultMap>
+
+    <select id="missionInsightQuery" resultMap="machineInsightVo">
+        SELECT insight_id, machine_id, insight_path, create_time
+        FROM gmair_order.machine_insight
+        WHERE 1 = 1
+        AND block_flag = FALSE
+        AND event_id = #{missionId}
+    </select>
+
     <select id="query" parameterType="java.util.Map" resultMap="machineMissionVo">
-        select mission_id, machine_item_id, mission_title, mission_content, machine_recorder,
+        select mission_id, machine_item_id, mission_title, mission_content, mission_recorder,
         mission_date, block_flag, create_time
         from gmair_order.machine_mission
         where 1 = 1
@@ -27,7 +43,7 @@
             and mission_title = #{missionTitle}
         </if>
         <if test="missionRecorder != null">
-            and machine_recorder = #{missionRecorder}
+            and mission_recorder = #{missionRecorder}
         </if>
         <if test="blockFlag != null">
             and block_flag = #{blockFlag}
@@ -43,10 +59,10 @@
     </select>
 
     <insert id="insert" parameterType="model.order.MachineMission" useGeneratedKeys="false">
-        insert into gmair_order.machine_mission(mission_id, machine_id, mission_title, mission_content,
-        machine_recorder, mission_date, block_flag, create_time)
+        insert into gmair_order.machine_mission(mission_id, machine_item_id, mission_title, mission_content,
+        mission_recorder, mission_date, block_flag, create_time)
         values
         (#{missionId}, #{machineId}, #{missionTitle}, #{missionContent}, #{missionRecorder},
-         #{missionDate}, #{installType}, #{blockFlag}, #{createAt})
+         #{missionDate}, #{blockFlag}, #{createAt})
     </insert>
 </mapper>

@@ -601,22 +601,19 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{orderId}/{deviceId}")
-    public ModelAndView machineMissionlist(@PathVariable String orderId, @PathVariable String deviceId) {
-        ModelAndView view = new ModelAndView();
-        view.setViewName("/backend/order/orderMachine");
-        Map<String, Object> missionCondition = new HashMap<>();
-        Map<String, Object> orderCondition = new HashMap<>();
-        missionCondition.put("blockFlag", false);
-        missionCondition.put("deviceId", deviceId);
-        ResultData response = machineMissionService.fetch(missionCondition);
-        view.addObject("machineMission", ((List<MachineMissionVo>) response.getData()).get(0));
+    @RequestMapping(method = RequestMethod.GET, value = "/machineMission/list")
+    public ResultData machineMissionlist() {
+        ResultData result = new ResultData();
 
-        orderCondition.put("blockFlag", false);
-        orderCondition.put("orderId", orderId);
-        response = orderService.fetch(orderCondition);
-        view.addObject("order", ((List<GuoMaiOrderVo>) response.getData()).get(0));
-        return view;
+        Map<String, Object> missionCondition = new HashMap<>();
+        missionCondition.put("blockFlag", false);
+        ResultData response = machineMissionService.fetch(missionCondition);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setData(response.getData());
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setDescription("服务器忙，请稍后再试!");
+        }
+        return result;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/machinemission/create")
@@ -633,7 +630,7 @@ public class OrderController {
         UserVo userVo = (UserVo) subject.getPrincipal();
         MachineMission machineMission =
                 new MachineMission(form.getMachineId(), form.getMissionTitle(), form.getMissionContent(),
-                        userVo.getUsername(), Timestamp.valueOf(form.getMissionDate()));
+                        "", Timestamp.valueOf(form.getMissionDate()));
         ResultData response = machineMissionService.create(machineMission);
         result.setResponseCode(response.getResponseCode());
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
