@@ -5,6 +5,7 @@ import dao.MachineItemDao;
 import model.order.MachineItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 import utils.IDGenerator;
 import utils.ResponseCode;
 import utils.ResultData;
@@ -17,6 +18,7 @@ import java.util.Map;
 /**
  * Created by XXH on 2018/1/20.
  */
+@Repository
 public class MachineItemDaoImpl extends BaseDao implements MachineItemDao{
     private Logger logger = LoggerFactory.getLogger(MachineItemDao.class);
     private final Object lock = new Object();

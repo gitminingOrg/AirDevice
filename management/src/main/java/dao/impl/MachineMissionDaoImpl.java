@@ -43,7 +43,7 @@ public class MachineMissionDaoImpl extends BaseDao implements MachineMissionDao 
     @Override
     public ResultData insert(MachineMission machineMission) {
         ResultData result = new ResultData();
-        machineMission.setMachineId(IDGenerator.generate("MM"));
+        machineMission.setMissionId(IDGenerator.generate("MM"));
         synchronized (lock) {
             try {
                 sqlSession.insert("management.order.machineMission.insert", machineMission);

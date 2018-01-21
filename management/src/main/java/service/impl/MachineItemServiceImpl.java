@@ -3,6 +3,7 @@ package service.impl;
 import dao.MachineItemDao;
 import model.order.MachineItem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import service.MachineItemService;
 import utils.ResultData;
 
@@ -11,6 +12,7 @@ import java.util.Map;
 /**
  * Created by XXH on 2018/1/20.
  */
+@Service
 public class MachineItemServiceImpl implements MachineItemService{
 
     @Autowired

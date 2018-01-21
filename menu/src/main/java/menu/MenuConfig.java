@@ -118,9 +118,20 @@ public class MenuConfig {
             e.printStackTrace();
         }
 
+        //卡券兑换
+        JSONObject card_exchange = new JSONObject();
+        card_exchange.put("name", "卡券兑换");
+        card_exchange.put("type", "view");
+        try{
+            card_exchange.put("url", "http://one.fw1860.com/recinzaixiantihuoxitongimages/wxth/njgm/wxth.aspx");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
         JSONArray after_support = new JSONArray();
         after_support.add(contact_us);
         after_support.add(online_purchase);
+        after_support.add(card_exchange);
 
         JSONObject as_menu = new JSONObject();
         as_menu.put("name", "购买与服务");
@@ -196,7 +207,7 @@ public class MenuConfig {
     }
 
     public static void main(String[] args) {
-        String token = "";
+        String token = "6_7hDrv96MW7Ae4G5W5k8b4SOnW6kCDnBEozLz6Pweanksio9WlQd6wYVPwZHNTvbXJp0mKLBauE0pTxSxMYIY8MklGWoNtiuzMuwxgjatDFZfzVk1u9Lf_MxMGxlAvUDGtrr7RK7uucrzNqtGFENgAGAXWF";
         String deleteMessage = MenuConfig.deleteMenu(token);
         System.out.println("删除操作: " + deleteMessage);
         String createMessage = MenuConfig.createMenu(token);

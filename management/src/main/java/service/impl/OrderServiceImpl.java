@@ -49,8 +49,8 @@ public class OrderServiceImpl implements OrderService {
 
 
 	@Override
-	public ResultData uploadCommodity(List<OrderCommodity> commodityList) {
-		return orderDao.insertCommodity(commodityList);
+	public ResultData uploadOrderItem(List<OrderItem> commodityList) {
+		return orderDao.insertOrderItem(commodityList);
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public ResultData create(OrderCommodity commodity) {
+	public ResultData create(OrderItem commodity) {
 		return orderDao.create(commodity);
 	}
 
@@ -252,7 +252,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public ResultData assignBatchCommodity(List<OrderCommodity> commodityList) {
+	public ResultData assignBatchCommodity(List<OrderItem> commodityList) {
 		return orderDao.updateBatchCommodity(commodityList);
 	}
 

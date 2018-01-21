@@ -1,8 +1,10 @@
 package vo.order;
 
 import model.order.MachineMissionStatus;
+import vo.machine.InsightVo;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by XXH on 2018/1/17.
@@ -16,6 +18,7 @@ public class MachineMissionVo {
     private Timestamp missionDate;
     private boolean blockFlag;
     private Timestamp createTime;
+    private List<InsightVo> insightList;
 
 
     public String getMissionId() {
@@ -80,5 +83,13 @@ public class MachineMissionVo {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
+    }
+
+    public List<InsightVo> getInsightList() {
+        return insightList;
+    }
+
+    public void setInsightList(List<InsightVo> insightList) {
+        this.insightList = insightList;
     }
 }

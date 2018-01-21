@@ -1,5 +1,6 @@
 package vo.order;
 
+import model.order.MachineMissionStatus;
 import utils.MachineStatus;
 
 import java.sql.Timestamp;
@@ -15,7 +16,7 @@ public class MachineItemVo {
     private String providerName;
     private String machineCode;
     private String installType;
-    private MachineStatus machineStatus;
+    private MachineMissionStatus machineMissionStatus;
     private boolean blockFlag;
     private Timestamp createTime;
 
@@ -67,12 +68,12 @@ public class MachineItemVo {
         this.installType = installType;
     }
 
-    public MachineStatus getMachineStatus() {
-        return machineStatus;
+    public MachineMissionStatus getMachineMissionStatus() {
+        return machineMissionStatus;
     }
 
-    public void setMachineStatus(MachineStatus machineStatus) {
-        this.machineStatus = machineStatus;
+    public void setMachineMissionStatus(MachineMissionStatus machineMissionStatus) {
+        this.machineMissionStatus = machineMissionStatus;
     }
 
     public boolean isBlockFlag() {

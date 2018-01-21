@@ -2,33 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="management.commodity">
     <resultMap id="CommodityVo" type="vo.guomai.CommodityVo">
-        <result property="commodityId" column="commodity_id" />
-        <result property="commodityName" column="commodity_name" />
-        <result property="commodityPrice" column="commodity_price" />
-        <result property="commodityBonus" column="commodity_bonus" />
-        <result property="type" column="commodity_type" typeHandler="handler.CommodityTypeHandler" />
+        <result property="commodityId" column="com_id" />
+        <result property="commodityName" column="com_name" />
+        <result property="commodityPrice" column="com_price" />
+        <result property="type" column="com_type" typeHandler="handler.CommodityTypeHandler" />
         <result property="blockFlag" column="block_flag" />
         <result property="createAt" column="create_time" />
     </resultMap>
 
     <select id="query" parameterType="java.util.Map" resultMap="CommodityVo">
-        SELECT commodity_id, commodity_type, commodity_name, commodity_price, commodity_bonus, block_flag, create_time
-        FROM guomai_commodity
+        SELECT com_id, com_type, com_name, com_price, block_flag, create_time
+        FROM gmair_order.order_commodity
         WHERE 1 = 1
         <if test="commodityId != null">
-        and commodity_id = #{commodityId}
+        and com_id = #{commodityId}
         </if>
         <if test="type != null">
-            and commodity_type = #{type}
+            and com_type = #{type}
         </if>
         <if test="commodityName != null">
-            and commodity_name = #{commodityName}
+            and com_name = #{commodityName}
         </if>
         <if test="commodityPrice != null">
-            and commodity_price = #{commodityPrice}
-        </if>
-        <if test="commodityBonus != null">
-            and commodity_bonus = #{commodityBonus}
+            and com_price = #{commodityPrice}
         </if>
         <if test="blockFlag!= null">
             and block_flag = #{blockFlag}
@@ -37,24 +33,21 @@
     </select>
 
     <insert id="insert" parameterType="model.guomai.Commodity" useGeneratedKeys="false">
-        INSERT INTO guomai_commodity(commodity_id, commodity_type, commodity_name, commodity_price, commodity_bonus, block_flag, create_time)
+        INSERT INTO gmair_order.order_commodity(com_id, com_type, com_name, com_price, block_flag, create_time)
         VALUES
-        (#{commodityId}, #{type, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{commodityName}, #{commodityPrice}, #{commodityBonus}, #{blockFlag}, #{createAt})
+        (#{commodityId}, #{type, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{commodityName}, #{commodityPrice}, #{blockFlag}, #{createAt})
     </insert>
 
     <update id="update" parameterType="model.guomai.Commodity">
-        UPDATE guomai_commodity
+        UPDATE gmair_order.order_commodity
         <set>
             <if test="commodityName != null">
-                commodity_name = #{commodityName},
+                com_name = #{commodityName},
             </if>
             <if test="commodityPrice != null">
-                commodity_price = #{commodityPrice},
-            </if>
-            <if test="commodityBonus != null">
-                commodity_bonus = #{commodityBonus},
+                com_price = #{commodityPrice},
             </if>
         </set>
-        WHERE commodity_id = #{commodityId}
+        WHERE com_id = #{commodityId}
     </update>
 </mapper>

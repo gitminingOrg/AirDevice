@@ -276,3 +276,12 @@ ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 ROW_FORMAT=COMPACT
 ;
+
+ALTER TABLE `order_item`
+MODIFY COLUMN `com_id`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `order_id`;
+
+ALTER TABLE `order_item` ADD CONSTRAINT `fk_order_commodity` FOREIGN KEY (`com_id`) REFERENCES `order_commodity` (`com_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+ALTER TABLE `machine_insight`
+CHANGE COLUMN `path` `insight_path`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `machine_id`;
+

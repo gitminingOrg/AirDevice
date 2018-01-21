@@ -1,11 +1,9 @@
 package air.cleaner.mina;
 
-import java.net.InetSocketAddress;
-import java.util.Calendar;
-
+import air.cleaner.cache.SessionCacheManager;
+import air.cleaner.device.service.DeviceReceiveService;
 import model.HeartbeatMCPPacket;
 import model.MCPPacket;
-
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
@@ -15,12 +13,12 @@ import org.apache.mina.core.session.IoSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import utils.ByteUtil;
 import utils.Constant;
 import utils.IPUtil;
-import air.cleaner.cache.SessionCacheManager;
-import air.cleaner.device.service.DeviceReceiveService;
+
+import java.net.InetSocketAddress;
+import java.util.Calendar;
 
 public class MCPPacketHandler extends IoHandlerAdapter {
     public static Logger LOG = LoggerFactory.getLogger(MCPPacketHandler.class);
@@ -49,7 +47,7 @@ public class MCPPacketHandler extends IoHandlerAdapter {
             if (message instanceof HeartbeatMCPPacket) {
                 String ip = IPUtil.tell(session);
                 //receive heartbeat, update status
-                //LOG.info("heartbeat message received:" + message);
+                //LOG.info("heartbeat message received:"+message);
                 HeartbeatMCPPacket packet = (HeartbeatMCPPacket) message;
                 deviceReceiveService.updateCacheCleanerStatus(packet, ip);
                 //send return packet
@@ -78,7 +76,7 @@ public class MCPPacketHandler extends IoHandlerAdapter {
 
     @Override
     public void messageSent(IoSession session, Object message) throws Exception {
-        LOG.info("Message sent! : " + message);
+        //LOG.info("Message sent! : " +message);
         if (session.isClosing()) {
             LOG.error("Client has already been disconnected");
             return;
@@ -87,7 +85,7 @@ public class MCPPacketHandler extends IoHandlerAdapter {
 
     @Override
     public void sessionClosed(IoSession session) throws Exception {
-        LOG.debug("session closed" + session);
+        //LOG.debug("session closed" + session);
         CloseFuture closeFuture = session.close(true);
         closeFuture.addListener(new IoFutureListener<IoFuture>() {
             public void operationComplete(IoFuture future) {
@@ -104,20 +102,20 @@ public class MCPPacketHandler extends IoHandlerAdapter {
         super.sessionCreated(session);
         String clientIP = ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
         session.setAttribute("KEY_SESSION_CLIENT_IP", clientIP);
-        LOG.debug("sessionCreated, client IP: " + clientIP);
+        //LOG.debug("sessionCreated, client IP: " + clientIP);
     }
 
     @Override
     public void exceptionCaught(IoSession session, Throwable cause)
             throws Exception {
-        LOG.error("message deliever exception caught", cause);
+        //LOG.error("message deliever exception caught", cause);
         super.exceptionCaught(session, cause);
     }
 
     @Override
     public void sessionIdle(IoSession session, IdleStatus status)
             throws Exception {
-        LOG.debug("session idle");
+        //LOG.debug("session idle");
         super.sessionIdle(session, status);
     }
 

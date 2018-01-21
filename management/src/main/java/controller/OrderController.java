@@ -26,7 +26,6 @@ import service.QRCodeService;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.order.GuoMaiOrderVo;
-import vo.order.MachineMissionVo;
 import vo.order.OrderVo;
 import vo.user.UserVo;
 
@@ -256,24 +255,23 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/commodity/create", consumes = "application/json")
-    public ResultData createCommodity(@RequestBody OrderCommodityWrapper commodityWrapper, BindingResult br) {
+    @RequestMapping(method = RequestMethod.POST, value = "/orderItem/create", consumes = "application/json")
+    public ResultData createCommodity(@RequestBody OrderItemWrapper commodityWrapper, BindingResult br) {
         ResultData result = new ResultData();
         if (br.hasErrors()) {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
             result.setDescription(JSONObject.toJSONString(br.getAllErrors()));
             return result;
         }
-        List<OrderCommodity> commodityList = new LinkedList<>();
-        for (OrderCommodityForm form : commodityWrapper.getCommodities()) {
+        List<OrderItem> commodityList = new LinkedList<>();
+        for (OrderItemForm form : commodityWrapper.getCommodities()) {
             form.setOrderId(commodityWrapper.getOrderId());
-            OrderCommodity commodity = new
-                    OrderCommodity(form.getOrderId(), form.getCommodityType(), form.getCommodityName(),
-                    form.getCommodityPrice(), form.getCommodityQuantity(), form.getCommodityQrcode());
+            OrderItem commodity = new
+                    OrderItem(form.getOrderId(), form.getCommodityId(), form.getCommodityQuantity());
             commodityList.add(commodity);
         }
 
-        ResultData response = orderService.uploadCommodity(commodityList);
+        ResultData response = orderService.uploadOrderItem(commodityList);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setResponseCode(ResponseCode.RESPONSE_OK);
         } else {
@@ -283,20 +281,19 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/commodity/update", consumes = "application/json")
-    public ResultData updateCommodity(@RequestBody OrderCommodityWrapper commodityWrapper, BindingResult br) {
+    @RequestMapping(method = RequestMethod.POST, value = "/orderItem/update", consumes = "application/json")
+    public ResultData updateCommodity(@RequestBody OrderItemWrapper commodityWrapper, BindingResult br) {
         ResultData result = new ResultData();
         if (br.hasErrors()) {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
             result.setDescription(JSONObject.toJSONString(br.getAllErrors()));
             return result;
         }
-        List<OrderCommodity> commodityList = new LinkedList<>();
-        for (OrderCommodityForm form : commodityWrapper.getCommodities()) {
+        List<OrderItem> commodityList = new LinkedList<>();
+        for (OrderItemForm form : commodityWrapper.getCommodities()) {
             form.setOrderId(commodityWrapper.getOrderId());
-            OrderCommodity commodity = new
-                    OrderCommodity(form.getOrderId(), form.getCommodityType(), form.getCommodityName(),
-                    form.getCommodityPrice(), form.getCommodityQuantity(), form.getCommodityQrcode());
+            OrderItem commodity = new
+                    OrderItem(form.getOrderId(), form.getCommodityId(), form.getCommodityQuantity());
             commodity.setCommodityId(form.getCommodityId());
             commodityList.add(commodity);
         }
@@ -311,7 +308,7 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/commodity/delete")
+    @RequestMapping(method = RequestMethod.POST, value = "/orderItem/delete")
     public ResultData deleteCommodity(@RequestParam String commodityId) {
         ResultData result = new ResultData();
         Map<String, Object> condition = new HashMap<>();
@@ -603,22 +600,19 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{orderId}/{deviceId}")
-    public ModelAndView machineMissionlist(@PathVariable String orderId, @PathVariable String deviceId) {
-        ModelAndView view = new ModelAndView();
-        view.setViewName("/backend/order/orderMachine");
-        Map<String, Object> missionCondition = new HashMap<>();
-        Map<String, Object> orderCondition = new HashMap<>();
-        missionCondition.put("blockFlag", false);
-        missionCondition.put("deviceId", deviceId);
-        ResultData response = machineMissionService.fetch(missionCondition);
-        view.addObject("machineMission", ((List<MachineMissionVo>) response.getData()).get(0));
+    @RequestMapping(method = RequestMethod.GET, value = "/machineMission/list")
+    public ResultData machineMissionlist() {
+        ResultData result = new ResultData();
 
-        orderCondition.put("blockFlag", false);
-        orderCondition.put("orderId", orderId);
-        response = orderService.fetch(orderCondition);
-        view.addObject("order", ((List<GuoMaiOrderVo>) response.getData()).get(0));
-        return view;
+        Map<String, Object> missionCondition = new HashMap<>();
+        missionCondition.put("blockFlag", false);
+        ResultData response = machineMissionService.fetch(missionCondition);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setData(response.getData());
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setDescription("服务器忙，请稍后再试!");
+        }
+        return result;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/machinemission/create")
@@ -635,7 +629,7 @@ public class OrderController {
         UserVo userVo = (UserVo) subject.getPrincipal();
         MachineMission machineMission =
                 new MachineMission(form.getMachineId(), form.getMissionTitle(), form.getMissionContent(),
-                        userVo.getUsername(), Timestamp.valueOf(form.getMissionDate()));
+                        "", Timestamp.valueOf(form.getMissionDate()));
         ResultData response = machineMissionService.create(machineMission);
         result.setResponseCode(response.getResponseCode());
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
@@ -646,7 +640,7 @@ public class OrderController {
             JSONArray filepathList = JSON.parseArray(form.getFilePathList());
             for (Object filepath: filepathList) {
                 Insight insight = new Insight();
-                insight.setCodeId(codeId);
+                insight.setMachineId(codeId);
                 insight.setEventId(missionId);
                 insight.setPath((String) filepath);
                 qRCodeService.createInsight(insight);

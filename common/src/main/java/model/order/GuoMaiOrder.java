@@ -19,7 +19,7 @@ public class GuoMaiOrder extends Order {
     private String orderCoupon;
     private Timestamp orderTime;
     private String shipNo;
-    private List<OrderCommodity> commodityList;
+    private List<OrderItem> commodityList;
 
     public String getBuyerName() {
         return buyerName;
@@ -133,11 +133,11 @@ public class GuoMaiOrder extends Order {
         this.shipNo = shipNo;
     }
 
-    public List<OrderCommodity> getCommodityList() {
+    public List<OrderItem> getCommodityList() {
         return commodityList;
     }
 
-    public void setCommodityList(List<OrderCommodity> commodityList) {
+    public void setCommodityList(List<OrderItem> commodityList) {
         this.commodityList = commodityList;
     }
 

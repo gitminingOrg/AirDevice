@@ -14,8 +14,6 @@ public class CommodityVo {
 
     private int commodityPrice;
 
-    private int commodityBonus;
-
     private CommodityType type;
 
     private boolean blockFlag;
@@ -44,14 +42,6 @@ public class CommodityVo {
 
     public void setCommodityPrice(int commodityPrice) {
         this.commodityPrice = commodityPrice;
-    }
-
-    public int getCommodityBonus() {
-        return commodityBonus;
-    }
-
-    public void setCommodityBonus(int commodityBonus) {
-        this.commodityBonus = commodityBonus;
     }
 
     public CommodityType getType() {

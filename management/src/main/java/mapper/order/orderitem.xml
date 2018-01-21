@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.orderitem">
+
+    <insert id="insert" parameterType="model.order.OrderItem">
+        INSERT INTO gmair_order.order_item
+        (order_item_id, order_id, com_id, order_item_quantity, block_flag, create_time)
+         VALUES
+         (#{orderItemId}, #{orderId}, #{commodityId}, #{commodityQuantity}, #{blockFlag}, #{createAt})
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO gmair_order.order_item
+        (order_item_id, order_id, com_id, order_item_quantity, block_flag, create_time)
+         VALUES
+         <foreach collection="list" separator="," index="index" item="item">
+             (#{item.orderItemId}, #{item.orderId}, #{item.commodityId}, #{item.commodityQuantity},
+             #{item.blockFlag}, #{item.createAt})
+         </foreach>
+
+    </insert>
+
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" separator=";" index="index" item="item">
+            UPDATE gmair_order.order_item
+            <set>
+                <if test="item.blockFlag != null">
+                    block_flag = #{item.blockFlag}
+                </if>
+            </set>
+            WHERE order_item_id = #{item.orderItemId}
+        </foreach>
+    </update>
+
+    <update id="update" parameterType="model.order.OrderItem">
+        UPDATE gmair_order.order_item
+        <set>
+            <if test="item.blockFlag != null">
+                block_flag = #{item.blockFlag}
+            </if>
+        </set>
+        WHERE commodity_id = #{commodityId}
+    </update>
+
+    <update id="blockcommodity" parameterType="java.util.Map">
+        UPDATE gmair_order.order_item SET block_flag = 1 WHERE commodity_id = #{commodityId}
+    </update>
+
+</mapper>
