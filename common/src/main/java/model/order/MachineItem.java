@@ -1,7 +1,7 @@
 package model.order;
 
 import model.Entity;
-import utils.MachineStatus;
+
 
 /**
  * Created by XXH on 2018/1/20.
@@ -12,7 +12,7 @@ public class MachineItem extends Entity{
     private String providerId;
     private String machineCode;
     private String installType;
-    private MachineStatus machineStatus;
+    private MachineMissionStatus machineMissionStatus;
 
     public String getMachineId() {
         return machineId;
@@ -54,11 +54,11 @@ public class MachineItem extends Entity{
         this.installType = installType;
     }
 
-    public MachineStatus getMachineStatus() {
-        return machineStatus;
+    public MachineMissionStatus getMachineMissionStatus() {
+        return machineMissionStatus;
     }
 
-    public void setMachineStatus(MachineStatus machineStatus) {
-        this.machineStatus = machineStatus;
+    public void setMachineMissionStatus(MachineMissionStatus machineMissionStatus) {
+        this.machineMissionStatus = machineMissionStatus;
     }
 }

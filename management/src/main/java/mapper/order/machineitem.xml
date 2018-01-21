@@ -8,7 +8,7 @@
         <result property="providerName" column="provider_name" />
         <result property="machineCode" column="machine_code" />
         <result property="installType" column="install_type" />
-        <result property="machineStatus" column="machine_status" typeHandler="handler.MachineMissionStatusHandler"/>
+        <result property="machineMissionStatus" column="machine_status" typeHandler="handler.MachineMissionStatusHandler"/>
         <result property="blockFlag" column="block_flag" />
         <result property="createTime" column="create_time" />
     </resultMap>
@@ -38,7 +38,7 @@
             AND install_type = #{installType}
         </if>
         <if test="machineStatus != null">
-            AND machine_status = #{machineStatus}
+            AND machine_status = #{machineMissionStatus}
         </if>
         <if test="blockFlag != null">
             AND block_flag = #{blockFlag}
@@ -53,7 +53,7 @@
           VALUES
           (
           #{machineId}, #{orderItemId}, #{providerId}, #{machineCode}, #{installType},
-          #{machineStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+          #{machineMissionStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
           #{blockFlag}, #{createAt}
           )
     </insert>
@@ -63,7 +63,7 @@
         <set>
           <if test="machineCode != null">machine_code = #{machineCode},</if>
           <if test="installType != null">install_type = #{installType},</if>
-          <if test="machineStatus != null">machine_status = #{machineStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}</if>
+          <if test="machineMissionStatus != null">machine_status = #{machineMissionStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}</if>
         </set>
         WHERE machine_item.machine_item_id = #{machineId}
     </update>

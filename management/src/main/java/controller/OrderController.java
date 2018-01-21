@@ -646,7 +646,7 @@ public class OrderController {
             JSONArray filepathList = JSON.parseArray(form.getFilePathList());
             for (Object filepath: filepathList) {
                 Insight insight = new Insight();
-                insight.setCodeId(codeId);
+                insight.setMachineId(codeId);
                 insight.setEventId(missionId);
                 insight.setPath((String) filepath);
                 qRCodeService.createInsight(insight);
