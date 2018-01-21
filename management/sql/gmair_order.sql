@@ -239,3 +239,40 @@ SELECT
 FROM
 	guomai_order LEFT JOIN order_channel ON guomai_order.channel_id = order_channel.channel_id
 	LEFT JOIN order_diversion on guomai_order.diversion_id = order_diversion.diversion_id
+
+ALTER TABLE `machine_item`
+ADD COLUMN `install_type`  varchar(255) NULL AFTER `machine_code`;
+
+ALTER TABLE `machine_mission`
+ADD COLUMN `mission_date`  varchar(255) NULL AFTER `mission_recorder`;
+
+
+create view order_item_machine_view
+AS
+SELECT
+order_item.order_id,
+machine_item.machine_item_id,
+machine_item.order_item_id,
+setup_provider.provider_name,
+machine_item.machine_code,
+machine_item.install_type,
+machine_item.machine_status,
+machine_item.block_flag,
+machine_item.create_time
+from machine_item
+	LEFT JOIN setup_provider on machine_item.provider_id = setup_provider.provider_id
+	LEFT JOIN order_item on machine_item.order_item_id = order_item.order_item_id
+
+CREATE TABLE `machine_insight` (
+`insight_id`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`event_id`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`machine_id`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`path`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`block_flag`  tinyint(11) NOT NULL ,
+`create_time`  datetime NOT NULL ,
+PRIMARY KEY (`insight_id`)
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+ROW_FORMAT=COMPACT
+;

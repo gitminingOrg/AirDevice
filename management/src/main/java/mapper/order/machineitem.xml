@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="management.order.machineItem">
+    <resultMap id="machineItemVo" type="vo.order.MachineItemVo">
+        <result property="machineId" column="machine_item_id" />
+        <result property="orderId" column="order_id" />
+        <result property="orderItemId" column="order_item_id" />
+        <result property="providerName" column="provider_name" />
+        <result property="machineCode" column="machine_code" />
+        <result property="installType" column="install_type" />
+        <result property="machineStatus" column="machine_status" typeHandler="handler.MachineMissionStatusHandler"/>
+        <result property="blockFlag" column="block_flag" />
+        <result property="createTime" column="create_time" />
+    </resultMap>
+
+    <select id="query" resultType="machineItemVo">
+        select
+        order_id, machine_item_id, order_item_id, provider_name, machine_code, machine_status,
+        install_type, block_flag, create_time
+        from gmair_order.order_item_machine
+        WHERE 1 = 1
+        <if test="orderId != null">
+            AND order_id = #{orderId}
+        </if>
+        <if test="machineId != null">
+            AND machine_item_id = #{machineId}
+        </if>
+        <if test="orderItemId != null">
+            AND order_item_id = #{orderItemId}
+        </if>
+        <if test="providerName != null">
+            AND provider_name = #{providerName}
+        </if>
+        <if test="machineCode != null">
+            AND machine_code = #{machineCode}
+        </if>
+        <if test="installType != null">
+            AND install_type = #{installType}
+        </if>
+        <if test="machineStatus != null">
+            AND machine_status = #{machineStatus}
+        </if>
+        <if test="blockFlag != null">
+            AND block_flag = #{blockFlag}
+        </if>
+    </select>
+
+    <insert id="insert" parameterType="model.order.MachineItem">
+        INSERT into gmair_order.machine_item
+        (machine_item_id, order_item_id, provider_id, machine_code, install_type, machine_status,
+          block_flag, create_time
+          )
+          VALUES
+          (
+          #{machineId}, #{orderItemId}, #{providerId}, #{machineCode}, #{installType},
+          #{machineStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+          #{blockFlag}, #{createAt}
+          )
+    </insert>
+
+    <update id="update" parameterType="model.order.MachineItem">
+        UPDATE gmair_order.machine_item
+        <set>
+          <if test="machineCode != null">machine_code = #{machineCode},</if>
+          <if test="installType != null">install_type = #{installType},</if>
+          <if test="machineStatus != null">machine_status = #{machineStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}</if>
+        </set>
+        WHERE machine_item.machine_item_id = #{machineId}
+    </update>
+</mapper>

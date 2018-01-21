@@ -10,7 +10,7 @@
 
     <select id="query" parameterType="java.util.Map" resultMap="machineInsightVo">
         SELECT insight_id, code_id, insight_path, create_time
-        FROM install_insight
+        FROM gmair_order.machine_insight
         WHERE 1 = 1
         AND block_flag = FALSE
         <if test="codeId != null">
@@ -22,15 +22,15 @@
     </select>
 
     <insert id="insert" parameterType="model.machine.Insight" useGeneratedKeys="false">
-        INSERT INTO install_insight(insight_id, code_id, event_id, insight_path, block_flag, create_time)
-        VALUES (#{insightId}, #{codeId}, #{eventId}, #{path}, #{blockFlag}, #{createAt})
+        INSERT INTO gmair_order.machine_insight(insight_id, machine_id, event_id, insight_path, block_flag, create_time)
+        VALUES (#{insightId}, #{machineId}, #{eventId}, #{path}, #{blockFlag}, #{createAt})
     </insert>
 
     <insert id="insertlist" parameterType="java.util.List" useGeneratedKeys="false">
-        INSERT INTO install_insight(insight_id, code_id, event_id, insight_path, block_flag, create_time)
+        INSERT INTO gmair_order.machine_insight(insight_id, machine_id, event_id, insight_path, block_flag, create_time)
         VALUES
         <foreach collection="list" item="ins" index="index" separator=",">
-            (#{ins.insightId}, #{ins.codeId}, #{ins.eventId}, #{ins.path}, #{ins.blockFlag}, #{ins.createAt})
+            (#{ins.insightId}, #{ins.machineId}, #{ins.eventId}, #{ins.path}, #{ins.blockFlag}, #{ins.createAt})
         </foreach>
     </insert>
 </mapper>
