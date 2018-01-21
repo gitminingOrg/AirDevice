@@ -21,7 +21,7 @@
         <result property="orderTime" column="order_time" />
         <result property="shipNo" column="ship_no" />
         <result property="createTime" column="create_time" />
-        <collection property="commodityList" column="orderId = order_no" select="ordercommodityquery"/>
+        <collection property="commodityList" column="orderId = order_id" select="ordercommodityquery"/>
     </resultMap>
 
     <resultMap id="orderCommodityVo" type="vo.order.OrderCommodityVo">

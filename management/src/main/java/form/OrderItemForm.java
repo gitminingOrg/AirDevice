@@ -3,7 +3,7 @@ package form;
 /**
  * Created by XXH on 2017/12/31.
  */
-public class OrderCommodityForm {
+public class OrderItemForm {
     private String commodityId;
     private String orderId;
     private int commodityQuantity;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="management.ordercommodity">
+<mapper namespace="management.orderitem">
 
     <insert id="insert" parameterType="model.order.OrderItem">
         INSERT INTO gmair_order.order_item
@@ -15,7 +15,7 @@
          VALUES
          <foreach collection="list" separator="," index="index" item="item">
              (#{item.orderItemId}, #{item.orderId}, #{item.commodityId}, #{item.commodityQuantity},
-             #{item.commodityQrcode}, #{item.blockFlag}, #{item.createAt})
+             #{item.blockFlag}, #{item.createAt})
          </foreach>
 
     </insert>

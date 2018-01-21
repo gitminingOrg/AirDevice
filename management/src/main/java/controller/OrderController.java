@@ -26,7 +26,6 @@ import service.QRCodeService;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.order.GuoMaiOrderVo;
-import vo.order.MachineMissionVo;
 import vo.order.OrderVo;
 import vo.user.UserVo;
 
@@ -256,8 +255,8 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/commodity/create", consumes = "application/json")
-    public ResultData createCommodity(@RequestBody OrderCommodityWrapper commodityWrapper, BindingResult br) {
+    @RequestMapping(method = RequestMethod.POST, value = "/orderItem/create", consumes = "application/json")
+    public ResultData createCommodity(@RequestBody OrderItemWrapper commodityWrapper, BindingResult br) {
         ResultData result = new ResultData();
         if (br.hasErrors()) {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -265,14 +264,14 @@ public class OrderController {
             return result;
         }
         List<OrderItem> commodityList = new LinkedList<>();
-        for (OrderCommodityForm form : commodityWrapper.getCommodities()) {
+        for (OrderItemForm form : commodityWrapper.getCommodities()) {
             form.setOrderId(commodityWrapper.getOrderId());
             OrderItem commodity = new
                     OrderItem(form.getOrderId(), form.getCommodityId(), form.getCommodityQuantity());
             commodityList.add(commodity);
         }
 
-        ResultData response = orderService.uploadCommodity(commodityList);
+        ResultData response = orderService.uploadOrderItem(commodityList);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setResponseCode(ResponseCode.RESPONSE_OK);
         } else {
@@ -282,8 +281,8 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/commodity/update", consumes = "application/json")
-    public ResultData updateCommodity(@RequestBody OrderCommodityWrapper commodityWrapper, BindingResult br) {
+    @RequestMapping(method = RequestMethod.POST, value = "/orderItem/update", consumes = "application/json")
+    public ResultData updateCommodity(@RequestBody OrderItemWrapper commodityWrapper, BindingResult br) {
         ResultData result = new ResultData();
         if (br.hasErrors()) {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -291,7 +290,7 @@ public class OrderController {
             return result;
         }
         List<OrderItem> commodityList = new LinkedList<>();
-        for (OrderCommodityForm form : commodityWrapper.getCommodities()) {
+        for (OrderItemForm form : commodityWrapper.getCommodities()) {
             form.setOrderId(commodityWrapper.getOrderId());
             OrderItem commodity = new
                     OrderItem(form.getOrderId(), form.getCommodityId(), form.getCommodityQuantity());
@@ -309,7 +308,7 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/commodity/delete")
+    @RequestMapping(method = RequestMethod.POST, value = "/orderItem/delete")
     public ResultData deleteCommodity(@RequestParam String commodityId) {
         ResultData result = new ResultData();
         Map<String, Object> condition = new HashMap<>();

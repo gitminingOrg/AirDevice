@@ -49,8 +49,8 @@ public class OrderServiceImpl implements OrderService {
 
 
 	@Override
-	public ResultData uploadCommodity(List<OrderItem> commodityList) {
-		return orderDao.insertCommodity(commodityList);
+	public ResultData uploadOrderItem(List<OrderItem> commodityList) {
+		return orderDao.insertOrderItem(commodityList);
 	}
 
 	@Override

@@ -10,7 +10,7 @@ import utils.ResultData;
 public interface OrderDao {
 	ResultData insert(List<GuoMaiOrder> order);
 
-	ResultData insertCommodity(List<OrderItem> commodityList);
+	ResultData insertOrderItem(List<OrderItem> commodityList);
 
 	ResultData query(Map<String, Object> condition);
 

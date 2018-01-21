@@ -10,7 +10,7 @@ import utils.ResultData;
 public interface OrderService {
     ResultData upload(List<GuoMaiOrder> order);
 
-    ResultData uploadCommodity(List<OrderItem> commodityList);
+    ResultData uploadOrderItem(List<OrderItem> commodityList);
 
     ResultData fetch(Map<String, Object> condition, DataTableParam param);
 
