@@ -4,21 +4,17 @@ package model.order;
 import model.Entity;
 
 public class OrderCommodity extends Entity{
-    private String commodityId;
+    private String orderItemId;
     private String orderId;
-    private String commodityType;
-    private String commodityName;
-    private double commodityPrice;
+    private String commodityId;
     private int commodityQuantity;
-    private String commodityQrcode;
 
-
-    public String getCommodityId() {
-        return commodityId;
+    public String getOrderItemId() {
+        return orderItemId;
     }
 
-    public void setCommodityId(String commodityId) {
-        this.commodityId = commodityId;
+    public void setOrderItemId(String orderItemId) {
+        this.orderItemId = orderItemId;
     }
 
     public String getOrderId() {
@@ -29,28 +25,12 @@ public class OrderCommodity extends Entity{
         this.orderId = orderId;
     }
 
-    public String getCommodityType() {
-        return commodityType;
+    public String getCommodityId() {
+        return commodityId;
     }
 
-    public void setCommodityType(String commodityType) {
-        this.commodityType = commodityType;
-    }
-
-    public String getCommodityName() {
-        return commodityName;
-    }
-
-    public void setCommodityName(String commodityName) {
-        this.commodityName = commodityName;
-    }
-
-    public double getCommodityPrice() {
-        return commodityPrice;
-    }
-
-    public void setCommodityPrice(double commodityPrice) {
-        this.commodityPrice = commodityPrice;
+    public void setCommodityId(String commodityId) {
+        this.commodityId = commodityId;
     }
 
     public int getCommodityQuantity() {
@@ -59,26 +39,5 @@ public class OrderCommodity extends Entity{
 
     public void setCommodityQuantity(int commodityQuantity) {
         this.commodityQuantity = commodityQuantity;
-    }
-
-    public String getCommodityQrcode() {
-        return commodityQrcode;
-    }
-
-    public void setCommodityQrcode(String commodityQrcode) {
-        this.commodityQrcode = commodityQrcode;
-    }
-
-    public OrderCommodity() {super();}
-
-    public OrderCommodity(String orderId, String commodityType, String commodityName,
-                          double commodityPrice, int commodityQuantity, String commodityQrcode) {
-        super();
-        this.orderId = orderId;
-        this.commodityType = commodityType;
-        this.commodityName = commodityName;
-        this.commodityPrice = commodityPrice;
-        this.commodityQuantity = commodityQuantity;
-        this.commodityQrcode = commodityQrcode;
     }
 }

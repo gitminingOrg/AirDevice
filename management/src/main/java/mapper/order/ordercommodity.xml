@@ -3,74 +3,47 @@
 <mapper namespace="management.ordercommodity">
 
     <insert id="insert" parameterType="model.order.OrderCommodity">
-        INSERT INTO order_commodity
-        (commodity_id, order_id, commodity_type, commodity_name, commodity_price,
-         commodity_quantity, block_flag, create_time)
+        INSERT INTO gmair_order.order_item
+        (order_item_id, order_id, com_id, order_item_quantity, block_flag, create_time)
          VALUES
-         (#{commodityId}, #{orderId}, #{commodityType}, #{commodityName}, #{commodityPrice},
-          #{commodityQuantity}, #{blockFlag}, #{createAt})
+         (#{orderItemId}, #{orderId}, #{commodityId}, #{commodityQuantity}, #{blockFlag}, #{createAt})
     </insert>
 
     <insert id="insertBatch" parameterType="java.util.List">
-        INSERT INTO order_commodity
-        (commodity_id, order_id, commodity_type, commodity_name, commodity_price,
-         commodity_quantity, commodity_qrcode, block_flag, create_time)
+        INSERT INTO gmair_order.order_item
+        (order_item_id, order_id, com_id, order_item_quantity, block_flag, create_time)
          VALUES
          <foreach collection="list" separator="," index="index" item="item">
-             (#{item.commodityId}, #{item.orderId}, #{item.commodityType}, #{item.commodityName}, #{item.commodityPrice},
-             #{item.commodityQuantity}, #{item.commodityQrcode}, #{item.blockFlag}, #{item.createAt})
+             (#{item.orderItemId}, #{item.orderId}, #{item.commodityId}, #{item.commodityQuantity},
+             #{item.commodityQrcode}, #{item.blockFlag}, #{item.createAt})
          </foreach>
 
     </insert>
 
     <update id="updateBatch" parameterType="java.util.List">
         <foreach collection="list" separator=";" index="index" item="item">
-            UPDATE order_commodity
+            UPDATE gmair_order.order_item
             <set>
-                <if test="item.commodityType != null">
-                    commodity_type = #{item.commodityType},
-                </if>
-                <if test="item.commodityName != null">
-                    commodity_name = #{item.commodityName},
-                </if>
-                <if test="item.commodityPrice != null">
-                    commodity_price = #{item.commodityPrice},
-                </if>
-                <if test="item.commodityQrcode != null">
-                    commodity_qrcode = #{item.commodityQrcode},
-                </if>
-                <if test="item.commodityQuantity != null">
-                    commodity_quantity = #{item.commodityQuantity}
+                <if test="item.blockFlag != null">
+                    block_flag = #{item.blockFlag}
                 </if>
             </set>
-            WHERE commodity_id = #{item.commodityId}
+            WHERE order_item_id = #{item.orderItemId}
         </foreach>
     </update>
 
     <update id="update" parameterType="model.order.OrderCommodity">
-        UPDATE order_commodity
+        UPDATE gmair_order.order_item
         <set>
-            <if test="commodityType != null">
-                commodity_type = #{commodityType},
-            </if>
-            <if test="commodityName != null">
-                commodity_name = #{commodityName},
-            </if>
-            <if test="commodityPrice != null">
-                commodity_price = #{commodityPrice},
-            </if>
-            <if test="item.commodityQrcode != null">
-                commodity_qrcode = #{item.commodityQrcode},
-            </if>
-            <if test="commodityQuantity != null">
-                commodity_quantity = #{commodityQuantity},
+            <if test="item.blockFlag != null">
+                block_flag = #{item.blockFlag}
             </if>
         </set>
         WHERE commodity_id = #{commodityId}
     </update>
 
     <update id="blockcommodity" parameterType="java.util.Map">
-        UPDATE order_commodity SET block_flag = 1 WHERE commodity_id = #{commodityId}
+        UPDATE gmair_order.order_item SET block_flag = 1 WHERE commodity_id = #{commodityId}
     </update>
 
 </mapper>
