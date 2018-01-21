@@ -6,11 +6,7 @@ package form;
 public class OrderCommodityForm {
     private String commodityId;
     private String orderId;
-    private String commodityType;
-    private String commodityName;
-    private double commodityPrice;
     private int commodityQuantity;
-    private String commodityQrcode;
 
     public String getCommodityId() {
         return commodityId;
@@ -28,30 +24,6 @@ public class OrderCommodityForm {
         this.orderId = orderId;
     }
 
-    public String getCommodityType() {
-        return commodityType;
-    }
-
-    public void setCommodityType(String commodityType) {
-        this.commodityType = commodityType;
-    }
-
-    public String getCommodityName() {
-        return commodityName;
-    }
-
-    public void setCommodityName(String commodityName) {
-        this.commodityName = commodityName;
-    }
-
-    public double getCommodityPrice() {
-        return commodityPrice;
-    }
-
-    public void setCommodityPrice(double commodityPrice) {
-        this.commodityPrice = commodityPrice;
-    }
-
     public int getCommodityQuantity() {
         return commodityQuantity;
     }
@@ -60,11 +32,4 @@ public class OrderCommodityForm {
         this.commodityQuantity = commodityQuantity;
     }
 
-    public String getCommodityQrcode() {
-        return commodityQrcode;
-    }
-
-    public void setCommodityQrcode(String commodityQrcode) {
-        this.commodityQrcode = commodityQrcode;
-    }
 }

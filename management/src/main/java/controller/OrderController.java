@@ -268,8 +268,7 @@ public class OrderController {
         for (OrderCommodityForm form : commodityWrapper.getCommodities()) {
             form.setOrderId(commodityWrapper.getOrderId());
             OrderCommodity commodity = new
-                    OrderCommodity(form.getOrderId(), form.getCommodityType(), form.getCommodityName(),
-                    form.getCommodityPrice(), form.getCommodityQuantity(), form.getCommodityQrcode());
+                    OrderCommodity(form.getOrderId(), form.getCommodityId(), form.getCommodityQuantity());
             commodityList.add(commodity);
         }
 
@@ -295,8 +294,7 @@ public class OrderController {
         for (OrderCommodityForm form : commodityWrapper.getCommodities()) {
             form.setOrderId(commodityWrapper.getOrderId());
             OrderCommodity commodity = new
-                    OrderCommodity(form.getOrderId(), form.getCommodityType(), form.getCommodityName(),
-                    form.getCommodityPrice(), form.getCommodityQuantity(), form.getCommodityQrcode());
+                    OrderCommodity(form.getOrderId(), form.getCommodityId(), form.getCommodityQuantity());
             commodity.setCommodityId(form.getCommodityId());
             commodityList.add(commodity);
         }

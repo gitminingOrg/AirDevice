@@ -40,4 +40,10 @@ public class OrderCommodity extends Entity{
     public void setCommodityQuantity(int commodityQuantity) {
         this.commodityQuantity = commodityQuantity;
     }
+
+    public OrderCommodity(String orderId, String commodityId, int commodityQuantity) {
+        this.orderId = orderId;
+        this.commodityId = commodityId;
+        this.commodityQuantity = commodityQuantity;
+    }
 }
