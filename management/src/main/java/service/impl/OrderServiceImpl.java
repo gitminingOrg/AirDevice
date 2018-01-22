@@ -257,7 +257,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public ResultData fetchMissionChannel(Map<String, Object> condition) {
-		return salesChannelDao.query(condition);
+		return setupProviderDao.query(condition);
 	}
 
 	@Override
@@ -280,7 +280,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public ResultData deleteMissionChannel(String channelId) {
-		ResultData result = salesChannelDao.delete(channelId);
+		ResultData result = setupProviderDao.delete(channelId);
 		return result;
 	}
 
