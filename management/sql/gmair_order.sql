@@ -285,3 +285,6 @@ ALTER TABLE `order_item` ADD CONSTRAINT `fk_order_commodity` FOREIGN KEY (`com_i
 ALTER TABLE `machine_insight`
 CHANGE COLUMN `path` `insight_path`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL AFTER `machine_id`;
 
+ALTER TABLE `machine_item`
+MODIFY COLUMN `provider_id`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `order_item_id`;
+

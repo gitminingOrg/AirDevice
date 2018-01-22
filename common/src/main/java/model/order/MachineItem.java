@@ -61,4 +61,8 @@ public class MachineItem extends Entity{
     public void setMachineMissionStatus(MachineMissionStatus machineMissionStatus) {
         this.machineMissionStatus = machineMissionStatus;
     }
+
+    public MachineItem() {
+        machineMissionStatus = MachineMissionStatus.PRE_SURVEY;
+    }
 }

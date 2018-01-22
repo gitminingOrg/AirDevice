@@ -1,7 +1,11 @@
 package service.impl;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import dao.*;
 import model.order.*;
@@ -14,7 +18,9 @@ import pagination.DataTableParam;
 import service.OrderService;
 import utils.ResponseCode;
 import utils.ResultData;
+import vo.guomai.CommodityVo;
 import vo.order.OrderChannelVo;
+import vo.order.OrderCommodityVo;
 import vo.order.OrderStatusVo;
 
 @Service
@@ -36,6 +42,12 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private SetupProviderDao setupProviderDao;
 
+	@Autowired
+    private CommodityDao commodityDao;
+
+	@Autowired
+    private MachineItemDao machineItemDao;
+
 	@Override
 	public ResultData upload(List<GuoMaiOrder> order) {
 		ResultData result = new ResultData();
@@ -50,7 +62,26 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public ResultData uploadOrderItem(List<OrderItem> commodityList) {
-		return orderDao.insertOrderItem(commodityList);
+		ResultData result = new ResultData();
+		ResultData response = orderDao.insertOrderItem(commodityList);
+		//create machine item with the order if order item has machine
+        List<OrderItem> orderItems = (List<OrderItem>) response.getData();
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            Map<String, Object> condition = new HashMap<>();
+            condition.put("blockFlag", 0);
+            List<CommodityVo> commodityVoList = (List<CommodityVo>) commodityDao.query(condition).getData();
+            Map<String, CommodityType> commodityTypeMap =
+                    commodityVoList.stream().collect(Collectors.toMap(e -> e.getCommodityId(), e -> e.getType()));
+            for (OrderItem item : orderItems) {
+                condition.put("commodityId", item.getCommodityId());
+                if (commodityTypeMap.get(item.getCommodityId()) == CommodityType.GUOMAI_XINFENG) {
+                    MachineItem machineItem = new MachineItem();
+                    machineItem.setOrderItemId(item.getOrderItemId());
+                    machineItemDao.insert(machineItem);
+                }
+            }
+        }
+		return result;
 	}
 
 	@Override
@@ -102,7 +133,9 @@ public class OrderServiceImpl implements OrderService {
 		ResultData result = new ResultData();
 		ResultData response = orderDao.create(order);
 		result.setResponseCode(response.getResponseCode());
-		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setData(response.getData());
+		} else {
 			result.setDescription(response.getDescription());
 		}
 		return result;

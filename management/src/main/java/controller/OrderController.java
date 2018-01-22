@@ -217,6 +217,7 @@ public class OrderController {
         }
         ResultData response = orderService.create(order);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setData(response.getData());
             result.setResponseCode(ResponseCode.RESPONSE_OK);
         } else {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);

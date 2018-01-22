@@ -66,6 +66,16 @@
                 <div class="form-row">
                     <label for="order_channel_list" class="form-label col-md-2">订单渠道</label>
                     <div class="form-input col-md-8">
+                        <select id="order_diversion_list">
+                            <option>---请选择订单渠道---</option>
+                            <option value="OD213">一爸</option>
+                            <option value="OD901">魏老爸</option>
+                        <select/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="order_channel_list" class="form-label col-md-2">购买渠道</label>
+                    <div class="form-input col-md-8">
                         <select id="order_channel_list">
                             <select/>
                     </div>
@@ -266,6 +276,7 @@
 			var receiver_address = $("#order-receiver-address").val();
 			var order_coupon = $("#order-coupon").val();
 			var order_channel = $("#order_channel_list").find(":selected").val();
+			var order_diversion = $("#order_diversion_list").find(":selected").val();
 			var pay_time = $("#pay-time").val()
             var order_status = $('#orderStatus').find(':selected').val();
 			var description = $("#description").val();
@@ -304,16 +315,17 @@
 			    orderNo: order_no, buyerName: order_buyer, orderPrice: order_price, receiverName: receiver_name,
                 receiverPhone: receiver_phone, province: province, city: city, district: district,
                 receiverAddress: receiver_address, orderCoupon: order_coupon, orderStatus: order_status,
-                orderChannel: order_channel, description: description, orderTime: pay_time
+                orderChannel: order_channel, orderDiversion: order_diversion, description: description, orderTime: pay_time
             }
             var commodityParams = {orderId: order_no, commodities: []};
             var commodityCount = Number(document.getElementById('goodsContainer').getAttribute('data-commodityNum'));
 		    for (var i = 0; i <= commodityCount; i++) {
                 var goods = document.getElementById('goods' + i);
                 if (not_null(goods)) {
+
+                    var goods_id = $('#goods-name' + i).find(":selected").val();
                     var goods_type = $('#goods-type' + i).find(":selected").val();
-                    var goods_name = $('#goods-name' + i).find(":selected").val();
-                    if (!not_null(goods_name)) {
+                    if (!not_null(goods_id)) {
                         alert("请正确填写商品名称！");
                     }
                     if (!not_null(goods_type)) {
@@ -321,16 +333,20 @@
                     }
                     var goods_number = document.getElementById('goods-number' + i).value;
                     commodityParams.commodities.push(
-                        {commodityName: goods_name, commodityQuantity: goods_number, commodityType: commodityTypeMap[goods_type].value})
+                        {commodityId: goods_id, commodityQuantity: goods_number})
                 }
             }
-            $.ajax({
-                url: "${path.concat('/order/commodity/create')}",
-                type: 'POST',
-                data: JSON.stringify(commodityParams),
-                contentType: 'application/json; charset=utf-8'
-            });
-			$.post(url, orderParams, function(result) {
+
+			$.post(url, orderParams, function(response) {
+			    if (response.responseCode == 'RESPONSE_OK') {
+                    commodityParams.orderId = response.data.orderId;
+                    $.ajax({
+                        url: "${path.concat('/order/orderItem/create')}",
+                        type: 'POST',
+                        data: JSON.stringify(commodityParams),
+                        contentType: 'application/json; charset=utf-8'
+                    });
+                }
 				window.location.href = "${path.concat('/order/overview')}";
 			})
 		});
@@ -431,7 +447,7 @@
         $('#' + goods_name_id).append(defaultOption);
         for (var i = 0; i < commodities.length; i++) {
             if (goods_type == commodities[i].type) {
-                var option = $('<option></option>').val(commodities[i].commodityName).text(commodities[i].commodityName);
+                var option = $('<option></option>').val(commodities[i].commodityId).text(commodities[i].commodityName);
                 $('#' + goods_name_id).append(option);
             }
         }
@@ -439,14 +455,14 @@
 
     function order_channel_reset() {
         $("#order_channel_list").empty();
-        $("#order_channel_list").append($("<option value=''></option>").text("---请选择渠道---"));
+        $("#order_channel_list").append($("<option value=''></option>").text("---请选择购买渠道---"));
         var channel_url = "${path.concat('/order/orderChannel/list')}";
         $.get(channel_url, function(result) {
             if(result.responseCode == "RESPONSE_OK") {
                 var data = result.data;
                 for(index in data) {
                     var item = $("<option></option>").text(data[index].channelName);
-                    item.attr("value", data[index].channelName);
+                    item.attr("value", data[index].channelId);
                     $("#order_channel_list").append(item);
                 }
             }

@@ -163,6 +163,7 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 		order.setOrderId(IDGenerator.generate("GMO"));
 		try {
 			sqlSession.insert("management.guomaiorder.insert", order);
+			result.setData(order);
 		}catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -245,6 +246,7 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 		}
 		try {
 			sqlSession.insert("management.orderitem.insertBatch", commodityList);
+			result.setData(commodityList);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);
