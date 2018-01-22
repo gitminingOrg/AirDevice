@@ -27,6 +27,7 @@ import service.QRCodeService;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.order.GuoMaiOrderVo;
+import vo.order.OrderChannelVo;
 import vo.order.OrderVo;
 import vo.user.UserVo;
 
@@ -65,8 +66,8 @@ public class OrderController {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/TBupload")
-    public ModelAndView TBupload(MultipartHttpServletRequest request, @RequestParam String orderChannel) throws IOException {
+    @RequestMapping(method = RequestMethod.POST, value = "/upload")
+    public ModelAndView upload(MultipartHttpServletRequest request, @RequestParam String orderChannel) throws IOException {
         ModelAndView view = new ModelAndView();
         MultipartFile file = request.getFile("orderFile");
         if (file.isEmpty()) {
@@ -85,61 +86,39 @@ public class OrderController {
         reader.close();
         List<GuoMaiOrder> order = new LinkedList<>();
         Map<String, Object> condition = new HashMap<>();
-        for (int i = 0; i < list.size(); i++) {
-            GuoMaiOrder item = GuoMaiOrder.convertFromTaoBao(list.get(i));
-            item.setOrderChannel(orderChannel);
-            //根据订单编号判断订单是否已存在
-            condition.put("orderNo", item.getOrderNo());
-            ResultData rs = orderService.fetch(condition);
-            if (rs.getResponseCode() == ResponseCode.RESPONSE_NULL) {
-                order.add(item);
+        condition.put("channelId", orderChannel);
+        ResultData rd = orderService.fetchOrderChannel(condition);
+        OrderChannelVo vo =((List<OrderChannelVo>) rd.getData()).get(0);
+        if (vo.getChannelName().equals("淘宝店铺")) {
+            for (int i = 0; i < list.size(); i++) {
+                GuoMaiOrder item = GuoMaiOrder.convertFromTaoBao(list.get(i));
+                item.setOrderChannel(orderChannel);
+                condition.put("orderNo", item.getOrderNo());
+                rd = orderService.fetch(condition);
+                if (rd.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+                    order.add(item);
+                }
+            }
+        } else if (vo.getChannelName().equals("京东")){
+            for (int i = 0; i < list.size(); i++) {
+                GuoMaiOrder item = GuoMaiOrder.convertFromJD(list.get(i));
+                item.setOrderChannel(orderChannel);
+                condition.put("orderNo", item.getOrderNo());
+                rd = orderService.fetch(condition);
+                if (rd.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+                    order.add(item);
+                }
             }
         }
-        ResultData response = orderService.upload(order);
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-            logger.info("上传订单记录成功");
-        } else {
-            logger.info("上传订单记录失败");
-        }
-        view.setViewName("redirect:/order/overview");
-        return view;
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/JDupload")
-    public ModelAndView JDupload(MultipartHttpServletRequest request, @RequestParam String orderChannel) throws IOException {
-        ModelAndView view = new ModelAndView();
-        MultipartFile file = request.getFile("orderFile");
-        if (file.isEmpty()) {
-            logger.info("上传的订单文件为空");
-            view.setViewName("redirect:/order/overview");
-            return view;
-        }
-        InputStream stream = file.getInputStream();
-        CsvReader reader = new CsvReader(stream, Charset.forName("gbk"));
-        List<String[]> list = new ArrayList<>();
-        // 读取表头
-        reader.readHeaders();
-        while (reader.readRecord()) {
-            list.add(reader.getValues());
-        }
-        reader.close();
-        List<GuoMaiOrder> order = new LinkedList<>();
-        Map<String, Object> condition = new HashMap<>();
-        for (int i = 0; i < list.size(); i++) {
-            GuoMaiOrder item = GuoMaiOrder.convertFromJD(list.get(i));
-            item.setOrderChannel(orderChannel);
-            //判断订单是否已存在
-            condition.put("orderNo", item.getOrderNo());
-            ResultData rs = orderService.fetch(condition);
-            if (rs.getResponseCode() == ResponseCode.RESPONSE_NULL) {
-                order.add(item);
+        if (!order.isEmpty()){
+            ResultData response = orderService.upload(order);
+            if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                logger.info("上传订单记录成功");
+            } else {
+                logger.info("上传订单记录失败");
             }
-        }
-        ResultData response = orderService.upload(order);
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-            logger.info("上传订单记录成功");
         } else {
-            logger.info("上传订单记录失败");
+            logger.info("订单已存在，无需重复上传");
         }
         view.setViewName("redirect:/order/overview");
         return view;

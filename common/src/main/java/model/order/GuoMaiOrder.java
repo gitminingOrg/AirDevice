@@ -1,5 +1,7 @@
 package model.order;
 
+import org.springframework.util.StringUtils;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -200,7 +202,7 @@ public class GuoMaiOrder extends Order {
         order.setOrderTime(Timestamp.valueOf(param[6])); //订单时间
         order.setDescription(param[17]); //备注
         //判断订单状态
-        if (param[24] != null) {
+        if (!param[24].isEmpty()) {
             order.setShipNo(param[24]);
             order.setOrderStatus(OrderStatus.SHIPPED);
         } else {
@@ -221,7 +223,7 @@ public class GuoMaiOrder extends Order {
         order.setOrderTime(Timestamp.valueOf(param[17])); //订单时间
         order.setDescription(param[23]); //备注
         //判断订单状态
-        if (param[21] != null) {
+        if (!param[21].isEmpty()) {
             order.setShipNo(param[21]);
             order.setOrderStatus(OrderStatus.SHIPPED);
         } else {
