@@ -187,4 +187,15 @@ public class GuoMaiOrder extends Order {
 //        this.description = param[10];//备注
     }
 
+    public static GuoMaiOrder convertFromJD(String[] param) {
+        GuoMaiOrder order = new GuoMaiOrder();
+        return order;
+    }
+
+    public static GuoMaiOrder convertFromTaoBao(String[] param) {
+        GuoMaiOrder order = new GuoMaiOrder();
+
+        return order;
+    }
+
 }
