@@ -120,21 +120,19 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	public ResultData update(GuoMaiOrder order) {
 		ResultData result = new ResultData();
 		try {
-//			new Thread(() -> {
-			Map<String, Object> condition = new HashMap<>();
-			condition.put("orderId", order.getOrderId());
-			condition.put("blockFlag", false);
-			GuoMaiOrderVo guoMaiOrder =
-					(GuoMaiOrderVo) sqlSession.selectList("management.guomaiorder.query", condition).get(0);
-			if (guoMaiOrder.getOrderStatus() != order.getOrderStatus()) {
-				OrderOperation orderOperation = new OrderOperation();
-				orderOperation.setOperationId(IDGenerator.generate("OP"));
-				orderOperation.setOrderId(order.getOrderId());
-				orderOperation.setPreStatus(guoMaiOrder.getOrderStatus());
-				orderOperation.setCurStatus(order.getOrderStatus());
-				sqlSession.insert("management.guomaiorderoperation.insert", orderOperation);
-			}
-//			});
+//			Map<String, Object> condition = new HashMap<>();
+//			condition.put("orderId", order.getOrderId());
+//			condition.put("blockFlag", false);
+//			GuoMaiOrderVo guoMaiOrder =
+//					(GuoMaiOrderVo) sqlSession.selectList("management.guomaiorder.query", condition).get(0);
+//			if (guoMaiOrder.getOrderStatus() != order.getOrderStatus()) {
+//				OrderOperation orderOperation = new OrderOperation();
+//				orderOperation.setOperationId(IDGenerator.generate("OP"));
+//				orderOperation.setOrderId(order.getOrderId());
+//				orderOperation.setPreStatus(guoMaiOrder.getOrderStatus());
+//				orderOperation.setCurStatus(order.getOrderStatus());
+//				sqlSession.insert("management.guomaiorderoperation.insert", orderOperation);
+//			}
 			sqlSession.update("management.guomaiorder.update", order);
 		}catch (Exception e) {
 			logger.error(e.getMessage());

@@ -151,7 +151,7 @@
                 receiver_address = #{receiverAddress},
             </if>
             <if test="orderChannel != null">
-                order_channel = #{orderChannel},
+                channel_id = #{orderChannel},
             </if>
             <if test="orderDiversion != null">
                 diversion_id = #{orderDiversion},

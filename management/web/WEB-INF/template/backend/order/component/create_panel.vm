@@ -67,9 +67,6 @@
                     <label for="order_channel_list" class="form-label col-md-2">订单渠道</label>
                     <div class="form-input col-md-8">
                         <select id="order_diversion_list">
-                            <option>---请选择订单渠道---</option>
-                            <option value="OD213">一爸</option>
-                            <option value="OD901">魏老爸</option>
                         <select/>
                     </div>
                 </div>
@@ -469,6 +466,22 @@
         })
     };
 
+    function order_diversion_reset() {
+        $("#order_diversion_list").empty();
+        $("#order_diversion_list").append($("<option value=''></option>").text("----请选择订单渠道---"))
+        var diversion_url = "${path.concat('/order/diversion/list')}";
+        $.get(diversion_url, function (response) {
+            if(response.responseCode == "RESPONSE_OK") {
+                var data = response.data;
+                for(index in data) {
+                    var item = $("<option></option>").text(data[index].diversionName);
+                    item.attr("value", data[index].diversionId);
+                    $("#order_diversion_list").append(item);
+                }
+            }
+        })
+    }
+    order_diversion_reset();
     order_channel_reset();
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {

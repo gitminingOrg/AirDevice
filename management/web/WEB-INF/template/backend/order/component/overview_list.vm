@@ -35,31 +35,6 @@
             </div>
         </div>
         <div id="page-content">
-##            <div class="infobox warning-bg">
-##                <p><i class="glyph-icon icon-exclamation mrg10R"></i> 若您需要导入新的订单，请单击这里进行 <a href="javascript:;" class="white-modal-80" title="添加部件"> 上传订单 </a>.</p>
-##            </div>
-##            <div class="hide" id="white-modal-80" title="添加型号">
-##                <div class="pad10A">
-##                    <div class="col-md-12 center-margin">
-##                        <div class="form-row">
-##                            <div class="form-label col-md-2">
-##                                <label for="goods-name">导入列表</label>
-##                            </div>
-##                            <div class="form-input col-md-10">
-##                                <form id="order-form">
-##                                    <input name="orderFile" type="file">
-##                                </form>
-##                            </div>
-##                        </div>
-##                        <div class="form-row">
-##                            <button class="btn medium bg-blue-alt" id="confirm-upload">
-##                                <span class="button-content">上传</span>
-##                            </button>
-##                        </div>
-##                    </div>
-##                </div>
-##            </div>
-
             <div class="row col-md-12">
                 <div class="col-md-4" style="height: 180px; padding: 20px;">
                     <div style="width: 100%; height: 100%; background: #00b297; border-radius: 5px; padding: 20px; align-items: center; display: flex;">
@@ -92,47 +67,43 @@
                     </div>
                 </div>
             </div>
-##            <hr />
             <div class="col-md-12 center-margin">
-##            	<div class="col-md-10 center-margin">
-	                <div class="form-row">
-	                    <div class="form-input">
-	                        <div class="row" style="margin-left: 0px">
-	                            <div class="col-md-2">
-	                                <select id="channel_list">
-	                                    <option>---请选择渠道---</option>
-	                                </select>
-	                            </div>
-	                            <div class="col-md-2">
-	                                <select id="status_list">
-	                                    <option>---请选择订单状态---</option>
-	                                </select>
-	                            </div>
-                                <div class="col-md-4">
-                                    <div class="col-md-6 form-input">
-                                        <input id="startDate" type="date" placeholder="起始时间">
-                                    </div>
-##                                    <div class="col-md-1">至</div>
-                                    <div class="col-md-6 form-input">
-                                        <input id="endDate" type="date" placeholder="结束时间">
-                                    </div>
+                <div class="form-row">
+                    <div class="form-input">
+                        <div class="row" style="margin-left: 0px">
+                            <div class="col-md-2">
+                                <select id="channel_list">
+                                    <option>---请选择渠道---</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="status_list">
+                                    <option>---请选择订单状态---</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-6 form-input">
+                                    <input id="startDate" type="date" placeholder="起始时间">
                                 </div>
-                                <div class="col-md-2" data-toggle="distpicker">
-                                    <select id="province" style="border-radius: 5px">
-                                        <option data-code="" data-text="— 省 —" value="">—— 省 ——</option>
-                                    </select>
+                                <div class="col-md-6 form-input">
+                                    <input id="endDate" type="date" placeholder="结束时间">
                                 </div>
-	                            <div class="col-md-2">
-	                                <button id="search_btn" type="button" data-loading-text="查询中" class="btn large loading-button bg-blue">
-	                                    查询
-	                                </button>
-                                    <button id="export_btn" class="btn large loading-button bg-blue" style="margin-left: 10px">
-                                        导出
-                                    </button>
-	                            </div>
-	                        </div>
-	                    </div>
-##	                </div>
+                            </div>
+                            <div class="col-md-2" data-toggle="distpicker">
+                                <select id="province" style="border-radius: 5px">
+                                    <option data-code="" data-text="— 省 —" value="">—— 省 ——</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button id="search_btn" type="button" data-loading-text="查询中" class="btn large loading-button bg-blue">
+                                    查询
+                                </button>
+                                <button id="export_btn" class="btn large loading-button bg-blue" style="margin-left: 10px">
+                                    导出
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 	            </div>
                 <table id="order-list-table" class="table table-condensed"></table>
             </div>
@@ -291,7 +262,8 @@
                     var day = ("0" + orderTime.getDate()).slice(-2).toString();
                     return year + '-' + month + '-' + day;
                 }},
-                {title: "渠道", "mData": "orderChannel"},
+                {title: "平台", "mData": "orderChannel"},
+                {title: "渠道", "mData": "orderDiversion"},
                 {title: "当前进度", "mRender": function(data, type, full) {
                 	var status = full.orderStatus;
                 	if(status == "PAYED") {

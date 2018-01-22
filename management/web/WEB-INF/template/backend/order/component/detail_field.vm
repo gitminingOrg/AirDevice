@@ -104,20 +104,6 @@
                                 <div class="form-input col-md-1" style="padding-right: 0px">
                                     <input id="goods-number$velocityCount" type="number" min="1"  value="${commodity.commodityQuantity}"/>
                                 </div>
-                                <label for="order-goods" class="form-label col-md-1" style="padding-right: 0px">二维码</label>
-                                <div class="form-input col-md-2" style="padding-right: 0px">
-                                    #if(${commodity.commodityQrcode})
-                                        <input id="goods-qrcode$velocityCount" type="text"  value="${commodity.commodityQrcode}"/>
-                                    #else
-                                        <input id="goods-qrcode$velocityCount" type="text"/>
-                                    #end
-                                </div>
-                                <button id="delGoods$velocityCount" class="btn medium bg-red" style="float: right" onclick="commodityDel(this.id)">删除</button>
-                                #if(${commodity.commodityQrcode} != "")
-                                    <a href="${path.concat("/order/")}${order.orderId}/${commodity.commodityQrcode}" class="btn medium bg-blue" style="float: right; margin-right: 10px">
-                                        <i class="glyph-icon icon-arrow-right"></i>
-                                    </a>
-                                #end
                             </div>
                         #end
                     </div>
@@ -129,13 +115,21 @@
                     </div>
             	</div>
 				<div class="form-row">
-            		<div class="form-label col-md-2">订单渠道</div>
+            		<div class="form-label col-md-2">购买渠道</div>
             		<div class="form-input col-md-10">
                         <select id="order_channel_list">
                             <option>${order.orderChannel}</option>
                         </select>
                     </div>
             	</div>
+                <div class="form-row">
+                    <div class="form-label col-md-2">订单渠道</div>
+                    <div class="form-input col-md-10">
+                        <select id="order_diversion_list">
+                            <option>${order.orderDiversion}</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="form-label col-md-2">订单备注</div>
                     <div class="form-input col-md-10">
@@ -533,37 +527,17 @@
             var receiverAddress = $('#receiverAddress').val();
             var orderCoupon = $('#orderCoupon').val();
             var orderTime = new Date($('#orderTime').val()).toISOString();
-            var orderChannel = $('#order_channel_list').find(":selected").text();
+            var orderChannel = $('#order_channel_list').find(":selected").val();
+            var orderDiversion = $('#order_diversion_list').find(":selected").val();
             var description = $('#orderDescription').val();
-            var params = {
-                            buyerName: buyerName, buyerAcccount: buyerAccount, receiverName: receiverName,
-                            receiverPhone: receiverPhone, province: province, city: city, district: district,
-                            receiverAddress: receiverAddress, orderCoupon: orderCoupon, orderTime: orderTime,
-                            orderChannel: orderChannel, description: description,
-                            orderStatus: convertOrderStatus("${order.orderStatus}")
-            };
-
-            var commodities = document.getElementById('goods-container').getAttribute('data-Commodity-number');
-            var commodityParams = {orderNo: "${order.orderNo}", commodities: []}
-            for (var index = 1; index <= commodities; index++) {
-                var commodity = document.getElementById('commodity' + index);
-                if (not_null(commodity)) {
-                    var commodityId = commodity.getAttribute('data-commodityId');
-                    var commodityName = document.getElementById('order-goods' + index.toString()).value;
-                    var commodityQuantity = document.getElementById('goods-number' + index.toString()).value;
-                    var commodityQrcode = document.getElementById('goods-qrcode' + index.toString()).value;
-                    commodityParams.commodities.push(
-                        {commodityId : commodityId, commodityName: commodityName,
-                            commodityQuantity: commodityQuantity, commodityQrcode: commodityQrcode});
-                }
-            }
-            $.ajax({
-                url: "${path.concat('/order/commodity/update')}",
-                type: 'POST',
-                data: JSON.stringify(commodityParams),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json"
-            });
+            var params =
+                    {
+                        buyerName: buyerName, buyerAcccount: buyerAccount, receiverName: receiverName,
+                        receiverPhone: receiverPhone, province: province, city: city, district: district,
+                        receiverAddress: receiverAddress, orderCoupon: orderCoupon, orderTime: orderTime,
+                        orderChannel: orderChannel, orderDiversion: orderDiversion, description: description,
+                        orderStatus: convertOrderStatus("${order.orderStatus}")
+                    };
 
             $.post(url, params, function (result) {
                 window.location.href = "${path.concat('/order/').concat("${order.orderId}")}";
@@ -572,63 +546,68 @@
 	});
 
     function mission_channel_reset() {
-        $("#machine-mission-channel").empty();
-        #if(${order.serviceName})
-            $("#machine-mission-channel").append($("<option value='${order.serviceName}'></option>").text("${order.serviceName}"));
-            var default_channel = "${order.serviceName}";
-        #else
-            $("#machine-mission-channel").append($("<option value=''></option>").text("---请选择安装商---"));
-        #end
-        var channel_url = "${path.concat('/order/missionChannel/list')}";
-        $.get(channel_url, function(result) {
-            if(result.responseCode == "RESPONSE_OK") {
-                var data = result.data;
-                for(index in data) {
-                    if (default_channel != data[index].channelName) {
-                        var item = $("<option></option>").text(data[index].channelName);
-                        item.attr("value", data[index].channelName);
-                        $("#machine-mission-channel").append(item);
-                    }
-                }
-            }
-        })
+##        $("#machine-mission-channel").empty();
+##        #if(${order.serviceName})
+##            $("#machine-mission-channel").append($("<option value='${order.serviceName}'></option>").text("${order.serviceName}"));
+##            var default_channel = "${order.serviceName}";
+##        #else
+##            $("#machine-mission-channel").append($("<option value=''></option>").text("---请选择安装商---"));
+##        #end
+##        var channel_url = "${path.concat('/order/missionChannel/list')}";
+##        $.get(channel_url, function(result) {
+##            if(result.responseCode == "RESPONSE_OK") {
+##                var data = result.data;
+##                for(index in data) {
+##                    if (default_channel != data[index].channelName) {
+##                        var item = $("<option></option>").text(data[index].channelName);
+##                        item.attr("value", data[index].channelName);
+##                        $("#machine-mission-channel").append(item);
+##                    }
+##                }
+##            }
+##        })
     };
-
-	function commodityDel(id) {
-        var index = id.replace("delGoods", "");
-        var commodityContainer = document.getElementById("goods-container");
-        if (commodityContainer.children.length == 1) {
-            alert('至少保留一个商品！');
-            return;
-        }
-        var commodity = document.getElementById('commodity' + index);
-        var commodityId = commodity.getAttribute('data-commodityId');
-        commodityContainer.removeChild(commodity);
-        var url = "${path.concat('/order/commodity/delete')}";
-        $.post(url, {commodityId: commodityId}, function () {
-            return;
-        });
-    }
 	
 	function orderChannelReset() {
         var url = "${path.concat('/order/orderChannel/list')}";
-        var currentChannel = $('#order_channel_list').find(":selected").text();
+        var currentChannel = $('#order_channel_list').find(":selected");
+        var orderChannelList = $('#order_channel_list');
         $.get(url, function (result) {
             if (result.responseCode = 'RESPONSE_OK') {
-                var currentOrderChannel = $('#order_channel_list')
-                for (var index in result.data) {
-                    if (currentChannel === result.data[index].channelName) {
+                var channel_data = result.data;
+                for (var index in channel_data) {
+                    if (currentChannel.text() === channel_data[index].channelName) {
+                        currentChannel.val(channel_data[index].channelId);
                         continue;
                     }
-                    var option = document.createElement('option');
-                    option.textContent = result.data[index].channelName;
-                    currentOrderChannel.append(option);
+                    var option = $("<option></option>").val(channel_data[index].channelId).text(channel_data[index].channelName);
+                    orderChannelList.append(option);
                 }
             }
-        })
+        });
+    }
+
+    function orderDiversionReset() {
+        var url = "${path.concat('/order/diversion/list')}";
+        var currentDiversion = $('#order_diversion_list').find(":selected");
+        var orderDiversionList = $('#order_diversion_list');
+        $.get(url, function (result) {
+            if (result.responseCode = 'RESPONSE_OK') {
+                var channel_data = result.data;
+                for (var index in channel_data) {
+                    if (currentDiversion.text() === channel_data[index].diversionName) {
+                        currentDiversion.val(channel_data[index].diversionId);
+                        continue;
+                    }
+                    var option = $("<option></option>").val(channel_data[index].diversionId).text(channel_data[index].diversionName);
+                    orderDiversionList.append(option);
+                }
+            }
+        });
     }
 
     orderChannelReset();
+    orderDiversionReset();
 	mission_channel_reset();
 
     function not_null(item) {
