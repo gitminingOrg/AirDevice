@@ -5,7 +5,7 @@
     #parse("/backend/init/init.vm")
     #parse("/backend/common/datatable.lib.vm")
     <script src="${path.concat("/plugins/distpicker/distpicker.js")}"></script>
-    <title>机器安装详情</title>
+    <title>订单详情</title>
 </head>
 <body class="fixed-sidebar fixed-header" ontouchstart>
 <div id="loading" class="ui-front loader ui-widget-overlay bg-white opacity-100">
@@ -13,7 +13,7 @@
 </div>
 <div id="page-wrapper">
     #parse("/backend/common/sidebar.vm")
-    #parse("/backend/order/component/machine.vm")
+    	#parse("/backend/order/component/machine.vm")
 </div>
 </body>
 <script type="text/javascript"></script>

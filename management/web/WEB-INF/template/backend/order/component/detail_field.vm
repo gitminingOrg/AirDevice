@@ -46,17 +46,7 @@
             		<div class="form-input col-md-10">
                         <input id="buyerName" type="text" value="${order.buyerName}"/>
                     </div>
-            	</div> 
-            	<div class="form-row">
-            		<div class="form-label col-md-2">交易帐号</div>
-            		<div class="form-input col-md-10">
-                        #if(${order.buyerAccount})
-                            <input id="buyerAccount" type="text" value="${order.buyerAccount}"/>
-                        #else
-                            <input id="buyerAccount" type="text" value="无账号"/>
-                        #end
-                    </div>
-            	</div> 
+            	</div>
             	<div class="form-row">
             		<div class="form-label col-md-2">收货人</div>
             		<div class="form-input col-md-10">
@@ -95,17 +85,32 @@
             	<div class="form-row">
             		<div class="form-label col-md-2">购买商品</div>
                     <div class="form-input col-md-10" id="goods-container" data-commodity-number="${order.commodityList.size()}">
-                        #foreach($commodity in ${order.commodityList})
-                            <div class="form-row" style="margin-left: 0px; margin-right: 0px" id="commodity$velocityCount" data-commodityId="${commodity.commodityId}">
-                                <div class="form-input col-md-5" style="padding-left: 0px">
-                                    <input id="order-goods$velocityCount" type="text" value="${commodity.commodityName}"/>
-                                </div>
-                                <label for="order-goods" class="form-label col-md-1">数量</label>
-                                <div class="form-input col-md-1" style="padding-right: 0px">
-                                    <input id="goods-number$velocityCount" type="number" min="1"  value="${commodity.commodityQuantity}"/>
-                                </div>
-                            </div>
-                        #end
+                        <table class="table table-condensed">
+                            <thead style="background-color: #e4e9f0">
+                                <tr>
+                                    <td>商品种类</td>
+                                    <td>商品名称</td>
+                                    <td>商品数量</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                #foreach($commodity in ${order.commodityList})
+                                <tr>
+                                    <td>
+                                        #if(${commodity.commodityType} == '0')
+                                            果麦新风机
+                                        #elseif(${commodity.commodityType} == '1')
+                                            果麦滤网
+                                        #else
+                                            其他商品
+                                        #end
+                                    </td>
+                                    <td>${commodity.commodityName}</td>
+                                    <td>${commodity.commodityQuantity}</td>
+                                </tr>
+                                #end
+                            </tbody>
+                        </table>
                     </div>
             	</div>
             	<div class="form-row">
@@ -130,10 +135,30 @@
                         </select>
                     </div>
                 </div>
+                #if(!${order.shipNo} || !${order.shipNo.trim().equals("")})
+                    <div class="form-row">
+                        <div class="form-label col-md-2">物流单号</div>
+                        <div class="form-input col-md-10">
+                            ${order.shipNo}
+                        </div>
+                    </div>
+                #end
+                <div class="form-row">
+                    <div class="form-label col-md-2">待处理机器</div>
+                    <div class="form-input col-md-10" id="order-machine">
+                        <table id="machine-list-table" class="table table-condensed"></table>
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="form-label col-md-2">订单备注</div>
                     <div class="form-input col-md-10">
-                        <textarea id="orderDescription" type="text">${order.description} </textarea>
+                        <textarea id="orderDescription" type="text">
+                            #if(${order.description})
+                                ${order.description.trim()}
+                            #else
+
+                            #end
+                        </textarea>
                     </div>
                 </div>
             	<div class="form-row">
@@ -159,9 +184,6 @@
             	<hr />
             	<h4>订单进度</h4>
             	<div id="mission-area"></div>
-            	<a href="javascript:;" class="btn medium bg-blue white-modal-60" title="添加订单进度记录">
-           			<span class="button-content">添加安装事件</span>
-        		</a>
                 <a href="javascript:;" class="btn medium bg-blue white-modal-80" title="添加订单进度记录">
                     <span class="button-content">添加订单事件</span>
                 </a>
@@ -213,103 +235,6 @@
                     </div>
                 </div>
             </div>
-            <div class="hide" id="white-modal-60" title="新增安装事件">
-                <div class="pad10A">
-                    <div class="col-md-12 center-margin">
-                        <div class="form-row">
-                            <div class="form-label col-md-3">
-                                <label for="machine-mission-name">事件名称</label>
-                            </div>
-                            <div class="form-input col-md-9">
-                                <select id="machine-mission-name">
-                                    <option>---请选择安装事件---</option>
-                                    <option value="1">勘测事件</option>
-                                    <option value="2">安装事件</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label col-md-3">
-                                <label for="machine-mission-content" autocomplete="off">事件详情</label>
-                            </div>
-                            <div class="form-input col-md-9">
-                                <textarea id="machine-mission-content" type="text" autocomplete="off"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <label id="mission-type" class="form-label col-md-3">勘测日期</label>
-                            <div class="form-input col-md-9">
-                                <input id = "machine-mission-date" type="date"/>
-                            </div>
-                        </div>
-                        <div class="row" id="mission-channel-container" style="display: none">
-                            <div class="form-row" style="margin-left: 0px; margin-right: 0px">
-                                <label class="form-label col-md-3">安装服务商</label>
-                                <div class="form-input col-md-9">
-                                    <select id="machine-mission-channel" style="border-radius: 2px">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-left: 0px; margin-right: 0px">
-                                <label class="form-label col-md-3">安装方式</label>
-                                <div class="form-input col-md-9">
-                                    <select id="machine-install-type" style="border-radius: 2px">
-                                        <option>---请选择安装方式---</option>
-                                        <option>墙体安装</option>
-                                        <option>玻璃安装</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label col-md-3">
-                                <label for="machine-mission-codeId" autocomplete="off">二维码</label>
-                            </div>
-                            <div class="form-input col-md-9">
-                                <input id="machine-mission-codeId" type="text" autocomplete="off">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label col-md-3">
-                                <label>机器状态</label>
-                            </div>
-                            <div class="form-input col-md-9">
-                                <select id="machine-mission-status">
-                                    <option>---机器状态---</option>
-                                    <option value="0">预勘测</option>
-                                    <option value="1">预安装</option>
-                                    <option value="2">安装完成</option>
-                                    <option value="3">安装取消</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label col-md-3">
-                                <label for="mission-content" autocomplete="off">图片上传</label>
-                            </div>
-                            <div class="weui-cells weui-cells_form" id="uploaderCustom">
-                                <div class="weui-cell">
-                                    <div class="weui-cell__bd">
-                                        <div class="weui-uploader">
-                                            <div class="weui-uploader__bd">
-                                                <ul class="weui-uploader__files" id="uploaderCustomFiles"></ul>
-                                                <div class="weui-uploader__input-box">
-                                                    <input id="uploaderCustomInput" name="photo" class="weui-uploader__input" type="file" accept="image/*" multiple="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <button class="btn medium bg-blue-alt" id="machine-confirm-event">
-                                <span class="button-content">新增</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <script>
             	$(document).ready(function() {
             		var orderId = "${order.orderId}";
@@ -349,14 +274,6 @@
             <div class="hide" id="white-modal-80" title="填写产品编号">
                 <div class="pad10A">
                     <div class="col-md-12 center-margin">
-                        <div class="form-row">
-                            <div class="form-label col-md-2">
-                                <label for="goods-name">产品编号</label>
-                            </div>
-                            <div class="form-input col-md-10">
-                                <input id="product-serial" type="text">
-                            </div>
-                        </div>
                         <div class="form-row">
                             <div class="form-label col-md-2">
                                 <label for="goods-name" autocomplete="off">物流单号</label>
@@ -400,6 +317,53 @@
     }
 
 	$(document).ready(function() {
+	    function init_order_machine() {
+            var order_machine_url = "${path.concat('/order/orderMachine/detail?orderId=')}" + "${order.orderId}";
+            $.get(order_machine_url, function (response) {
+                var table_header = $('<thead></thead>');
+                var thead_content = $('<tr><td>机器编号</td><td>安装商</td><td>安装方式</td><td>二维码</td><td>机器状态</td><td>详情</td></tr>')
+                table_header.append(thead_content);
+                table_header.css("background-color", '#e4e9f0')
+                if (response.responseCode == 'RESPONSE_OK') {
+                    var tbody = $('<tbody></tbody>');
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        var provider = not_null(data[i].providerName) ? data[i].providerName : '未指派';
+                        var installType = not_null(data[i].installType) ? data[i].installType : '未知';
+                        var machineCode = not_null(data[i].machineCode) ? data[i].machineCode : '未知';
+                        var machineStaus;
+                        if (data[i].machineMissionStatus == 'PRE_SURVEY') {
+                            machineStaus = '待勘测';
+                        } else if (data[i].machineMissionStatus == 'SURVEYED') {
+                            machineStaus = '已勘测';
+                        } else if (data[i].machineMissionStatus == 'SHIPPING') {
+                            machineStaus = '待安装';
+                        } else if (data[i].machineMissionStatus == 'SHIPPED' || data[i].machineMissionStatus == 'NEGOTIATE_INSTALL') {
+                            machineStaus = '待安装';
+                        } else if (data[i].machineMissionStatus == 'INSTALLED') {
+                            machineStaus = '安装完成';
+                        } else if (data[i].machineMissionStatus == 'INSTALL_CANCEL') {
+                            machineStaus = '安装取消';
+                        } else {
+                            machineStaus = '未知';
+                        }
+                        var machine_tr = $('<tr><td>' + i +  '</td><td>' + provider + '</td><td>' + installType +
+                                        '</td><td>' + machineCode + '</td><td>' + machineStaus + '</td><td>' +
+                                        "<a href='" + "${path.concat('/order/machine/item/')}" + data[i].machineId +
+                                        "'class='btn small bg-blue-alt tooltip-button' data-placement='top' ><i class='glyph-icon icon-arrow-right'></i></a>"
+                                        +'</td></tr>');
+                        tbody.append(machine_tr);
+                    }
+                    $("#machine-list-table").append(table_header);
+                    $("#machine-list-table").append(tbody);
+                } else {
+
+                }
+            });
+        }
+
+        init_order_machine();
+
 		$("#confirm-deliver").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/deliver";
 			var product_serial = $("#product-serial").val();
@@ -412,25 +376,6 @@
 				}
 			});
 		})
-
-        $("#machine-mission-name").on('change', function () {
-            var installMission = document.getElementById('machine-mission-name');
-            var mission = installMission.value;
-            var missionTypeLabel = document.getElementById('mission-type');
-            var missionTypeContainer = document.getElementById("mission-channel-container");
-            switch (mission) {
-                case '1':
-                    missionTypeLabel.innerHTML = '勘测日期';
-                    missionTypeContainer.style = 'display: none';
-                    break;
-                case '2':
-                    missionTypeLabel.innerHTML = '安装日期';
-                    missionTypeContainer.style = 'display: block';
-                    break;
-                default:
-                    break;
-            }
-        });
 
 		$("#order-confirm-event").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/mission/create";
@@ -451,55 +396,6 @@
 				location.reload();
 			})
 		});
-		
-		$("#machine-confirm-event").on('click', function () {
-            var url = "${path.concat('/order/')}" + "machinemission/create"
-            var param = {filePathList : []};
-            var machine_mission_title = $("#machine-mission-name").find(":selected").val();
-            if (!not_null(machine_mission_title)) {
-                alert("请填写事件的类型");
-                return;
-            }
-            var machine_mission_content = $("#machine-mission-content").val();
-            var machine_mission_date = $("#machine-mission-date").val();
-            if (!not_null(machine_mission_date)) {
-                alert("请填写时间日期");
-                return;
-            }
-            machine_mission_date = new Date(machine_mission_date).toISOString();
-            var machine_qrcode = $("#machine-mission-codeId").val();
-            if (!not_null(machine_qrcode)) {
-                alert("请填写机器的二维码");
-                return;
-            }
-            var machine_mission_status = $("#machine-mission-status").find(":selected").val();
-            var machine_mission_channel = $("#machine-mission-channel").find(":selected").val();
-            var machine_install_type = $("#machine-install-type").find(":selected").val();
-            param = {orderId: "${order.orderId}", deviceId: machine_qrcode, missionTitle: machine_mission_title,
-                    missionContent: machine_mission_content, machineStatus: machine_mission_status,
-                    missionDate: machine_mission_date, missionChannel: machine_mission_channel, installType: machine_install_type
-            }
-            if (machine_mission_title == 1) {
-                delete param.missionChannel;
-                delete param.installType;
-            } else {
-                if (!not_null(param.missionChannel)) {
-                    alert("请填写安装服务商");
-                    return;
-                }
-                if (!not_null(param.installType)) {
-                    alert("请填写安装方式");
-                    return;
-                }
-                param.missionChannel = $("#machine-mission-channel").find(":selected").text();
-                param.installType = $("#machine-install-type").find(":selected").text();
-            }
-            param.missionTitle = $("#machine-mission-name").find(":selected").text();
-            param.filePathList = JSON.stringify(uploadFilePathList);
-            $.post(url, param, function (response) {
-
-            });
-        })
 		
 		$("#order-complete").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/complete";
@@ -544,29 +440,6 @@
             });
         })
 	});
-
-    function mission_channel_reset() {
-##        $("#machine-mission-channel").empty();
-##        #if(${order.serviceName})
-##            $("#machine-mission-channel").append($("<option value='${order.serviceName}'></option>").text("${order.serviceName}"));
-##            var default_channel = "${order.serviceName}";
-##        #else
-##            $("#machine-mission-channel").append($("<option value=''></option>").text("---请选择安装商---"));
-##        #end
-##        var channel_url = "${path.concat('/order/missionChannel/list')}";
-##        $.get(channel_url, function(result) {
-##            if(result.responseCode == "RESPONSE_OK") {
-##                var data = result.data;
-##                for(index in data) {
-##                    if (default_channel != data[index].channelName) {
-##                        var item = $("<option></option>").text(data[index].channelName);
-##                        item.attr("value", data[index].channelName);
-##                        $("#machine-mission-channel").append(item);
-##                    }
-##                }
-##            }
-##        })
-    };
 	
 	function orderChannelReset() {
         var url = "${path.concat('/order/orderChannel/list')}";
@@ -608,7 +481,6 @@
 
     orderChannelReset();
     orderDiversionReset();
-	mission_channel_reset();
 
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {
@@ -617,79 +489,4 @@
         return true;
     }
 
-    weui.uploader('#uploaderCustom', {
-        url: "${path}" + '/qrcode/insight/upload',
-        auto: true,
-        type: 'file',
-        compress: {
-            width: 1600,
-            height: 1600,
-            quality: .6
-        },
-        onBeforeQueued: function(files) {
-            if(["image/jpg", "image/jpeg", "image/png", "image/gif"].indexOf(this.type) < 0){
-                $.alert('请上传图片');
-                return false;
-            }
-            if(this.size > 50 * 1024 * 1024){
-                $.alert('请上传不超过50M的图片');
-                return false;
-            }
-            if (files.length > 5) { // 防止一下子选中过多文件
-                $.alert('最多只能上传5张图片，请重新选择');
-                return false;
-            }
-            if (files.length <= 0) { // 防止传空
-                $.alert('请选择至少一张图片');
-                return false;
-            }
-        },
-        onQueued: function(){
-            uploadList.push(this);
-        },
-        onSuccess: function (ret) {
-            if (ret.responseCode == 'RESPONSE_OK')
-            {
-                uploadFilePathList.push(ret.data);
-            }
-        },
-        onError: function(err){
-            console.log(this, err);
-        }
-    });
-
-    // 缩略图预览
-    document.querySelector('#uploaderCustomFiles').addEventListener('click', function(e){
-        var target = e.target;
-
-        while(!target.classList.contains('weui-uploader__file') && target){
-            target = target.parentNode;
-        }
-        if(!target) return;
-
-        var url = target.getAttribute('style') || '';
-        var id = target.getAttribute('data-id');
-
-        if(url){
-            url = url.match(/url\((.*?)\)/)[1].replace(/"/g, '');
-        }
-        var gallery = weui.gallery(url, {
-            onDelete: function(){
-                weui.confirm('确定删除该图片？', function(){
-                    var index;
-                    for (var i = 0, len = uploadCustomFileList.length; i < len; ++i) {
-                        var file = uploadCustomFileList[i];
-                        if(file.id == id){
-                            index = i;
-                            break;
-                        }
-                    }
-                    if(index !== undefined) uploadCustomFileList.splice(index, 1);
-
-                    target.remove();
-                    gallery.hide();
-                });
-            }
-        });
-    });
 </script>

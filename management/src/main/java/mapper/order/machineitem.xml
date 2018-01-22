@@ -17,7 +17,7 @@
         select
         order_id, machine_item_id, order_item_id, provider_name, machine_code, machine_status,
         install_type, block_flag, create_time
-        from gmair_order.order_item_machine
+        from gmair_order.order_item_machine_view
         WHERE 1 = 1
         <if test="orderId != null">
             AND order_id = #{orderId}

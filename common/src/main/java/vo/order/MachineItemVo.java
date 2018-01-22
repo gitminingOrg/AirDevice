@@ -1,8 +1,6 @@
 package vo.order;
 
 import model.order.MachineMissionStatus;
-import utils.MachineStatus;
-
 import java.sql.Timestamp;
 
 /**

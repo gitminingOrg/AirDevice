@@ -10,16 +10,16 @@
 
 	
 	<insert id="insert" parameterType="model.order.OrderMission" useGeneratedKeys="false">
-		insert into order_mission(mission_id, order_id, mission_title, mission_content, mission_recorder,
+		insert into gmair_order.order_mission(order_mission_id, order_id, mission_title, mission_content, mission_recorder,
 									block_flag, create_time)
 		values (#{missionId}, #{orderId}, #{missionTitle}, #{missionContent}, #{missionRecorder},
 				#{blockFlag}, #{createAt})
 	</insert>
 	
 	<select id="query" parameterType="java.util.Map" resultMap = "missionVo">
-		select mission_id, order_id, mission_title, mission_content, mission_recorder,
+		select order_mission_id, order_id, mission_title, mission_content, mission_recorder,
 				block_flag, create_time
-		from order_mission
+		from gmair_order.order_mission
 		where 1 = 1
 		<if test="missionId != null">
 			and mission_id = #{missionId}

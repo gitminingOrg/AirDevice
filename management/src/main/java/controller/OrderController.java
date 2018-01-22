@@ -20,13 +20,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
-import service.MachineMissionService;
-import service.OrderDiversionService;
+import service.*;
 import service.OrderService;
-import service.QRCodeService;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.order.GuoMaiOrderVo;
+import vo.order.MachineItemVo;
 import vo.order.OrderChannelVo;
 import vo.order.OrderVo;
 import vo.user.UserVo;
@@ -57,6 +56,9 @@ public class OrderController {
 
     @Autowired
     private OrderDiversionService orderDiversionService;
+
+    @Autowired
+    private MachineItemService machineItemService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/overview")
     public ModelAndView overview() {
@@ -728,6 +730,35 @@ public class OrderController {
     public ResultData DeleteOrderDiversion(@PathVariable String diversionId) {
         ResultData result = orderDiversionService.delete(diversionId);
         logger.info("delete orderDiversion using diversionId: " + diversionId);
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/machine/item/{machineItem}")
+    public ModelAndView machineItemView(@PathVariable String machineItem) {
+        ModelAndView view = new ModelAndView();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("machineId", machineItem);
+        condition.put("blockFlag", false);
+        ResultData response = machineItemService.fetch(condition);
+        MachineItemVo machineItemVo = ((List<MachineItemVo>) response.getData()).get(0);
+        view.addObject("machineItem", machineItemVo);
+        view.setViewName("/backend/order/orderMachine");
+        return view;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/orderMachine/detail")
+    public ResultData getMachineItem(@RequestParam String orderId) {
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("orderId", orderId);
+        condition.put("blockFlag", false);
+        ResultData response = machineItemService.fetch(condition);
+        result.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setData(response.getData());
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setDescription("服务器忙，请稍后再试!");
+        }
         return result;
     }
 }
