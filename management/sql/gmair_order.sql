@@ -288,3 +288,22 @@ CHANGE COLUMN `path` `insight_path`  varchar(255) CHARACTER SET utf8 COLLATE utf
 ALTER TABLE `machine_item`
 MODIFY COLUMN `provider_id`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL AFTER `order_item_id`;
 
+CREATE TABLE `order_mission` (
+`order_mission_id`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`order_id`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`mission_title`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`mission_content`  text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`mission_recorder`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`block_flag`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`create_time`  datetime NOT NULL ,
+PRIMARY KEY (`order_mission_id`),
+FOREIGN KEY (`order_id`) REFERENCES `guomai_order` (`order_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+INDEX `order_id_key` (`order_id`) USING BTREE
+)
+ENGINE=InnoDB
+DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
+ROW_FORMAT=COMPACT
+;
+
+
+

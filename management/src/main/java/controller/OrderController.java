@@ -174,9 +174,9 @@ public class OrderController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/deliver")
-    public ResultData deliver(@PathVariable("orderId") String orderId, String productSerial, String shipNo) {
+    public ResultData deliver(@PathVariable("orderId") String orderId, String shipNo) {
         ResultData result = new ResultData();
-        if (StringUtils.isEmpty(orderId) || StringUtils.isEmpty(productSerial)) {
+        if (StringUtils.isEmpty(orderId)) {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
             result.setDescription("订单编号和产品编号不正确");
             return result;
