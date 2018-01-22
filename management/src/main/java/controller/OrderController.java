@@ -64,9 +64,9 @@ public class OrderController {
         return view;
     }
 
-    /**
+
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
-    public ModelAndView upload(MultipartHttpServletRequest request) throws IOException {
+    public ModelAndView upload(MultipartHttpServletRequest request, @RequestParam String orderChannel) throws IOException {
         ModelAndView view = new ModelAndView();
         MultipartFile file = request.getFile("orderFile");
         if (file.isEmpty()) {
@@ -83,9 +83,9 @@ public class OrderController {
             list.add(reader.getValues());
         }
         reader.close();
-        List<TaobaoOrder> order = new LinkedList<>();
+        List<GuoMaiOrder> order = new LinkedList<>();
         for (int i = 0; i < list.size(); i++) {
-            TaobaoOrder item = new TaobaoOrder(list.get(i));
+            GuoMaiOrder item = new GuoMaiOrder(list.get(i));
             order.add(item);
         }
         ResultData response = orderService.upload(order);
@@ -97,7 +97,6 @@ public class OrderController {
         view.setViewName("redirect:/order/overview");
         return view;
     }
-     **/
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/list")
