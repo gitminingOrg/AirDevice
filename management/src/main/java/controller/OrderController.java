@@ -699,8 +699,8 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/diversion/delete")
-    public ResultData DeleteOrderDiversion(String diversionId) {
+    @RequestMapping(method = RequestMethod.POST, value = "/diversion/delete/{diversionId}")
+    public ResultData DeleteOrderDiversion(@PathVariable String diversionId) {
         ResultData result = orderDiversionService.delete(diversionId);
         logger.info("delete orderDiversion using diversionId: " + diversionId);
         return result;
