@@ -35,7 +35,7 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 	public ResultData insert(List<GuoMaiOrder> order) {
 		ResultData result = new ResultData();
 		for (GuoMaiOrder item : order) {
-			item.setOrderId(IDGenerator.generate("TBO"));
+			item.setOrderId(IDGenerator.generate("GM"));
 		}
 		try {
 			sqlSession.insert("management.guomaiorder.insertBatch", order);

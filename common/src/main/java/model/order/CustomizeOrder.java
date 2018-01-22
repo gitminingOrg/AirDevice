@@ -32,12 +32,12 @@ public class CustomizeOrder extends Entity{
 	private OrderStatus status;
 	
 	private String description;
-	
+
 	public CustomizeOrder() {
 		super();
 		status = OrderStatus.PAYED;
 	}
-	
+
 	public CustomizeOrder(String orderNo, String orderBuyer, double price, String receiverName, String receiverPhone,
 			String receiverAddress, String coupon, String goodsTitle, String payTime, String orderChannel, String description) {
 		this();
@@ -53,7 +53,6 @@ public class CustomizeOrder extends Entity{
 		this.orderChannel = orderChannel;
 		this.description = description;
 	}
-
 	public String getOrderId() {
 		return orderId;
 	}

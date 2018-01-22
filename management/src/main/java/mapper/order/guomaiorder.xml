@@ -45,7 +45,7 @@
          VALUES
         <foreach collection="list" item="item" index="index" separator=",">
          (
-            #{item.orderId}, #{item.orderNo}, #{item.buyerAccount}, #{item.orderPrice},
+            #{item.orderId}, #{item.orderNo}, #{item.buyerName}, #{item.orderPrice},
             #{item.receiverName}, #{item.receiverPhone}, #{item.province}, #{item.city}, #{item.district},
             #{item.receiverAddress}, #{item.orderCoupon}, #{item.shipNo}, #{item.orderTime},
             #{item.orderStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},

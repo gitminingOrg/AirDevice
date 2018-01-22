@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public ResultData upload(List<GuoMaiOrder> order) {
 		ResultData result = new ResultData();
-		ResultData response = orderBatchDao.insert(order);
+		ResultData response = orderDao.insert(order);
 		result.setResponseCode(response.getResponseCode());
 		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
 			result.setDescription(response.getDescription());

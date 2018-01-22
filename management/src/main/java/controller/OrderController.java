@@ -65,8 +65,8 @@ public class OrderController {
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/upload")
-    public ModelAndView upload(MultipartHttpServletRequest request, @RequestParam String orderChannel) throws IOException {
+    @RequestMapping(method = RequestMethod.POST, value = "/TBupload")
+    public ModelAndView TBupload(MultipartHttpServletRequest request, @RequestParam String orderChannel) throws IOException {
         ModelAndView view = new ModelAndView();
         MultipartFile file = request.getFile("orderFile");
         if (file.isEmpty()) {
@@ -84,9 +84,56 @@ public class OrderController {
         }
         reader.close();
         List<GuoMaiOrder> order = new LinkedList<>();
+        Map<String, Object> condition = new HashMap<>();
         for (int i = 0; i < list.size(); i++) {
-            GuoMaiOrder item = new GuoMaiOrder(list.get(i));
-            order.add(item);
+            GuoMaiOrder item = GuoMaiOrder.convertFromTaoBao(list.get(i));
+            item.setOrderChannel(orderChannel);
+            //根据订单编号判断订单是否已存在
+            condition.put("orderNo", item.getOrderNo());
+            ResultData rs = orderService.fetch(condition);
+            if (rs.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+                order.add(item);
+            }
+        }
+        ResultData response = orderService.upload(order);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            logger.info("上传订单记录成功");
+        } else {
+            logger.info("上传订单记录失败");
+        }
+        view.setViewName("redirect:/order/overview");
+        return view;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/JDupload")
+    public ModelAndView JDupload(MultipartHttpServletRequest request, @RequestParam String orderChannel) throws IOException {
+        ModelAndView view = new ModelAndView();
+        MultipartFile file = request.getFile("orderFile");
+        if (file.isEmpty()) {
+            logger.info("上传的订单文件为空");
+            view.setViewName("redirect:/order/overview");
+            return view;
+        }
+        InputStream stream = file.getInputStream();
+        CsvReader reader = new CsvReader(stream, Charset.forName("gbk"));
+        List<String[]> list = new ArrayList<>();
+        // 读取表头
+        reader.readHeaders();
+        while (reader.readRecord()) {
+            list.add(reader.getValues());
+        }
+        reader.close();
+        List<GuoMaiOrder> order = new LinkedList<>();
+        Map<String, Object> condition = new HashMap<>();
+        for (int i = 0; i < list.size(); i++) {
+            GuoMaiOrder item = GuoMaiOrder.convertFromJD(list.get(i));
+            item.setOrderChannel(orderChannel);
+            //判断订单是否已存在
+            condition.put("orderNo", item.getOrderNo());
+            ResultData rs = orderService.fetch(condition);
+            if (rs.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+                order.add(item);
+            }
         }
         ResultData response = orderService.upload(order);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {

@@ -1,6 +1,7 @@
 package model.order;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class GuoMaiOrder extends Order {
@@ -189,13 +190,43 @@ public class GuoMaiOrder extends Order {
 
     public static GuoMaiOrder convertFromJD(String[] param) {
         GuoMaiOrder order = new GuoMaiOrder();
+
+        order.setOrderNo(param[0].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", "")); //订单编号
+        order.setBuyerName(param[14]); //买家姓名
+        order.setOrderPrice(Double.valueOf(param[11])); //买家实付金额
+        order.setReceiverName(param[14]); //收货人姓名
+        order.setReceiverAddress(param[15]); //收货人地址
+        order.setReceiverPhone(param[16].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", "")); //收货人电话
+        order.setOrderTime(Timestamp.valueOf(param[6])); //订单时间
+        order.setDescription(param[17]); //备注
+        //判断订单状态
+        if (param[24] != null) {
+            order.setShipNo(param[24]);
+            order.setOrderStatus(OrderStatus.SHIPPED);
+        } else {
+            order.setOrderStatus(OrderStatus.PAYED);
+        }
         return order;
     }
 
     public static GuoMaiOrder convertFromTaoBao(String[] param) {
         GuoMaiOrder order = new GuoMaiOrder();
 
+        order.setOrderNo(param[0].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", "")); //订单编号
+        order.setBuyerName(param[1]); //买家姓名
+        order.setOrderPrice(Double.valueOf(param[8])); //买家实付金额
+        order.setReceiverName(param[12]); //收货人姓名
+        order.setReceiverAddress(param[13]); //收货人地址
+        order.setReceiverPhone(param[16].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", "")); //收货人电话
+        order.setOrderTime(Timestamp.valueOf(param[17])); //订单时间
+        order.setDescription(param[23]); //备注
+        //判断订单状态
+        if (param[21] != null) {
+            order.setShipNo(param[21]);
+            order.setOrderStatus(OrderStatus.SHIPPED);
+        } else {
+            order.setOrderStatus(OrderStatus.PAYED);
+        }
         return order;
     }
-
 }
