@@ -12,6 +12,15 @@ public class OrderChannel extends Entity {
 
     private String channelName;
 
+    public OrderChannel() {
+        super();
+    }
+
+    public OrderChannel(String channelName) {
+        this();
+        this.channelName = channelName;
+    }
+
     public String getChannelId() {
         return channelId;
     }

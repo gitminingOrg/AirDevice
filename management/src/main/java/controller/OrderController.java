@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import pagination.DataTablePage;
 import pagination.DataTableParam;
 import service.MachineMissionService;
+import service.OrderDiversionService;
 import service.OrderService;
 import service.QRCodeService;
 import utils.ResponseCode;
@@ -52,6 +53,9 @@ public class OrderController {
 
     @Autowired
     private MachineMissionService machineMissionService;
+
+    @Autowired
+    private OrderDiversionService orderDiversionService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/overview")
     public ModelAndView overview() {
@@ -649,6 +653,56 @@ public class OrderController {
         } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
             result.setDescription(response.getDescription());
         }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/diversion/list")
+    public ResultData OrderDiversionList() {
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("blockFlag", false);
+        ResultData response = orderDiversionService.fetch(condition);
+        result.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setData(response.getData());
+        } else {
+            result.setDescription(response.getDescription());
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/diversion/create")
+    public ResultData CreateOrderDiversion(OrderDiversion orderDiversion) {
+        ResultData result = new ResultData();
+        ResultData response = orderDiversionService.create(orderDiversion);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            result.setResponseCode(response.getResponseCode());
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("服务器忙，请稍后再试!");
+        } else {
+            result.setData(response.getData());
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/diversion/update")
+    public ResultData UpdateOrderDiversion(OrderDiversion orderDiversion) {
+        ResultData result = new ResultData();
+        ResultData response = orderDiversionService.modify(orderDiversion);
+        result.setResponseCode(response.getResponseCode());
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setData(response.getData());
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setDescription("服务器忙，请稍后再试!");
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/diversion/delete")
+    public ResultData DeleteOrderDiversion(String diversionId) {
+        ResultData result = orderDiversionService.delete(diversionId);
+        logger.info("delete orderDiversion using diversionId: " + diversionId);
         return result;
     }
 }
