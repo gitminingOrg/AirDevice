@@ -359,6 +359,7 @@
         $("#order-form").attr('action', "${path.concat('/order/upload')}");
         $("#order-form").attr('method', "post");
         $("#order-form").attr('enctype', 'multipart/form-data');
+        $("#order-form").data('orderChannel', $('#order_batchupload_channel_list').find(":selected").val());
         $("#order-form").submit();
     });
     
