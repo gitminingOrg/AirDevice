@@ -120,10 +120,9 @@ public class OrderController {
         if (!order.isEmpty()){
             ResultData response = orderService.upload(order);
             if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                logger.info("订单已上传");
                 if (vo.getChannelName().equals("京东")) {
-                    for (int i = 0; i < order.size(); i++) {
-                        condition.put("orderNo", order.get(i).getOrderNo());
+                    for (int i = 0; i < list.size(); i++) {
+                        condition.put("orderNo", list.get(i)[0]);
                         rd = orderService.fetch(condition);
                         if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
                             GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>)rd.getData()).get(0);
@@ -137,8 +136,8 @@ public class OrderController {
                         }
                     }
                 } else if (vo.getChannelName().equals("淘宝店铺")) {
-                    for (int i = 0; i < order.size(); i++) {
-                        condition.put("orderNo", order.get(i).getOrderNo());
+                    for (int i = 0; i < list.size(); i++) {
+                        condition.put("orderNo", list.get(i)[0]);
                         rd = orderService.fetch(condition);
                         if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
                             GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>)rd.getData()).get(0);
@@ -155,11 +154,10 @@ public class OrderController {
                 if (!itemList.isEmpty()) {
                     response = orderService.uploadOrderItem(itemList);
                     if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                        logger.info("OrderItem上传成功");
                         logger.info("订单记录上传成功");
                     }
                 } else {
-                    logger.info("OrderItem为空，订单上传失败");
+                    logger.info("订单记录上传失败");
                 }
             }
         } else {
