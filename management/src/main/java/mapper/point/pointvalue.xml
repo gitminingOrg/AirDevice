@@ -14,7 +14,7 @@
     <select id="query" parameterType="java.util.Map" resultMap="PointValue">
         SELECT record_id, consumer_id, order_id, model_code, model_bonus, create_time
         FROM
-        point_value_view
+        airdevice.point_value_view
         WHERE 1 = 1
         <if test="recordId != null">
             AND record_id = #{recodeId}

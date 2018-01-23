@@ -9,7 +9,7 @@
 
 	<select id="query" parameterType="java.util.Map" resultMap="goodsComponentVo">
 		select item_id, item_title, block_flag
-		from component_list
+		from airdevice.component_list
 		where 1 = 1
 		<if test="itemId != null">
 			and item_id = #{itemId}
@@ -23,7 +23,7 @@
 	</select>
 	
 	<insert id="insert" parameterType="model.goods.Component" useGeneratedKeys="false">
-		insert into component_list(item_id, item_title, block_flag, create_time)
+		insert into airdevice.component_list(item_id, item_title, block_flag, create_time)
 		values(#{componentId}, #{componentName}, #{blockFlag}, #{createAt})
 	</insert>
 </mapper>

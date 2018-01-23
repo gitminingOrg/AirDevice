@@ -11,7 +11,7 @@
 
     <select id="query" parameterType="java.util.Map" resultMap="everydayRecordVo">
         select device_chip.device_id, device_chip.chip_id, devicename.address, location_city.city_name
-        from device_chip, devicename, location_city
+        from airdevice.device_chip, airdevice.devicename, airdevice.location_city
         where 1 = 1
         and to_days(device_chip.update_time) = to_days(now())
         <if test="deviceId != null">

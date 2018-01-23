@@ -23,7 +23,7 @@
 
 	<insert id="OrderBatch" parameterType="java.util.List" useGeneratedKeys="false">
 		insert into
-		taobao_order
+		airdevice.taobao_order
 		(
 			order_id, order_no, buyer_name, buyer_ali_account, order_price, receiver_name, receiver_phone, receiver_address,
 		    order_coupon, goods_title, goods_kind, order_channel, pay_time, description, block_flag, order_status, create_time

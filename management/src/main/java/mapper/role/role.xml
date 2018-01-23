@@ -11,7 +11,7 @@
 
     <select id="query" parameterType="java.util.Map" resultMap="roleVO">
         SELECT role_id, role_name, role_description, block_flag, create_time
-        FROM role
+        FROM airdevice.role
         WHERE 1 = 1
         <if test="roleId != null">
             AND role_id = #{roleId}

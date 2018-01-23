@@ -15,7 +15,7 @@
 
 	<select id="query" parameterType="java.util.Map" resultMap="consumerGoods">
 		select consumer_id, consumer_name, code_id, code_value, goods_id, goods_name, goods_price, goods_bonus, create_time
-		from consumer_goods_view
+		from airdevice.consumer_goods_view
 		where 1 = 1
 		<if test="consumerId != null">
 			and consumer_id = #{consumerId}

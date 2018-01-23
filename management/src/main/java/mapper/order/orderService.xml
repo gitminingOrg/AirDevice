@@ -4,7 +4,7 @@
 
     <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="false">
         insert into
-        order_service
+        airdevice.order_service
         (
             os_id, order_id, service_id, block_flag, create_time
         )
@@ -15,6 +15,6 @@
     </insert>
 
     <insert id="insert" parameterType="model.order.OrderService">
-        insert into order_service
+        insert into airdevice.order_service
     </insert>
 </mapper>

@@ -37,7 +37,7 @@
     <!--查询机器状态-->
     <select id="queryMachineStatus" parameterType="java.util.Map" resultMap="machineStatus">
         SELECT device_id, chip_id, model_code, model_name, update_time
-        from machine_status_view
+        from airdevice.machine_status_view
         WHERE 1 = 1
         <if test="modelCode != null">
             and model_code = #{modelCode}
@@ -58,7 +58,7 @@
     
     <select id="queryMachineStata" parameterType="java.util.Map" resultMap="machineStataVo">
         SELECT device_id, pm25, power, `time`
-        FROM latest_device_info
+        FROM airdevice.latest_device_info
         WHERE 1 = 1
         <if test="machineId != null">
             AND device_id = #{machineId}

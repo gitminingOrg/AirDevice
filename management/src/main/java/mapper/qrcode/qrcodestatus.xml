@@ -14,7 +14,7 @@
 
 	<select id="query" parameterType="java.util.Map" resultMap="qRCodeStatusVo">
 		select code_id, code_value, model_id, model_name, code_delivered, code_occupied, scan_time, create_time
-		from qrcode_status_view
+		from airdevice.qrcode_status_view
 		where 1 = 1
 		<if test="codeId != null">
 			and code_id = #{codeId}

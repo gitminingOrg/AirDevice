@@ -18,7 +18,7 @@
 	</resultMap>
 	
 	<insert id="insertList" parameterType="java.util.List" useGeneratedKeys="false">
-		insert into goods_component(model_id, item_id, supplier_name, block_flag, create_time)
+		insert into airdevice.goods_component(model_id, item_id, supplier_name, block_flag, create_time)
 		values
 		<foreach collection="list" item="item" index="index" separator="," >
 			(#{item.model.modelId}, #{item.componentId}, #{item.supplierName}, #{item.blockFlag}, #{item.createAt})
@@ -27,7 +27,7 @@
 	
 	<select id="query" parameterType="java.util.Map" resultMap="modelDetailVo">
 		select model_id, model_code, goods_id, goods_name
-		from goods_model_view
+		from airdevice.goods_model_view
 		where 1 = 1
 		<if test="modelId != null">
 			and model_id = #{modelId}
@@ -39,7 +39,7 @@
 	
 	<select id="modelcomponentquery" parameterType="java.util.Map" resultMap="modelComponentVo">
 		select model_id, model_name, item_id, item_title, supplier_name
-		from model_component_view
+		from airdevice.model_component_view
 		where model_id = #{modelId}
 	</select>
 </mapper>

@@ -13,17 +13,17 @@
 
     <!--选择所有的反馈信息-->
     <select id="selectFeedBack" resultMap="FeedBack">
-        SELECT * from support_form;
+        SELECT * from airdevice.support_form;
     </select>
 
     <!--选择某一种状态的反馈信息-->
     <select id="selectFeedBackByStatus" parameterType="int" resultMap="FeedBack">
-        SELECT * from support_form where status = #{status};
+        SELECT * from airdevice.support_form where status = #{status};
     </select>
 
     <select id="query" resultMap="FeedBack">
         SELECT id, name, phone, problem, status, submit_time
-        FROM support_form
+        FROM airdevice.support_form
         WHERE 1 = 1
         <if test= "id != null">
             id = #{id}
@@ -41,6 +41,6 @@
 
     <!--更新用户反馈的状态-->
     <update id="updateFeedBackStatus" parameterType="hashmap">
-        UPDATE support_form SET status = #{status} WHERE id = #{id};
+        UPDATE airdevice.support_form SET status = #{status} WHERE id = #{id};
     </update>
 </mapper>

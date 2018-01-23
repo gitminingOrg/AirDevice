@@ -11,14 +11,14 @@
 	</resultMap>
 
 	<insert id = "insert" parameterType="model.qrcode.PreBindCodeUID" useGeneratedKeys="false">
-		insert into pre_binding(bind_id, uid, code_id, block_flag, create_time)
+		insert into airdevice.pre_binding(bind_id, uid, code_id, block_flag, create_time)
 		values(#{bindId}, #{uid}, #{codeId}, #{blockFlag}, #{createAt})
 	</insert>
 
 	<select id="query" parameterType="java.util.Map" resultMap="PreBindVO">
 		SELECT pre_binding.bind_id, pre_binding.uid, pre_binding.code_id,
 				pre_binding.block_flag, pre_binding.create_time
-		FROM pre_binding
+		FROM airdevice.pre_binding
 		WHERE 1 = 1
 		<if test="bindId != null">
 			AND bind_id = #{bindId}
@@ -49,14 +49,14 @@
 	<select id="selectByQrcode" parameterType="string" resultMap="PreBindVO">
 		SELECT pre_binding.bind_id, pre_binding.uid, pre_binding.code_id,
 			   pre_binding.block_flag, pre_binding.create_time
-		FROM pre_binding, qrcode
+		FROM airdevice.pre_binding, airdevice.qrcode
 		WHERE pre_binding.code_id = qrcode.code_value
 		AND qrcode.code_occupied = 0 AND qrcode.code_delivered = 0
 		AND pre_binding.code_id = #{qrcode}
 	</select>
 	
 	<select id="selectByUid" parameterType="string" resultMap="PreBindVO">
-		select * from pre_binding WHERE uid = #{uid}
+		select * from airdevice.pre_binding WHERE uid = #{uid}
 	</select>
 
 	<!--删除预绑定，更新idlemachine-->

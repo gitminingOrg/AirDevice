@@ -12,7 +12,7 @@
     </resultMap>
 
     <insert id="insert" parameterType="model.pointrecord.PointRecord">
-        INSERT INTO point_record
+        INSERT INTO airdevice.point_record
           VALUES (#{recordId}, #{consumerId}, #{orderId}, #{labelId}, #{recordDescription},
                   #{blockFlag}, #{createAt})
     </insert>
@@ -20,7 +20,7 @@
     <select id="query" parameterType="java.util.Map" resultMap="PointRecord">
         SELECT record_id, consumer_id, order_id, label_id, record_description, block_flag, create_time
         FROM
-        point_record
+        airdevice.point_record
         WHERE 1 = 1
         <if test="recordId != null">
             AND record_id = #{recordId}

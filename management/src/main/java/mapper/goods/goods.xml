@@ -13,7 +13,7 @@
 	
 	<select id="query" parameterType="java.util.Map" resultMap="consumerGoodsVo">
 		select goods_id, goods_name, goods_price, goods_type, goods_bonus, block_flag, create_time
-		from goods
+		from airdevice.goods
 		where 1 = 1
 		<if test="goodsId != null">
 			and goods_id = #{goodsId}
@@ -24,7 +24,7 @@
 	</select>
 	
 	<insert id="insert" parameterType="model.goods.RealGoods" useGeneratedKeys="false">
-		insert into goods(goods_id, goods_name, goods_nickname, goods_price, goods_type, goods_bonus, block_flag, create_time)
+		insert into airdevice.goods(goods_id, goods_name, goods_nickname, goods_price, goods_type, goods_bonus, block_flag, create_time)
 		values (#{goodsId}, #{goodsName}, #{goodsNickname}, #{goodsPrice}, #{type, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}, #{bonus}, #{blockFlag}, #{createAt})
 	</insert>
 </mapper>

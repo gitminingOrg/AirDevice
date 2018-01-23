@@ -12,14 +12,14 @@
 	
 	<select id="rolequery" parameterType="java.util.Map" resultType="java.lang.String">
 		select r.role_name
-		from role r, role_assign a
+		from airdevice.role r, airdevice.role_assign a
 		where a.user_id = #{userId}
 		and r.role_id = a.role_id
 	</select>
 	
 	<select id="query" parameterType="java.util.Map" resultMap="userVo">
 		select manager_id, manager_username, manager_password
-		from manager
+		from airdevice.manager
 		where 1 = 1
 		<if test="userId != null">
 			and manager_id = #{userId}
@@ -33,7 +33,7 @@
 	</select>
 
 	<insert id="insert" parameterType="model.user.User" useGeneratedKeys="false">
-		insert into manager (manager_id, manager_username, manager_name, manager_password, block_flag, create_time)
+		insert into airdevice.manager(manager_id, manager_username, manager_name, manager_password, block_flag, create_time)
 		values
 		(#{userId}, #{username}, #{managername}, #{password}, #{blockFlag}, #{createAt})
 	</insert>

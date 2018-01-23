@@ -10,7 +10,7 @@
 
 	<select id="query" parameterType="java.util.Map" resultMap="batchVo">
 		select batch_no, count(code_id) as num, count(if(code_delivered = 1, true, null)) as delivered, count(if(code_occupied = 1, true, null)) as occupied
-		from qrcode
+		from airdevice.qrcode
 		where 1 = 1
 		<if test="batchNo != null">
 			and batch_no = #{batchNo}

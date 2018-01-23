@@ -9,7 +9,7 @@
 
     <select id="query" parameterType="java.util.Map" resultMap="consumerStatiVo">
         select receiver_address, order_channel
-        from taobao_order
+        from airdevice.taobao_order
         where 1 = 1
         <if test="address != null">
             and receiver_address = # {address}
