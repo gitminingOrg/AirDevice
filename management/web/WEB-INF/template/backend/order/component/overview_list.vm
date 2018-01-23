@@ -40,7 +40,7 @@
                     <div style="width: 100%; height: 100%; background: #00b297; border-radius: 5px; padding: 20px; align-items: center; display: flex;">
                         <i class="glyph-icon icon-check-circle-o" style="font-size: 60px; color: white; opacity: 0.7;"></i>
                         <div style="margin-left: 30px">
-                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">已经完成订单</p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">总共订单数量</p>
                             <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-success">12</p>
                             <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range">2017/12/01~2017/12/31</p>
                         </div>
@@ -50,7 +50,7 @@
                     <div style="width: 100%; height: 100%; background: #dc3545; border-radius: 5px; padding: 20px; align-items: center; display: flex;">
                         <i class="glyph-icon icon-gavel" style="font-size: 60px; color: white; opacity: 0.7;"></i>
                         <div style="margin-left: 30px">
-                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">正在安装订单</p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">今日新增订单数量</p>
                             <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-installing">12</p>
                             <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range">2017/12/01~2017/12/31</p>
                         </div>
@@ -60,7 +60,7 @@
                     <div style="width: 100%; height: 100%; background: #0866C6; border-radius: 5px; padding: 20px; align-items: center; display: flex">
                         <i class="glyph-icon icon-ban" style="font-size: 60px; color: white; opacity: 0.7;"></i>
                         <div style="margin-left: 30px">
-                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">未安装订单</p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">待处理订单数量</p>
                             <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-insuccess">12</p>
                             <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range">2017/12/01~2017/12/31</p>
                         </div>
