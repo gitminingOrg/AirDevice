@@ -26,6 +26,7 @@
         WHERE 1 = 1
         AND block_flag = FALSE
         AND event_id = #{missionId}
+        ORDER BY  create_time DESC
     </select>
 
     <select id="query" parameterType="java.util.Map" resultMap="machineMissionVo">
