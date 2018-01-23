@@ -673,12 +673,13 @@ public class OrderController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/machineMission/list")
-    public ResultData machineMissionlist() {
+    @RequestMapping(method = RequestMethod.GET, value = "/machineMission/list/{machineItemId}")
+    public ResultData machineMissionlist(@PathVariable String machineItemId) {
         ResultData result = new ResultData();
 
         Map<String, Object> missionCondition = new HashMap<>();
         missionCondition.put("blockFlag", false);
+        missionCondition.put("machineItemId", machineItemId);
         ResultData response = machineMissionService.fetch(missionCondition);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setData(response.getData());
@@ -702,18 +703,29 @@ public class OrderController {
         UserVo userVo = (UserVo) subject.getPrincipal();
         MachineMission machineMission =
                 new MachineMission(form.getMachineId(), form.getMissionTitle(), form.getMissionContent(),
-                        "", Timestamp.valueOf(form.getMissionDate()));
+                        userVo.getUsername(), Timestamp.valueOf(form.getMissionDate()));
         ResultData response = machineMissionService.create(machineMission);
         result.setResponseCode(response.getResponseCode());
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+        // update machine status
+        if (form.getMachineStatusCode() != null) {
+            MachineItem machineItem = new MachineItem();
+            machineItem.setMachineId(form.getMachineId());
+            machineItem.setInstallType(form.getMachineInstallType());
+            machineItem.setMachineCode(form.getMachineQrcode());
+            machineItem.setProviderId(form.getMachineProvider());
+            machineItem.setMachineMissionStatus(
+                    MachineMissionStatus.convertToMissionStatus(Integer.parseInt(form.getMachineStatusCode())));
+            machineItemService.update(machineItem);
+        }
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK && form.getFilePathList() != null) {
             result.setData(response.getData());
             MachineMission mission = (MachineMission) response.getData();
-            String codeId = mission.getMachineId();
+            String machine = mission.getMachineItemId();
             String missionId = mission.getMissionId();
             JSONArray filepathList = JSON.parseArray(form.getFilePathList());
             for (Object filepath: filepathList) {
                 Insight insight = new Insight();
-                insight.setMachineId(codeId);
+                insight.setMachineId(machine);
                 insight.setEventId(missionId);
                 insight.setPath((String) filepath);
                 qRCodeService.createInsight(insight);

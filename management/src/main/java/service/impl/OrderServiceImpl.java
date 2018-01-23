@@ -73,11 +73,12 @@ public class OrderServiceImpl implements OrderService {
             Map<String, CommodityType> commodityTypeMap =
                     commodityVoList.stream().collect(Collectors.toMap(e -> e.getCommodityId(), e -> e.getType()));
             for (OrderItem item : orderItems) {
-                condition.put("commodityId", item.getCommodityId());
-                if (commodityTypeMap.get(item.getCommodityId()) == CommodityType.GUOMAI_XINFENG) {
-                    MachineItem machineItem = new MachineItem();
-                    machineItem.setOrderItemId(item.getOrderItemId());
-                    machineItemDao.insert(machineItem);
+                for (int i = 0; i < item.getCommodityQuantity(); i++) {
+                    if (commodityTypeMap.get(item.getCommodityId()) == CommodityType.GUOMAI_XINFENG) {
+                        MachineItem machineItem = new MachineItem();
+                        machineItem.setOrderItemId(item.getOrderItemId());
+                        machineItemDao.insert(machineItem);
+                    }
                 }
             }
         }

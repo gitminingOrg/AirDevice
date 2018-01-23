@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public class MachineMission extends Entity{
 
     private String missionId;
-    private String machineId;
+    private String machineItemId;
     private String missionTitle;
     private String missionContent;
     private String missionRecorder;
@@ -24,12 +24,12 @@ public class MachineMission extends Entity{
         this.missionId = missionId;
     }
 
-    public String getMachineId() {
-        return machineId;
+    public String getMachineItemId() {
+        return machineItemId;
     }
 
-    public void setMachineId(String machineId) {
-        this.machineId = machineId;
+    public void setMachineItemId(String machineItemId) {
+        this.machineItemId = machineItemId;
     }
 
     public String getMissionTitle() {
@@ -64,11 +64,11 @@ public class MachineMission extends Entity{
         this.missionDate = missionDate;
     }
 
-    public MachineMission(String machineId, String missionTitle, String missionContent,
+    public MachineMission(String machineItemId, String missionTitle, String missionContent,
                           String missionRecorder, Timestamp missionDate)
     {
         super();
-        this.machineId = machineId;
+        this.machineItemId = machineItemId;
         this.missionTitle = missionTitle;
         this.missionContent = missionContent;
         this.missionRecorder = missionRecorder;

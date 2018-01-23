@@ -13,10 +13,14 @@ public class MachineMissionForm {
     private String missionTitle;
     private String missionContent;
     private String missionRecorder;
+    private String machineQrcode;
+    private String machineInstallType;
+    private String machineProvider;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime missionDate;
     private String filePathList;
+    private String machineStatusCode;
 
     public String getMachineId() {
         return machineId;
@@ -64,5 +68,37 @@ public class MachineMissionForm {
 
     public void setFilePathList(String filePathList) {
         this.filePathList = filePathList;
+    }
+
+    public String getMachineStatusCode() {
+        return machineStatusCode;
+    }
+
+    public void setMachineStatusCode(String machineStatusCode) {
+        this.machineStatusCode = machineStatusCode;
+    }
+
+    public String getMachineQrcode() {
+        return machineQrcode;
+    }
+
+    public void setMachineQrcode(String machineQrcode) {
+        this.machineQrcode = machineQrcode;
+    }
+
+    public String getMachineInstallType() {
+        return machineInstallType;
+    }
+
+    public void setMachineInstallType(String machineInstallType) {
+        this.machineInstallType = machineInstallType;
+    }
+
+    public String getMachineProvider() {
+        return machineProvider;
+    }
+
+    public void setMachineProvider(String machineProvider) {
+        this.machineProvider = machineProvider;
     }
 }

@@ -3,7 +3,7 @@
 <mapper namespace="management.order.machineMission">
     <resultMap id="machineMissionVo" type="vo.order.MachineMissionVo">
         <result property="missionId" column="mission_id" />
-        <result property="machineId" column="machine_item_id" />
+        <result property="machineItemId" column="machine_item_id" />
         <result property="missionTitle" column="mission_title" />
         <result property="missionContent" column="mission_content" />
         <result property="missionRecorder" column="mission_recorder" />
@@ -36,8 +36,8 @@
         <if test="missionId != null">
             and mission_id = #{missionId}
         </if>
-        <if test="machineId != null">
-            and machine_item_id = #{machineId}
+        <if test="machineItemId != null">
+            and machine_item_id = #{machineItemId}
         </if>
         <if test="missionTitle != null">
             and mission_title = #{missionTitle}
@@ -62,7 +62,7 @@
         insert into gmair_order.machine_mission(mission_id, machine_item_id, mission_title, mission_content,
         mission_recorder, mission_date, block_flag, create_time)
         values
-        (#{missionId}, #{machineId}, #{missionTitle}, #{missionContent}, #{missionRecorder},
+        (#{missionId}, #{machineItemId}, #{missionTitle}, #{missionContent}, #{missionRecorder},
          #{missionDate}, #{blockFlag}, #{createAt})
     </insert>
 </mapper>

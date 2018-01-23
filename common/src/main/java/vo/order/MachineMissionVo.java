@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class MachineMissionVo {
     private String missionId;
-    private String machineId;
+    private String machineItemId;
     private String missionTitle;
     private String missionContent;
     private String missionRecorder;
@@ -29,12 +29,12 @@ public class MachineMissionVo {
         this.missionId = missionId;
     }
 
-    public String getMachineId() {
-        return machineId;
+    public String getMachineItemId() {
+        return machineItemId;
     }
 
-    public void setMachineId(String machineId) {
-        this.machineId = machineId;
+    public void setMachineItemId(String machineItemId) {
+        this.machineItemId = machineItemId;
     }
 
     public String getMissionTitle() {
