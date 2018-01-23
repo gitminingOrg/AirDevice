@@ -62,15 +62,21 @@
             	<div class="form-row">
                     <div class="form-label col-md-2">收货人地址</div>
                     <div class="form-input col-md-4 select" data-toggle="distpicker">
-                        <select id="province" class="col-md-4" data-province="${order.province}" style="border-radius: 5px">
-                            <option data-code="" data-text="—— 省 ——">—— 省 ——</option>
-                        </select>
-                        <select id="city" class="col-md-3" style="border-radius: 5px" data-city="${order.city}">
-                            <option data-code="" data-text="—— 市 ——" value="${order.city}">—— 市 ——</option>
-                        </select>
-                        <select id="district" class="col-md-3" style="border-radius: 5px" data-district="${order.district}">
-                            <option data-code="" data-text="—— 区 ——" value="${order.district}">—— 区 ——</option>
-                        </select>
+                        #if(${order.province})
+                            <select id="province" class="col-md-4" data-province="${order.province}" style="border-radius: 5px">
+                                <option data-code="" data-text="—— 省 ——">—— 省 ——</option>
+                            </select>
+                        #end
+                        #if(${order.city})
+                            <select id="city" class="col-md-3" style="border-radius: 5px" data-city="${order.city}">
+                                <option data-code="" data-text="—— 市 ——" value="${order.city}">—— 市 ——</option>
+                            </select>
+                        #end
+                        #if(${order.district})
+                            <select id="district" class="col-md-3" style="border-radius: 5px" data-district="${order.district}">
+                                <option data-code="" data-text="—— 区 ——" value="${order.district}">—— 区 ——</option>
+                            </select>
+                        #end
                     </div>
                     <div class="form-input col-md-6">
                         <input id="receiverAddress" type="text" value="${order.receiverAddress}"/>
@@ -79,7 +85,11 @@
                 <div class="form-row">
                     <div class="form-label col-md-2">优惠码</div>
                     <div class="form-input col-md-10">
-                        <input id="orderCoupon" type="text" value="${order.orderCoupon}">
+                        #if(${order.orderCoupon})
+                            <input id="orderCoupon" type="text" value="${order.orderCoupon}">
+                        #else
+                            <input id="orderCoupon" type="text" value="">
+                        #end
                     </div>
                 </div>
             	<div class="form-row">
@@ -131,11 +141,15 @@
                     <div class="form-label col-md-2">订单渠道</div>
                     <div class="form-input col-md-10">
                         <select id="order_diversion_list">
-                            <option>${order.orderDiversion}</option>
+                            #if(${order.orderDiversion})
+                                <option>${order.orderDiversion}</option>
+                            #else
+                                <option value="">---请选择渠道---</option>
+                            #end
                         </select>
                     </div>
                 </div>
-                #if(!${order.shipNo} || !${order.shipNo.trim().equals("")})
+                #if(${order.shipNo} && !${order.shipNo.trim().equals("")})
                     <div class="form-row">
                         <div class="form-label col-md-2">物流单号</div>
                         <div class="form-input col-md-10">
@@ -434,7 +448,9 @@
                         orderChannel: orderChannel, orderDiversion: orderDiversion, description: description,
                         orderStatus: convertOrderStatus("${order.orderStatus}")
                     };
-
+            if (!not_null(orderDiversion)) {
+                delete params.orderDiversion;
+            }
             $.post(url, params, function (result) {
                 window.location.href = "${path.concat('/order/').concat("${order.orderId}")}";
             });

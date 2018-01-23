@@ -128,13 +128,9 @@ public class OrderController {
                         rd = orderService.fetch(condition);
                         if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
                             GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>)rd.getData()).get(0);
-                            condition.put("CommodityName", list.get(i)[2]);
-                            rd = commodityService.fetch(condition);
-                            if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                                CommodityVo CVo = ((List<CommodityVo>)rd.getData()).get(0);
-                                OrderItem orderItem = new OrderItem(GVo.getOrderId(), CVo.getCommodityId(), Integer.valueOf(list.get(i)[4]));
-                                itemList.add(orderItem);
-                            }
+                            OrderItem orderItem = new OrderItem(GVo.getOrderId(), OrderConstant.defaultOrderCommodityId,
+                                                    Integer.valueOf(list.get(i)[4]));
+                            itemList.add(orderItem);
                         }
                     }
                 } else if (vo.getChannelName().equals(OrderConstant.TAO_BAO)) {
@@ -143,13 +139,9 @@ public class OrderController {
                         rd = orderService.fetch(condition);
                         if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
                             GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>)rd.getData()).get(0);
-                            condition.put("CommodityName", list.get(i)[19]);
-                            rd = commodityService.fetch(condition);
-                            if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                                CommodityVo CVo = ((List<CommodityVo>)rd.getData()).get(0);
-                                OrderItem orderItem = new OrderItem(GVo.getOrderId(), CVo.getCommodityId(), Integer.valueOf(list.get(i)[24]));
-                                itemList.add(orderItem);
-                            }
+                            OrderItem orderItem = new OrderItem(GVo.getOrderId(), OrderConstant.defaultOrderCommodityId,
+                                                    Integer.valueOf(list.get(i)[24]));
+                            itemList.add(orderItem);
                         }
                     }
                 }
