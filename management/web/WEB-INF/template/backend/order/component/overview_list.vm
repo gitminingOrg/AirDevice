@@ -430,11 +430,18 @@
         $.get(url, function (response) {
             if (response.responseCode === 'RESPONSE_OK') {
                 var order_all = response.data;
-                order_all.sort(function (order1, order2) {
-                   order1.orderTime > order2.orderTime;
-                });
-                var start_date = formatDate(new Date(order_all[0].orderTime));
-                var end_date = formatDate(new Date(order_all[order_all.length - 1].orderTime));
+                var max_date = order_all[0].orderTime, min_date = order_all[0].orderTime;
+                for (var i = 0; i < order_all.length; i++) {
+                    if (order_all[i].orderTime > max_date) {
+                        max_date = order_all[i].orderTime;
+                    }
+                    if (order_all[i].orderTime < min_date) {
+                        min_date = order_all[i].orderTime;
+                    }
+                }
+                var start_date = formatDate(new Date(min_date));
+                console.log(start_date);
+                var end_date = formatDate(new Date(max_date));
                 var today = new Date();
                 $("#order-all").html(order_all.length);
                 var order_today = order_all.filter(order => new Date(order.orderTime).toDateString() == today.toDateString());
