@@ -50,13 +50,13 @@
                                         <label for="goods-name">导入列表</label>
                                     </div>
                                     <div class="form-input col-md-10">
-                                        <form id="order-form">
+                                        <form id="order-form" method="post" enctype="multipart/form-data">
                                             <div class="form-row">
                                                 <div class="form-input col-md-12">
                                                     <select id="order_batchupload_channel_list" name="orderChannel"><select/>
                                                 </div>
                                             </div>
-                                            <input name="orderFile" type="file">
+                                            <input id="orderFile" name="orderFile" type="file">
                                         </form>
                                     </div>
                                 </div>
@@ -177,7 +177,6 @@
             			<input id="order-coupon" type="text" placeholder="请输入优惠码" />
                      </div>
             	</div>
-
             	<div class="form-row">
             		<label for="pay-time" class="form-label col-md-2">下单时间</label>
             		<div class="form-input col-md-10">
@@ -356,11 +355,21 @@
 	});
 
     $("#confirm-upload").on('click', function() {
-        $("#order-form").attr('action', "${path.concat('/order/upload')}");
-        $("#order-form").attr('method', "post");
-        $("#order-form").attr('enctype', 'multipart/form-data');
-        $("#order-form").data('orderChannel', $('#order_batchupload_channel_list').find(":selected").val());
-        $("#order-form").submit();
+        var data = new FormData();
+        data.append("orderFile", $("#orderFile")[0].files[0]);
+        data.append("orderChannel", $("#order_batchupload_channel_list").find(":selected").val());
+        console.log(data);
+        jQuery.ajax({
+            url: "${path.concat('/order/upload')}",
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(data){
+                location.href = "${path.concat('/order/overview')}";
+            }
+        });
     });
     
     $("#goodsAdd").on('click', function () {
