@@ -117,6 +117,9 @@
         <if test="blockFlag != null">
             AND block_flag = #{blockFlag}
         </if>
+        <if test="search != null">
+            AND (receiver_address like #{search} or buyer_name LIKE #{search} or receiver_phone LIKE #{search})
+        </if>
         ORDER BY order_time DESC
     </select>
 

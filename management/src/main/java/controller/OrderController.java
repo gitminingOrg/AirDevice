@@ -178,7 +178,7 @@ public class OrderController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/list")
-    public ResultData list(@RequestParam String param) {
+    public ResultData list(@RequestParam(required = false) String param) {
         ResultData result = new ResultData();
         Map<String, Object> condition = new HashMap<>();
         condition.put("blockFlag", false);

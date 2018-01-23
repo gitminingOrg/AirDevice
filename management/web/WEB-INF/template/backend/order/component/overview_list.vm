@@ -41,8 +41,8 @@
                         <i class="glyph-icon icon-check-circle-o" style="font-size: 60px; color: white; opacity: 0.7;"></i>
                         <div style="margin-left: 30px">
                             <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">总共订单数量</p>
-                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-success">12</p>
-                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range">2017/12/01~2017/12/31</p>
+                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-all"></p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
                         </div>
                     </div>
                 </div>
@@ -51,8 +51,8 @@
                         <i class="glyph-icon icon-gavel" style="font-size: 60px; color: white; opacity: 0.7;"></i>
                         <div style="margin-left: 30px">
                             <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">今日新增订单数量</p>
-                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-installing">12</p>
-                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range">2017/12/01~2017/12/31</p>
+                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-today"></p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
                         </div>
                     </div>
                 </div>
@@ -61,8 +61,8 @@
                         <i class="glyph-icon icon-ban" style="font-size: 60px; color: white; opacity: 0.7;"></i>
                         <div style="margin-left: 30px">
                             <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">待处理订单数量</p>
-                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-insuccess">12</p>
-                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range">2017/12/01~2017/12/31</p>
+                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-insuccess"></p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
                         </div>
                     </div>
                 </div>
@@ -116,6 +116,8 @@
 	channel_reset();
 	
 	status_reset();
+
+	initOrderStatistics();
 	
 	function channel_reset() {
 		$("#channel_list").empty();
@@ -420,6 +422,37 @@
             result += lineDelimiter;
         })
         return result;
+    }
+
+    // 初始化统计面板
+    function initOrderStatistics() {
+        var url = "${path.concat('/order/list')}";
+        $.get(url, function (response) {
+            if (response.responseCode === 'RESPONSE_OK') {
+                var order_all = response.data;
+                order_all.sort(function (order1, order2) {
+                   order1.orderTime > order2.orderTime;
+                });
+                var start_date = formatDate(new Date(order_all[0].orderTime));
+                var end_date = formatDate(new Date(order_all[order_all.length - 1].orderTime));
+                var today = new Date();
+                $("#order-all").html(order_all.length);
+                var order_today = order_all.filter(order => new Date(order.orderTime).toDateString() == today.toDateString());
+                $("#order-today").html(order_today.length);
+                var order_imcompelete = order_all.filter(order => (order.orderStatus != 'REFUNDED'
+                        || order.orderStatus != 'SUCCEED' || order.orderStatus != 'CLOSED'));
+                $("#order-insuccess").html(order_imcompelete.length);
+                $(".date-range").html(start_date + "~" + end_date);
+            }
+        });
+    }
+
+    function formatDate(date) {
+        var year = date.getFullYear().toString();
+        var month = ("0" + (date.getMonth() + 1).toString()).slice(-2).toString();
+        var day = ("0" + date.getDate().toString()).slice(-2).toString();
+
+        return year + '/' + month + '/' + day;
     }
 
     function not_null(item) {

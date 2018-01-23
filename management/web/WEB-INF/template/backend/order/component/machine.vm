@@ -250,6 +250,36 @@
                             </div>
                         </div>
                     #end
+                    <a class="btn medium bg-blue black-modal-80" title="勘测完成">
+                        <span class="button-content">添加事件</span>
+                    </a>
+                    <div class="hide" id="black-modal-80" title="新增勘测事件">
+                        <div class="pad10A">
+                            <div class="col-md-12 center-margin">
+                                <div class="form-row">
+                                    <div class="form-label col-md-3">
+                                        <label for="machine-mission-name">事件名称</label>
+                                    </div>
+                                    <div class="form-input col-md-9">
+                                        <input id="machine-mission-name" type="text" placeholder="事件标题">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-label col-md-3">
+                                        <label for="machine-mission-content" autocomplete="off">事件详情</label>
+                                    </div>
+                                    <div class="form-input col-md-9">
+                                        <textarea id="machine-mission-content" type="text" autocomplete="off"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <button class="btn medium bg-blue-alt" id="machine-mission-event">
+                                        <span class="button-content">勘测完成</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="form-row" style="margin-left: 0px; margin-right: 0px">
@@ -276,6 +306,8 @@
                         $("#mission-area").css("display", "block");
                     }
                     for(var i = 0; i < missions.length; i ++) {
+                        var missionDate = formatDate(new Date(missions[i].missionDate));
+                        var dateSpan = $('<span style="margin-right: 30px; float: right"></span>').text(missionDate);
                         var row = $("<div class='row'></div>");
                         var content_box = $("<div class='content-box'></div>");
                         var head = $("<h3 class='content-box-header bg-gray-alt'></h3>");
@@ -283,12 +315,9 @@
                         var comment = $("<i class='glyph-icon icon-comments'></i>");
                         var span = $("<span></span>").text(missions[i].missionRecorder);
                         var float_right = $("<div class='glyph-icon icon-separator transparent float-right'></div>");
-                        var icon_comment = $("<i class='glyph-icon icon-comments'></i>");
+//                        var icon_comment = $("<i class='glyph-icon icon-comments'></i>");
                         var picture_row = $("<div class='content-box-wrapper' style='overflow: hidden;'></div>");
                         for (var j = 0; j < missions[i].insightList.length; j++) {
-//                            if (j == 0) {
-//                                picture_row.append($("<div class='row'><h5 class='bg-gray-alt'>相关图片</h5></div>"));
-//                            }
                             var picture_single_row = $("<div class='row' style='padding-left: 15px'></div>");
                             var picture_url = "${path}" + missions[i].insightList[j].path;
                             var img_li = $("<li style='float: left; border: 2px solid #F0F0F0; padding: 2px; margin-right: 6px; position: relative'></li>");
@@ -298,10 +327,11 @@
                             picture_row.append(img_li);
                         }
                         var picture = $("<div class='col-md-2'></div>");
-                        float_right.append(icon_comment);
+//                        float_right.append(icon_comment);
                         separator.append(comment);
                         head.append(separator);
                         head.append(span);
+                        head.append(dateSpan);
                         head.append(float_right);
                         content_box.append(head);
                         var wrapper = $("<div class='content-box-wrapper' style='font-size: 15px; line-height: 1.4; overflow: hidden'></div>");
@@ -318,10 +348,27 @@
             });
         }
         initOrderMachineInfo();
+        $("#machine-mission-event").on('click', function () {
+            var machineItemId = "${machineItem.machineId}";
+            var url = "${path.concat('/order/machinemission/create')}";
+            var machine_cancel_title = $("#machine-mission-name").val();
+            var machine_cancel_content = $("#machine-mission-content").val();
+            var machine_cancel_date = new Date().toISOString();
+            var param = {
+                machineId: machineItemId, missionTitle: machine_cancel_title,
+                missionContent: machine_cancel_content, missionDate: machine_cancel_date
+            }
+            $.post(url, param, function (response) {
+                if (response.responseCode == "RESPONSE_OK") {
+                    window.location.reload();
+                }
+            });
+        });
+
         $("#machine-cancel-event").on('click', function () {
             var machineItemId = "${machineItem.machineId}";
             var url = "${path.concat('/order/machinemission/create')}";
-            var machine_cancel_title = "安装取消";
+            var machine_cancel_title = "安装取消事件";
             var machine_cancel_content = $("#machine-cancel-content").val();
             var machine_cancel_date = new Date().toISOString();
             var machine_status = 6;
@@ -438,6 +485,14 @@
             return false;
         }
         return true;
+    }
+
+    function formatDate(date) {
+        var year = date.getFullYear().toString();
+        var month = ("0" + (date.getMonth() + 1).toString()).slice(-2).toString();
+        var day = ("0" + date.getDate().toString()).slice(-2).toString();
+
+        return year + '-' + month + '-' + day;
     }
 
     weui.uploader('#uploaderCustom', {
