@@ -24,6 +24,7 @@ import service.*;
 import service.OrderService;
 import utils.ResponseCode;
 import utils.ResultData;
+import vo.guomai.CommodityVo;
 import vo.order.GuoMaiOrderVo;
 import vo.order.MachineItemVo;
 import vo.order.OrderChannelVo;
@@ -60,6 +61,9 @@ public class OrderController {
     @Autowired
     private MachineItemService machineItemService;
 
+    @Autowired
+    private CommodityService commodityService;
+
     @RequestMapping(method = RequestMethod.GET, value = "/overview")
     public ModelAndView overview() {
         ModelAndView view = new ModelAndView();
@@ -87,6 +91,7 @@ public class OrderController {
         }
         reader.close();
         List<GuoMaiOrder> order = new LinkedList<>();
+        List<OrderItem> itemList = new LinkedList<>();
         Map<String, Object> condition = new HashMap<>();
         condition.put("channelId", orderChannel);
         ResultData rd = orderService.fetchOrderChannel(condition);
@@ -115,9 +120,47 @@ public class OrderController {
         if (!order.isEmpty()){
             ResultData response = orderService.upload(order);
             if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                logger.info("上传订单记录成功");
-            } else {
-                logger.info("上传订单记录失败");
+                logger.info("订单已上传");
+                if (vo.getChannelName().equals("京东")) {
+                    for (int i = 0; i < order.size(); i++) {
+                        condition.put("orderNo", order.get(i).getOrderNo());
+                        rd = orderService.fetch(condition);
+                        if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                            GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>)rd.getData()).get(0);
+                            condition.put("CommodityName", list.get(i)[2]);
+                            rd = commodityService.fetch(condition);
+                            if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                                CommodityVo CVo = ((List<CommodityVo>)rd.getData()).get(0);
+                                OrderItem orderItem = new OrderItem(GVo.getOrderId(), CVo.getCommodityId(), Integer.valueOf(list.get(i)[4]));
+                                itemList.add(orderItem);
+                            }
+                        }
+                    }
+                } else if (vo.getChannelName().equals("淘宝店铺")) {
+                    for (int i = 0; i < order.size(); i++) {
+                        condition.put("orderNo", order.get(i).getOrderNo());
+                        rd = orderService.fetch(condition);
+                        if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                            GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>)rd.getData()).get(0);
+                            condition.put("CommodityName", list.get(i)[19]);
+                            rd = commodityService.fetch(condition);
+                            if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                                CommodityVo CVo = ((List<CommodityVo>)rd.getData()).get(0);
+                                OrderItem orderItem = new OrderItem(GVo.getOrderId(), CVo.getCommodityId(), Integer.valueOf(list.get(i)[24]));
+                                itemList.add(orderItem);
+                            }
+                        }
+                    }
+                }
+                if (!itemList.isEmpty()) {
+                    response = orderService.uploadOrderItem(itemList);
+                    if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                        logger.info("OrderItem上传成功");
+                        logger.info("订单记录上传成功");
+                    }
+                } else {
+                    logger.info("OrderItem为空，订单上传失败");
+                }
             }
         } else {
             logger.info("订单已存在，无需重复上传");
