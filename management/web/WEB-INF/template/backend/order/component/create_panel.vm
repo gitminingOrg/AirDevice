@@ -44,12 +44,18 @@
                     <div class="hide" id="white-modal-80" title="添加型号">
                         <div class="pad10A">
                             <div class="col-md-12 center-margin">
+
                                 <div class="form-row">
                                     <div class="form-label col-md-2">
                                         <label for="goods-name">导入列表</label>
                                     </div>
                                     <div class="form-input col-md-10">
                                         <form id="order-form">
+                                            <div class="form-row">
+                                                <div class="form-input col-md-12">
+                                                    <select id="order_batchupload_channel_list" name="orderChannel"><select/>
+                                                </div>
+                                            </div>
                                             <input name="orderFile" type="file">
                                         </form>
                                     </div>
@@ -350,7 +356,7 @@
 	});
 
     $("#confirm-upload").on('click', function() {
-        $("#order-form").attr('action', "${path.concat('/order/BatchUpload')}");
+        $("#order-form").attr('action', "${path.concat('/order/upload')}");
         $("#order-form").attr('method', "post");
         $("#order-form").attr('enctype', 'multipart/form-data');
         $("#order-form").submit();
@@ -451,6 +457,8 @@
     }
 
     function order_channel_reset() {
+        $("#order_batchupload_channel_list").empty();
+        $("#order_batchupload_channel_list").append($("<option value=''></option>").text("---请选择购买渠道---"));
         $("#order_channel_list").empty();
         $("#order_channel_list").append($("<option value=''></option>").text("---请选择购买渠道---"));
         var channel_url = "${path.concat('/order/orderChannel/list')}";
@@ -458,9 +466,8 @@
             if(result.responseCode == "RESPONSE_OK") {
                 var data = result.data;
                 for(index in data) {
-                    var item = $("<option></option>").text(data[index].channelName);
-                    item.attr("value", data[index].channelId);
-                    $("#order_channel_list").append(item);
+                    $("#order_batchupload_channel_list").append($("<option></option>").text(data[index].channelName).val(data[index].channelId));
+                    $("#order_channel_list").append($("<option></option>").text(data[index].channelName).val(data[index].channelId));
                 }
             }
         })

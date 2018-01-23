@@ -190,7 +190,7 @@
                                         </div>
                                     </div>
                                     <div class="form-row">
-                                        <label id="mission-type" class="form-label col-md-3">安装方式</label>
+                                        <label id="mission-type" class="form-label col-md-3">安装服务商</label>
                                         <div class="form-input col-md-9">
                                             <select id="machine-provider">
                                             </select>
@@ -393,7 +393,7 @@
                 return;
             }
             var param = {
-                machineId: machineItemId, missionTitle: machine_install_title, machine_install_type: machine_install_type,
+                machineId: machineItemId, missionTitle: machine_install_title, machineInstallType: machine_install_type,
                 missionContent: machine_install_content, missionDate: machine_install_date, machineQrcode: machine_qrcode,
                 filePathList: JSON.stringify(uploadFilePathList), machineStatusCode: machine_status,
                 machineProvider: machine_provider

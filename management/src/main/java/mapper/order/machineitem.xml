@@ -63,6 +63,7 @@
         <set>
           <if test="machineCode != null">machine_code = #{machineCode},</if>
           <if test="installType != null">install_type = #{installType},</if>
+          <if test="installType != null">provider_id = #{providerId},</if>
           <if test="machineMissionStatus != null">machine_status = #{machineMissionStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}</if>
         </set>
         WHERE machine_item.machine_item_id = #{machineId}
