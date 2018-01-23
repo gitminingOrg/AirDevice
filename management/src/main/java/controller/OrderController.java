@@ -91,40 +91,40 @@ public class OrderController {
             list.add(reader.getValues());
         }
         reader.close();
-        List<GuoMaiOrder> orderList = new LinkedList<>();
+        List<GuoMaiOrder> order = new LinkedList<>();
         List<OrderItem> itemList = new LinkedList<>();
         Map<String, Object> condition = new HashMap<>();
         condition.put("channelId", orderChannel);
         ResultData rd = orderService.fetchOrderChannel(condition);
         OrderChannelVo vo =((List<OrderChannelVo>) rd.getData()).get(0);
-        if (vo.getChannelName().equals(OrderConstant.TAO_BAO)) {
+        if (vo.getChannelName().equals("淘宝店铺")) {
             for (int i = 0; i < list.size(); i++) {
-                GuoMaiOrder order = GuoMaiOrder.convertFromTaoBao(list.get(i));
-                order.setOrderChannel(orderChannel);
-                condition.put("orderNo", order.getOrderNo());
+                GuoMaiOrder item = GuoMaiOrder.convertFromTaoBao(list.get(i));
+                item.setOrderChannel(orderChannel);
+                condition.put("orderNo", item.getOrderNo());
                 rd = orderService.fetch(condition);
                 if (rd.getResponseCode() == ResponseCode.RESPONSE_NULL) {
-                    orderList.add(order);
+                    order.add(item);
                 }
             }
-        } else if (vo.getChannelName().equals(OrderConstant.JING_DONG)){
+        } else if (vo.getChannelName().equals("京东")){
             for (int i = 0; i < list.size(); i++) {
-                GuoMaiOrder order = GuoMaiOrder.convertFromJD(list.get(i));
-                order.setOrderChannel(orderChannel);
-                condition.put("orderNo", order.getOrderNo());
+                GuoMaiOrder item = GuoMaiOrder.convertFromJD(list.get(i));
+                item.setOrderChannel(orderChannel);
+                condition.put("orderNo", item.getOrderNo());
                 rd = orderService.fetch(condition);
                 if (rd.getResponseCode() == ResponseCode.RESPONSE_NULL) {
-                    orderList.add(order);
+                    order.add(item);
                 }
             }
         }
-        if (!orderList.isEmpty()){
-            ResultData response = orderService.upload(orderList);
+        if (!order.isEmpty()){
+            ResultData response = orderService.upload(order);
             if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
                 logger.info("订单已上传");
-                if (vo.getChannelName().equals(OrderConstant.JING_DONG)) {
-                    for (int i = 0; i < orderList.size(); i++) {
-                        condition.put("orderNo", orderList.get(i).getOrderNo());
+                if (vo.getChannelName().equals("京东")) {
+                    for (int i = 0; i < order.size(); i++) {
+                        condition.put("orderNo", order.get(i).getOrderNo());
                         rd = orderService.fetch(condition);
                         if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
                             GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>)rd.getData()).get(0);
@@ -133,9 +133,9 @@ public class OrderController {
                             itemList.add(orderItem);
                         }
                     }
-                } else if (vo.getChannelName().equals(OrderConstant.TAO_BAO)) {
-                    for (int i = 0; i < orderList.size(); i++) {
-                        condition.put("orderNo", orderList.get(i).getOrderNo());
+                } else if (vo.getChannelName().equals("淘宝店铺")) {
+                    for (int i = 0; i < order.size(); i++) {
+                        condition.put("orderNo", order.get(i).getOrderNo());
                         rd = orderService.fetch(condition);
                         if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
                             GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>)rd.getData()).get(0);
@@ -495,6 +495,7 @@ public class OrderController {
         GuoMaiOrderVo vo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
         GuoMaiOrder order = new GuoMaiOrder();
         order.setOrderId(orderId);
+//        order.setProductSerial(vo.getProductSerial());
         order.setShipNo(vo.getShipNo());
         order.setOrderStatus(OrderStatus.REFUNDED);
         orderService.assign(order);

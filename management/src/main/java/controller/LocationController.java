@@ -14,6 +14,7 @@ import utils.HttpDeal;
 import utils.ResponseCode;
 import utils.ResultData;
 
+
 /**
  * Created by hushe on 2017/10/28.
  */
