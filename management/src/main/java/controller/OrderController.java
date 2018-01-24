@@ -495,9 +495,21 @@ public class OrderController {
         GuoMaiOrderVo vo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
         GuoMaiOrder order = new GuoMaiOrder();
         order.setOrderId(orderId);
-//        order.setProductSerial(vo.getProductSerial());
         order.setShipNo(vo.getShipNo());
         order.setOrderStatus(OrderStatus.REFUNDED);
+
+        ResultData machineItemResponse = machineItemService.fetch(condition);
+        if (machineItemResponse.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            List<MachineItemVo> machineItemVos = (List<MachineItemVo>) machineItemResponse.getData();
+            List<MachineItem> machineItems = new ArrayList<>();
+            for (MachineItemVo machineItemVo : machineItemVos) {
+                MachineItem machineItem = new MachineItem();
+                machineItem.setMachineId(machineItemVo.getMachineId());
+                machineItem.setMachineMissionStatus(MachineMissionStatus.INSTALL_CANCEL);
+                machineItems.add(machineItem);
+            }
+            machineItemService.updateBatch(machineItems);
+        }
         orderService.assign(order);
         return result;
     }

@@ -172,7 +172,7 @@ public class GuoMaiOrder extends Order {
         this.orderTime = orderTime;
         this.description = description;
 
-        this.orderDiversion = "";
+//        this.orderDiversion = "";
         this.shipNo = "";
     }
 

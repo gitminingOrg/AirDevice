@@ -66,15 +66,27 @@
                             <select id="province" class="col-md-4" data-province="${order.province}" style="border-radius: 5px">
                                 <option data-code="" data-text="—— 省 ——">—— 省 ——</option>
                             </select>
+                        #else
+                            <select id="province" class="col-md-4" style="border-radius: 5px">
+                                <option data-code="" data-text="—— 省 ——">—— 省 ——</option>
+                            </select>
                         #end
                         #if(${order.city})
                             <select id="city" class="col-md-3" style="border-radius: 5px" data-city="${order.city}">
                                 <option data-code="" data-text="—— 市 ——" value="${order.city}">—— 市 ——</option>
                             </select>
+                        #else
+                            <select id="city" class="col-md-3" style="border-radius: 5px">
+                                <option data-code="" data-text="—— 市 ——">—— 市 ——</option>
+                            </select>
                         #end
                         #if(${order.district})
                             <select id="district" class="col-md-3" style="border-radius: 5px" data-district="${order.district}">
                                 <option data-code="" data-text="—— 区 ——" value="${order.district}">—— 区 ——</option>
+                            </select>
+                        #else
+                            <select id="district" class="col-md-3" style="border-radius: 5px">
+                                <option data-code="" data-text="—— 区 ——">—— 区 ——</option>
                             </select>
                         #end
                     </div>

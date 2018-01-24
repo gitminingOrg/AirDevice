@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import service.MachineItemService;
 import utils.ResultData;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,5 +32,10 @@ public class MachineItemServiceImpl implements MachineItemService{
     @Override
     public ResultData update(MachineItem machineItem) {
         return machineItemDao.update(machineItem);
+    }
+
+    @Override
+    public ResultData updateBatch(List<MachineItem> machineItems) {
+        return machineItemDao.updateBatch(machineItems);
     }
 }

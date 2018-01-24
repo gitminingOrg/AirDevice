@@ -3,6 +3,7 @@ package service;
 import model.order.MachineItem;
 import utils.ResultData;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,4 +15,6 @@ public interface MachineItemService {
     public ResultData create(MachineItem machineItem);
 
     public ResultData update(MachineItem machineItem);
+
+    public ResultData updateBatch(List<MachineItem> machineItems);
 }
