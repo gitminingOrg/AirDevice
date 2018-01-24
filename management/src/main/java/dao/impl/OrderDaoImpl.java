@@ -39,6 +39,7 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 		}
 		try {
 			sqlSession.insert("management.guomaiorder.insertBatch", order);
+			result.setData(order);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			result.setResponseCode(ResponseCode.RESPONSE_ERROR);

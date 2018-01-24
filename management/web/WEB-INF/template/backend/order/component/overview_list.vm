@@ -145,6 +145,9 @@
 				var data = result.data;
 				for(index in data) {
 					var item = $("<option></option>");
+                    if(data[index] == 0) {
+                        item.text("待付款");
+                    }
 					if(data[index] == 1) {
 						item.text("待发货");
 					}
@@ -255,14 +258,21 @@
                     return full.receiverName + "(" + full.receiverPhone + ")";
                 }},
                 {title: '地区', "mRender": function (data, type, full) {
-                    if (!not_null(full.province)) {
-                        var index = full.receiverAddress.indexOf("市");
-                        if (index == -1) {
-                            index = full.receiverAddress.indexOf("区");
+                    if(not_null(full.receiverAddress)) {
+                        if (!not_null(full.province)) {
+                            var index = full.receiverAddress.indexOf("市");
+                            if (index == -1) {
+                                index = full.receiverAddress.indexOf("区");
+                            }
+                            if (index == -1) {
+                                return full.receiverAddress.substr(0, 6);
+                            }
+                            return full.receiverAddress.substr(0, index + 1);
+                        } else {
+                            return full.province + full.city;
                         }
-                        return full.receiverAddress.substr(0, index + 1);
                     } else {
-                        return full.province + full.city;
+                        return "未知";
                     }
                 }},
                 {title: '下单日期', "mRender": function(data, type, full){
@@ -291,6 +301,9 @@
                 	if(status == "REFUNDED") {
                 		return "已取消";
                 	}
+                	if (status == "NOT_PAYED") {
+                	    return "未付款";
+                    }
                 	return "未知状态";
                 }},
                 {title: "操作", "mRender": function(data, type, full) {

@@ -41,6 +41,9 @@ public class OrderItem extends Entity{
         this.commodityQuantity = commodityQuantity;
     }
 
+    public OrderItem() {
+    }
+
     public OrderItem(String orderId, String commodityId, int commodityQuantity) {
         this.orderId = orderId;
         this.commodityId = commodityId;

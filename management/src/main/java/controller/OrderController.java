@@ -5,8 +5,18 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.csvreader.CsvReader;
 import form.*;
+import jxl.Workbook;
 import model.machine.Insight;
 import model.order.*;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -26,10 +36,7 @@ import utils.OrderConstant;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.guomai.CommodityVo;
-import vo.order.GuoMaiOrderVo;
-import vo.order.MachineItemVo;
-import vo.order.OrderChannelVo;
-import vo.order.OrderVo;
+import vo.order.*;
 import vo.user.UserVo;
 
 import javax.validation.Valid;
@@ -40,6 +47,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -160,6 +168,118 @@ public class OrderController {
         }
         view.setViewName("redirect:/order/overview");
         return view;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/groupBuyingUpload")
+    public ResultData upload(MultipartHttpServletRequest request) throws Exception
+    {
+        ResultData result = new ResultData();
+        MultipartFile file = request.getFile("groupBuyingFile");
+        InputStream stream = file.getInputStream();
+        String[] tempList = file.getOriginalFilename().split("\\.");
+        String fileAppendix = tempList[tempList.length - 1];
+        if (file.isEmpty()) {
+            logger.info("");
+            result.setResponseCode(ResponseCode.RESPONSE_NULL);
+            return result;
+        }
+        List<String[]> list = new ArrayList<>();
+        if (fileAppendix.contains("xls")) {
+            XSSFWorkbook workbook = new XSSFWorkbook(stream);
+            XSSFSheet xssfSheet = workbook.getSheetAt(0);
+            if (xssfSheet == null) {
+                result.setResponseCode(ResponseCode.RESPONSE_NULL);
+                return result;
+            }
+            for (int i = 1; i < xssfSheet.getLastRowNum(); i++) {
+                XSSFRow row = xssfSheet.getRow(i);
+                String[] rowContent = new String[11];
+                int j = 0;
+                Iterator<Cell> iterator = row.cellIterator();
+                while (iterator.hasNext() && j < 11) {
+                    rowContent[j] = iterator.next().toString();
+                    j++;
+                }
+                if (rowContent[2] == null) {
+                    continue;
+                }
+                list.add(rowContent);
+            }
+        } else if (fileAppendix.contains("csv")) {
+            CsvReader reader = new CsvReader(stream, Charset.forName("gbk"));
+            reader.readHeaders();
+            while (reader.readRecord()) {
+                list.add(reader.getValues());
+            }
+        } else {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setData("格式不支持，请上传excel或者csv");
+            return result;
+        }
+        List<GuoMaiOrder> preInstallOrders = new ArrayList<>();
+        for (String[] orderParam : list) {
+            GuoMaiOrder guoMaiOrder = GuoMaiOrder.convertFromGroupBuyingOrder(orderParam);
+            if (guoMaiOrder != null) {
+                preInstallOrders.add(guoMaiOrder);
+            }
+        }
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("blockFlag", false);
+        ResultData response = orderService.fetch(condition);
+        List<GuoMaiOrderVo> orderInstalled = new ArrayList<>();
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            orderInstalled = (List<GuoMaiOrderVo>) response.getData();
+        }
+        Set<String> orderNoInstalled = orderInstalled.stream().map(e -> e.getOrderNo()).collect(Collectors.toSet());
+        preInstallOrders = preInstallOrders.stream().filter(e -> !orderNoInstalled.contains(e.getOrderNo())).collect(Collectors.toList());
+        preInstallOrders = preInstallOrders.stream().filter(e -> e.getBuyerName() != null).collect(Collectors.toList());
+
+        // 对于没有引流上记录的引流尚， 插入相应的引流商
+        ResultData diversionResponse = orderDiversionService.fetch(new HashMap<>());
+        if (diversionResponse.getResponseCode() != ResponseCode.RESPONSE_ERROR) {
+            List<OrderDiversionVo> diversionVoList = new ArrayList<>();
+            if (diversionResponse.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                diversionVoList = (List<OrderDiversionVo>) diversionResponse.getData();
+            }
+            Map<String, String> diversionMap = diversionVoList.stream().
+                    collect(Collectors.toMap(e -> e.getDiversionName(), e -> e.getDiversionId()));
+            for (GuoMaiOrder order: preInstallOrders) {
+                if (diversionMap.containsKey(order.getOrderDiversion())) {
+                    order.setOrderDiversion(diversionMap.get(order.getOrderDiversion()));
+                } else {
+                    OrderDiversion orderDiversion = new OrderDiversion(order.getOrderDiversion());
+                    diversionResponse = orderDiversionService.create(orderDiversion);
+                    if (diversionResponse.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                        orderDiversion = (OrderDiversion) diversionResponse.getData();
+                    }
+                    order.setOrderDiversion(orderDiversion.getDiversionId());
+                    diversionMap.put(orderDiversion.getDiversionName(), orderDiversion.getDiversionId());
+                }
+            }
+        }
+
+        response = orderService.upload(preInstallOrders);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            List<OrderItem> orderItemList = new ArrayList<>();
+            preInstallOrders = (List<GuoMaiOrder>) response.getData();
+            for (GuoMaiOrder order: preInstallOrders) {
+                if (order.getCommodityList() != null) {
+                    for (OrderItem orderItem : order.getCommodityList()) {
+                        orderItem.setOrderId(order.getOrderId());
+                    }
+                    orderItemList.addAll(order.getCommodityList());
+                }
+            }
+            response = orderService.uploadOrderItem(orderItemList);
+        }
+        if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            result.setResponseCode(ResponseCode.RESPONSE_NULL);
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("服务器忙，请稍后再试");
+        }
+        stream.close();
+        return result;
     }
 
     @ResponseBody
@@ -474,6 +594,29 @@ public class OrderController {
         order.setOrderId(orderId);
         order.setShipNo(vo.getShipNo());
         order.setOrderStatus(OrderStatus.SUCCEED);
+        order.setOrderPrice(vo.getOrderPrice());
+        orderService.assign(order);
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/payed")
+    public ResultData pay(@PathVariable("orderId") String orderId) {
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("orderId", orderId);
+        condition.put("blockFlag", false);
+        ResultData response = orderService.fetch(condition);
+        if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("当前订单无法进行该操作");
+            logger.error(result.getDescription());
+            return result;
+        }
+        GuoMaiOrderVo vo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
+        GuoMaiOrder order = new GuoMaiOrder();
+        order.setOrderId(orderId);
+        order.setShipNo(vo.getShipNo());
+        order.setOrderStatus(OrderStatus.PAYED);
         order.setOrderPrice(vo.getOrderPrice());
         orderService.assign(order);
         return result;

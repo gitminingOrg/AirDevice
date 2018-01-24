@@ -3,6 +3,12 @@ package model.order;
 import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -203,7 +209,7 @@ public class GuoMaiOrder extends Order {
         order.setOrderTime(Timestamp.valueOf(param[6])); //订单时间
         order.setDescription(param[17]); //备注
         //判断订单状态
-        if (!param[24].isEmpty()) {
+        if (param[24].trim().length() != 0) {
             order.setShipNo(param[24]);
             order.setOrderStatus(OrderStatus.SHIPPED);
         } else {
@@ -224,12 +230,88 @@ public class GuoMaiOrder extends Order {
         order.setOrderTime(Timestamp.valueOf(param[17])); //订单时间
         order.setDescription(param[23]); //备注
         //判断订单状态
-        if (!param[21].isEmpty()) {
+        if (param[21].trim().length() != 0) {
             order.setShipNo(param[21]);
             order.setOrderStatus(OrderStatus.SHIPPED);
         } else {
             order.setOrderStatus(OrderStatus.PAYED);
         }
+        return order;
+    }
+
+    private static String generateOrderNo() {
+        String prefix = "No";
+        long timestamp = System.currentTimeMillis();
+        return prefix + timestamp;
+    }
+
+    public static GuoMaiOrder convertFromGroupBuyingOrder(String[] param) {
+        if (param[0] == null && param[5] == null) {
+            return null;
+        }
+        if (param[0] != null && param[2] != null &&
+                param[0].trim().length() == 0 && param[2].length() == 0) {
+            return null;
+        }
+        GuoMaiOrder order = new GuoMaiOrder();
+        if (param[1].length() == 0) {
+            order.setOrderNo(generateOrderNo());
+        } else {
+            order.setOrderNo(param[1]);
+        }
+        order.setOrderDiversion(param[0]);
+        order.setBuyerName(param[7]);
+        order.setReceiverName(param[7]);
+        order.setReceiverPhone(param[8]);
+        order.setReceiverAddress(param[10]);
+        if (param[5] == null || param[5].trim().length() == 0) {
+            order.setOrderTime(Timestamp.valueOf(LocalDateTime.now()));
+        } else {
+            DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+            try {
+                LocalDate dateTime = LocalDate.parse(param[5], simpleDateFormat);
+                order.setOrderTime(Timestamp.valueOf(LocalDateTime.of(dateTime, LocalTime.MIN)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (param[6] != null) {
+            if (param[6].contains("已付款")) {
+                order.setOrderStatus(OrderStatus.PAYED);
+            } else if (param[6].contains("未收到款")) {
+                order.setOrderStatus(OrderStatus.NOT_PAYED);
+            } else {
+                // 其他情况下 设置为已付款 并且加上付款的备注
+                order.setOrderStatus(OrderStatus.PAYED);
+                order.setDescription(param[4] + param[6]);
+            }
+        } else {
+            order.setOrderStatus(OrderStatus.PAYED);
+        }
+        if (param[2] != null) {
+            List<OrderItem> orderItemList = new ArrayList<>();
+            OrderItem orderItem = new OrderItem();
+            if (param[2].contains("GM320A")) {
+                orderItem.setCommodityId(OrderConstant.GUOMAI_320A);
+            } else if (param[2].contains("GM320B")) {
+                orderItem.setCommodityId(OrderConstant.GUOMAI_320B);
+            } else if (param[2].contains("滤网")) {
+                orderItem.setCommodityId(OrderConstant.GUOMAI_DEFAULT_SCREEN);
+            } else if (param[2].contains("检测仪")) {
+                orderItem.setCommodityId(OrderConstant.GUOMAI_PM25_DETACTER);
+            } else {
+                orderItem.setCommodityId(OrderConstant.defaultOrderCommodityId);
+            }
+            try {
+                orderItem.setCommodityQuantity((int) Double.parseDouble(param[3]));
+            } catch (Exception e) {
+                orderItem.setCommodityQuantity(1);
+            }
+            orderItemList.add(orderItem);
+            order.setCommodityList(orderItemList);
+        }
+
         return order;
     }
 }

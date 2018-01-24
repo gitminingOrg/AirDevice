@@ -145,7 +145,11 @@
             		<div class="form-label col-md-2">购买渠道</div>
             		<div class="form-input col-md-10">
                         <select id="order_channel_list">
-                            <option>${order.orderChannel}</option>
+                            #if(${order.orderChannel})
+                                <option>${order.orderChannel}</option>
+                            #else
+                                <option value="">---请选择渠道---</option>
+                            #end
                         </select>
                     </div>
             	</div>
@@ -190,7 +194,9 @@
             	<div class="form-row">
             		<div class="form-label col-md-2">订单状态</div>
             		<div class="form-input col-md-10">
-            			#if(${order.orderStatus} == "PAYED")
+                        #if(${order.orderStatus} == "NOT_PAYED")
+                            待付款
+            			#elseif(${order.orderStatus} == "PAYED")
             				待发货
             			#elseif(${order.orderStatus} == "SHIPPED")
             				已发货(订单处理中)
@@ -236,26 +242,33 @@
                         </div>
                     </div>
                 </div>
-            	#if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
-            	<hr />
-        		#if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING")
-        		<a id="order-complete" class="btn medium bg-green">
-           			<span class="button-content">订单完成</span>
-        		</a>
-        		#end
-        		#elseif(${order.orderStatus} == "PAYED")
-        		<hr />
-            	<div class="form-row">
-            		<a class="btn medium bg-blue white-modal-80" title="发货">
-           				<span class="button-content">发货</span>
-        			</a>
-        			<a id="order-cancel" class="btn medium bg-red">
-           				<span class="button-content">订单取消</span>
-        			</a>
-        			<a id="order-complete" class="btn medium bg-green">
-	           			<span class="button-content">订单完成</span>
-	        		</a>
-            	</div>
+            	#if(${order.orderStatus} == "NOT_PAYED" || ${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "PAYED"
+                        || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
+                    <hr/>
+                    #if(${order.orderStatus} == "NOT_PAYED")
+                        <a id="order-payed" class="btn medium bg-green">
+                            <span class="button-content">付款完成</span>
+                        </a>
+                    #elseif(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING")
+                        <a id="order-complete" class="btn medium bg-green">
+                            <span class="button-content">订单完成</span>
+                        </a>
+                        <a id="order-cancel" class="btn medium bg-red">
+                            <span class="button-content">订单取消</span>
+                        </a>
+                    #elseif(${order.orderStatus} == "PAYED")
+                        <div class="form-row">
+                            <a class="btn medium bg-blue white-modal-80" title="发货">
+                                <span class="button-content">发货</span>
+                            </a>
+                            <a id="order-cancel" class="btn medium bg-red">
+                                <span class="button-content">订单取消</span>
+                            </a>
+                            <a id="order-complete" class="btn medium bg-green">
+                                <span class="button-content">订单完成</span>
+                            </a>
+                        </div>
+                    #end
             	#end
                 <div id="mission-area" style="display: none">
                     <h4>订单进度</h4>
@@ -263,25 +276,25 @@
             </div>
             #if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
             #elseif(${order.orderStatus} == "PAYED")
-            <div class="hide" id="white-modal-80" title="填写产品编号">
-                <div class="pad10A">
-                    <div class="col-md-12 center-margin">
-                        <div class="form-row">
-                            <div class="form-label col-md-2">
-                                <label for="goods-name" autocomplete="off">物流单号</label>
+                <div class="hide" id="white-modal-80" title="填写产品编号">
+                    <div class="pad10A">
+                        <div class="col-md-12 center-margin">
+                            <div class="form-row">
+                                <div class="form-label col-md-2">
+                                    <label for="goods-name" autocomplete="off">物流单号</label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                    <input id="shipment-no" type="text" autocomplete="off">
+                                </div>
                             </div>
-                            <div class="form-input col-md-10">
-                                <input id="shipment-no" type="text" autocomplete="off">
+                            <div class="form-row">
+                                <button class="btn medium bg-blue-alt" id="confirm-deliver">
+                                    <span class="button-content">发货</span>
+                                </button>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <button class="btn medium bg-blue-alt" id="confirm-deliver">
-                                <span class="button-content">发货</span>
-                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
             #end
         </div>
 	</div>
@@ -407,6 +420,17 @@
 				}
 			});
 		})
+
+        $("#order-payed").on('click', function () {
+           var url = "${path.concat('/order/')}" + "${order.orderId}" + "/payed";
+           $.post(url, function (response) {
+               if(response.responseCode == "RESPONSE_OK") {
+                   window.location.href = "${path.concat('/order/')}" + "${order.orderId}";
+               }else {
+                   alert("更新付款状态失败");
+               }
+           })
+        });
 
 		$("#order-confirm-event").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/mission/create";

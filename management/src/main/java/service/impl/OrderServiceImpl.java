@@ -53,7 +53,9 @@ public class OrderServiceImpl implements OrderService {
 		ResultData result = new ResultData();
 		ResultData response = orderDao.insert(order);
 		result.setResponseCode(response.getResponseCode());
-		if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+			result.setData(response.getData());
+		} else {
 			result.setDescription(response.getDescription());
 		}
 		return result;
