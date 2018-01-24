@@ -92,7 +92,7 @@
         		/login = anon
         		/plugins/** = anon
         		
-        		/dashboard = roles[qrcode_writer]
+        		/dashboard = roles[dashboard_viewer]
         		
         		/order/* = roles[order_writer]
         		
