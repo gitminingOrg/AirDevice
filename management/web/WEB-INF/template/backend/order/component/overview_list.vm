@@ -447,7 +447,7 @@
                 var order_today = order_all.filter(order => new Date(order.orderTime).toDateString() == today.toDateString());
                 $("#order-today").html(order_today.length);
                 var order_imcompelete = order_all.filter(order => (order.orderStatus != 'REFUNDED'
-                        || order.orderStatus != 'SUCCEED' || order.orderStatus != 'CLOSED'));
+                        && order.orderStatus != 'SUCCEED' && order.orderStatus != 'CLOSED'));
                 $("#order-insuccess").html(order_imcompelete.length);
                 $(".date-range").html(start_date + "~" + end_date);
             } else {

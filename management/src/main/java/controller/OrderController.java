@@ -439,7 +439,7 @@ public class OrderController {
         }
         GuoMaiOrder order = new GuoMaiOrder();
         order.setOrderId(orderId);
-        order.setOrderStatus(OrderStatus.INSTALLING);
+//        order.setOrderStatus(OrderStatus.INSTALLING);
         orderService.assign(order);
         UserVo user = (UserVo) subject.getPrincipal();
         OrderMission mission = new OrderMission(orderId, form.getMissionTitle(), form.getMissionContent(),

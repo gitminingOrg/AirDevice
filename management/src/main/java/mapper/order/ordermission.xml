@@ -3,9 +3,11 @@
 <mapper namespace="management.ordermission">
 	<resultMap id="missionVo" type="vo.order.OrderMissionVo">
 		<result property="missionId" column="mission_id"/>
+		<result property="orderId" column="order_id" />
 		<result property="missionTitle" column="mission_title"/>
 		<result property="missionContent" column="mission_content"/>
 		<result property="missionRecorder" column="mission_recorder"/>
+		<result property="createTime" column="create_time" />
 	</resultMap>
 
 	

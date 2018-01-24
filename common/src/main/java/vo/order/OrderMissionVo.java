@@ -18,6 +18,8 @@ public class OrderMissionVo {
 
     private String missionRecorder;
 
+    private String createTime;
+
     public String getMissionId() {
         return missionId;
     }
@@ -58,4 +60,11 @@ public class OrderMissionVo {
         this.missionRecorder = missionRecorder;
     }
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
 }

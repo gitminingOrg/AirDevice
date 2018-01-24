@@ -193,9 +193,9 @@
             			#if(${order.orderStatus} == "PAYED")
             				待发货
             			#elseif(${order.orderStatus} == "SHIPPED")
-            				已发货
+            				已发货(订单处理中)
             			#elseif(${order.orderStatus} == "INSTALLING")
-            				安装中
+            				订单处理中
             			#elseif(${order.orderStatus} == "SUCCEED")
             				已关闭
             			#elseif(${order.orderStatus} == "REFUNDED")
@@ -205,14 +205,39 @@
             	</div>
                 <div class="form-row">
                     <button id = "updateOrder" class="btn medium bg-blue" style="margin-left: 15px">更新订单信息</button>
+                    <a href="javascript:;" class="btn medium bg-blue black-modal-80" title="添加订单进度记录">
+                        <span class="button-content">添加订单事件</span>
+                    </a>
+                    <div class="hide" id="black-modal-80" title="新增订单事件">
+                        <div class="pad10A">
+                            <div class="col-md-12 center-margin">
+                                <div class="form-row">
+                                    <div class="form-label col-md-3">
+                                        <label for="order-mission-name">事件名称</label>
+                                    </div>
+                                    <div class="form-input col-md-9">
+                                        <input id="order-mission-name" type="text" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-label col-md-3">
+                                        <label for="order-mission-content" autocomplete="off">事件详情</label>
+                                    </div>
+                                    <div class="form-input col-md-9">
+                                        <textarea id="order-mission-content" type="text" autocomplete="off"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <button class="btn medium bg-blue-alt" id="order-confirm-event">
+                                        <span class="button-content">新增</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             	#if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
             	<hr />
-            	<h4>订单进度</h4>
-            	<div id="mission-area"></div>
-                <a href="javascript:;" class="btn medium bg-blue white-modal-80" title="添加订单进度记录">
-                    <span class="button-content">添加订单事件</span>
-                </a>
         		#if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING")
         		<a id="order-complete" class="btn medium bg-green">
            			<span class="button-content">订单完成</span>
@@ -232,70 +257,11 @@
 	        		</a>
             	</div>
             	#end
-            </div>
-            #if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
-            <div class="hide" id="white-modal-80" title="新增订单事件">
-                <div class="pad10A">
-                    <div class="col-md-12 center-margin">
-                        <div class="form-row">
-                            <div class="form-label col-md-2">
-                                <label for="order-mission-name">事件名称</label>
-                            </div>
-                            <div class="form-input col-md-10">
-                                <input id="order-mission-name" type="text" />
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-label col-md-2">
-                                <label for="order-mission-content" autocomplete="off">事件详情</label>
-                            </div>
-                            <div class="form-input col-md-10">
-                                <textarea id="order-mission-content" type="text" autocomplete="off"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <button class="btn medium bg-blue-alt" id="order-confirm-event">
-                                <span class="button-content">新增</span>
-                            </button>
-                        </div>
-                    </div>
+                <div id="mission-area" style="display: none">
+                    <h4>订单进度</h4>
                 </div>
             </div>
-            <script>
-            	$(document).ready(function() {
-            		var orderId = "${order.orderId}";
-            		var fetch_mission_url = "${path.concat('/order/')}" + orderId + "/mission";
-            		$.get(fetch_mission_url, function(result) {
-            			if(result.responseCode == "RESPONSE_OK") {
-            				var missions = result.data;
-            				for(var i = 0; i < missions.length; i ++) {
-	            				var row = $("<div class='row'></div>");
-	            				var content_box = $("<div class='content-box'></div>");
-	            				var head = $("<h3 class='content-box-header bg-gray-alt'></h3>");
-	            				var separator = $("<div class='glyph-icon icon-separator'>");
-	            				var comment = $("<i class='glyph-icon icon-comments'></i>");
-	            				var span = $("<span></span>").text(missions[i].missionRecorder);
-	            				var float_right = $("<div class='glyph-icon icon-separator transparent float-right'></div>")
-	            				var icon_comment = $("<i class='glyph-icon icon-comments'></i>");
-	            				float_right.append(icon_comment);
-	            				separator.append(comment);
-	            				head.append(separator);
-	            				head.append(span);
-	            				head.append(float_right);
-	            				content_box.append(head);
-	            				var wrapper = $("<div class='content-box-wrapper' style='font-size: 15px; line-height: 1.4; overflow: hidden'></div>");
-	            				var missionTitle = $("<div class='col-md-2' style='font-weight: bold;'></div>").text(missions[i].missionTitle + ':');
-	            				var missionContent = $("<div class='col-md-10'></div>").text(missions[i].missionContent);
-	            				wrapper.append(missionTitle);
-	            				wrapper.append(missionContent);
-	            				content_box.append(wrapper);
-	            				row.append(content_box);
-	            				$("#mission-area").append(row);
-            				}
-            			}
-            		});
-            	});
-            </script>
+            #if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
             #elseif(${order.orderStatus} == "PAYED")
             <div class="hide" id="white-modal-80" title="填写产品编号">
                 <div class="pad10A">
@@ -343,6 +309,45 @@
     }
 
 	$(document).ready(function() {
+        function init_order_mission() {
+            var orderId = "${order.orderId}";
+            var fetch_mission_url = "${path.concat('/order/')}" + orderId + "/mission";
+            $.get(fetch_mission_url, function(result) {
+                if(result.responseCode == "RESPONSE_OK") {
+                    var missions = result.data;
+                    if (missions.length > 0) {
+                        $("#mission-area").css("display", "block");
+                    }
+                    for(var i = 0; i < missions.length; i ++) {
+                        var missionDate = formatDateTime(new Date(missions[i].createTime));
+                        var dateSpan = $('<span style="margin-right: 30px; float: right"></span>').text(missionDate);
+                        var row = $("<div class='row'></div>");
+                        var content_box = $("<div class='content-box'></div>");
+                        var head = $("<h3 class='content-box-header bg-gray-alt'></h3>");
+                        var separator = $("<div class='glyph-icon icon-separator'>");
+                        var comment = $("<i class='glyph-icon icon-comments'></i>");
+                        var span = $("<span></span>").text(missions[i].missionRecorder);
+                        var float_right = $("<div class='glyph-icon icon-separator transparent float-right'></div>")
+//	            				var icon_comment = $("<i class='glyph-icon icon-comments'></i>");
+//	            				float_right.append(icon_comment);
+                        separator.append(comment);
+                        head.append(separator);
+                        head.append(span);
+                        head.append(float_right);
+                        head.append(dateSpan);
+                        content_box.append(head);
+                        var wrapper = $("<div class='content-box-wrapper' style='font-size: 15px; line-height: 1.4; overflow: hidden'></div>");
+                        var missionTitle = $("<div class='col-md-2' style='font-weight: bold;'></div>").text(missions[i].missionTitle + ':');
+                        var missionContent = $("<div class='col-md-10'></div>").text(missions[i].missionContent);
+                        wrapper.append(missionTitle);
+                        wrapper.append(missionContent);
+                        content_box.append(wrapper);
+                        row.append(content_box);
+                        $("#mission-area").append(row);
+                    }
+                }
+            });
+        }
 	    function init_order_machine() {
             var order_machine_url = "${path.concat('/order/orderMachine/detail?orderId=')}" + "${order.orderId}";
             $.get(order_machine_url, function (response) {
@@ -387,7 +392,7 @@
                 }
             });
         }
-
+        init_order_mission()
         init_order_machine();
 
 		$("#confirm-deliver").on('click', function() {
@@ -518,6 +523,17 @@
 
     orderChannelReset();
     orderDiversionReset();
+
+    function formatDateTime(date) {
+        var year = date.getFullYear().toString();
+        var month = ("0" + (date.getMonth() + 1).toString()).slice(-2).toString();
+        var day = ("0" + date.getDate().toString()).slice(-2).toString();
+        var hour = ("0" + date.getHours().toString()).slice(-2).toString();
+        var minute = ("0" + date.getMinutes().toString()).slice(-2).toString();
+        var seconds = ("0" + date.getSeconds().toString()).slice(-2).toString();
+
+        return year + '/' + month + '/' + day + ' ' + hour + ':' + minute + ':' + seconds;
+    }
 
     function not_null(item) {
         if (item == null || item == "" || item.length <= 0) {
