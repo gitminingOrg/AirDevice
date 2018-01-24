@@ -94,7 +94,7 @@
         		
         		/dashboard = roles[qrcode_writer]
         		
-        		<!--/order/* = roles[order_writer]-->
+        		/order/* = roles[order_writer]
         		
         		/qrcode/create = roles[qrcode_writer]
         		
