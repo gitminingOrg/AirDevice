@@ -450,6 +450,12 @@
                         || order.orderStatus != 'SUCCEED' || order.orderStatus != 'CLOSED'));
                 $("#order-insuccess").html(order_imcompelete.length);
                 $(".date-range").html(start_date + "~" + end_date);
+            } else {
+                var default_date = new Date();
+                $("#order-all").html(0);
+                $("#order-today").html(0);
+                $("#order-insuccess").html(0);
+                $(".date-range").html(formatDate(default_date));
             }
         });
     }

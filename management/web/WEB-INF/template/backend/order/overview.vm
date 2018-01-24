@@ -3,7 +3,7 @@
 <head>
     #parse("/backend/init/init.vm")        
     #parse("/backend/common/datatable.lib.vm")
-    <script src="${path.concat("/plugins/distpicker/distpicker.js")}"></script>
+    <script src="${path.concat("/plugins/distpicker/distpicker.js")}" charset="UTF-8"></script>
     <title>订单列表</title>
 </head>
 <body class="fixed-sidebar fixed-header" ontouchstart>
