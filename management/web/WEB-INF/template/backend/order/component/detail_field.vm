@@ -68,7 +68,7 @@
                             </select>
                         #else
                             <select id="province" class="col-md-4" style="border-radius: 5px">
-                                <option data-code="" data-text="—— 省 ——">—— 省 ——</option>
+                                <option data-code="" data-text="—— 省 ——" value="">—— 省 ——</option>
                             </select>
                         #end
                         #if(${order.city})
@@ -77,7 +77,7 @@
                             </select>
                         #else
                             <select id="city" class="col-md-3" style="border-radius: 5px">
-                                <option data-code="" data-text="—— 市 ——">—— 市 ——</option>
+                                <option data-code="" data-text="—— 市 ——" value="">—— 市 ——</option>
                             </select>
                         #end
                         #if(${order.district})
@@ -86,7 +86,7 @@
                             </select>
                         #else
                             <select id="district" class="col-md-3" style="border-radius: 5px">
-                                <option data-code="" data-text="—— 区 ——">—— 区 ——</option>
+                                <option data-code="" data-text="—— 区 ——" value="">—— 区 ——</option>
                             </select>
                         #end
                     </div>
@@ -443,9 +443,9 @@
             var buyerAccount = $('#buyerAccount').val();
             var receiverName = $('#receiverName').val();
             var receiverPhone = $('#receiverPhone').val();
-            var province = $('#province').find(":selected").text();
-            var city = $('#city').find(":selected").text();
-            var district = $('#district').find(":selected").text();
+            var province = $('#province').find(":selected").val();
+            var city = $('#city').find(":selected").val();
+            var district = $('#district').find(":selected").val();
             var receiverAddress = $('#receiverAddress').val();
             var orderCoupon = $('#orderCoupon').val();
             var orderTime = new Date($('#orderTime').val()).toISOString();
@@ -462,6 +462,15 @@
                     };
             if (!not_null(orderDiversion)) {
                 delete params.orderDiversion;
+            }
+            if (!not_null(province)) {
+                delete params.province;
+            }
+            if (!not_null(city)) {
+                delete params.city;
+            }
+            if (!not_null(district)) {
+                delete params.district;
             }
             $.post(url, params, function (result) {
                 window.location.href = "${path.concat('/order/').concat("${order.orderId}")}";
