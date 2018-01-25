@@ -13,7 +13,7 @@
                             订单
                         </a>
                         <span class="current">
-                            淘宝订单
+                            订单列表
                         </span>
                     </div>
                 </div>
@@ -67,21 +67,26 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 center-margin">
-                <div class="form-row">
+            <div class="col-md-12" style="float: left">
+                <div style="margin-bottom: 20px">
                     <div class="form-input">
-                        <div class="row" style="margin-left: 0px">
-                            <div class="col-md-2">
-                                <select id="channel_list">
+                        <div class="row" style="margin-left: 0px; display: flex">
+                            <div style="width: 12%; margin-right: 20px">
+                                <select id="channel_list" style="border-radius: 5px">
+                                    <option>---请选择平台---</option>
+                                </select>
+                            </div>
+                            <div style="width: 12%; margin-right: 20px">
+                                <select id="diversion_list" style="border-radius: 5px">
                                     <option>---请选择渠道---</option>
                                 </select>
                             </div>
-                            <div class="col-md-2">
-                                <select id="status_list">
+                            <div style="width: 12%; margin-right: 20px">
+                                <select id="status_list" style="border-radius: 5px">
                                     <option>---请选择订单状态---</option>
                                 </select>
                             </div>
-                            <div class="col-md-4">
+                            <div style="width: 30%; margin-right: 20px">
                                 <div class="col-md-6 form-input">
                                     <input id="startDate" type="date" placeholder="起始时间">
                                 </div>
@@ -89,12 +94,12 @@
                                     <input id="endDate" type="date" placeholder="结束时间">
                                 </div>
                             </div>
-                            <div class="col-md-2" data-toggle="distpicker">
+                            <div style="width: 12%; margin-right: 20px" data-toggle="distpicker">
                                 <select id="province" style="border-radius: 5px">
                                     <option data-code="" data-text="— 省 —" value="">—— 省 ——</option>
                                 </select>
                             </div>
-                            <div class="col-md-2">
+                            <div style="width: 12%">
                                 <button id="search_btn" type="button" data-loading-text="查询中" class="btn large loading-button bg-blue">
                                     查询
                                 </button>
@@ -117,11 +122,13 @@
 	
 	status_reset();
 
+	diversion_reset();
+
 	initOrderStatistics();
 	
 	function channel_reset() {
 		$("#channel_list").empty();
-		$("#channel_list").append($("<option value=''></option>").text("---请选择渠道---"));
+		$("#channel_list").append($("<option value=''></option>").text("---请选择平台---"));
 		var channel_url = "${path.concat('/order/orderChannel/list')}";
 		$.get(channel_url, function(result) {
 			if(result.responseCode == "RESPONSE_OK") {
@@ -134,6 +141,22 @@
 			}
 		}) 
 	}
+
+    function diversion_reset() {
+        $("#diversion_list").empty();
+        $("#diversion_list").append($("<option value=''></option>").text("---请选择渠道---"));
+        var channel_url = "${path.concat('/order/diversion/list')}";
+        $.get(channel_url, function(result) {
+            if(result.responseCode == "RESPONSE_OK") {
+                var data = result.data;
+                for(index in data) {
+                    var item = $("<option></option>").text(data[index].diversionName);
+                    item.attr("value", data[index].diversionName);
+                    $("#diversion_list").append(item);
+                }
+            }
+        })
+    }
 	
 	function status_reset() {
 		$("#status_list").empty();
@@ -211,6 +234,13 @@
                     param.channel = channel;
                     if(!not_null(channel)) {
                         delete param.channel;
+                    }
+                }
+                var diversion = $("#diversion_list").val();
+                if(param.diversion != diversion) {
+                    param.diversion = diversion;
+                    if(!not_null(diversion)) {
+                        delete param.diversion;
                     }
                 }
                 var status = $("#status_list").val();
@@ -338,6 +368,10 @@
         var channel = $("#channel_list").val();
         if(not_null(channel)) {
             export_param.channel = channel;
+        }
+        var diversion = $("#diversion_list").find(":selected").val();
+        if (not_null(diversion)) {
+            export_param.diversion = diversion;
         }
         var status = $("#status_list").val();
         if(not_null(status)) {

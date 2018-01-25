@@ -77,6 +77,9 @@ public class OrderDaoImpl extends BaseDao implements OrderDao {
 			if(!StringUtils.isEmpty(params.get("channel"))) {
 				condition.put("orderChannel", params.getString("channel"));
 			}
+			if(!StringUtils.isEmpty(params.get("diversion"))) {
+				condition.put("orderDiversion", params.getString("diversion"));
+			}
 			if(!StringUtils.isEmpty(params.get("status"))) {
 				condition.put("orderStatus", params.getString("status"));
 			}

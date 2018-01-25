@@ -90,6 +90,12 @@ public class OrderController {
             view.setViewName("redirect:/order/overview");
             return view;
         }
+        String[] tempArray = file.getOriginalFilename().split("\\.");
+        if (!tempArray[tempArray.length - 1].contains("csv")) {
+            logger.info("上传的订单文件格式错误");
+            view.setViewName("redirect:/order/overview");
+            return view;
+        }
         InputStream stream = file.getInputStream();
         CsvReader reader = new CsvReader(stream, Charset.forName("gbk"));
         List<String[]> list = new ArrayList<>();
@@ -234,7 +240,7 @@ public class OrderController {
         preInstallOrders = preInstallOrders.stream().filter(e -> !orderNoInstalled.contains(e.getOrderNo())).collect(Collectors.toList());
         preInstallOrders = preInstallOrders.stream().filter(e -> e.getBuyerName() != null).collect(Collectors.toList());
 
-        // 对于没有引流上记录的引流尚， 插入相应的引流商
+        // 对于没有引流上记录的引流商， 插入相应的引流商
         ResultData diversionResponse = orderDiversionService.fetch(new HashMap<>());
         if (diversionResponse.getResponseCode() != ResponseCode.RESPONSE_ERROR) {
             List<OrderDiversionVo> diversionVoList = new ArrayList<>();
@@ -306,6 +312,9 @@ public class OrderController {
         if(!StringUtils.isEmpty(params)) {
             if(!StringUtils.isEmpty(params.get("channel"))) {
                 condition.put("orderChannel", params.getString("channel"));
+            }
+            if(!StringUtils.isEmpty(params.get("diversion"))) {
+                condition.put("orderDiversion", params.getString("diversion"));
             }
             if(!StringUtils.isEmpty(params.get("status"))) {
                 condition.put("orderStatus", params.getString("status"));

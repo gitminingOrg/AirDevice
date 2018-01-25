@@ -37,10 +37,10 @@
         <div id="page-content">
             <div class="col-md-12 center-margin">
             	<h4 style="display: inline">订单录入</h4>
-                <a href="javascript:;" style="margin-left: 20px" class="white-modal-80 btn bg-blue" title="上传平台订单">
+                <a href="javascript:;" style="margin-left: 20px" class="white-modal-80 btn medium bg-blue" title="上传平台订单">
                     <span class="btn">上传平台订单</span>
                 </a>
-                <a href="javascript:;" style="margin-left: 20px" class="white-modal-60 btn bg-blue" title="上传团购订单">
+                <a href="javascript:;" style="margin-left: 20px" class="white-modal-60 btn medium bg-blue" title="上传团购订单">
                     <span class="btn">上传团购订单</span>
                 </a>
 				<div class="form-row" style="margin-top: 20px">
@@ -63,14 +63,14 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <button class="btn medium bg-blue-alt" id="confirm-upload">
+                                    <button class="btn medium bg-blue-alt" data-loading-text="上传中..." id="confirm-upload">
                                         <span class="button-content">上传</span>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="hide" id="white-modal-60" title="上传平台订单">
+                    <div class="hide" id="white-modal-60" title="上传团购订单">
                         <div class="pad10A">
                             <div class="col-md-12 center-margin">
                                 <div class="form-row">
@@ -84,8 +84,8 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <button class="btn medium bg-blue-alt" id="groupBuyingFile-confirm-upload">
-                                        <span class="button-content">上传</span>
+                                    <button class="btn large bg-blue-alt ld ld-ext-right" id="groupBuyingFile-confirm-upload">
+                                        <span class="button-content">上传</span><i class="ld ld-ring ld-spin"></i>
                                     </button>
                                 </div>
                             </div>
@@ -94,44 +94,16 @@
 				</div>
                 <div class="form-row">
                     <label for="order_channel_list" class="form-label col-md-2">订单渠道</label>
-                    <div class="form-input col-md-8">
+                    <div class="form-input col-md-10">
                         <select id="order_diversion_list">
                         <select/>
                     </div>
                 </div>
                 <div class="form-row">
                     <label for="order_channel_list" class="form-label col-md-2">购买渠道</label>
-                    <div class="form-input col-md-8">
+                    <div class="form-input col-md-10">
                         <select id="order_channel_list">
                             <select/>
-                    </div>
-                    <div class="form-input col-md-2">
-                        <div class="infobox warning-bg" style="margin-bottom: 0px">
-                            <p><a href="javascript:;" class="white-modal-60" title="添加部件">添加渠道</a></p>
-                        </div>
-                        <div class="hide" id="white-modal-60">
-                            <div class="pad10A">
-                                <div class="col-md-12 center-margin">
-                                    <div class="form-row">
-                                        <div class="form-label col-md-3">
-                                            <label for="goods-name">渠道名称</label>
-                                        </div>
-                                        <div class="form-input col-md-9">
-                                            <form id="order-form">
-                                                <input id="channelName" type="text">
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <button class="btn medium bg-blue-alt" id="addOrderChannel">
-                                            <span class="button-content" data-dismiss="modal">
-                                                添加
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             	<div class="form-row">
@@ -145,7 +117,6 @@
             	<div class="form-row">
             		<label for="order-buyer" class="form-label col-md-2">
                         购买人
-##                        <sup class="glyph-icon icon-asterisk" style="color: red; margin-left: 5px"/>
                     </label>
             		<div class="form-input col-md-10">
             			<input id="order-buyer" type="text" required="required" placeholder="请输入购买人姓名" />
@@ -381,7 +352,6 @@
         var data = new FormData();
         data.append("orderFile", $("#orderFile")[0].files[0]);
         data.append("orderChannel", $("#order_batchupload_channel_list").find(":selected").val());
-        console.log(data);
         jQuery.ajax({
             url: "${path.concat('/order/upload')}",
             data: data,
@@ -391,14 +361,17 @@
             type: 'POST',
             success: function(data){
                 location.href = "${path.concat('/order/overview')}";
+            },
+            error: function () {
+                alert("上传失败");
             }
         });
     });
 
     $("#groupBuyingFile-confirm-upload").on('click', function() {
+        $("#groupBuyingFile-confirm-upload").addClass('running');
         var data = new FormData();
         data.append("groupBuyingFile", $("#groupBuyingFile")[0].files[0]);
-        console.log(data);
         jQuery.ajax({
             url: "${path.concat('/order/groupBuyingUpload')}",
             data: data,
@@ -411,8 +384,13 @@
                     location.href = "${path.concat('/order/overview')}";
                 } else {
                     alert(data.description);
+                    $("#groupBuyingFile-confirm-upload").removeClass('running');
                 }
             },
+            error: function () {
+                alert("上传失败");
+                $("#groupBuyingFile-confirm-upload").removeClass('running');
+            }
         });
     });
     

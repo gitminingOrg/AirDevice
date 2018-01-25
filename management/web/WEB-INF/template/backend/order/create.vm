@@ -2,6 +2,8 @@
 <html lang="zh_CN">
 <head>
     #parse("/backend/init/init.vm")
+    <link rel="stylesheet" type="text/css" href="${path.concat("/plugins/loading-btn/loading.css")}">
+    <link rel="stylesheet" type="text/css" href="${path.concat("/plugins/loading-btn/loading-btn.css")}">
     <script src="${path.concat("/plugins/distpicker/distpicker.js")}"></script>
     <title>添加订单</title>
 </head>

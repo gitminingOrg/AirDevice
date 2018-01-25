@@ -305,6 +305,9 @@ public class GuoMaiOrder extends Order {
             }
             try {
                 orderItem.setCommodityQuantity((int) Double.parseDouble(param[3]));
+                if (orderItem.getCommodityQuantity() > 100) {
+                    return null;
+                }
             } catch (Exception e) {
                 orderItem.setCommodityQuantity(1);
             }
