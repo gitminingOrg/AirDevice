@@ -1,0 +1,73 @@
+<div id="page-main" xmlns="http://java.sun.com/jsf/html">
+    <div id="page-main-wrapper">
+        <div id="page-header" class="clearfix">
+            <div id="page-header-wrapper" class="clearfix">
+                <div id="page-breadcrumb-wrapper">
+                    <div id="page-breadcrumb">
+                        <a href="javascript:;">
+                            <i class="glyph-icon icon-dashboard"></i>
+                            首页
+                        </a>
+                        <a href="javascript:;">
+                            <i class="glyph-icon icon-file-text-o"></i>
+                            订单
+                        </a>
+                        <span class="current">
+                            订单关联机器
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="page-breadcrumb-wrapper">
+            <div id="page-breadcrumb">
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-dashboard"></i>
+                    首页
+                </a>
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-file-text-o"></i>
+                    订单
+                </a>
+                <span class="current">
+                    订单关联机器
+                </span>
+            </div>
+        </div>
+        <div id="page-content">
+            ## statistics div
+                <div class="row col-md-12">
+                    <div class="col-md-4" style="height: 180px; padding: 20px;">
+                        <div style="width: 100%; height: 100%; background: #00b297; border-radius: 5px; padding: 20px; align-items: center; display: flex;">
+                            <i class="glyph-icon icon-check-circle-o" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                            <div style="margin-left: 30px">
+                                <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">总共相关机器数量</p>
+                                <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-all"></p>
+                                <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="height: 180px; padding: 20px; border-radius: 5px">
+                        <div style="width: 100%; height: 100%; background: #dc3545; border-radius: 5px; padding: 20px; align-items: center; display: flex;">
+                            <i class="glyph-icon icon-gavel" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                            <div style="margin-left: 30px">
+                                <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">已经勘测机器数量</p>
+                                <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-today"></p>
+                                <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="height: 180px; padding: 20px; border-radius: 5px; ">
+                        <div style="width: 100%; height: 100%; background: #0866C6; border-radius: 5px; padding: 20px; align-items: center; display: flex">
+                            <i class="glyph-icon icon-ban" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                            <div style="margin-left: 30px">
+                                <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">已经安装机器数量</p>
+                                <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-insuccess"></p>
+                                <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>

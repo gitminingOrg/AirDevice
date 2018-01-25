@@ -132,6 +132,10 @@
                             <i class="glyph-icon icon-chevron-right"></i>
                             订单列表
                         </a>
+                        <a href="${path.concat('/order/machineOverview/list')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            订单机器
+                        </a>
                     </li>
                 </ul>
             </li>

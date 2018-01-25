@@ -63,8 +63,8 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <button class="btn medium bg-blue-alt" data-loading-text="上传中..." id="confirm-upload">
-                                        <span class="button-content">上传</span>
+                                    <button class="btn large bg-blue-alt ld ld-ext-right" id="confirm-upload">
+                                        <span class="button-content">上传</span><i class="ld ld-ring ld-spin"></i>
                                     </button>
                                 </div>
                             </div>
@@ -349,6 +349,7 @@
 	});
 
     $("#confirm-upload").on('click', function() {
+        $("#confirm-upload").addClass('running');
         var data = new FormData();
         data.append("orderFile", $("#orderFile")[0].files[0]);
         data.append("orderChannel", $("#order_batchupload_channel_list").find(":selected").val());
@@ -360,9 +361,15 @@
             processData: false,
             type: 'POST',
             success: function(data){
-                location.href = "${path.concat('/order/overview')}";
+                if (data.responseCode === 'RESPONSE_OK') {
+                    location.href = "${path.concat('/order/overview')}";
+                } else {
+                    $("#confirm-upload").removeClass('running')
+                    alert("上传失败");
+                }
             },
             error: function () {
+                $("#confirm-upload").removeClass('running')
                 alert("上传失败");
             }
         });
