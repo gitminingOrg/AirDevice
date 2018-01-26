@@ -365,7 +365,7 @@
                     location.href = "${path.concat('/order/overview')}";
                 } else {
                     $("#confirm-upload").removeClass('running')
-                    alert("上传失败");
+                    alert(data.description);
                 }
             },
             error: function () {
@@ -387,7 +387,12 @@
             processData: false,
             type: 'POST',
             success: function(data){
-                location.href = "${path.concat('/order/overview')}";
+                if (data.responseCode === 'RESPONSE_OK') {
+                    location.href = "${path.concat('/order/overview')}";
+                } else {
+                    $("#confirm-upload").removeClass('running');
+                    alert(data.description);
+                }
             },
             error: function () {
                 alert("上传失败");

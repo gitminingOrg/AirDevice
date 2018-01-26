@@ -72,208 +72,221 @@ public class OrderController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
-    public ModelAndView upload(MultipartHttpServletRequest request, @RequestParam String orderChannel) throws IOException {
-        ModelAndView view = new ModelAndView();
-        MultipartFile file = request.getFile("orderFile");
-        if (file.isEmpty()) {
-            logger.info("上传的订单文件为空");
-            view.setViewName("redirect:/order/overview");
-            return view;
-        }
-        String[] tempArray = file.getOriginalFilename().split("\\.");
-        if (!tempArray[tempArray.length - 1].contains("csv")) {
-            logger.info("上传的订单文件格式错误");
-            view.setViewName("redirect:/order/overview");
-            return view;
-        }
-        InputStream stream = file.getInputStream();
-        CsvReader reader = new CsvReader(stream, Charset.forName("gbk"));
-        List<String[]> list = new ArrayList<>();
-        // 读取表头
-        reader.readHeaders();
-        while (reader.readRecord()) {
-            list.add(reader.getValues());
-        }
-        reader.close();
-        List<GuoMaiOrder> order = new LinkedList<>();
-        List<OrderItem> itemList = new LinkedList<>();
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("channelId", orderChannel);
-        ResultData rd = orderService.fetchOrderChannel(condition);
-        OrderChannelVo vo = ((List<OrderChannelVo>) rd.getData()).get(0);
-        if (vo.getChannelName().equals("淘宝店铺")) {
-            for (int i = 0; i < list.size(); i++) {
-                GuoMaiOrder item = GuoMaiOrder.convertFromTaoBao(list.get(i));
-                item.setOrderChannel(orderChannel);
-                condition.put("orderNo", item.getOrderNo());
-                rd = orderService.fetch(condition);
-                if (rd.getResponseCode() == ResponseCode.RESPONSE_NULL) {
-                    order.add(item);
+    public ResultData upload(MultipartHttpServletRequest request, @RequestParam String orderChannel){
+        ResultData result = new ResultData();
+        MultipartFile file;
+        try {
+            file = request.getFile("orderFile");
+            if (file.isEmpty()) {
+                result.setResponseCode(ResponseCode.RESPONSE_NULL);
+                return result;
+            }
+            String[] tempArray = file.getOriginalFilename().split("\\.");
+            if (!tempArray[tempArray.length - 1].contains("csv")) {
+                logger.info("上传的订单文件格式错误");
+                result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+                result.setDescription("上传的订单文件格式错误");
+                return result;
+            }
+            InputStream stream = file.getInputStream();
+            CsvReader reader = new CsvReader(stream, Charset.forName("gbk"));
+            List<String[]> list = new ArrayList<>();
+            // 读取表头
+            reader.readHeaders();
+            while (reader.readRecord()) {
+                list.add(reader.getValues());
+            }
+            reader.close();
+            List<GuoMaiOrder> order = new LinkedList<>();
+            List<OrderItem> itemList = new LinkedList<>();
+            Map<String, Object> condition = new HashMap<>();
+            condition.put("channelId", orderChannel);
+            ResultData rd = orderService.fetchOrderChannel(condition);
+            OrderChannelVo vo = ((List<OrderChannelVo>) rd.getData()).get(0);
+            if (vo.getChannelName().equals("淘宝店铺")) {
+                for (int i = 0; i < list.size(); i++) {
+                    GuoMaiOrder item = GuoMaiOrder.convertFromTaoBao(list.get(i));
+                    item.setOrderChannel(orderChannel);
+                    condition.put("orderNo", item.getOrderNo());
+                    rd = orderService.fetch(condition);
+                    if (rd.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+                        order.add(item);
+                    }
+                }
+            } else if (vo.getChannelName().equals("京东")) {
+                for (int i = 0; i < list.size(); i++) {
+                    GuoMaiOrder item = GuoMaiOrder.convertFromJD(list.get(i));
+                    item.setOrderChannel(orderChannel);
+                    condition.put("orderNo", item.getOrderNo());
+                    rd = orderService.fetch(condition);
+                    if (rd.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+                        order.add(item);
+                    }
                 }
             }
-        } else if (vo.getChannelName().equals("京东")) {
-            for (int i = 0; i < list.size(); i++) {
-                GuoMaiOrder item = GuoMaiOrder.convertFromJD(list.get(i));
-                item.setOrderChannel(orderChannel);
-                condition.put("orderNo", item.getOrderNo());
-                rd = orderService.fetch(condition);
-                if (rd.getResponseCode() == ResponseCode.RESPONSE_NULL) {
-                    order.add(item);
-                }
-            }
-        }
-        if (!order.isEmpty()) {
-            ResultData response = orderService.upload(order);
-            if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                logger.info("订单已上传");
-                if (vo.getChannelName().equals("京东")) {
-                    for (int i = 0; i < order.size(); i++) {
-                        condition.put("orderNo", order.get(i).getOrderNo());
-                        rd = orderService.fetch(condition);
-                        if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                            GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>) rd.getData()).get(0);
-                            OrderItem orderItem = new OrderItem(GVo.getOrderId(), OrderConstant.defaultOrderCommodityId,
-                                    Integer.valueOf(list.get(i)[4]));
-                            itemList.add(orderItem);
+            if (!order.isEmpty()) {
+                ResultData response = orderService.upload(order);
+                if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                    logger.info("订单已上传");
+                    if (vo.getChannelName().equals("京东")) {
+                        for (int i = 0; i < order.size(); i++) {
+                            condition.put("orderNo", order.get(i).getOrderNo());
+                            rd = orderService.fetch(condition);
+                            if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                                GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>) rd.getData()).get(0);
+                                OrderItem orderItem = new OrderItem(GVo.getOrderId(), OrderConstant.defaultOrderCommodityId,
+                                        Integer.valueOf(list.get(i)[4]));
+                                itemList.add(orderItem);
+                            }
+                        }
+                    } else if (vo.getChannelName().equals("淘宝店铺")) {
+                        for (int i = 0; i < order.size(); i++) {
+                            condition.put("orderNo", order.get(i).getOrderNo());
+                            rd = orderService.fetch(condition);
+                            if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                                GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>) rd.getData()).get(0);
+                                OrderItem orderItem = new OrderItem(GVo.getOrderId(), OrderConstant.defaultOrderCommodityId,
+                                        Integer.valueOf(list.get(i)[24]));
+                                itemList.add(orderItem);
+                            }
                         }
                     }
-                } else if (vo.getChannelName().equals("淘宝店铺")) {
-                    for (int i = 0; i < order.size(); i++) {
-                        condition.put("orderNo", order.get(i).getOrderNo());
-                        rd = orderService.fetch(condition);
-                        if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                            GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>) rd.getData()).get(0);
-                            OrderItem orderItem = new OrderItem(GVo.getOrderId(), OrderConstant.defaultOrderCommodityId,
-                                    Integer.valueOf(list.get(i)[24]));
-                            itemList.add(orderItem);
+                    if (!itemList.isEmpty()) {
+                        response = orderService.uploadOrderItem(itemList);
+                        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                            logger.info("OrderItem上传成功");
+                            logger.info("订单记录上传成功");
                         }
+                    } else {
+                        logger.info("OrderItem为空，订单上传失败");
                     }
                 }
-                if (!itemList.isEmpty()) {
-                    response = orderService.uploadOrderItem(itemList);
-                    if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                        logger.info("OrderItem上传成功");
-                        logger.info("订单记录上传成功");
-                    }
-                } else {
-                    logger.info("OrderItem为空，订单上传失败");
-                }
+            } else {
+                logger.info("订单已存在，无需重复上传");
             }
-        } else {
-            logger.info("订单已存在，无需重复上传");
+            stream.close();
+        } catch (Exception e) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            logger.error(e.getMessage());
+            result.setDescription("服务器忙，请稍后再试");
         }
-        view.setViewName("redirect:/order/overview");
-        return view;
+        return result;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/groupBuyingUpload")
     public ResultData upload(MultipartHttpServletRequest request) throws Exception {
         ResultData result = new ResultData();
-        MultipartFile file = request.getFile("groupBuyingFile");
-        InputStream stream = file.getInputStream();
-        String[] tempList = file.getOriginalFilename().split("\\.");
-        String fileAppendix = tempList[tempList.length - 1];
-        if (file.isEmpty()) {
-            logger.info("");
-            result.setResponseCode(ResponseCode.RESPONSE_NULL);
-            return result;
-        }
-        List<String[]> list = new ArrayList<>();
-        if (fileAppendix.contains("xls")) {
-            XSSFWorkbook workbook = new XSSFWorkbook(stream);
-            XSSFSheet xssfSheet = workbook.getSheetAt(0);
-            if (xssfSheet == null) {
+        try {
+            MultipartFile file = request.getFile("groupBuyingFile");
+            InputStream stream = file.getInputStream();
+            String[] tempList = file.getOriginalFilename().split("\\.");
+            String fileAppendix = tempList[tempList.length - 1];
+            if (file.isEmpty()) {
+                logger.info("");
                 result.setResponseCode(ResponseCode.RESPONSE_NULL);
                 return result;
             }
-            for (int i = 1; i < xssfSheet.getLastRowNum(); i++) {
-                XSSFRow row = xssfSheet.getRow(i);
-                String[] rowContent = new String[11];
-                int j = 0;
-                Iterator<Cell> iterator = row.cellIterator();
-                while (iterator.hasNext() && j < 11) {
-                    rowContent[j] = iterator.next().toString();
-                    j++;
+            List<String[]> list = new ArrayList<>();
+            if (fileAppendix.contains("xls")) {
+                XSSFWorkbook workbook = new XSSFWorkbook(stream);
+                XSSFSheet xssfSheet = workbook.getSheetAt(0);
+                if (xssfSheet == null) {
+                    result.setResponseCode(ResponseCode.RESPONSE_NULL);
+                    return result;
                 }
-                if (rowContent[2] == null) {
-                    continue;
-                }
-                list.add(rowContent);
-            }
-        } else if (fileAppendix.contains("csv")) {
-            CsvReader reader = new CsvReader(stream, Charset.forName("gbk"));
-            reader.readHeaders();
-            while (reader.readRecord()) {
-                list.add(reader.getValues());
-            }
-        } else {
-            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
-            result.setData("格式不支持，请上传excel或者csv");
-            return result;
-        }
-        List<GuoMaiOrder> preInstallOrders = new ArrayList<>();
-        for (String[] orderParam : list) {
-            GuoMaiOrder guoMaiOrder = GuoMaiOrder.convertFromGroupBuyingOrder(orderParam);
-            if (guoMaiOrder != null) {
-                preInstallOrders.add(guoMaiOrder);
-            }
-        }
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("blockFlag", false);
-        ResultData response = orderService.fetch(condition);
-        List<GuoMaiOrderVo> orderInstalled = new ArrayList<>();
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-            orderInstalled = (List<GuoMaiOrderVo>) response.getData();
-        }
-        Set<String> orderNoInstalled = orderInstalled.stream().map(e -> e.getOrderNo()).collect(Collectors.toSet());
-        preInstallOrders = preInstallOrders.stream().filter(e -> !orderNoInstalled.contains(e.getOrderNo())).collect(Collectors.toList());
-        preInstallOrders = preInstallOrders.stream().filter(e -> e.getBuyerName() != null).collect(Collectors.toList());
-
-        // 对于没有引流上记录的引流商， 插入相应的引流商
-        ResultData diversionResponse = orderDiversionService.fetch(new HashMap<>());
-        if (diversionResponse.getResponseCode() != ResponseCode.RESPONSE_ERROR) {
-            List<OrderDiversionVo> diversionVoList = new ArrayList<>();
-            if (diversionResponse.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                diversionVoList = (List<OrderDiversionVo>) diversionResponse.getData();
-            }
-            Map<String, String> diversionMap = diversionVoList.stream().
-                    collect(Collectors.toMap(e -> e.getDiversionName(), e -> e.getDiversionId()));
-            for (GuoMaiOrder order : preInstallOrders) {
-                if (diversionMap.containsKey(order.getOrderDiversion())) {
-                    order.setOrderDiversion(diversionMap.get(order.getOrderDiversion()));
-                } else {
-                    OrderDiversion orderDiversion = new OrderDiversion(order.getOrderDiversion());
-                    diversionResponse = orderDiversionService.create(orderDiversion);
-                    if (diversionResponse.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                        orderDiversion = (OrderDiversion) diversionResponse.getData();
+                for (int i = 1; i < xssfSheet.getLastRowNum(); i++) {
+                    XSSFRow row = xssfSheet.getRow(i);
+                    String[] rowContent = new String[11];
+                    int j = 0;
+                    Iterator<Cell> iterator = row.cellIterator();
+                    while (iterator.hasNext() && j < 11) {
+                        rowContent[j] = iterator.next().toString();
+                        j++;
                     }
-                    order.setOrderDiversion(orderDiversion.getDiversionId());
-                    diversionMap.put(orderDiversion.getDiversionName(), orderDiversion.getDiversionId());
-                }
-            }
-        }
-
-        response = orderService.upload(preInstallOrders);
-        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-            List<OrderItem> orderItemList = new ArrayList<>();
-            preInstallOrders = (List<GuoMaiOrder>) response.getData();
-            for (GuoMaiOrder order : preInstallOrders) {
-                if (order.getCommodityList() != null) {
-                    for (OrderItem orderItem : order.getCommodityList()) {
-                        orderItem.setOrderId(order.getOrderId());
+                    if (rowContent[2] == null) {
+                        continue;
                     }
-                    orderItemList.addAll(order.getCommodityList());
+                    list.add(rowContent);
+                }
+            } else if (fileAppendix.contains("csv")) {
+                CsvReader reader = new CsvReader(stream, Charset.forName("gbk"));
+                reader.readHeaders();
+                while (reader.readRecord()) {
+                    list.add(reader.getValues());
+                }
+            } else {
+                result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+                result.setData("格式不支持，请上传excel或者csv");
+                return result;
+            }
+            List<GuoMaiOrder> preInstallOrders = new ArrayList<>();
+            for (String[] orderParam : list) {
+                GuoMaiOrder guoMaiOrder = GuoMaiOrder.convertFromGroupBuyingOrder(orderParam);
+                if (guoMaiOrder != null) {
+                    preInstallOrders.add(guoMaiOrder);
                 }
             }
-            response = orderService.uploadOrderItem(orderItemList);
-        }
-        if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
-            result.setResponseCode(ResponseCode.RESPONSE_NULL);
-        } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            Map<String, Object> condition = new HashMap<>();
+            condition.put("blockFlag", false);
+            ResultData response = orderService.fetch(condition);
+            List<GuoMaiOrderVo> orderInstalled = new ArrayList<>();
+            if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                orderInstalled = (List<GuoMaiOrderVo>) response.getData();
+            }
+            Set<String> orderNoInstalled = orderInstalled.stream().map(e -> e.getOrderNo()).collect(Collectors.toSet());
+            preInstallOrders = preInstallOrders.stream().filter(e -> !orderNoInstalled.contains(e.getOrderNo())).collect(Collectors.toList());
+            preInstallOrders = preInstallOrders.stream().filter(e -> e.getBuyerName() != null).collect(Collectors.toList());
+
+            // 对于没有引流上记录的引流商， 插入相应的引流商
+            ResultData diversionResponse = orderDiversionService.fetch(new HashMap<>());
+            if (diversionResponse.getResponseCode() != ResponseCode.RESPONSE_ERROR) {
+                List<OrderDiversionVo> diversionVoList = new ArrayList<>();
+                if (diversionResponse.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                    diversionVoList = (List<OrderDiversionVo>) diversionResponse.getData();
+                }
+                Map<String, String> diversionMap = diversionVoList.stream().
+                        collect(Collectors.toMap(e -> e.getDiversionName(), e -> e.getDiversionId()));
+                for (GuoMaiOrder order : preInstallOrders) {
+                    if (diversionMap.containsKey(order.getOrderDiversion())) {
+                        order.setOrderDiversion(diversionMap.get(order.getOrderDiversion()));
+                    } else {
+                        OrderDiversion orderDiversion = new OrderDiversion(order.getOrderDiversion());
+                        diversionResponse = orderDiversionService.create(orderDiversion);
+                        if (diversionResponse.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                            orderDiversion = (OrderDiversion) diversionResponse.getData();
+                        }
+                        order.setOrderDiversion(orderDiversion.getDiversionId());
+                        diversionMap.put(orderDiversion.getDiversionName(), orderDiversion.getDiversionId());
+                    }
+                }
+            }
+
+            response = orderService.upload(preInstallOrders);
+            if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                List<OrderItem> orderItemList = new ArrayList<>();
+                preInstallOrders = (List<GuoMaiOrder>) response.getData();
+                for (GuoMaiOrder order : preInstallOrders) {
+                    if (order.getCommodityList() != null) {
+                        for (OrderItem orderItem : order.getCommodityList()) {
+                            orderItem.setOrderId(order.getOrderId());
+                        }
+                        orderItemList.addAll(order.getCommodityList());
+                    }
+                }
+                response = orderService.uploadOrderItem(orderItemList);
+            }
+            if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+                result.setResponseCode(ResponseCode.RESPONSE_NULL);
+            } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+                result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+                result.setDescription("服务器忙，请稍后再试");
+            }
+            stream.close();
+        } catch (Exception e) {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            logger.error(e.getMessage());
             result.setDescription("服务器忙，请稍后再试");
         }
-        stream.close();
         return result;
     }
 
