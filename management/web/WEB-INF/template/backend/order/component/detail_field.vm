@@ -368,8 +368,8 @@
                 var thead_content = $('<tr><td>机器编号</td><td>安装商</td><td>安装方式</td><td>二维码</td><td>机器状态</td><td>详情</td></tr>')
                 table_header.append(thead_content);
                 table_header.css("background-color", '#e4e9f0')
+                var tbody = $('<tbody></tbody>');
                 if (response.responseCode == 'RESPONSE_OK') {
-                    var tbody = $('<tbody></tbody>');
                     var data = response.data;
                     for (var i = 0; i < data.length; i++) {
                         var provider = not_null(data[i].providerName) ? data[i].providerName : '未指派';
@@ -401,7 +401,9 @@
                     $("#machine-list-table").append(table_header);
                     $("#machine-list-table").append(tbody);
                 } else {
-
+                    tbody.append($("<tr><td colspan='6'>无机器</td></tr>"))
+                    $("#machine-list-table").append(table_header);
+                    $("#machine-list-table").append(tbody);
                 }
             });
         }

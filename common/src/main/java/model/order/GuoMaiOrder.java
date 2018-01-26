@@ -208,7 +208,13 @@ public class GuoMaiOrder extends Order {
         order.setReceiverName(param[14]); //收货人姓名
         order.setReceiverAddress(param[15]); //收货人地址
         order.setReceiverPhone(param[16].replaceAll("'", "").replaceAll("\"", "").replaceAll("=", "")); //收货人电话
-        order.setOrderTime(Timestamp.valueOf(param[6])); //订单时间
+        try {
+            order.setOrderTime(Timestamp.valueOf(param[6])); //订单时间
+        } catch (IllegalArgumentException e) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y/M/d H:m[:s]");
+            LocalDateTime localDateTime = LocalDateTime.parse(param[6], formatter);
+            order.setOrderTime(Timestamp.valueOf(localDateTime));
+        }
         order.setDescription(param[17]); //备注
         //判断订单状态
         if (param[24].trim().length() != 0) {
