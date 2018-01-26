@@ -305,5 +305,20 @@ DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 ROW_FORMAT=COMPACT
 ;
 
+CREATE view order_item_machine_view
+AS
+SELECT
+order_item.order_id,
+machine_item.machine_item_id,
+machine_item.order_item_id,
+setup_provider.provider_name,
+machine_item.machine_code,
+machine_item.machine_status,
+machine_item.block_flag,
+guomai_order.order_time
+from machine_item
+	LEFT JOIN setup_provider on machine_item.provider_id = setup_provider.provider_id
+	LEFT JOIN order_item on machine_item.order_item_id = order_item.order_item_id
+	LEFT JOIN guomai_order on order_item.order_id = guomai_order.order_id
 
 
