@@ -98,7 +98,7 @@
         		
         		/qrcode/create = roles[qrcode_writer]
         		
-        		
+        		/qrcode/prebind/unbind = roles[qrcode_prebind_writer]
         		
         	</value>
         </property>

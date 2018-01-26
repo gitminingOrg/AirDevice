@@ -56,6 +56,12 @@
                             预绑汇总
                         </a>
                     </li>
+                    <li>
+                        <a href="${path.concat('/qrcode/prebind/unbind')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            解除预绑定
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li>
