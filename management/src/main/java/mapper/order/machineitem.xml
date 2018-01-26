@@ -41,11 +41,11 @@
             AND machine_status = #{machineStatus}
         </if>
         <if test="startTime != null">
-            AND create_time >= #{startTime}
+            AND DATE(create_time) >= #{startTime}
         </if>
         <if test="endTime != null">
             <![CDATA[
-              AND CREATE <= #{endTime}
+              AND DATE(create_time) <= #{endTime}
             ]]>
         </if>
         <if test="blockFlag != null">

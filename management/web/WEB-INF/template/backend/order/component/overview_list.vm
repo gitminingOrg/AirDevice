@@ -412,6 +412,9 @@
                 link.setAttribute('href', data);
                 link.setAttribute('download', filename);
                 link.click();
+            } else {
+                alert("没有符合要求的订单");
+                return;
             }
         })
     });
