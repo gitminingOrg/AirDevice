@@ -5,15 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.csvreader.CsvReader;
 import form.*;
-import jxl.Workbook;
 import model.machine.Insight;
 import model.order.*;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -35,7 +29,6 @@ import service.OrderService;
 import utils.OrderConstant;
 import utils.ResponseCode;
 import utils.ResultData;
-import vo.guomai.CommodityVo;
 import vo.order.*;
 import vo.user.UserVo;
 
@@ -69,9 +62,6 @@ public class OrderController {
 
     @Autowired
     private MachineItemService machineItemService;
-
-    @Autowired
-    private CommodityService commodityService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/overview")
     public ModelAndView overview() {

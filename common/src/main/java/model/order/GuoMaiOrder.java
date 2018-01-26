@@ -2,6 +2,8 @@ package model.order;
 
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -257,12 +259,22 @@ public class GuoMaiOrder extends Order {
         if (param[1].length() == 0) {
             order.setOrderNo(generateOrderNo());
         } else {
-            order.setOrderNo(param[1]);
+            try {
+                BigInteger orderNo = new BigDecimal(param[1]).toBigInteger();
+                order.setOrderNo(orderNo.toString());
+            } catch (Exception e) {
+                order.setOrderNo(param[1].replaceAll("`", ""));
+            }
         }
         order.setOrderDiversion(param[0]);
         order.setBuyerName(param[7]);
         order.setReceiverName(param[7]);
-        order.setReceiverPhone(param[8]);
+        try {
+            BigInteger phone = new BigDecimal(param[8]).toBigInteger();
+            order.setReceiverPhone(phone.toString());
+        } catch (Exception e) {
+            order.setReceiverPhone(param[8].replaceAll("`", ""));
+        }
         order.setReceiverAddress(param[10]);
         if (param[5] == null || param[5].trim().length() == 0) {
             order.setOrderTime(Timestamp.valueOf(LocalDateTime.now()));
