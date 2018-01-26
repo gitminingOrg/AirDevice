@@ -38,11 +38,23 @@
             AND install_type = #{installType}
         </if>
         <if test="machineStatus != null">
-            AND machine_status = #{machineMissionStatus}
+            AND machine_status = #{machineStatus}
+        </if>
+        <if test="startTime != null">
+            AND create_time >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[
+              AND CREATE <= #{endTime}
+            ]]>
         </if>
         <if test="blockFlag != null">
             AND block_flag = #{blockFlag}
         </if>
+        <if test="search != null">
+            AND (order_id LIKE #{search} OR machine_code LIKE #{search})
+        </if>
+        ORDER BY create_time DESC
     </select>
 
     <insert id="insert" parameterType="model.order.MachineItem">

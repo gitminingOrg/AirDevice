@@ -4,6 +4,7 @@ import dao.MachineItemDao;
 import model.order.MachineItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pagination.DataTableParam;
 import service.MachineItemService;
 import utils.ResultData;
 
@@ -22,6 +23,11 @@ public class MachineItemServiceImpl implements MachineItemService{
     @Override
     public ResultData fetch(Map<String, Object> condition) {
         return machineItemDao.query(condition);
+    }
+
+    @Override
+    public ResultData fetch(DataTableParam param) {
+        return machineItemDao.query(param);
     }
 
     @Override

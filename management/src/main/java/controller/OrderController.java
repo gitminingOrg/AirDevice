@@ -110,7 +110,7 @@ public class OrderController {
         Map<String, Object> condition = new HashMap<>();
         condition.put("channelId", orderChannel);
         ResultData rd = orderService.fetchOrderChannel(condition);
-        OrderChannelVo vo =((List<OrderChannelVo>) rd.getData()).get(0);
+        OrderChannelVo vo = ((List<OrderChannelVo>) rd.getData()).get(0);
         if (vo.getChannelName().equals("淘宝店铺")) {
             for (int i = 0; i < list.size(); i++) {
                 GuoMaiOrder item = GuoMaiOrder.convertFromTaoBao(list.get(i));
@@ -121,7 +121,7 @@ public class OrderController {
                     order.add(item);
                 }
             }
-        } else if (vo.getChannelName().equals("京东")){
+        } else if (vo.getChannelName().equals("京东")) {
             for (int i = 0; i < list.size(); i++) {
                 GuoMaiOrder item = GuoMaiOrder.convertFromJD(list.get(i));
                 item.setOrderChannel(orderChannel);
@@ -132,7 +132,7 @@ public class OrderController {
                 }
             }
         }
-        if (!order.isEmpty()){
+        if (!order.isEmpty()) {
             ResultData response = orderService.upload(order);
             if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
                 logger.info("订单已上传");
@@ -141,9 +141,9 @@ public class OrderController {
                         condition.put("orderNo", order.get(i).getOrderNo());
                         rd = orderService.fetch(condition);
                         if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                            GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>)rd.getData()).get(0);
+                            GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>) rd.getData()).get(0);
                             OrderItem orderItem = new OrderItem(GVo.getOrderId(), OrderConstant.defaultOrderCommodityId,
-                                                    Integer.valueOf(list.get(i)[4]));
+                                    Integer.valueOf(list.get(i)[4]));
                             itemList.add(orderItem);
                         }
                     }
@@ -152,9 +152,9 @@ public class OrderController {
                         condition.put("orderNo", order.get(i).getOrderNo());
                         rd = orderService.fetch(condition);
                         if (rd.getResponseCode() == ResponseCode.RESPONSE_OK) {
-                            GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>)rd.getData()).get(0);
+                            GuoMaiOrderVo GVo = ((List<GuoMaiOrderVo>) rd.getData()).get(0);
                             OrderItem orderItem = new OrderItem(GVo.getOrderId(), OrderConstant.defaultOrderCommodityId,
-                                                    Integer.valueOf(list.get(i)[24]));
+                                    Integer.valueOf(list.get(i)[24]));
                             itemList.add(orderItem);
                         }
                     }
@@ -177,8 +177,7 @@ public class OrderController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/groupBuyingUpload")
-    public ResultData upload(MultipartHttpServletRequest request) throws Exception
-    {
+    public ResultData upload(MultipartHttpServletRequest request) throws Exception {
         ResultData result = new ResultData();
         MultipartFile file = request.getFile("groupBuyingFile");
         InputStream stream = file.getInputStream();
@@ -249,7 +248,7 @@ public class OrderController {
             }
             Map<String, String> diversionMap = diversionVoList.stream().
                     collect(Collectors.toMap(e -> e.getDiversionName(), e -> e.getDiversionId()));
-            for (GuoMaiOrder order: preInstallOrders) {
+            for (GuoMaiOrder order : preInstallOrders) {
                 if (diversionMap.containsKey(order.getOrderDiversion())) {
                     order.setOrderDiversion(diversionMap.get(order.getOrderDiversion()));
                 } else {
@@ -268,7 +267,7 @@ public class OrderController {
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             List<OrderItem> orderItemList = new ArrayList<>();
             preInstallOrders = (List<GuoMaiOrder>) response.getData();
-            for (GuoMaiOrder order: preInstallOrders) {
+            for (GuoMaiOrder order : preInstallOrders) {
                 if (order.getCommodityList() != null) {
                     for (OrderItem orderItem : order.getCommodityList()) {
                         orderItem.setOrderId(order.getOrderId());
@@ -309,14 +308,14 @@ public class OrderController {
         Map<String, Object> condition = new HashMap<>();
         condition.put("blockFlag", false);
         JSONObject params = JSON.parseObject(param);
-        if(!StringUtils.isEmpty(params)) {
-            if(!StringUtils.isEmpty(params.get("channel"))) {
+        if (!StringUtils.isEmpty(params)) {
+            if (!StringUtils.isEmpty(params.get("channel"))) {
                 condition.put("orderChannel", params.getString("channel"));
             }
-            if(!StringUtils.isEmpty(params.get("diversion"))) {
+            if (!StringUtils.isEmpty(params.get("diversion"))) {
                 condition.put("orderDiversion", params.getString("diversion"));
             }
-            if(!StringUtils.isEmpty(params.get("status"))) {
+            if (!StringUtils.isEmpty(params.get("status"))) {
                 condition.put("orderStatus", params.getString("status"));
             }
             if (!StringUtils.isEmpty(params.get("startDate"))) {
@@ -405,9 +404,9 @@ public class OrderController {
         }
         GuoMaiOrder order = new
                 GuoMaiOrder(form.getOrderNo(), form.getBuyerName(), form.getBuyerAccount(), form.getReceiverName(),
-                            form.getReceiverPhone(), form.getOrderPrice(), form.getProvince(), form.getCity(),
-                            form.getDistrict(), form.getReceiverAddress(), form.getOrderChannel(),
-                            form.getOrderCoupon(), Timestamp.valueOf(form.getOrderTime()), form.getDescription());
+                form.getReceiverPhone(), form.getOrderPrice(), form.getProvince(), form.getCity(),
+                form.getDistrict(), form.getReceiverAddress(), form.getOrderChannel(),
+                form.getOrderCoupon(), Timestamp.valueOf(form.getOrderTime()), form.getDescription());
         if (form.getOrderDiversion() != null) {
             order.setOrderDiversion(form.getOrderDiversion());
         }
@@ -750,7 +749,7 @@ public class OrderController {
     public ModelAndView BatchUpload(MultipartHttpServletRequest request) throws IOException {
         ModelAndView view = new ModelAndView();
         MultipartFile file = request.getFile("orderFile");
-        if (file.isEmpty()){
+        if (file.isEmpty()) {
             logger.info("上传的文件为空");
             view.setViewName("redirect:/order/overview");
             return view;
@@ -882,7 +881,7 @@ public class OrderController {
             String machine = mission.getMachineItemId();
             String missionId = mission.getMissionId();
             JSONArray filepathList = JSON.parseArray(form.getFilePathList());
-            for (Object filepath: filepathList) {
+            for (Object filepath : filepathList) {
                 Insight insight = new Insight();
                 insight.setMachineId(machine);
                 insight.setEventId(missionId);
@@ -970,6 +969,39 @@ public class OrderController {
             result.setData(response.getData());
         } else if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
             result.setDescription("服务器忙，请稍后再试!");
+        }
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/machineOverview/list")
+    public ModelAndView orderMachineView() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("/backend/order/order_machine_overview");
+        return view;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/machineItem/list")
+    public DataTablePage<MachineItemVo> machineItemList(DataTableParam param) {
+        ResultData response = machineItemService.fetch(param);
+        DataTablePage<MachineItemVo> records = new DataTablePage<>();
+        if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+            return records;
+        } else {
+            return (DataTablePage<MachineItemVo>) response.getData();
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/machineItem/list")
+    public ResultData getMachineItemList(@RequestParam(required = false) String param) {
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("blockFlag", 0);
+        ResultData response = machineItemService.fetch(condition);
+        if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(response.getResponseCode());
+            result.setDescription(response.getDescription());
+        } else {
+            result.setData(response.getData());
         }
         return result;
     }

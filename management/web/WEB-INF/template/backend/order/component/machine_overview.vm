@@ -35,39 +35,322 @@
             </div>
         </div>
         <div id="page-content">
-            ## statistics div
-                <div class="row col-md-12">
-                    <div class="col-md-4" style="height: 180px; padding: 20px;">
-                        <div style="width: 100%; height: 100%; background: #00b297; border-radius: 5px; padding: 20px; align-items: center; display: flex;">
-                            <i class="glyph-icon icon-check-circle-o" style="font-size: 60px; color: white; opacity: 0.7;"></i>
-                            <div style="margin-left: 30px">
-                                <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">总共相关机器数量</p>
-                                <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-all"></p>
-                                <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
-                            </div>
+            <div style="overflow: hidden">
+                <div class="col-md-3" style="height: 180px; padding: 10px;">
+                    <div style="width: 100%; height: 100%; background: #00b297; border-radius: 5px; padding: 20px; align-items: center; display: flex;">
+                        <i class="glyph-icon icon-circle-o" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                        <div style="margin-left: 30px">
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">机器总数</p>
+                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="machine-all"></p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
                         </div>
                     </div>
-                    <div class="col-md-4" style="height: 180px; padding: 20px; border-radius: 5px">
-                        <div style="width: 100%; height: 100%; background: #dc3545; border-radius: 5px; padding: 20px; align-items: center; display: flex;">
-                            <i class="glyph-icon icon-gavel" style="font-size: 60px; color: white; opacity: 0.7;"></i>
-                            <div style="margin-left: 30px">
-                                <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">已经勘测机器数量</p>
-                                <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-today"></p>
-                                <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
-                            </div>
+                </div>
+                <div class="col-md-3" style="height: 180px; padding: 10px; border-radius: 5px">
+                    <div style="width: 100%; height: 100%; background: #dc3545; border-radius: 5px; padding: 20px; align-items: center; display: flex;">
+                        <i class="glyph-icon icon-pencil-square-o" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                        <div style="margin-left: 30px">
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">机器待勘测</p>
+                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="machine-pre-survey"></p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
                         </div>
                     </div>
-                    <div class="col-md-4" style="height: 180px; padding: 20px; border-radius: 5px; ">
-                        <div style="width: 100%; height: 100%; background: #0866C6; border-radius: 5px; padding: 20px; align-items: center; display: flex">
-                            <i class="glyph-icon icon-ban" style="font-size: 60px; color: white; opacity: 0.7;"></i>
-                            <div style="margin-left: 30px">
-                                <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">已经安装机器数量</p>
-                                <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="order-insuccess"></p>
-                                <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
+                </div>
+                <div class="col-md-3" style="height: 180px; padding: 10px; border-radius: 5px; ">
+                    <div style="width: 100%; height: 100%; background: #0866C6; border-radius: 5px; padding: 20px; align-items: center; display: flex">
+                        <i class="glyph-icon icon-gavel" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                        <div style="margin-left: 30px">
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">机器待安装</p>
+                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="machine-pre-install"></p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="height: 180px; padding: 10px; border-radius: 5px; ">
+                    <div style="width: 100%; height: 100%; background: #1D2939; border-radius: 5px; padding: 20px; align-items: center; display: flex">
+                        <i class="glyph-icon icon-check-circle-o" style="font-size: 60px; color: white; opacity: 0.7;"></i>
+                        <div style="margin-left: 30px">
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px">机器已安装</p>
+                            <p style="font-size: 40px; color: white; font-weight: 700px; margin-bottom: 0px; padding-bottom: 0px" id="machine-post-install"></p>
+                            <p style="font-size: 10px; color: white; margin-bottom: 0px; padding-bottom: 0px" class="date-range"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div style="margin-bottom: 20px; margin-top: 20px">
+                    <div class="form-input">
+                        <div class="row" style="margin-left: 0px; display: flex">
+                            <div style="width: 15%; margin-right: 20px">
+                                <select id="provider-list" style="border-radius: 5px">
+                                    <option value="">---请选择服务商---</option>
+                                </select>
+                            </div>
+                            <div style="width: 15%; margin-right: 20px">
+                                <select id="install-type-list" style="border-radius: 5px">
+                                    <option value="">---请选择安装方式---</option>
+                                    <option value="墙体安装">墙体安装</option>
+                                    <option value="玻璃安装">玻璃安装</option>
+                                </select>
+                            </div>
+                            <div style="width: 15%; margin-right: 20px">
+                                <select id="machine-status-list" style="border-radius: 5px">
+                                    <option value="">---请选择机器状态---</option>
+                                    <option value="0">待勘测</option>
+                                    <option value="1">已勘测</option>
+                                    <option value="5">已安装</option>
+                                    <option value="6">安装取消</option>
+                                </select>
+                            </div>
+                            <div style="width: 30%; margin-right: 20px">
+                                <div class="col-md-6 form-input">
+                                    <input id="start-date" type="date" placeholder="起始时间">
+                                </div>
+                                <div class="col-md-6 form-input">
+                                    <input id="endDate" type="date" placeholder="结束时间">
+                                </div>
+                            </div>
+                            <div style="width: 15%">
+                                <button id="machine-search-btn" type="button" data-loading-text="查询中"
+                                        class="btn large loading-button bg-blue" style="float: right; margin-right: 20px">
+                                    查询
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div>
+                    <table id="machine-item-table" class="table table-condensed"></table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        var param = {};
+
+        initMachineItemStatistics();
+
+        initProvider();
+
+        function initMachineItemStatistics() {
+           var machintItemListUrl = "${path.concat("/order/machineItem/list")}";
+           $.get(machintItemListUrl, function (response) {
+               if (response.responseCode === 'RESPONSE_OK') {
+                   var machineItemList = response.data;
+                   var max_date = machineItemList[0].createTime, min_date = machineItemList[0].createTime;
+                   for (var i = 0; i < machineItemList.length; i++) {
+                       if (machineItemList[i].createTime > max_date) {
+                           max_date = machineItemList[i].createTime;
+                       }
+                       if (machineItemList[i].createTime < min_date) {
+                           min_date = machineItemList[i].createTime;
+                       }
+                   }
+                   var start_date = formatDate(new Date(min_date));
+                   var end_date = formatDate(new Date(max_date));
+                   var machineItemPresurvey = machineItemList.filter(e => e.machineMissionStatus == 'PRE_SURVEY');
+                   var machineItemPreinstall = machineItemList.filter(e => e.machineMissionStatus == 'SURVEYED'
+                            || e.machineStatus == 'NEGOTIATE_INSTALL' || e.machineMissionStatus == 'SHIPPING'
+                            || e.machineStatus == 'SHIPPED');
+                   var machineItemPostinstall = machineItemList.filter(e => e.machineMissionStatus == 'INSTALLED');
+                   $("#machine-all").html(machineItemList.length);
+                   $("#machine-pre-survey").html(machineItemPresurvey.length);
+                   $("#machine-pre-install").html(machineItemPreinstall.length);
+                   $("#machine-post-install").html(machineItemPostinstall.length);
+                   $(".date-range").html(start_date + "~" + end_date);
+               } else {
+                   var default_date = new Date();
+                   $("#machine-all").html(0);
+                   $("#machine-pre-survey").html(0);
+                   $("#machine-pre-install").html(0);
+                   $("#machine-post-install").html(0);
+                   $(".date-range").html(formatDate(default_date));
+               }
+           })
+       }
+
+        var table = $("#machine-item-table").DataTable({
+            searching: true,
+            ordering: false,
+            paging: true,
+            "sPaginationType": "full_numbers",
+            "bPaginate": true,
+            "bLengthChange": false,
+            "bAutoWidth": true,
+            "bSort": true,
+            "bDeferRender": true,
+            "bProcessing": true,
+            "bServerSide": true,
+            "bInfoFiltered": false,
+            "sAjaxSource": '${path.concat('/order/machineItem/list')}',
+            "infoFiltered": false,
+            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                $(nRow).removeClass('dataTable');
+                $(nRow).css("text-align", "center");
+            },
+            "fnInitComplete": function () {
+                $("#component-list-table").removeClass('no-footer');
+            },
+            "fnServerParams": function (aoData) {
+                delete aoData.params;
+                var providerName = $("#provider-list").find(":selected").val();
+                if(param.providerName != providerName) {
+                    param.providerName = providerName;
+                    if(!not_null(providerName)) {
+                        delete param.providerName;
+                    }
+                }
+                var installType = $("#install-type-list").find(":selected").val();
+                if(param.installType != installType) {
+                    param.installType = installType;
+                    if(!not_null(installType)) {
+                        delete param.installType;
+                    }
+                }
+                var machineStatus = $("#machine-status-list").find(":selected").val();
+                if(param.machineStatus != machineStatus) {
+                    param.machineStatus = machineStatus;
+                    if(!not_null(machineStatus)) {
+                        delete param.machineStatus;
+                    }
+                }
+                var startDate = $("#start-date").val();
+                if(param.startDate != startDate) {
+                    param.startDate = startDate;
+                    if(!not_null(startDate)) {
+                        delete param.startDate;
+                    }
+                }
+                var endDate = $("#endDate").val();
+                if(param.endDate != endDate) {
+                    param.endDate = endDate;
+                    if(!not_null(endDate)) {
+                        delete param.endDate;
+                    }
+                }
+                aoData.push({"name": "params", "value": JSON.stringify(param)});
+            },
+            "fnServerData": function (sSource, aoData, fnCallback) {
+                $.ajax({
+                    "dataType": "json",
+                    "type": "POST",
+                    "url": sSource,
+                    "data": aoData,
+                    "success": fnCallback
+                })
+            },
+            columns: [
+                {title: "机器编号", "mData": "machineId"},
+                {title: "服务商", "mRender": function(data, type, full) {
+                    if (not_null(full.providerName)) {
+                        return full.providerName;
+                    } else {
+                        return "未指派";
+                    }
+                }},
+                {title: '二维码', "mRender": function (data, type, full) {
+                    if(not_null(full.machineCode)) {
+                        return full.machineCode;
+                    } else {
+                        return "未知";
+                    }
+                }},
+                {title: '安装方式', "mRender": function (data, type, full) {
+                    if(not_null(full.installType)) {
+                        return full.installType;
+                    } else {
+                        return "未安装";
+                    }
+                }},
+                {title: '下单日期', "mRender": function(data, type, full){
+                    var createTime = new Date(full.createTime);
+                    var year = (createTime.getFullYear()).toString();
+                    var month = ("0" + (createTime.getMonth() + 1)).slice(-2).toString();
+                    var day = ("0" + createTime.getDate()).slice(-2).toString();
+                    return year + '-' + month + '-' + day;
+                }},
+                {title: "当前进度", "mRender": function(data, type, full) {
+                    var status = full.machineMissionStatus;
+                    if(status == "PRE_SURVEY") {
+                        return "待勘测";
+                    }
+                    if(status == "SURVEYED") {
+                        return "勘测完成";
+                    }
+                    if(status == "SHIPPING" || status == "SHIPPED" || status == "NEGOTIATE_INSTALL") {
+                        return "待安装";
+                    }
+                    if (status == "INSTALLED") {
+                        return "已安装";
+                    }
+                    if (status == "INSTALL_CANCEL") {
+                        return "安装取消";
+                    }
+                    return "未知状态";
+                }},
+                {title: "机器详情", "mRender": function(data, type, full) {
+                    var node = "";
+                    var edit = "<a href='" + "${path.concat('/order/machine/item/')}" + full.machineId + "' class='btn small bg-blue-alt tooltip-button' data-placement='top' ><i class='glyph-icon icon-arrow-right'></i></a>";
+                    node += edit;
+                    return node;
+                }},
+                {title: "订单详情", "mRender": function(data, type, full) {
+                    var node = "";
+                    var edit = "<a href='" + "${path.concat('/order/')}" + full.orderId + "' class='btn small bg-blue-alt tooltip-button' data-placement='top' ><i class='glyph-icon icon-arrow-right'></i></a>";
+                    node += edit;
+                    return node;
+                }}
+            ],
+            "language": {
+                "processing": "正在加载中",
+                "lengthMenu": "每页显示 _MENU_ 条记录",
+                "info": "从 _START_ 到 _END_, 共 _TOTAL_ 条数据",
+                "infoEmpty": "暂无数据",
+                "infoFiltered": "数据表中共 _MAX_ 条记录)",
+                "zeroRecords": "当前暂无订单记录",
+                "search": "搜索:",
+                "paginate": {
+                    "first": "<i class='icon-caret-left'></i>",
+                    "previous": "<i class='icon-angle-left'></i>",
+                    "next": "<i class='icon-angle-right'></i>",
+                    "last": "<i class='icon-caret-right'></i>"
+                }
+            }
+        });
+
+        $("#machine-search-btn").on("click", function () {
+            table.draw(false);
+        })
+        
+        function initProvider() {
+            $("#provider-list").empty();
+            var providerUrl = "${path.concat("/order/missionChannel/list")}";
+            $("#provider-list").append($("<option></option>").val("").text("---请选择安装商---"));
+            $.get(providerUrl, function (response) {
+                if (response.responseCode = "RESPONSE_OK"){
+                    var providerData = response.data;
+                    for(var i = 0; i < providerData.length; i++) {
+                        $("#provider-list").append($("<option></option>").val(providerData[i].providerName).text(providerData[i].providerName));
+                    }
+                }
+            })
+        }
+    });
+
+    function formatDate(date) {
+        var year = date.getFullYear().toString();
+        var month = ("0" + (date.getMonth() + 1).toString()).slice(-2).toString();
+        var day = ("0" + date.getDate().toString()).slice(-2).toString();
+
+        return year + '/' + month + '/' + day;
+    }
+
+    function not_null(item) {
+        if (item == null || item == "" || item.length <= 0) {
+            return false;
+        }
+        return true;
+    }
+</script>

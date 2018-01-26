@@ -1,6 +1,7 @@
 package service;
 
 import model.order.MachineItem;
+import pagination.DataTableParam;
 import utils.ResultData;
 
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.Map;
  */
 public interface MachineItemService {
     public ResultData fetch(Map<String, Object> condition);
+
+    public ResultData fetch(DataTableParam param);
 
     public ResultData create(MachineItem machineItem);
 

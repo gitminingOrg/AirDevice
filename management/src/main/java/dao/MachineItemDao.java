@@ -1,6 +1,7 @@
 package dao;
 
 import model.order.MachineItem;
+import pagination.DataTableParam;
 import utils.ResultData;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Map;
 public interface MachineItemDao {
 
     ResultData query(Map<String, Object> condition);
+
+    ResultData query(DataTableParam param);
 
     ResultData insert(MachineItem machineItem);
 

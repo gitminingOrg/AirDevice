@@ -3,7 +3,7 @@
 <head>
     #parse("/backend/init/init.vm")
     #parse("/backend/common/datatable.lib.vm")
-    <title>订单列表</title>
+    <title>订单机器列表</title>
 </head>
 <body class="fixed-sidebar fixed-header" ontouchstart>
 <div id="loading" class="ui-front loader ui-widget-overlay bg-white opacity-100">

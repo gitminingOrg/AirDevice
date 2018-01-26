@@ -387,12 +387,7 @@
             processData: false,
             type: 'POST',
             success: function(data){
-                if (data.responseCode === 'RESPONSE_OK') {
-                    location.href = "${path.concat('/order/overview')}";
-                } else {
-                    alert(data.description);
-                    $("#groupBuyingFile-confirm-upload").removeClass('running');
-                }
+                location.href = "${path.concat('/order/overview')}";
             },
             error: function () {
                 alert("上传失败");
