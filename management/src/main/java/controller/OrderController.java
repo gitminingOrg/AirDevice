@@ -194,7 +194,7 @@ public class OrderController {
                     result.setResponseCode(ResponseCode.RESPONSE_NULL);
                     return result;
                 }
-                for (int i = 1; i < xssfSheet.getLastRowNum(); i++) {
+                for (int i = 1; i < xssfSheet.getLastRowNum() + 1; i++) {
                     XSSFRow row = xssfSheet.getRow(i);
                     String[] rowContent = new String[11];
                     int j = 0;
