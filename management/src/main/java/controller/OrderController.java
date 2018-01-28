@@ -182,7 +182,7 @@ public class OrderController {
             String[] tempList = file.getOriginalFilename().split("\\.");
             String fileAppendix = tempList[tempList.length - 1];
             if (file.isEmpty()) {
-                logger.info("");
+                logger.info("上传文件为空!");
                 result.setResponseCode(ResponseCode.RESPONSE_NULL);
                 return result;
             }
@@ -197,16 +197,15 @@ public class OrderController {
                 for (int i = 1; i < xssfSheet.getLastRowNum() + 1; i++) {
                     XSSFRow row = xssfSheet.getRow(i);
                     String[] rowContent = new String[11];
-                    int j = 0;
-                    Iterator<Cell> iterator = row.cellIterator();
-                    while (iterator.hasNext() && j < 11) {
-                        rowContent[j] = iterator.next().toString();
-                        j++;
+                    for (int j = 0; j < 11; j++ ) {
+                        Cell c = row.getCell(j);
+                        if (c != null && c.getCellType() != Cell.CELL_TYPE_BLANK) {
+                            rowContent[j] = c.toString();
+                        }
                     }
-                    if (rowContent[2] == null) {
-                        continue;
+                    if (rowContent[0] != null) {
+                        list.add(rowContent);
                     }
-                    list.add(rowContent);
                 }
             } else if (fileAppendix.contains("csv")) {
                 CsvReader reader = new CsvReader(stream, Charset.forName("gbk"));
@@ -236,6 +235,13 @@ public class OrderController {
             Set<String> orderNoInstalled = orderInstalled.stream().map(e -> e.getOrderNo()).collect(Collectors.toSet());
             preInstallOrders = preInstallOrders.stream().filter(e -> !orderNoInstalled.contains(e.getOrderNo())).collect(Collectors.toList());
             preInstallOrders = preInstallOrders.stream().filter(e -> e.getBuyerName() != null).collect(Collectors.toList());
+
+            if (preInstallOrders.size() == 0) {
+                result.setResponseCode(ResponseCode.RESPONSE_NULL);
+                logger.error("上传订单内容重复");
+                result.setDescription("上传订单内容重复");
+                return result;
+            }
 
             // 对于没有引流上记录的引流商， 插入相应的引流商
             ResultData diversionResponse = orderDiversionService.fetch(new HashMap<>());
@@ -568,7 +574,9 @@ public class OrderController {
             logger.error(result.getDescription());
             return result;
         }
+        GuoMaiOrderVo guoMaiOrderVo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
         GuoMaiOrder order = new GuoMaiOrder();
+        order.setOrderStatus(guoMaiOrderVo.getOrderStatus());
         order.setOrderId(orderId);
 //        order.setOrderStatus(OrderStatus.INSTALLING);
         orderService.assign(order);
