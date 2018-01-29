@@ -57,6 +57,7 @@
               AND mission_date <= #{endTime}
             ]]>
         </if>
+        ORDER BY mission_date DESC
     </select>
 
     <insert id="insert" parameterType="model.order.MachineMission" useGeneratedKeys="false">
