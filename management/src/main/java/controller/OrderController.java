@@ -1016,4 +1016,11 @@ public class OrderController {
         }
         return result;
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/orderConfig/view")
+    public ModelAndView orderConfigView() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("/backend/order/order_config");
+        return view;
+    }
 }

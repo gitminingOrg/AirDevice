@@ -43,8 +43,7 @@
 
     <!--删除mission_channel相关信息-->
     <delete id="delete" parameterType="String">
-        UPDATE gmair_order.setup_provider
-        SET block_flag = TRUE
+        DELETE FROM gmair_order.setup_provider
         where provider_id = #{providerId}
     </delete>
 </mapper>

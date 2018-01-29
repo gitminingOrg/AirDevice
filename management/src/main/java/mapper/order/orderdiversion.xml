@@ -41,8 +41,7 @@
     </update>
 
     <update id="delete" parameterType="String">
-        UPDATE gmair_order.order_diversion
-        SET block_flag = TRUE
+        DELETE FROM gmair_order.order_diversion
         WHERE diversion_id = #{diversionId}
     </update>
 </mapper>
