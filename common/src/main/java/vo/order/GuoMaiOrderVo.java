@@ -27,6 +27,7 @@ public class GuoMaiOrderVo {
     private String orderCoupon;
     private Timestamp orderTime;
     private String shipNo;
+    private Timestamp receiveDate;
     private String serviceName;
     private List<OrderItem> commodityList;
 
@@ -175,6 +176,14 @@ public class GuoMaiOrderVo {
 
     public void setShipNo(String shipNo) {
         this.shipNo = shipNo;
+    }
+
+    public Timestamp getReceiveDate() {
+        return receiveDate;
+    }
+
+    public void setReceiveDate(Timestamp receiveDate) {
+        this.receiveDate = receiveDate;
     }
 
     public List<OrderItem> getCommodityList() {

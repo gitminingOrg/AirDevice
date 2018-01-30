@@ -200,6 +200,12 @@
             				待发货
             			#elseif(${order.orderStatus} == "SHIPPED")
             				已发货(订单处理中)
+                        #elseif(${order.orderStatus} == "RECEIVED")
+                            #if(${receiveTime})
+                                已收货(收货时间: ${receiveTime})
+                            #else
+                                已收货(无收货时间)
+                            #end
             			#elseif(${order.orderStatus} == "INSTALLING")
             				订单处理中
             			#elseif(${order.orderStatus} == "SUCCEED")
@@ -242,14 +248,17 @@
                         </div>
                     </div>
                 </div>
-            	#if(${order.orderStatus} == "NOT_PAYED" || ${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "PAYED"
-                        || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
+            	#if(${order.orderStatus} == "NOT_PAYED" || ${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "PAYED" ||
+                    ${order.orderStatus} == "RECEIVED" || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
                     <hr/>
                     #if(${order.orderStatus} == "NOT_PAYED")
                         <a id="order-payed" class="btn medium bg-green">
                             <span class="button-content">付款完成</span>
                         </a>
                     #elseif(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING")
+                        <a class="btn medium bg-blue white-modal-80" title="发货">
+                            <span class="button-content">收货</span>
+                        </a>
                         <a id="order-complete" class="btn medium bg-green">
                             <span class="button-content">订单完成</span>
                         </a>
@@ -268,13 +277,22 @@
                                 <span class="button-content">订单完成</span>
                             </a>
                         </div>
+                    #elseif(${order.orderStatus} == "RECEIVED")
+                        <div class="form-row">
+                            <a id="order-cancel" class="btn medium bg-red">
+                                <span class="button-content">订单取消</span>
+                            </a>
+                            <a id="order-complete" class="btn medium bg-green">
+                                <span class="button-content">订单完成</span>
+                            </a>
+                        </div>
                     #end
             	#end
                 <div id="mission-area" style="display: none">
                     <h4>订单进度</h4>
                 </div>
             </div>
-            #if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
+            #if(${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
             #elseif(${order.orderStatus} == "PAYED")
                 <div class="hide" id="white-modal-80" title="填写产品编号">
                     <div class="pad10A">
@@ -290,6 +308,26 @@
                             <div class="form-row">
                                 <button class="btn medium bg-blue-alt" id="confirm-deliver">
                                     <span class="button-content">发货</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            #elseif(${order.orderStatus} == "SHIPPED")
+                <div class="hide" id="white-modal-80" title="填写收货日期">
+                    <div class="pad10A">
+                        <div class="col-md-12 center-margin">
+                            <div class="form-row">
+                                <div class="form-label col-md-2">
+                                    <label for="receive-date" autocomplete="off">收货时间</label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                    <input id="receive-date" type="date" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <button class="btn medium bg-blue-alt" id="confirm-receive">
+                                    <span class="button-content">确认</span>
                                 </button>
                             </div>
                         </div>
@@ -421,7 +459,26 @@
 					alert("发货失败");
 				}
 			});
-		})
+		});
+
+		$("#confirm-receive").on('click', function () {
+            var url = "${path.concat('/order/')}" + "${order.orderId}" + "/receive";
+            var receviceDate = $("#receive-date").val();
+            var param = {};
+            if (!not_null(receviceDate)) {
+                receviceDate = new Date();
+                receviceDate = receviceDate.getFullYear().toString() + "-" + (receviceDate.getMonth() + 1).toString()
+                                    + "-" + receviceDate.getDate();
+            }
+            param.receiveDate = receviceDate;
+            $.post(url, param, function (reponse) {
+                if(reponse.responseCode == "RESPONSE_OK") {
+                    window.location.href = "${path.concat('/order/')}" + "${order.orderId}";
+                }else {
+                    alert("更新收货状态失败");
+                }
+            })
+        });
 
         $("#order-payed").on('click', function () {
            var url = "${path.concat('/order/')}" + "${order.orderId}" + "/payed";

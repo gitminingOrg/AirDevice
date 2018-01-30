@@ -348,7 +348,7 @@
                         contentType: 'application/json; charset=utf-8'
                     });
                 }
-##				window.location.href = "${path.concat('/order/overview')}";
+				window.location.href = "${path.concat('/order/overview')}";
 			})
 		});
 	});

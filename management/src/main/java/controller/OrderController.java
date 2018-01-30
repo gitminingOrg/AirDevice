@@ -34,12 +34,15 @@ import utils.ResultData;
 import vo.order.*;
 import vo.user.UserVo;
 
+import javax.crypto.Mac;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -369,10 +372,13 @@ public class OrderController {
         }
         GuoMaiOrderVo vo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
         LocalDateTime time = LocalDateTime.ofInstant(vo.getOrderTime().toInstant(), TimeZone.getDefault().toZoneId());
+        LocalDateTime receive_time = LocalDateTime.ofInstant(vo.getReceiveDate().toInstant(), TimeZone.getDefault().toZoneId());
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String orderTime = time.format(format);
+        String receiveTime = receive_time.format(format);
         view.addObject("order", vo);
         view.addObject("orderTime", orderTime);
+        view.addObject("receiveTime", receiveTime);
         view.setViewName("/backend/order/detail");
         return view;
     }
@@ -622,6 +628,32 @@ public class OrderController {
         return result;
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/receive")
+    public ResultData receive(@PathVariable("orderId") String orderId, @RequestParam String receiveDate) {
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("orderId", orderId);
+        condition.put("blockFlag", 0);
+        ResultData response = orderService.fetch(condition);
+        if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("当前订单无法进行该操作");
+            logger.error(result.getDescription());
+            return result;
+        }
+        GuoMaiOrderVo vo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
+        GuoMaiOrder order = new GuoMaiOrder();
+        order.setOrderId(orderId);
+        order.setOrderStatus(OrderStatus.RECEIVED);
+        order.setOrderPrice(vo.getOrderPrice());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-M-d");
+        LocalDate date = LocalDate.parse(receiveDate, formatter);
+        order.setReceiveDate(Timestamp.valueOf(LocalDateTime.of(date, LocalTime.MIN)));
+        orderService.assign(order);
+        return result;
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/payed")
     public ResultData pay(@PathVariable("orderId") String orderId) {
         ResultData result = new ResultData();
@@ -663,6 +695,7 @@ public class OrderController {
         order.setOrderId(orderId);
         order.setShipNo(vo.getShipNo());
         order.setOrderStatus(OrderStatus.REFUNDED);
+        order.setOrderPrice(vo.getOrderPrice());
 
         ResultData machineItemResponse = machineItemService.fetch(condition);
         if (machineItemResponse.getResponseCode() == ResponseCode.RESPONSE_OK) {
