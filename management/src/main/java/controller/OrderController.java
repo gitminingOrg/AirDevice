@@ -413,6 +413,7 @@ public class OrderController {
         return view;
     }
 
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResultData create(@Valid OrderCreateForm form, BindingResult br) {
         ResultData result = new ResultData();

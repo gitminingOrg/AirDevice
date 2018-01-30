@@ -40,7 +40,7 @@
         INSERT INTO `gmair_order`.guomai_order
         (
             order_id, order_no, buyer_name, order_price, receiver_name, receiver_phone,
-            receiver_province, receiver_city, receiver_district, receiver_address, coupon_no, ship_no, receive_date
+            receiver_province, receiver_city, receiver_district, receiver_address, coupon_no, ship_no, receive_date,
             order_time, order_status, channel_id, diversion_id, description, block_flag, create_time
         )
          VALUES
