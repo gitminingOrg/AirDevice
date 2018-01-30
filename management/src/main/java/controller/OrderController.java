@@ -16,6 +16,8 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +44,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@EnableTransactionManagement
 @CrossOrigin
 @RestController
 @RequestMapping("/order")
@@ -70,7 +73,7 @@ public class OrderController {
         return view;
     }
 
-
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
     public ResultData upload(MultipartHttpServletRequest request, @RequestParam String orderChannel){
         ResultData result = new ResultData();
@@ -173,6 +176,7 @@ public class OrderController {
         return result;
     }
 
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/groupBuyingUpload")
     public ResultData upload(MultipartHttpServletRequest request) throws Exception {
         ResultData result = new ResultData();
