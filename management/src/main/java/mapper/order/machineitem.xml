@@ -102,7 +102,7 @@
             <set>
                 <if test="item.machineCode != null">machine_code = #{item.machineCode},</if>
                 <if test="item.installType != null">install_type = #{item.installType},</if>
-                <if test="item.installType != null">provider_id = #{item.providerId},</if>
+                <if test="item.providerId != null">provider_id = #{item.providerId},</if>
                 <if test="item.machineMissionStatus != null">machine_status = #{item.machineMissionStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}</if>
             </set>
             WHERE machine_item.machine_item_id = #{item.machineId}

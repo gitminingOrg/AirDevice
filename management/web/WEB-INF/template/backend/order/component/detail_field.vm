@@ -220,6 +220,9 @@
                     <a href="javascript:;" class="btn medium bg-blue black-modal-80" title="添加订单进度记录">
                         <span class="button-content">添加订单事件</span>
                     </a>
+                    <a href="javascript:;" class="btn medium bg-blue black-modal-60" title="分派服务商">
+                        <span class="button-content">分派服务商</span>
+                    </a>
                     <div class="hide" id="black-modal-80" title="新增订单事件">
                         <div class="pad10A">
                             <div class="col-md-12 center-margin">
@@ -242,6 +245,26 @@
                                 <div class="form-row">
                                     <button class="btn medium bg-blue-alt" id="order-confirm-event">
                                         <span class="button-content">新增</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hide" id="black-modal-60" title="分派服务商">
+                        <div class="pad10A">
+                            <div class="col-md-12 center-margin">
+                                <div class="form-row">
+                                    <div class="form-label col-md-3">
+                                        <label for="order-provider">服务商</label>
+                                    </div>
+                                    <div class="form-input col-md-9">
+                                        <select id="order-provider-list">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <button class="btn medium bg-blue-alt" id="order-provider-event">
+                                        <span class="button-content">确认分派</span>
                                     </button>
                                 </div>
                             </div>
@@ -510,6 +533,20 @@
 				location.reload();
 			})
 		});
+
+		$("#order-provider-event").on('click', function () {
+            var url = "${path.concat('/order/')}" + "${order.orderId}" + "/dispatchProvider";
+            var provider_id = $('#order-provider-list').find(":selected").val();
+            if (!not_null(provider_id)) {
+                alert("请选择服务商！");
+                return;
+            }
+            $.post(url, {providerId: provider_id}, function (response) {
+                if (response.responseCode = 'RESPONSE_OK') {
+                    window.location.reload();
+                }
+            });
+        })
 		
 		$("#order-complete").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/complete";
@@ -550,6 +587,9 @@
                     };
             if (!not_null(orderDiversion)) {
                 delete params.orderDiversion;
+            }
+            if (!not_null(orderChannel)) {
+                delete params.orderChannel;
             }
             if (!not_null(province)) {
                 delete params.province;
@@ -604,8 +644,23 @@
         });
     }
 
+    function orderProvisionReset() {
+        var url = "${path.concat('/order/missionChannel/list')}";
+        $("#order-provider-list").append($("<option value=''>---请选择服务商---</option>"));
+        $.get(url, function (result) {
+            if (result.responseCode = 'RESPONSE_OK') {
+                var provider_data = result.data;
+                for (var index in provider_data) {
+                    var option = $("<option></option>").val(provider_data[index].providerId).text(provider_data[index].providerName);
+                    $("#order-provider-list").append(option);
+                }
+            }
+        });
+    }
+
     orderChannelReset();
     orderDiversionReset();
+    orderProvisionReset();
 
     function formatDateTime(date) {
         var year = date.getFullYear().toString();

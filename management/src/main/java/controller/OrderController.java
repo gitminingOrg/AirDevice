@@ -719,6 +719,39 @@ public class OrderController {
         return result;
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/dispatchProvider")
+    public ResultData dispatchProvider(@PathVariable("orderId") String orderId, @RequestParam String providerId){
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("orderId", orderId);
+        condition.put("blockFlag", false);
+        ResultData response = machineItemService.fetch(condition);
+        if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("当前订单无法进行该操作");
+            logger.error(result.getDescription());
+            return result;
+        }
+        List<MachineItemVo> machineItemVos = (List<MachineItemVo>) response.getData();
+        List<MachineItem> machineItems = new ArrayList<>();
+        for (MachineItemVo machineItemVo : machineItemVos) {
+            MachineItem machineItem = new MachineItem();
+            machineItem.setMachineId(machineItemVo.getMachineId());
+            machineItem.setProviderId(providerId);
+            machineItems.add(machineItem);
+        }
+        response = machineItemService.updateBatch(machineItems);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("服务器忙，请稍后再试!");
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            result.setResponseCode(ResponseCode.RESPONSE_NULL);
+        } else {
+            result.setData(response.getData());
+        }
+        return result;
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/status/list")
     public ResultData status() {
         ResultData result = new ResultData();
