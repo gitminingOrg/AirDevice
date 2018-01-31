@@ -371,14 +371,19 @@ public class OrderController {
             return view;
         }
         GuoMaiOrderVo vo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
-        LocalDateTime time = LocalDateTime.ofInstant(vo.getOrderTime().toInstant(), TimeZone.getDefault().toZoneId());
-        LocalDateTime receive_time = LocalDateTime.ofInstant(vo.getReceiveDate().toInstant(), TimeZone.getDefault().toZoneId());
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime time = LocalDateTime.ofInstant(vo.getOrderTime().toInstant(), TimeZone.getDefault().toZoneId());
+        if (vo.getReceiveDate() != null) {
+            LocalDateTime receive_time = LocalDateTime.ofInstant(vo.getReceiveDate().toInstant(), TimeZone.getDefault().toZoneId());
+            String receiveTime = receive_time.format(format);
+            view.addObject("receiveTime", receiveTime);
+        }
+
         String orderTime = time.format(format);
-        String receiveTime = receive_time.format(format);
+
         view.addObject("order", vo);
         view.addObject("orderTime", orderTime);
-        view.addObject("receiveTime", receiveTime);
+
         view.setViewName("/backend/order/detail");
         return view;
     }
