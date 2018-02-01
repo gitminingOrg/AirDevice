@@ -191,4 +191,9 @@ public class MachineServiceImpl implements MachineService {
 		}
 		return result;
     }
+
+	@Override
+	public ResultData queryMachineStatusRange(Map<String, Object> condition) {
+		return machineDao.queryMachineStatusRange(condition);
+	}
 }

@@ -25,4 +25,6 @@ public interface MachineDao {
 	ResultData updateidle(Map<String, Object> condition);
 
 	ResultData queryEverydayRecord(Map<String, Object> condition);
+
+	ResultData queryMachineStatusRange(Map<String, Object> condition);
 }

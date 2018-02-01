@@ -70,6 +70,9 @@
                     </div>
                 </div>
             </div>
+            <div style="margin-left: 20px; margin-top: 20px">
+                <div style="height: 400px" id="machine-pm25-chart"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -127,5 +130,118 @@
         });
     }
 
+    function init_machine_pm25_picture() {
+        var day_week_ago = new Date();
+        day_week_ago.setMonth(day_week_ago.getMonth() - 1);
+        var pm25_url = "${path.concat("/machine/device/pm25/status?uid=")}" + uid + "&startDate=" + formatDate(day_week_ago);
+        $.get(pm25_url, function (response) {
+           if (response.responseCode == 'RESPONSE_OK') {
+               var data = response.data;
+               var pm25_array = [];
+               var time_array = [];
+               for (var i = 0; i < data.length; i++) {
+                   pm25_array.push(data[i].pm25);
+                   time_array.push(formatDate(new Date(data[i].createAt)));
+               }
+               var option = {
+                   title: {
+                       text: 'PM2.5趋势图'
+                   },
+                   xAxis: {
+                       type: 'category',
+                       data: time_array
+                   },
+                   tooltip: {
+                       trigger: 'axis'
+                   },
+                   yAxis: {
+                       type: 'value',
+                       splitLine: {
+                           show: false
+                       }
+                   },
+                   toolbox: {
+                       left: 'center',
+                       feature: {
+                           dataZoom: {
+                               yAxisIndex: 'none'
+                           },
+                           restore: {},
+                           saveAsImage: {}
+                       }
+                   },
+                   dataZoom: [{
+                       startValue: '2017-06-01'
+                   }, {
+                       type: 'inside'
+                   }],
+                   visualMap: {
+                       top: 10,
+                       right: 10,
+                       pieces: [
+                           {
+                               gt: 0,
+                               lte: 10,
+                               color: '#096'
+                           }, {
+                               gt: 10,
+                               lte: 20,
+                               color: '#ffde33'
+                           }, {
+                               gt: 20,
+                               lte: 30,
+                               color: '#ff9933'
+                           }, {
+                               gt: 30,
+                               lte: 40,
+                               color: '#cc0033'
+                           }, {
+                               gt: 40,
+                               lte: 50,
+                               color: '#660099'
+                           }, {
+                               gt: 50,
+                               color: '#7e0023'
+                           }
+                       ],
+                       outOfRange: {
+                           color: '#999'
+                       }
+                   },
+                   series: [{
+                       data: pm25_array,
+                       type: 'line',
+                       smooth: true,
+                       markLine: {
+                           silent: true,
+                           data: [{
+                               yAxis: 10
+                           }, {
+                               yAxis: 20
+                           }, {
+                               yAxis: 30
+                           }, {
+                               yAxis: 40
+                           }, {
+                               yAxis: 50
+                           }]
+                       }
+                   }]
+               };
+               var pm25_chart = echarts.init(document.getElementById('machine-pm25-chart'));
+               pm25_chart.setOption(option);
+           }
+        });
+    }
+
+    function formatDate(date) {
+        var year = date.getFullYear().toString();
+        var month = ("0" + (date.getMonth() + 1).toString()).slice(-2).toString();
+        var day = ("0" + date.getDate().toString()).slice(-2).toString();
+
+        return year + '/' + month + '/' + day;
+    }
+
     initMachineInfo();
+    init_machine_pm25_picture();
 </script>

@@ -64,4 +64,22 @@
             AND device_id = #{machineId}
         </if>
     </select>
+
+    <select id="queryDeviceStatus" parameterType="java.util.Map" resultMap="machineStataVo">
+        SELECT device_id, pm25, power, `time`
+        FROM airdevice.deviceStatus
+        WHERE 1 = 1
+        <if test="uid != null">
+            AND device_id = #{uid}
+        </if>
+        <if test="startTime != null">
+            AND DATE(`time`) >= #{startTime}
+        </if>
+        <if test="endTime != null">
+            <![CDATA[
+              AND DATE(`time`) <= #{endTime}
+            ]]>
+        </if>
+        ORDER BY `time` ASC
+    </select>
 </mapper>
