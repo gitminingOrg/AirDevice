@@ -104,7 +104,7 @@
                     } else {
                         workMode = "睡眠模式";
                     }
-                    var cycle = deviceStatus.cycle == '0' ? '内循环': '外循环';
+                    var cycle = '外循环';
                     var heat = deviceStatus.heat == '0' ? '关闭': '开启';
                     var uv = deviceStatus.uv == '0' ? '关闭': '开启';
                     var pm25 = deviceStatus.pm25;

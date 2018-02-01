@@ -214,7 +214,7 @@
             paging: true,
             "sPaginationType": "full_numbers",
             "bPaginate": true,
-            "bLengthChange": false,
+            "bLengthChange": true,
             "bAutoWidth": true,
             "bSort": true,
             "bDeferRender": true,

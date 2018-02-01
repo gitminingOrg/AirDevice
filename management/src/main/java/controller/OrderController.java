@@ -390,7 +390,9 @@ public class OrderController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/deliver")
-    public ResultData deliver(@PathVariable("orderId") String orderId, String shipNo) {
+    public ResultData deliver(@PathVariable("orderId") String orderId, String shipNo,
+                              @RequestParam(required = false) String shipDescription)
+    {
         ResultData result = new ResultData();
         if (StringUtils.isEmpty(orderId)) {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -404,6 +406,14 @@ public class OrderController {
         ResultData response = orderService.assign(order);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setResponseCode(ResponseCode.RESPONSE_OK);
+            OrderMission orderMission = new OrderMission();
+            orderMission.setOrderId(orderId);
+            orderMission.setMissionTitle("发货完成");
+            orderMission.setMissionContent(shipDescription);
+            Subject subject = SecurityUtils.getSubject();
+            UserVo userVo = (UserVo) subject.getPrincipal();
+            orderMission.setMissionRecorder(userVo.getUsername());
+            orderService.create(orderMission);
         } else {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
             result.setDescription("发货失败");
@@ -435,7 +445,16 @@ public class OrderController {
         if (form.getOrderDiversion() != null) {
             order.setOrderDiversion(form.getOrderDiversion());
         }
-        ResultData response = orderService.create(order);
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("orderNo", order.getOrderNo());
+        condition.put("blockFlag", false);
+        ResultData response = orderService.fetch(condition);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("订单号已存在");
+            return result;
+        }
+        response = orderService.create(order);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setData(response.getData());
             result.setResponseCode(ResponseCode.RESPONSE_OK);
@@ -652,6 +671,16 @@ public class OrderController {
         order.setOrderId(orderId);
         order.setOrderStatus(OrderStatus.RECEIVED);
         order.setOrderPrice(vo.getOrderPrice());
+
+        //create order mission
+        OrderMission orderMission = new OrderMission();
+        orderMission.setOrderId(orderId);
+        orderMission.setMissionTitle("收货事件");
+        orderMission.setMissionContent("已经成功收货，收货时间：" + receiveDate);
+        Subject subject = SecurityUtils.getSubject();
+        UserVo userVo = (UserVo) subject.getPrincipal();
+        orderMission.setMissionRecorder(userVo.getUsername());
+        orderService.create(orderMission);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-M-d");
         LocalDate date = LocalDate.parse(receiveDate, formatter);

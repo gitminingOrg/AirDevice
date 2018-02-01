@@ -4,11 +4,11 @@
 			<div id="page-header-wrapper" class="clearfix">
 				<div id="page-breadcrumb-wrapper">
                 	<div id="page-breadcrumb">
-                    	<a href="javascript:;">
+                        <a href="javascript:;">
                         	<i class="glyph-icon icon-dashboard"></i>
                                 首页
                         </a>
-                        <a href="javascript:;">
+                        <a href="${path.concat('/order/overview')}">
                             <i class="glyph-icon icon-file-text-o"></i>
                             订单
                         </a>
@@ -25,7 +25,7 @@
                     <i class="glyph-icon icon-dashboard"></i>
                         首页
                 </a>
-                <a href="javascript:;">
+                <a href="${path.concat('/order/overview')}">
                     <i class="glyph-icon icon-file-text-o"></i>
                     订单
                 </a>
@@ -322,6 +322,14 @@
                         <div class="col-md-12 center-margin">
                             <div class="form-row">
                                 <div class="form-label col-md-2">
+                                    <label for="shipment-company" autocomplete="off">物流公司</label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                    <input id="shipment-company" type="text" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-label col-md-2">
                                     <label for="goods-name" autocomplete="off">物流单号</label>
                                 </div>
                                 <div class="form-input col-md-10">
@@ -329,8 +337,16 @@
                                 </div>
                             </div>
                             <div class="form-row">
+                                <div class="form-label col-md-2">
+                                    <label for="shipment-date" autocomplete="off">发货日期</label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                    <input id="shipment-date" type="date" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-row">
                                 <button class="btn medium bg-blue-alt" id="confirm-deliver">
-                                    <span class="button-content">发货</span>
+                                    <span class="button-content">确定</span>
                                 </button>
                             </div>
                         </div>
@@ -426,7 +442,7 @@
             var order_machine_url = "${path.concat('/order/orderMachine/detail?orderId=')}" + "${order.orderId}";
             $.get(order_machine_url, function (response) {
                 var table_header = $('<thead></thead>');
-                var thead_content = $('<tr><td>机器编号</td><td>安装商</td><td>安装方式</td><td>二维码</td><td>机器状态</td><td>详情</td></tr>')
+                var thead_content = $('<tr><td>机器编号</td><td>安装服务商</td><td>安装方式</td><td>二维码</td><td>机器状态</td><td>详情</td></tr>')
                 table_header.append(thead_content);
                 table_header.css("background-color", '#e4e9f0')
                 var tbody = $('<tbody></tbody>');
@@ -475,7 +491,10 @@
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/deliver";
 			var product_serial = $("#product-serial").val();
 			var ship_no = $("#shipment-no").val();
-			$.post(url, {productSerial: product_serial, shipNo: ship_no}, function(result) {
+			var ship_company = $("#shipment-company").val();
+			var ship_date = $("#shipment-date").val();
+			var ship_description = ship_company + ": " + ship_no + "(" + ship_date + ")";
+			$.post(url, {productSerial: product_serial, shipNo: ship_no, shipDescription: ship_description}, function(result) {
 				if(result.responseCode == "RESPONSE_OK") {
 					window.location.href = "${path.concat('/order/')}" + "${order.orderId}"; 
 				}else {
