@@ -114,6 +114,19 @@ public class MachineItemDaoImpl extends BaseDao implements MachineItemDao{
     }
 
     @Override
+    public ResultData insertBatch(List<MachineItem> machineItemList){
+        ResultData result = new ResultData();
+        for (MachineItem machineItem : machineItemList) {
+            machineItem.setMachineId(IDGenerator.generate("MI"));
+        }
+        synchronized (lock) {
+            sqlSession.insert("management.order.machineItem.insertBatch", machineItemList);
+            result.setData(machineItemList);
+        }
+        return result;
+    }
+
+    @Override
     public ResultData update(MachineItem machineItem) {
         ResultData result = new ResultData();
         synchronized (lock) {

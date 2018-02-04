@@ -70,6 +70,21 @@
           )
     </insert>
 
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT into gmair_order.machine_item
+        (machine_item_id, order_item_id, provider_id, machine_code, install_type, machine_status,
+          block_flag, create_time
+        )
+        VALUES
+        <foreach collection="list" index="index" separator="," item="machine">
+            (
+            #{machine.machineId}, #{machine.orderItemId}, #{machine.providerId}, #{machine.machineCode}, #{machine.installType},
+            #{machine.machineMissionStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+            #{machine.blockFlag}, #{machine.createAt}
+            )
+        </foreach>
+    </insert>
+
     <update id="update" parameterType="model.order.MachineItem">
         UPDATE gmair_order.machine_item
         <set>
@@ -87,7 +102,7 @@
             <set>
                 <if test="item.machineCode != null">machine_code = #{item.machineCode},</if>
                 <if test="item.installType != null">install_type = #{item.installType},</if>
-                <if test="item.installType != null">provider_id = #{item.providerId},</if>
+                <if test="item.providerId != null">provider_id = #{item.providerId},</if>
                 <if test="item.machineMissionStatus != null">machine_status = #{item.machineMissionStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler}</if>
             </set>
             WHERE machine_item.machine_item_id = #{item.machineId}

@@ -18,6 +18,8 @@ public interface MachineItemDao {
 
     ResultData insert(MachineItem machineItem);
 
+    ResultData insertBatch(List<MachineItem> machineItemList);
+
     ResultData update(MachineItem machineItem);
 
     ResultData updateBatch(List<MachineItem> machineItems);

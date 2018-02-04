@@ -1,5 +1,8 @@
 package controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -262,5 +265,25 @@ public class MachineController {
 		machineView.setViewName("/backend/machine/machine_detail");
 		return machineView;
 	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/device/pm25/status")
+    public ResultData deviceStatus(@RequestParam String uid, @RequestParam(required = false) String startDate)
+    {
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("uid", uid);
+        condition.put("startTime", startDate);
+        ResultData response = machineService.queryMachineStatusRange(condition);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("服务器忙，请稍后再试！");
+        } else if(response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            result.setResponseCode(ResponseCode.RESPONSE_NULL);
+        } else {
+            result.setData(response.getData());
+        }
+
+        return result;
+    }
 
 }

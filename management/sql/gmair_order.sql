@@ -321,4 +321,34 @@ from machine_item
 	LEFT JOIN order_item on machine_item.order_item_id = order_item.order_item_id
 	LEFT JOIN guomai_order on order_item.order_id = guomai_order.order_id
 
+ALTER TABLE `guomai_order`
+DROP COLUMN `receive_date`,
+ADD COLUMN `receive_date`  datetime NULL AFTER `ship_no`;
 
+CREATE view guomai_order_view
+as
+SELECT
+	guomai_order.order_id as order_id,
+	guomai_order.order_no as order_no,
+	guomai_order.buyer_name as buyer_name,
+	guomai_order.order_price as order_price,
+	guomai_order.receiver_name as receiver_name,
+	guomai_order.receiver_province as province,
+	guomai_order.receiver_city as city,
+	guomai_order.receiver_district as district,
+	guomai_order.receiver_phone as receiver_phone,
+	guomai_order.receiver_address as receiver_address,
+	guomai_order.coupon_no as order_coupon,
+	guomai_order.ship_no as ship_no,
+	guomai_order.receive_date as receive_date,
+	guomai_order.order_time as order_time,
+	guomai_order.order_status as order_status,
+	order_channel.channel_name as order_channel,
+	order_diversion.diversion_name as order_diversion,
+	guomai_order.description as description,
+	-- mission_channel.channel_name as service_name,
+	guomai_order.create_time,
+	guomai_order.block_flag
+FROM
+	guomai_order LEFT JOIN order_channel ON guomai_order.channel_id = order_channel.channel_id
+	LEFT JOIN order_diversion on guomai_order.diversion_id = order_diversion.diversion_id

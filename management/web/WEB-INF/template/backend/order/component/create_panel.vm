@@ -8,7 +8,7 @@
                         	<i class="glyph-icon icon-dashboard"></i>
                                 首页
                         </a>
-                        <a href="javascript:;">
+                        <a href="${path.concat('/order/overview')}">
                             <i class="glyph-icon icon-file-text-o"></i>
                             订单
                         </a>
@@ -25,7 +25,7 @@
                     <i class="glyph-icon icon-dashboard"></i>
                         首页
                 </a>
-                <a href="javascript:;">
+                <a href="${path.concat('/order/overview')}">
                     <i class="glyph-icon icon-file-text-o"></i>
                     订单
                 </a>
@@ -277,7 +277,6 @@
             var order_status = $('#orderStatus').find(':selected').val();
 			var description = $("#description").val();
 			var url = "${path.concat('/order/create')}";
-            if (!not_null(order_channel)) {alert("请填写订单渠道！"); return;}
 			if (!not_null(order_no)) {alert("请填写订单编号！"); return;}
 			if (!not_null(order_no)) {alert("请填写订单编号！"); return;}
 			if (!not_null(order_price)) {
@@ -313,6 +312,12 @@
                 receiverAddress: receiver_address, orderCoupon: order_coupon, orderStatus: order_status,
                 orderChannel: order_channel, orderDiversion: order_diversion, description: description, orderTime: pay_time
             }
+            if (!not_null(order_diversion)) {
+			    delete orderParams.orderDiversion;
+            }
+            if (!not_null(order_channel)) {
+			    delete orderParams.orderChannel;
+            }
             var commodityParams = {orderId: order_no, commodities: []};
             var commodityCount = Number(document.getElementById('goodsContainer').getAttribute('data-commodityNum'));
 		    for (var i = 0; i <= commodityCount; i++) {
@@ -342,9 +347,11 @@
                         data: JSON.stringify(commodityParams),
                         contentType: 'application/json; charset=utf-8'
                     });
+                    window.location.href = "${path.concat('/order/overview')}";
+                } else {
+			        alert(response.description);
                 }
-				window.location.href = "${path.concat('/order/overview')}";
-			})
+			});
 		});
 	});
 
@@ -444,6 +451,7 @@
         numInput.setAttribute('id', 'goods-number' + index);
         numInput.setAttribute('type', 'number');
         numInput.setAttribute('min', 1);
+        numInput.setAttribute('value', 1);
         numInput.setAttribute('placeholder', '请输入商品数量');
         numDiv.appendChild(numInput);
 
@@ -499,14 +507,18 @@
         $("#order_batchupload_channel_list").empty();
         $("#order_batchupload_channel_list").append($("<option value=''></option>").text("---请选择购买渠道---"));
         $("#order_channel_list").empty();
-        $("#order_channel_list").append($("<option value=''></option>").text("---请选择购买渠道---"));
+//        $("#order_channel_list").append($("<option value=''></option>").text("---请选择购买渠道---"));
         var channel_url = "${path.concat('/order/orderChannel/list')}";
         $.get(channel_url, function(result) {
             if(result.responseCode == "RESPONSE_OK") {
                 var data = result.data;
                 for(index in data) {
+                    if (data[index].channelName == '苏宁易购'){
+                        $("#order_channel_list").append($("<option></option>").attr("selected", true).text(data[index].channelName).val(data[index].channelId));
+                    } else {
+                        $("#order_channel_list").append($("<option></option>").text(data[index].channelName).val(data[index].channelId));
+                    }
                     $("#order_batchupload_channel_list").append($("<option></option>").text(data[index].channelName).val(data[index].channelId));
-                    $("#order_channel_list").append($("<option></option>").text(data[index].channelName).val(data[index].channelId));
                 }
             }
         })

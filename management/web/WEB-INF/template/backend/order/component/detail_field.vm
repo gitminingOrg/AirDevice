@@ -4,11 +4,11 @@
 			<div id="page-header-wrapper" class="clearfix">
 				<div id="page-breadcrumb-wrapper">
                 	<div id="page-breadcrumb">
-                    	<a href="javascript:;">
+                        <a href="javascript:;">
                         	<i class="glyph-icon icon-dashboard"></i>
                                 首页
                         </a>
-                        <a href="javascript:;">
+                        <a href="${path.concat('/order/overview')}">
                             <i class="glyph-icon icon-file-text-o"></i>
                             订单
                         </a>
@@ -25,7 +25,7 @@
                     <i class="glyph-icon icon-dashboard"></i>
                         首页
                 </a>
-                <a href="javascript:;">
+                <a href="${path.concat('/order/overview')}">
                     <i class="glyph-icon icon-file-text-o"></i>
                     订单
                 </a>
@@ -200,6 +200,12 @@
             				待发货
             			#elseif(${order.orderStatus} == "SHIPPED")
             				已发货(订单处理中)
+                        #elseif(${order.orderStatus} == "RECEIVED")
+                            #if(${receiveTime})
+                                已收货(收货时间: ${receiveTime})
+                            #else
+                                已收货(无收货时间)
+                            #end
             			#elseif(${order.orderStatus} == "INSTALLING")
             				订单处理中
             			#elseif(${order.orderStatus} == "SUCCEED")
@@ -213,6 +219,9 @@
                     <button id = "updateOrder" class="btn medium bg-blue" style="margin-left: 15px">更新订单信息</button>
                     <a href="javascript:;" class="btn medium bg-blue black-modal-80" title="添加订单进度记录">
                         <span class="button-content">添加订单事件</span>
+                    </a>
+                    <a href="javascript:;" class="btn medium bg-blue black-modal-60" title="分派服务商">
+                        <span class="button-content">分派服务商</span>
                     </a>
                     <div class="hide" id="black-modal-80" title="新增订单事件">
                         <div class="pad10A">
@@ -241,15 +250,38 @@
                             </div>
                         </div>
                     </div>
+                    <div class="hide" id="black-modal-60" title="分派服务商">
+                        <div class="pad10A">
+                            <div class="col-md-12 center-margin">
+                                <div class="form-row">
+                                    <div class="form-label col-md-3">
+                                        <label for="order-provider">服务商</label>
+                                    </div>
+                                    <div class="form-input col-md-9">
+                                        <select id="order-provider-list">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <button class="btn medium bg-blue-alt" id="order-provider-event">
+                                        <span class="button-content">确认分派</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            	#if(${order.orderStatus} == "NOT_PAYED" || ${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "PAYED"
-                        || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
+            	#if(${order.orderStatus} == "NOT_PAYED" || ${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "PAYED" ||
+                    ${order.orderStatus} == "RECEIVED" || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
                     <hr/>
                     #if(${order.orderStatus} == "NOT_PAYED")
                         <a id="order-payed" class="btn medium bg-green">
                             <span class="button-content">付款完成</span>
                         </a>
                     #elseif(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING")
+                        <a class="btn medium bg-blue white-modal-80" title="发货">
+                            <span class="button-content">收货</span>
+                        </a>
                         <a id="order-complete" class="btn medium bg-green">
                             <span class="button-content">订单完成</span>
                         </a>
@@ -268,17 +300,34 @@
                                 <span class="button-content">订单完成</span>
                             </a>
                         </div>
+                    #elseif(${order.orderStatus} == "RECEIVED")
+                        <div class="form-row">
+                            <a id="order-cancel" class="btn medium bg-red">
+                                <span class="button-content">订单取消</span>
+                            </a>
+                            <a id="order-complete" class="btn medium bg-green">
+                                <span class="button-content">订单完成</span>
+                            </a>
+                        </div>
                     #end
             	#end
                 <div id="mission-area" style="display: none">
                     <h4>订单进度</h4>
                 </div>
             </div>
-            #if(${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
+            #if(${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
             #elseif(${order.orderStatus} == "PAYED")
                 <div class="hide" id="white-modal-80" title="填写产品编号">
                     <div class="pad10A">
                         <div class="col-md-12 center-margin">
+                            <div class="form-row">
+                                <div class="form-label col-md-2">
+                                    <label for="shipment-company" autocomplete="off">物流公司</label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                    <input id="shipment-company" type="text" autocomplete="off">
+                                </div>
+                            </div>
                             <div class="form-row">
                                 <div class="form-label col-md-2">
                                     <label for="goods-name" autocomplete="off">物流单号</label>
@@ -288,8 +337,36 @@
                                 </div>
                             </div>
                             <div class="form-row">
+                                <div class="form-label col-md-2">
+                                    <label for="shipment-date" autocomplete="off">发货日期</label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                    <input id="shipment-date" type="date" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-row">
                                 <button class="btn medium bg-blue-alt" id="confirm-deliver">
-                                    <span class="button-content">发货</span>
+                                    <span class="button-content">确定</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            #elseif(${order.orderStatus} == "SHIPPED")
+                <div class="hide" id="white-modal-80" title="填写收货日期">
+                    <div class="pad10A">
+                        <div class="col-md-12 center-margin">
+                            <div class="form-row">
+                                <div class="form-label col-md-2">
+                                    <label for="receive-date" autocomplete="off">收货时间</label>
+                                </div>
+                                <div class="form-input col-md-10">
+                                    <input id="receive-date" type="date" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <button class="btn medium bg-blue-alt" id="confirm-receive">
+                                    <span class="button-content">确认</span>
                                 </button>
                             </div>
                         </div>
@@ -365,7 +442,7 @@
             var order_machine_url = "${path.concat('/order/orderMachine/detail?orderId=')}" + "${order.orderId}";
             $.get(order_machine_url, function (response) {
                 var table_header = $('<thead></thead>');
-                var thead_content = $('<tr><td>机器编号</td><td>安装商</td><td>安装方式</td><td>二维码</td><td>机器状态</td><td>详情</td></tr>')
+                var thead_content = $('<tr><td>机器编号</td><td>安装服务商</td><td>安装方式</td><td>二维码</td><td>机器状态</td><td>详情</td></tr>')
                 table_header.append(thead_content);
                 table_header.css("background-color", '#e4e9f0')
                 var tbody = $('<tbody></tbody>');
@@ -414,14 +491,36 @@
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/deliver";
 			var product_serial = $("#product-serial").val();
 			var ship_no = $("#shipment-no").val();
-			$.post(url, {productSerial: product_serial, shipNo: ship_no}, function(result) {
+			var ship_company = $("#shipment-company").val();
+			var ship_date = $("#shipment-date").val();
+			var ship_description = ship_company + ": " + ship_no + "(" + ship_date + ")";
+			$.post(url, {productSerial: product_serial, shipNo: ship_no, shipDescription: ship_description}, function(result) {
 				if(result.responseCode == "RESPONSE_OK") {
 					window.location.href = "${path.concat('/order/')}" + "${order.orderId}"; 
 				}else {
 					alert("发货失败");
 				}
 			});
-		})
+		});
+
+		$("#confirm-receive").on('click', function () {
+            var url = "${path.concat('/order/')}" + "${order.orderId}" + "/receive";
+            var receviceDate = $("#receive-date").val();
+            var param = {};
+            if (!not_null(receviceDate)) {
+                receviceDate = new Date();
+                receviceDate = receviceDate.getFullYear().toString() + "-" + (receviceDate.getMonth() + 1).toString()
+                                    + "-" + receviceDate.getDate();
+            }
+            param.receiveDate = receviceDate;
+            $.post(url, param, function (reponse) {
+                if(reponse.responseCode == "RESPONSE_OK") {
+                    window.location.href = "${path.concat('/order/')}" + "${order.orderId}";
+                }else {
+                    alert("更新收货状态失败");
+                }
+            })
+        });
 
         $("#order-payed").on('click', function () {
            var url = "${path.concat('/order/')}" + "${order.orderId}" + "/payed";
@@ -453,6 +552,20 @@
 				location.reload();
 			})
 		});
+
+		$("#order-provider-event").on('click', function () {
+            var url = "${path.concat('/order/')}" + "${order.orderId}" + "/dispatchProvider";
+            var provider_id = $('#order-provider-list').find(":selected").val();
+            if (!not_null(provider_id)) {
+                alert("请选择服务商！");
+                return;
+            }
+            $.post(url, {providerId: provider_id}, function (response) {
+                if (response.responseCode = 'RESPONSE_OK') {
+                    window.location.reload();
+                }
+            });
+        })
 		
 		$("#order-complete").on('click', function() {
 			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/complete";
@@ -493,6 +606,9 @@
                     };
             if (!not_null(orderDiversion)) {
                 delete params.orderDiversion;
+            }
+            if (!not_null(orderChannel)) {
+                delete params.orderChannel;
             }
             if (!not_null(province)) {
                 delete params.province;
@@ -547,8 +663,23 @@
         });
     }
 
+    function orderProvisionReset() {
+        var url = "${path.concat('/order/missionChannel/list')}";
+        $("#order-provider-list").append($("<option value=''>---请选择服务商---</option>"));
+        $.get(url, function (result) {
+            if (result.responseCode = 'RESPONSE_OK') {
+                var provider_data = result.data;
+                for (var index in provider_data) {
+                    var option = $("<option></option>").val(provider_data[index].providerId).text(provider_data[index].providerName);
+                    $("#order-provider-list").append(option);
+                }
+            }
+        });
+    }
+
     orderChannelReset();
     orderDiversionReset();
+    orderProvisionReset();
 
     function formatDateTime(date) {
         var year = date.getFullYear().toString();

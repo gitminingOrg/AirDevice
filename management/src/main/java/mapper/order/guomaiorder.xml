@@ -20,6 +20,7 @@
         <result property="orderCoupon" column="order_coupon" />
         <result property="orderTime" column="order_time" />
         <result property="shipNo" column="ship_no" />
+        <result property="receiveDate" column="receive_date" />
         <result property="createTime" column="create_time" />
         <collection property="commodityList" column="orderId = order_id" select="ordercommodityquery"/>
     </resultMap>
@@ -39,15 +40,15 @@
         INSERT INTO `gmair_order`.guomai_order
         (
             order_id, order_no, buyer_name, order_price, receiver_name, receiver_phone,
-            receiver_province, receiver_city, receiver_district, receiver_address, coupon_no, ship_no, order_time, order_status,
-            channel_id, diversion_id, description, block_flag, create_time
+            receiver_province, receiver_city, receiver_district, receiver_address, coupon_no, ship_no, receive_date,
+            order_time, order_status, channel_id, diversion_id, description, block_flag, create_time
         )
          VALUES
         <foreach collection="list" item="item" index="index" separator=",">
          (
             #{item.orderId}, #{item.orderNo}, #{item.buyerName}, #{item.orderPrice},
             #{item.receiverName}, #{item.receiverPhone}, #{item.province}, #{item.city}, #{item.district},
-            #{item.receiverAddress}, #{item.orderCoupon}, #{item.shipNo}, #{item.orderTime},
+            #{item.receiverAddress}, #{item.orderCoupon}, #{item.shipNo}, #{item.receiveDate}, #{item.orderTime},
             #{item.orderStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
             #{item.orderChannel}, #{item.orderDiversion}, #{item.description}, #{item.blockFlag}, #{item.createAt}
          )
@@ -58,14 +59,14 @@
         INSERT INTO `gmair_order`.guomai_order
         (
         order_id, order_no, buyer_name, order_price, receiver_name, receiver_phone,
-        receiver_province, receiver_city, receiver_district, receiver_address, coupon_no, ship_no, order_time, order_status,
-        channel_id, diversion_id, description, block_flag, create_time
+        receiver_province, receiver_city, receiver_district, receiver_address, coupon_no, ship_no, receive_date,
+        order_time, order_status, channel_id, diversion_id, description, block_flag, create_time
         )
         VALUES
        (
         #{orderId}, #{orderNo}, #{buyerName}, #{orderPrice}, #{receiverName},
         #{receiverPhone}, #{province}, #{city}, #{district}, #{receiverAddress}, #{orderCoupon},
-        #{shipNo}, #{orderTime}, #{orderStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
+        #{shipNo}, #{receiveDate}, #{orderTime}, #{orderStatus, typeHandler=org.apache.ibatis.type.EnumOrdinalTypeHandler},
         #{orderChannel}, #{orderDiversion}, #{description}, #{blockFlag}, #{createAt}
         )
     </insert>
@@ -81,7 +82,7 @@
         select
         order_id, order_no, order_status, description, buyer_name, receiver_name, receiver_phone, order_price,
         province, city, district, receiver_address, order_channel, order_diversion,
-        order_coupon, order_time, ship_no, create_time
+        order_coupon, order_time, ship_no, receive_date, create_time
         from `gmair_order`.guomai_order_view
         WHERE 1 = 1
         <if test="orderId != null" >
@@ -118,7 +119,7 @@
             AND block_flag = #{blockFlag}
         </if>
         <if test="search != null">
-            AND (receiver_address like #{search} or buyer_name LIKE #{search} or receiver_phone LIKE #{search})
+            AND (receiver_address like #{search} or buyer_name LIKE #{search} or receiver_phone LIKE #{search} OR order_no LIKE #{search})
         </if>
         ORDER BY order_time DESC
     </select>
@@ -167,6 +168,9 @@
             </if>
             <if test="shipNo != null">
                 ship_no = #{shipNo},
+            </if>
+            <if test="receiveDate != null">
+                receive_date = #{receiveDate},
             </if>
             <if test="description != null">
                 description = #{description},

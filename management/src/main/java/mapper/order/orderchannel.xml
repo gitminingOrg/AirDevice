@@ -42,8 +42,7 @@
 
     <!--删除order_channel相关数据-->
     <update id="delete" parameterType="String">
-        update gmair_order.order_channel
-        set block_flag = TRUE
+        DELETE FROM gmair_order.order_channel
         where channel_id = #{channelId}
     </update>
 </mapper>

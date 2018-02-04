@@ -76,7 +76,7 @@ public class OrderDiversionDaoImpl extends BaseDao implements OrderDiversionDao 
     public ResultData delete(String diversionId) {
         ResultData result = new ResultData();
         try {
-            sqlSession.update("management.order.diversion.delete", diversionId);
+            sqlSession.delete("management.order.diversion.delete", diversionId);
         } catch (Exception e) {
             logger.error(e.getMessage());
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);

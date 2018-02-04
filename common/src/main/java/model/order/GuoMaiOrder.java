@@ -31,6 +31,7 @@ public class GuoMaiOrder extends Order {
     private String orderCoupon;
     private Timestamp orderTime;
     private String shipNo;
+    private Timestamp receiveDate;
     private List<OrderItem> commodityList;
 
     public String getBuyerName() {
@@ -143,6 +144,14 @@ public class GuoMaiOrder extends Order {
 
     public void setShipNo(String shipNo) {
         this.shipNo = shipNo;
+    }
+
+    public Timestamp getReceiveDate() {
+        return receiveDate;
+    }
+
+    public void setReceiveDate(Timestamp receiveDate) {
+        this.receiveDate = receiveDate;
     }
 
     public List<OrderItem> getCommodityList() {
@@ -302,10 +311,12 @@ public class GuoMaiOrder extends Order {
             } else {
                 // 其他情况下 设置为已付款 并且加上付款的备注
                 order.setOrderStatus(OrderStatus.PAYED);
-                order.setDescription(param[4] + param[6]);
             }
         } else {
             order.setOrderStatus(OrderStatus.PAYED);
+        }
+        if (param[4] != null) {
+            order.setDescription(param[4]);
         }
         if (param[2] != null) {
             List<OrderItem> orderItemList = new ArrayList<>();

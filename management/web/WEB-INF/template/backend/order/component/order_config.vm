@@ -1,0 +1,253 @@
+<div id="page-main">
+    <div id="page-main-wrapper">
+        <div id="page-header" class="clearfix">
+            <div id="page-header-wrapper" class="clearfix">
+                <div id="page-breadcrumb-wrapper">
+                    <div id="page-breadcrumb">
+                        <a href="javascript:;">
+                            <i class="glyph-icon icon-dashboard"></i>
+                            首页
+                        </a>
+                        <a href="${path.concat('/order/overview')}">
+                            <i class="glyph-icon icon-file-text-o"></i>
+                            订单
+                        </a>
+                        <span class="current">
+                            订单配置
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="page-breadcrumb-wrapper">
+            <div id="page-breadcrumb">
+                <a href="javascript:;">
+                    <i class="glyph-icon icon-dashboard"></i>
+                    首页
+                </a>
+                <a href="${path.concat('/order/overview')}">
+                    <i class="glyph-icon icon-file-text-o"></i>
+                    订单
+                </a>
+                <span class="current">
+                    订单配置
+                </span>
+            </div>
+        </div>
+        <div id="page-content">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="form-row row">
+                    <h4>
+                        订单平台配置
+                        <button id="channel-add" class="btn medium bg-blue white-modal-60" style="float: right; margin-right: 20px">
+                            <span class="button-content">添加订单平台</span>
+                        </button>
+                    </h4>
+                    <table id="order-channel-table" class="table"></table>
+                </div>
+                <div class="form-row row">
+                    <h4>
+                        订单渠道配置
+                        <button id="diversion-add" class="btn medium bg-blue white-modal-60" style="float: right; margin-right: 20px">
+                            <span class="button-content">添加订单渠道</span>
+                        </button>
+                    </h4>
+                    <table id="order-diversion-table" class="table"></table>
+                </div>
+                <div class="form-row row">
+                    <h4>安装服务商配置
+                        <button id="provider-add" class="btn medium bg-blue white-modal-60" style="float: right; margin-right: 20px">
+                        <span class="button-content">添加服务商</span>
+                        </button>
+                    </h4>
+                    <table id="service-provider-table" class="table"></table>
+                </div>
+                <div id="help-div" data-value=""></div>
+                <div class="hide" id="white-modal-60" title="添加">
+                    <div class="pad10A">
+                        <div class="col-md-12 center-margin">
+                            <div class="form-row">
+                                <div class="form-label col-md-3">
+                                    <label for="machine-cancel-content" autocomplete="off">名称</label>
+                                </div>
+                                <div class="form-input col-md-9">
+                                    <input id="add-content" type="text" autocomplete="off"></input>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <button class="btn medium bg-blue-alt" id="add-item">
+                                    <span class="button-content">确定</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        function init_order_channel_table() {
+            const channel_url = "${path.concat("/order/orderChannel/list")}";
+            var table_header = $("<thead style='background-color: #e4e9f0'><tr><td>编号</td><td>平台</td><td>操作</td></tr></thead>")
+            var table_body = $("<tbody></tbody>");
+            $.get(channel_url, function (response) {
+                if (response.responseCode == 'RESPONSE_OK') {
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        var tr = ("<tr><td>" + i + "</td><td>" + data[i].channelName + "</td><td>" +
+                        "<button id=" + data[i].channelId + " class='btn medium bg-red' onclick='delete_channel(this.id)'><i class='glyph-icon icon-remove'></i></button></td></tr>");
+                        table_body.append(tr);
+                    }
+                } else {
+                    table_body.append("<tr><td colspan='3' style='text-align: center'>无相关数据</td></tr>")
+                }
+                $("#order-channel-table").append(table_header);
+                $("#order-channel-table").append(table_body);
+            });
+        }
+        
+        function init_order_diversion_table() {
+            const diversion_url = "${path.concat("/order/diversion/list")}";
+            var table_header = $("<thead style='background-color: #e4e9f0'><tr><td>编号</td><td>渠道</td><td>操作</td></tr></thead>")
+            var table_body = $("<tbody></tbody>");
+            $.get(diversion_url, function (response) {
+                if (response.responseCode == 'RESPONSE_OK') {
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        var tr = ("<tr><td>" + i + "</td><td>" + data[i].diversionName + "</td><td>" +
+                        "<button id=" + data[i].diversionId + " class='btn medium bg-red' onclick='delete_diversion(this.id)'><i class='glyph-icon icon-remove'></i></button></td></tr>");
+                        table_body.append(tr);
+                    }
+                } else {
+                    table_body.append("<tr><td colspan='3' style='text-align: center'>无相关数据</td></tr>")
+                }
+                $("#order-diversion-table").append(table_header);
+                $("#order-diversion-table").append(table_body);
+            });
+        }
+        
+        function init_servicer_provider_table() {
+            const provider_url = "${path.concat("/order/missionChannel/list")}";
+            var table_header = $("<thead style='background-color: #e4e9f0'><tr><td>编号</td><td>服务商</td><td>操作</td></tr></thead>")
+            var table_body = $("<tbody></tbody>");
+            $.get(provider_url, function (response) {
+                if (response.responseCode == 'RESPONSE_OK') {
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        var tr = ("<tr><td>" + i + "</td><td>" + data[i].providerName + "</td><td>" +
+                        "<button id=" + data[i].providerId + " class='btn medium bg-red' onclick='delete_provider(this.id)'><i class='glyph-icon icon-remove'></i></button></td></tr>");
+                        table_body.append(tr);
+                    }
+                } else {
+                    table_body.append("<tr><td colspan='3' style='text-align: center'>无相关数据</td></tr>")
+                }
+                $("#service-provider-table").append(table_header);
+                $("#service-provider-table").append(table_body);
+            });
+        }
+
+        init_order_channel_table();
+        init_order_diversion_table();
+        init_servicer_provider_table();
+    });
+
+    function delete_channel(channel_id) {
+        var confirmDelete = confirm("确认删除?");
+        if (confirmDelete == true) {
+            const channel_delete_url = "${path.concat("/order/orderChannel/delete/")}" + channel_id;
+            $.post(channel_delete_url, function (response) {
+                if (response.responseCode == 'RESPONSE_OK') {
+                    window.location.reload();
+                } else {
+                    alert("无法删除");
+                }
+            });
+        }
+    }
+    
+    function delete_provider(provider_id) {
+        var confirmDelete = confirm("确认删除?");
+        if (confirmDelete) {
+            const provider_delete_url = "${path.concat("/order/missionChannel/delete/")}" + provider_id;
+            $.post(provider_delete_url, function (response) {
+                if (response.responseCode == 'RESPONSE_OK') {
+                    window.location.reload();
+                } else {
+                    alert("无法删除");
+                }
+            });
+        }
+    }
+    
+    function delete_diversion(diversion_id) {
+        var confirmDelete = confirm("确认删除?");
+        if (confirmDelete) {
+            const diversion_delete_url = "${path.concat("/order/diversion/delete/")}" + diversion_id;
+            $.post(diversion_delete_url, function (response) {
+                if (response.responseCode == 'RESPONSE_OK') {
+                    window.location.reload();
+                } else {
+                    alert("无法删除");
+                }
+            });
+        }
+    }
+
+    function not_null(item) {
+        if (item == null || item == "" || item.length <= 0) {
+            return false;
+        }
+        return true;
+    }
+    
+    $("#channel-add").on('click', function () {
+        $("#help-div").attr('data-value', 'channel');
+    });
+
+    $("#diversion-add").on('click', function () {
+        $("#help-div").attr('data-value', 'diversion');
+    });
+
+    $("#provider-add").on('click', function () {
+        $("#help-div").attr('data-value', 'provider');
+    });
+
+    $("#add-item").on('click', function () {
+        var add_type = $("#help-div").attr('data-value');
+        var content = $("#add-content").val();
+        if (!not_null(content)) {
+            alert("请填写添加内容");
+            return;
+        }
+        var url = '';
+        var data = {};
+        switch (add_type) {
+            case 'channel':
+                url = "${path.concat('/order/orderChannel/create')}";
+                data.channelName = content;
+                break;
+            case 'diversion':
+                url = "${path.concat('/order/diversion/create')}";
+                data.diversionName = content;
+                break;
+            case 'provider':
+                url = "${path.concat('/order/missionChannel/create')}";
+                data.providerName = content;
+                break;
+            default:
+                break;
+        }
+        $.post(url, data, function (response) {
+           if (response.responseCode == 'RESPONSE_OK') {
+               window.location.reload();
+           } else {
+               alert("添加失败");
+           }
+        });
+    })
+
+</script>

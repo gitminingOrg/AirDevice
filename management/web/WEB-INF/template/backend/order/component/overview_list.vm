@@ -177,6 +177,9 @@
 					if(data[index] == 2) {
 						item.text("已发货");
 					}
+                    if(data[index] == 3) {
+                        item.text("已收货");
+                    }
 					if(data[index] == 4) {
 						item.text("正在安装");
 					}
@@ -211,7 +214,7 @@
             paging: true,
             "sPaginationType": "full_numbers",
             "bPaginate": true,
-            "bLengthChange": false,
+            "bLengthChange": true,
             "bAutoWidth": true,
             "bSort": true,
             "bDeferRender": true,
@@ -321,6 +324,9 @@
                 	}
                 	if(status == "SHIPPED") {
                 		return "已发货";
+                	}
+                	if(status == "RECEIVED") {
+                		return "已收货";
                 	}
                 	if(status == "INSTALLING") {
                 		return "正在安装";

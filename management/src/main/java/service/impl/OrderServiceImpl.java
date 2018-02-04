@@ -1,10 +1,6 @@
 package service.impl;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collector;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import dao.*;
@@ -14,16 +10,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import pagination.DataTableParam;
 import service.OrderService;
 import utils.ResponseCode;
 import utils.ResultData;
 import vo.guomai.CommodityVo;
 import vo.order.OrderChannelVo;
-import vo.order.OrderCommodityVo;
 import vo.order.OrderStatusVo;
 
 @Service
+@EnableTransactionManagement
 public class OrderServiceImpl implements OrderService {
 	private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
 		return result;
 	}
 
-
+	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
 	public ResultData uploadOrderItem(List<OrderItem> commodityList) {
 		ResultData result = new ResultData();
@@ -74,15 +74,17 @@ public class OrderServiceImpl implements OrderService {
             List<CommodityVo> commodityVoList = (List<CommodityVo>) commodityDao.query(condition).getData();
             Map<String, CommodityType> commodityTypeMap =
                     commodityVoList.stream().collect(Collectors.toMap(e -> e.getCommodityId(), e -> e.getType()));
+            List<MachineItem> machineItemList = new ArrayList<>();
             for (OrderItem item : orderItems) {
                 for (int i = 0; i < item.getCommodityQuantity(); i++) {
                     if (commodityTypeMap.get(item.getCommodityId()) == CommodityType.GUOMAI_XINFENG) {
                         MachineItem machineItem = new MachineItem();
                         machineItem.setOrderItemId(item.getOrderItemId());
-                        machineItemDao.insert(machineItem);
+                        machineItemList.add(machineItem);
                     }
                 }
             }
+            machineItemDao.insertBatch(machineItemList);
         }
 		return result;
 	}

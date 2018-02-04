@@ -16,6 +16,8 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -32,16 +34,20 @@ import utils.ResultData;
 import vo.order.*;
 import vo.user.UserVo;
 
+import javax.crypto.Mac;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@EnableTransactionManagement
 @CrossOrigin
 @RestController
 @RequestMapping("/order")
@@ -70,7 +76,7 @@ public class OrderController {
         return view;
     }
 
-
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
     public ResultData upload(MultipartHttpServletRequest request, @RequestParam String orderChannel){
         ResultData result = new ResultData();
@@ -173,6 +179,7 @@ public class OrderController {
         return result;
     }
 
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/groupBuyingUpload")
     public ResultData upload(MultipartHttpServletRequest request) throws Exception {
         ResultData result = new ResultData();
@@ -364,18 +371,28 @@ public class OrderController {
             return view;
         }
         GuoMaiOrderVo vo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
-        LocalDateTime time = LocalDateTime.ofInstant(vo.getOrderTime().toInstant(), TimeZone.getDefault().toZoneId());
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime time = LocalDateTime.ofInstant(vo.getOrderTime().toInstant(), TimeZone.getDefault().toZoneId());
+        if (vo.getReceiveDate() != null) {
+            LocalDateTime receive_time = LocalDateTime.ofInstant(vo.getReceiveDate().toInstant(), TimeZone.getDefault().toZoneId());
+            String receiveTime = receive_time.format(format);
+            view.addObject("receiveTime", receiveTime);
+        }
+
         String orderTime = time.format(format);
+
         view.addObject("order", vo);
         view.addObject("orderTime", orderTime);
+
         view.setViewName("/backend/order/detail");
         return view;
     }
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/deliver")
-    public ResultData deliver(@PathVariable("orderId") String orderId, String shipNo) {
+    public ResultData deliver(@PathVariable("orderId") String orderId, String shipNo,
+                              @RequestParam(required = false) String shipDescription)
+    {
         ResultData result = new ResultData();
         if (StringUtils.isEmpty(orderId)) {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
@@ -389,6 +406,14 @@ public class OrderController {
         ResultData response = orderService.assign(order);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setResponseCode(ResponseCode.RESPONSE_OK);
+            OrderMission orderMission = new OrderMission();
+            orderMission.setOrderId(orderId);
+            orderMission.setMissionTitle("发货完成");
+            orderMission.setMissionContent(shipDescription);
+            Subject subject = SecurityUtils.getSubject();
+            UserVo userVo = (UserVo) subject.getPrincipal();
+            orderMission.setMissionRecorder(userVo.getUsername());
+            orderService.create(orderMission);
         } else {
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
             result.setDescription("发货失败");
@@ -403,6 +428,7 @@ public class OrderController {
         return view;
     }
 
+    @Transactional
     @RequestMapping(method = RequestMethod.POST, value = "/create")
     public ResultData create(@Valid OrderCreateForm form, BindingResult br) {
         ResultData result = new ResultData();
@@ -419,7 +445,16 @@ public class OrderController {
         if (form.getOrderDiversion() != null) {
             order.setOrderDiversion(form.getOrderDiversion());
         }
-        ResultData response = orderService.create(order);
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("orderNo", order.getOrderNo());
+        condition.put("blockFlag", false);
+        ResultData response = orderService.fetch(condition);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("订单号已存在");
+            return result;
+        }
+        response = orderService.create(order);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setData(response.getData());
             result.setResponseCode(ResponseCode.RESPONSE_OK);
@@ -618,6 +653,42 @@ public class OrderController {
         return result;
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/receive")
+    public ResultData receive(@PathVariable("orderId") String orderId, @RequestParam String receiveDate) {
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("orderId", orderId);
+        condition.put("blockFlag", 0);
+        ResultData response = orderService.fetch(condition);
+        if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("当前订单无法进行该操作");
+            logger.error(result.getDescription());
+            return result;
+        }
+        GuoMaiOrderVo vo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
+        GuoMaiOrder order = new GuoMaiOrder();
+        order.setOrderId(orderId);
+        order.setOrderStatus(OrderStatus.RECEIVED);
+        order.setOrderPrice(vo.getOrderPrice());
+
+        //create order mission
+        OrderMission orderMission = new OrderMission();
+        orderMission.setOrderId(orderId);
+        orderMission.setMissionTitle("收货事件");
+        orderMission.setMissionContent("已经成功收货，收货时间：" + receiveDate);
+        Subject subject = SecurityUtils.getSubject();
+        UserVo userVo = (UserVo) subject.getPrincipal();
+        orderMission.setMissionRecorder(userVo.getUsername());
+        orderService.create(orderMission);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("y-M-d");
+        LocalDate date = LocalDate.parse(receiveDate, formatter);
+        order.setReceiveDate(Timestamp.valueOf(LocalDateTime.of(date, LocalTime.MIN)));
+        orderService.assign(order);
+        return result;
+    }
+
     @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/payed")
     public ResultData pay(@PathVariable("orderId") String orderId) {
         ResultData result = new ResultData();
@@ -659,6 +730,7 @@ public class OrderController {
         order.setOrderId(orderId);
         order.setShipNo(vo.getShipNo());
         order.setOrderStatus(OrderStatus.REFUNDED);
+        order.setOrderPrice(vo.getOrderPrice());
 
         ResultData machineItemResponse = machineItemService.fetch(condition);
         if (machineItemResponse.getResponseCode() == ResponseCode.RESPONSE_OK) {
@@ -673,6 +745,39 @@ public class OrderController {
             machineItemService.updateBatch(machineItems);
         }
         orderService.assign(order);
+        return result;
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{orderId}/dispatchProvider")
+    public ResultData dispatchProvider(@PathVariable("orderId") String orderId, @RequestParam String providerId){
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("orderId", orderId);
+        condition.put("blockFlag", false);
+        ResultData response = machineItemService.fetch(condition);
+        if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("当前订单无法进行该操作");
+            logger.error(result.getDescription());
+            return result;
+        }
+        List<MachineItemVo> machineItemVos = (List<MachineItemVo>) response.getData();
+        List<MachineItem> machineItems = new ArrayList<>();
+        for (MachineItemVo machineItemVo : machineItemVos) {
+            MachineItem machineItem = new MachineItem();
+            machineItem.setMachineId(machineItemVo.getMachineId());
+            machineItem.setProviderId(providerId);
+            machineItems.add(machineItem);
+        }
+        response = machineItemService.updateBatch(machineItems);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("服务器忙，请稍后再试!");
+        } else if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            result.setResponseCode(ResponseCode.RESPONSE_NULL);
+        } else {
+            result.setData(response.getData());
+        }
         return result;
     }
 
@@ -1015,5 +1120,12 @@ public class OrderController {
             result.setData(response.getData());
         }
         return result;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/orderConfig/view")
+    public ModelAndView orderConfigView() {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("/backend/order/order_config");
+        return view;
     }
 }

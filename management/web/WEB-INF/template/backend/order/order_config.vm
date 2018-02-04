@@ -1,11 +1,9 @@
 #parse("/common/util.vm")
 <html lang="zh_CN">
 <head>
-    #parse("/backend/init/weui.vm")
     #parse("/backend/init/init.vm")
     #parse("/backend/common/datatable.lib.vm")
-    <script src="${path.concat("/plugins/distpicker/distpicker.js")}"></script>
-    <title>机器详情</title>
+    <title>订单配置</title>
 </head>
 <body class="fixed-sidebar fixed-header" ontouchstart>
 <div id="loading" class="ui-front loader ui-widget-overlay bg-white opacity-100">
@@ -13,9 +11,8 @@
 </div>
 <div id="page-wrapper">
     #parse("/backend/common/sidebar.vm")
-    	#parse("/backend/order/component/machine.vm")
+    #parse("/backend/order/component/order_config.vm")
 </div>
 </body>
 <script type="text/javascript"></script>
-
 </html>

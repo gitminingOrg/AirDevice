@@ -26,4 +26,6 @@ public interface MachineService {
     ResultData mdifyidle(Map<String, Object> condition);
 
     ResultData fetchRecord(Map<String, Object> condtion);
+
+    ResultData queryMachineStatusRange(Map<String, Object> condition);
 }

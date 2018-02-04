@@ -142,6 +142,10 @@
                             <i class="glyph-icon icon-chevron-right"></i>
                             订单机器
                         </a>
+                        <a href="${path.concat('/order/orderConfig/view')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            订单配置项
+                        </a>
                     </li>
                 </ul>
             </li>

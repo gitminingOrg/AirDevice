@@ -197,4 +197,21 @@ public class MachineDaoImpl extends BaseDao implements MachineDao {
         }
         return result;
     }
+
+    @Override
+    public ResultData queryMachineStatusRange(Map<String, Object> condition) {
+        ResultData result = new ResultData();
+        try {
+            List<MachineStataVo> list = sqlSession.selectList("management.machine.queryDeviceStatus", condition);
+            if (list.isEmpty()) {
+                result.setResponseCode(ResponseCode.RESPONSE_NULL);
+            }
+            result.setData(list);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(e.getMessage());
+        }
+        return result;
+    }
 }
