@@ -66,7 +66,7 @@ public class DeviceReceiveService {
 		cleanerStatus.setTime(time);
 		boolean update = cleanerStatusCacheManager.updateCleanerStatus(cleanerStatus);
 		if (!update) {
-			LOG.warn("update cleaner status cache failed");
+			//LOG.warn("update cleaner status cache failed");
 		}else {
 			//LOG.info("update succeed");
 		}
@@ -99,7 +99,7 @@ public class DeviceReceiveService {
 							method.invoke(deviceInfo, value);
 							deviceInfoCacheManager.updateDevice(deviceInfo);
 						} catch (Exception e) {
-							LOG.error("no such set method <int>" + methodName, e);
+							//LOG.error("no such set method <int>" + methodName, e);
 						}
 					}else if (field.getGenericType().getTypeName().equals("java.lang.String")) {
 						String value = ByteUtil.byteToServer(packet.getDATA());
@@ -108,7 +108,7 @@ public class DeviceReceiveService {
 							method.invoke(deviceInfo, value);
 							deviceInfoCacheManager.updateDevice(deviceInfo);
 						} catch (Exception e) {
-							LOG.error("no such set method <String>" + methodName, e);
+							//LOG.error("no such set method <String>" + methodName, e);
 						}
 					}
 					break;
@@ -123,7 +123,7 @@ public class DeviceReceiveService {
 	 */
 	public void updateSingleCacheCleanerStatus(MCPPacket packet){
 		int command = ByteUtil.byteArrayToInt(packet.getCID());
-		LOG.info("控制指令为："+command);
+		//LOG.info("控制指令为："+command);
 		String deviceID = ByteUtil.byteToHex(packet.getUID());
 		CleanerStatus cleanerStatus = cleanerStatusCacheManager.getCleanerStatus(deviceID);
 		
@@ -143,7 +143,7 @@ public class DeviceReceiveService {
 							method.invoke(cleanerStatus, value);
 							cleanerStatusCacheManager.updateCleanerStatus(cleanerStatus);
 						} catch (Exception e) {
-							LOG.error("no such set method <int>" + methodName, e);
+							//LOG.error("no such set method <int>" + methodName, e);
 						}
 					}else if (field.getGenericType().getTypeName().equals("java.lang.String")) {
 						String value = ByteUtil.byteToServer(packet.getDATA());
@@ -152,7 +152,7 @@ public class DeviceReceiveService {
 							method.invoke(cleanerStatus, value);
 							cleanerStatusCacheManager.updateCleanerStatus(cleanerStatus);
 						} catch (Exception e) {
-							LOG.error("no such set method <String>" +methodName, e);
+							//LOG.error("no such set method <String>" +methodName, e);
 						}
 					}else if (field.getGenericType().getTypeName().equals("long")) {
 						long value = ByteUtil.byteArrayToLong(packet.getDATA());
@@ -161,7 +161,7 @@ public class DeviceReceiveService {
 							method.invoke(cleanerStatus, value);
 							cleanerStatusCacheManager.updateCleanerStatus(cleanerStatus);
 						} catch (Exception e) {
-							LOG.error("no such set method <long>" +methodName, e);
+							//LOG.error("no such set method <long>" +methodName, e);
 						}
 					}
 					break;
@@ -190,7 +190,7 @@ public class DeviceReceiveService {
 		boolean result = true;
 		IoSession session = sessionCacheManager.getSession(deviceID);
 		if (session == null) {
-			LOG.error("device has already been disconnected! " + deviceID);
+			//LOG.error("device has already been disconnected! " + deviceID);
 		}
 		Field[] fields = DeviceInfo.class.getDeclaredFields();
 		for (Field field : fields) {
@@ -205,7 +205,7 @@ public class DeviceReceiveService {
 			}
 		}
 		if(!result){
-			LOG.warn("update device info failed!");
+			//LOG.warn("update device info failed!");
 		}
 		return result;
 	}
