@@ -178,24 +178,11 @@ public class WechatController {
                         return xml;
                     }
                     if ("赠送".equals(message.getContent())) {
-                        PhotoMessage result = new PhotoMessage();
-                        result.setFromUserName(message.getToUserName());
-                        result.setToUserName(message.getFromUserName());
-                        result.setCreateTime(new Date().getTime());
-                        result.setMediaId(QRCODE_MEDIA);
-                        String xml = content.toXML(result);
-                        return xml;
+                        WechatUtil.pushImage(ReceptionConfig.getAccessToken(), message.getFromUserName(), QRCODE_MEDIA);
                     }
                     break;
             }
-            content.alias("xml", PhotoMessage.class);
-            PhotoMessage result = new PhotoMessage();
-            result.setFromUserName(message.getToUserName());
-            result.setToUserName(message.getFromUserName());
-            result.setCreateTime(new Date().getTime());
-            result.setMediaId(QRCODE_MEDIA);
-            String xml = content.toXML(result);
-            return xml;
+            WechatUtil.pushImage(ReceptionConfig.getAccessToken(), message.getFromUserName(), QRCODE_MEDIA);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
