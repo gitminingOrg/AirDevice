@@ -91,7 +91,7 @@ public class DeviceControlService {
 		
 		IoSession session = sessionCacheManager.getSession(deviceID);
 		if (session == null) {
-			LOG.error("device has already been disconnected. " + deviceID);
+			//LOG.error("device has already been disconnected. " + deviceID);
 			return false;
 		}
 		for (Field field : fields) {
@@ -121,7 +121,7 @@ public class DeviceControlService {
 	public boolean restart(String deviceID){
 		IoSession session = sessionCacheManager.getSession(deviceID);
 		if (session == null) {
-			LOG.error("device has already been disconnected. " + deviceID);
+			//LOG.error("device has already been disconnected. " + deviceID);
 			return false;
 		}
 		return PacketSendUtil.sentPacket(session, 0x01, 0x0B, deviceID, 1, new byte[]{0x00});

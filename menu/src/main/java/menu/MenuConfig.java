@@ -83,9 +83,20 @@ public class MenuConfig {
             e.printStackTrace();
         }
 
+        //安装案例
+        JSONObject cases = new JSONObject();
+        cases.put("name", "安装案例");
+        cases.put("type", "view");
+        try{
+            cases.put("url", "http://mp.weixin.qq.com/s/ezFPKEsdL1dtUc-qUnSICw");
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
         JSONArray gm = new JSONArray();
         gm.add(gm_introduction);
         gm.add(gm_guidance);
+        gm.add(cases);
         gm.add(assessment);
 
         JSONObject gm_menu = new JSONObject();
@@ -207,7 +218,7 @@ public class MenuConfig {
     }
 
     public static void main(String[] args) {
-        String token = "6_7hDrv96MW7Ae4G5W5k8b4SOnW6kCDnBEozLz6Pweanksio9WlQd6wYVPwZHNTvbXJp0mKLBauE0pTxSxMYIY8MklGWoNtiuzMuwxgjatDFZfzVk1u9Lf_MxMGxlAvUDGtrr7RK7uucrzNqtGFENgAGAXWF";
+        String token = "";
         String deleteMessage = MenuConfig.deleteMenu(token);
         System.out.println("删除操作: " + deleteMessage);
         String createMessage = MenuConfig.createMenu(token);
