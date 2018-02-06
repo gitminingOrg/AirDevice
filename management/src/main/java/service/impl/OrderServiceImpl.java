@@ -84,7 +84,8 @@ public class OrderServiceImpl implements OrderService {
                     }
                 }
             }
-            machineItemDao.insertBatch(machineItemList);
+            if (!machineItemList.isEmpty())
+                machineItemDao.insertBatch(machineItemList);
         }
 		return result;
 	}

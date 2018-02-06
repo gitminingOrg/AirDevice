@@ -209,7 +209,7 @@
             			#elseif(${order.orderStatus} == "INSTALLING")
             				订单处理中
             			#elseif(${order.orderStatus} == "SUCCEED")
-            				已关闭
+            				已完成
             			#elseif(${order.orderStatus} == "REFUNDED")
             				已取消
             			#end
