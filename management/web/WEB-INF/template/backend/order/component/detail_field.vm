@@ -62,7 +62,7 @@
                 <div class="form-row">
                     <div class="form-label col-md-2">订单总价</div>
                     <div class="form-input col-md-10">
-                        <input id="receiverPhone" type="text" value="${order.orderPrice}"/>
+                        <input id="orderPrice" type="number" value="${order.orderPrice}"/>
                     </div>
                 </div>
             	<div class="form-row">
@@ -593,6 +593,7 @@
             var buyerAccount = $('#buyerAccount').val();
             var receiverName = $('#receiverName').val();
             var receiverPhone = $('#receiverPhone').val();
+            var orderPrice = $('#orderPrice').val();
             var province = $('#province').find(":selected").val();
             var city = $('#city').find(":selected").val();
             var district = $('#district').find(":selected").val();
@@ -608,7 +609,7 @@
                         receiverPhone: receiverPhone, province: province, city: city, district: district,
                         receiverAddress: receiverAddress, orderCoupon: orderCoupon, orderTime: orderTime,
                         orderChannel: orderChannel, orderDiversion: orderDiversion, description: description,
-                        orderStatus: convertOrderStatus("${order.orderStatus}")
+                        orderStatus: convertOrderStatus("${order.orderStatus}"), orderPrice: orderPrice
                     };
             if (!not_null(orderDiversion)) {
                 delete params.orderDiversion;

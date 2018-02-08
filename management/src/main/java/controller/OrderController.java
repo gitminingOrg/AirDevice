@@ -767,6 +767,7 @@ public class OrderController {
             MachineItem machineItem = new MachineItem();
             machineItem.setMachineId(machineItemVo.getMachineId());
             machineItem.setProviderId(providerId);
+            machineItem.setMachineMissionStatus(machineItemVo.getMachineMissionStatus());
             machineItems.add(machineItem);
         }
         response = machineItemService.updateBatch(machineItems);

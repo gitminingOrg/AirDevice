@@ -38,6 +38,14 @@
             <div class="form-row" style="margin-left: 0px; margin-right: 0px">
                 <div class="form-row" style="margin-left: 0px; margin-right: 0px">
                     <div class="col-lg-2">
+                        订单编号
+                    </div>
+                    <div class="col-lg-10">
+                        <a href="${path.concat('/order/')}$machineItem.orderId" style="text-decoration: none">$machineItem.orderId</a>
+                    </div>
+                </div>
+                <div class="form-row" style="margin-left: 0px; margin-right: 0px">
+                    <div class="col-lg-2">
                         机器编号
                     </div>
                     <div class="col-lg-10">
