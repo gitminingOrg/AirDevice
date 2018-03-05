@@ -1123,6 +1123,36 @@ public class OrderController {
         return result;
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/machineItem/update")
+    public ResultData updateMachine(MachineForm machineForm) {
+        ResultData result = new ResultData();
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("machineId", machineForm.getMachineId());
+        condition.put("blockFlag", 0);
+        ResultData response = machineItemService.fetch(condition);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            MachineItemVo machineItemVo = ((List<MachineItemVo>) response.getData()).get(0);
+            MachineItem machineItem = new MachineItem();
+            machineItem.setMachineId(machineItemVo.getMachineId());
+            machineItem.setProviderId(machineForm.getMachineProvider());
+            machineItem.setInstallType(machineForm.getMachineInstallType());
+            machineItem.setMachineCode(machineForm.getMachineCode());
+            machineItem.setMachineMissionStatus(machineItemVo.getMachineMissionStatus());
+            machineItem.setOrderItemId(machineItemVo.getOrderItemId());
+            response = machineItemService.update(machineItem);
+            if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+                result.setResponseCode(response.getResponseCode());
+                result.setDescription(response.getDescription());
+            } else {
+                result.setData(response.getData());
+            }
+            return result;
+        } else {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            return result;
+        }
+    }
+
     @RequestMapping(method = RequestMethod.GET, value = "/orderConfig/view")
     public ModelAndView orderConfigView() {
         ModelAndView view = new ModelAndView();

@@ -50,13 +50,18 @@
                     </div>
                     <div class="col-lg-10">
                         $machineItem.machineId
+                        #if($machineItem.machineMissionStatus == 'INSTALLED')
+                            <button id="machine-edit" class="btn medium bg-blue" style="margin-left: 10px"><span class="glyph-icon icon-edit"></span></button>
+                            <button id="machine-edit-save" class="btn medium bg-blue" style="margin-left: 10px; display: none">保存<span class="glyph-icon icon-check-circle-o"></span></button>
+                            <button id="machine-edit-cancel" class="btn medium bg-blue" style="margin-left: 10px; display: none">取消<span class=""></span></button>
+                        #end
                     </div>
                 </div>
                 <div class="form-row" style="margin-left: 0px; margin-right: 0px">
                     <div class="col-lg-2">
                         安装商
                     </div>
-                    <div class="col-lg-10">
+                    <div class="col-lg-4 form-input" id="div-machine-provider">
                         #if($machineItem.providerName)
                             $machineItem.providerName
                         #else
@@ -68,7 +73,7 @@
                     <div class="col-lg-2">
                         安装方式
                     </div>
-                    <div class="col-lg-10">
+                    <div class="col-lg-4 form-input" id="div-machine-install-type">
                         #if($machineItem.installType)
                             $machineItem.installType
                         #else
@@ -80,7 +85,7 @@
                     <div class="col-lg-2">
                         机器二维码
                     </div>
-                    <div class="col-lg-10">
+                    <div class="col-lg-4 form-input" id="div-machine-code">
                         #if($machineItem.machineCode)
                             $machineItem.machineCode
                         #else
@@ -321,6 +326,7 @@
 <script>
     var uploadFilePathList = [];
     var uploadList = [];
+    var installTypeList = ['墙体安装', '玻璃安装'];
 
     $(document).ready(function () {
         // init machine status
@@ -483,6 +489,75 @@
                 }
             });
         });
+        
+        $("#machine-edit").on('click', function () {
+            $("#machine-edit").css('display', 'none');
+            $("#machine-edit-save").css('display', 'inline');
+            $("#machine-edit-cancel").css('display', 'inline');
+            var machine_provider = $("#div-machine-provider").html();
+            #if(${machineItem.providerName})
+                machine_provider = "${machineItem.providerName}";
+            #end
+            var machine_install_type = $("#div-machine-install-type").html();
+            #if(${machineItem.installType})
+                machine_install_type = "${machineItem.installType}";
+            #end
+            var machine_code = $("#div-machine-code").html();
+            machine_code = machine_code.replace(/\ +/g, '');
+
+            $("#div-machine-code").html("<input id='update-machine-code'></input>");
+            $("#update-machine-code").val(machine_code);
+            $("#div-machine-provider").html("<select id='update-machine-provider'></select>");
+            $("#div-machine-install-type").html('');
+            var install_type_select = $('<select id="update-machine-install-type"></select>');
+            for (var i = 0; i < installTypeList.length; i++) {
+                var option = $('<option></option>').text(installTypeList[i]).val(installTypeList[i]);
+                if (installTypeList[i] == machine_install_type) {
+                    install_type_select.prepend(option);
+                    install_type_select.val(installTypeList[i]);
+                } else {
+                    install_type_select.append(option);
+                }
+            }
+            $("#div-machine-install-type").append(install_type_select);
+            var machineProviderUrl = "${path.concat('/order/missionChannel/list')}";
+            $.get(machineProviderUrl, function (response) {
+                if (response.responseCode == "RESPONSE_OK") {
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        var option = $('<option></option>').text(data[i].providerName).val(data[i].providerId);
+                        if (machine_provider == data[i].providerName) {
+                            $("#update-machine-provider").prepend(option);
+                            $("#update-machine-provider").val(data[i].providerId);
+                        } else {
+                            $("#update-machine-provider").append(option);
+                        }
+                    }
+                }
+            });
+        })
+        
+        $('#machine-edit-save').on('click', function () {
+            var machine_edit_save_url = "${path.concat('/order/machineItem/update')}"
+            var machine_code = $('#update-machine-code').val();
+            var machine_provider = $("#update-machine-provider").find(":selected").val();
+            var machine_install_type = $("#update-machine-install-type").find(":selected").val();
+            var machine_id = '$machineItem.machineId';
+            var param = {machineId: machine_id, machineInstallType: machine_install_type,
+                        machineProvider: machine_provider, machineCode: machine_code
+            };
+            $.post(machine_edit_save_url, param, function (response) {
+                if (response.responseCode = 'RESPONSE_OK') {
+                    window.location.reload();
+                } else {
+                    alert(response.description);
+                }
+            })
+        })
+
+        $('#machine-edit-cancel').on('click', function () {
+            window.location.reload();
+        })
 
         function initProvider() {
             var machineProviderUrl = "${path.concat('/order/missionChannel/list')}";
@@ -496,7 +571,8 @@
                     for (var i = 0; i < data.length; i++) {
                         var option = $('<option></option>').text(data[i].providerName).val(data[i].providerId);
                         if (providerName == data[i].providerName) {
-                            $("#machine-provider").append(0, option);
+                            $("#machine-provider").prepend(option);
+                            $("#machine-provider").val(data[i].providerId);
                         } else {
                             $("#machine-provider").append(option);
                         }
