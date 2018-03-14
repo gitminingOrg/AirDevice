@@ -399,11 +399,23 @@ public class OrderController {
             result.setDescription("订单编号和产品编号不正确");
             return result;
         }
+        Map<String, Object> condition = new HashMap<>();
+        condition.put("orderId", orderId);
+        condition.put("blockFlag", false);
+        ResultData response = orderService.fetch(condition);
+        if (response.getResponseCode() != ResponseCode.RESPONSE_OK) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("当前订单无法进行该操作");
+            logger.error(result.getDescription());
+            return result;
+        }
+        GuoMaiOrderVo guoMaiOrderVo = ((List<GuoMaiOrderVo>) response.getData()).get(0);
         GuoMaiOrder order = new GuoMaiOrder();
         order.setOrderId(orderId);
         order.setShipNo(shipNo);
+        order.setOrderPrice(guoMaiOrderVo.getOrderPrice());
         order.setOrderStatus(OrderStatus.SHIPPED);
-        ResultData response = orderService.assign(order);
+        response = orderService.assign(order);
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             result.setResponseCode(ResponseCode.RESPONSE_OK);
             OrderMission orderMission = new OrderMission();
@@ -613,6 +625,7 @@ public class OrderController {
         GuoMaiOrder order = new GuoMaiOrder();
         order.setOrderStatus(guoMaiOrderVo.getOrderStatus());
         order.setOrderId(orderId);
+        order.setOrderPrice(guoMaiOrderVo.getOrderPrice());
 //        order.setOrderStatus(OrderStatus.INSTALLING);
         orderService.assign(order);
         UserVo user = (UserVo) subject.getPrincipal();
