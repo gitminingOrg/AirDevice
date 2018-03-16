@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="finley.gmair.order">
+    <resultMap id="orderVo" type="gmair.finley.model.GmairOrder">
+        <result property="orderId" column="order_id"></result>
+        <result property="name" column="receiver_name"></result>
+        <result property="province" column="receiver_province"></result>
+        <result property="city" column="receiver_city"></result>
+        <result property="district" column="receiver_district"></result>
+        <result property="address" column="receiver_address"></result>
+        <result property="phone" column="receiver_phone"></result>
+        <result property="longtitude" column="longtitude"></result>
+        <result property="latitude" column="latitude"></result>
+    </resultMap>
+
+    <select id="query" parameterType="java.util.Map" resultMap="orderVo">
+        SELECT order_id, receiver_name, receiver_province, receiver_city, receiver_distrct, receiver_address, receiver_phone, longtitude, latitude
+        FROM gmorder
+        WHERE 1 = 1
+    </select>
+
+    <update id="update" parameterType="model.GmairOrder">
+        UPDATE gmorder
+        <set>
+            <if test="longtitude != null">
+                longtitude = #{longtitude},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude},
+            </if>
+            order_id = #{orderId}
+        </set>
+        WHERE order_id = #{orderId}
+    </update>
+</mapper>
