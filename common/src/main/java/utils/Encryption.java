@@ -9,8 +9,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+//import sun.misc.BASE64Decoder;
+//import sun.misc.BASE64Encoder;
 
 /**
  * Created by sunshine on 4/21/16.
@@ -60,27 +60,27 @@ public class Encryption {
 		}
 	}
 
-	public static String desEncode(String data, String key) {
-		try {
-			byte[] bt = encrypt(data.getBytes(), key.getBytes());
-			return new BASE64Encoder().encode(bt);
-		} catch (Exception e) {
-			return null;
-		}
-	}
+//	public static String desEncode(String data, String key) {
+//		try {
+//			byte[] bt = encrypt(data.getBytes(), key.getBytes());
+//			return new BASE64Encoder().encode(bt);
+//		} catch (Exception e) {
+//			return null;
+//		}
+//	}
 
-	public static String desDecode(String data, String key) {
-		if (data == null)
-			return null;
-		try {
-			BASE64Decoder decoder = new BASE64Decoder();
-			byte[] buf = decoder.decodeBuffer(data);
-			byte[] bt = decrypt(buf, key.getBytes());
-			return new String(bt);
-		} catch (Exception e) {
-			return null;
-		}
-	}
+//	public static String desDecode(String data, String key) {
+//		if (data == null)
+//			return null;
+//		try {
+//			BASE64Decoder decoder = new BASE64Decoder();
+//			byte[] buf = decoder.decodeBuffer(data);
+//			byte[] bt = decrypt(buf, key.getBytes());
+//			return new String(bt);
+//		} catch (Exception e) {
+//			return null;
+//		}
+//	}
 
 	private static byte[] decrypt(byte[] data, byte[] key) throws Exception {
 		SecureRandom sr = new SecureRandom();

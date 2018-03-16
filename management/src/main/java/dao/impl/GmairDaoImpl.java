@@ -22,9 +22,10 @@ public class GmairDaoImpl extends BaseDao implements GmairDao {
         try {
             List<GmairOrder> list = sqlSession.selectList("finley.gmair.order.query");
             if (list.isEmpty()) {
-                result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+                result.setResponseCode(ResponseCode.RESPONSE_NULL);
                 return result;
             }
+            result.setData(list);
         } catch (Exception e) {
             logger.error(e.getMessage());
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);

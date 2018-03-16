@@ -41,5 +41,6 @@
 		<mapper resource="mapper/order/machinemission.xml" />
 		<mapper resource="mapper/order/machineitem.xml" />
 		<mapper resource="mapper/order/orderdiversion.xml" />
+		<mapper resource="mapper/order/gmorder.xml" />
 	</mappers>
 </configuration>

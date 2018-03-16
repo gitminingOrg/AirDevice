@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="finley.gmair.order">
-    <resultMap id="orderVo" type="gmair.finley.model.GmairOrder">
+    <resultMap id="orderVo" type="model.GmairOrder">
         <result property="orderId" column="order_id"></result>
         <result property="name" column="receiver_name"></result>
         <result property="province" column="receiver_province"></result>
@@ -14,13 +14,13 @@
     </resultMap>
 
     <select id="query" parameterType="java.util.Map" resultMap="orderVo">
-        SELECT order_id, receiver_name, receiver_province, receiver_city, receiver_distrct, receiver_address, receiver_phone, longtitude, latitude
-        FROM gmorder
+        SELECT order_id, receiver_name, receiver_province, receiver_city, receiver_district, receiver_address, receiver_phone, longtitude, latitude
+        FROM `location`.gmorder
         WHERE 1 = 1
     </select>
 
     <update id="update" parameterType="model.GmairOrder">
-        UPDATE gmorder
+        UPDATE `location`.gmorder
         <set>
             <if test="longtitude != null">
                 longtitude = #{longtitude},
