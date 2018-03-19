@@ -328,7 +328,7 @@
                                         }
                                     });
                                 });
-                                $("message-goodsdeliver").on('click', function () {
+                                $("#message-goodsdeliver").on('click', function () {
                                     var url = "${path.concat('/message/goodsdeliver')}";
                                     var phone = "${order.receiverPhone}";
                                     $.post(url, {phone: phone}, function (result) {
