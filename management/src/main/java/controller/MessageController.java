@@ -59,7 +59,7 @@ public class MessageController {
             result.setDescription("Phone number cannot be empty");
             return result;
         }
-        String message = "尊敬的果麦用户，您的新风机已发货，签收时若外包装有损请联系客服微信gmxfkf。收货后请妥善保管，待安装人员开箱，感谢您的理解与支持！【果麦新风】";
+        String message = "尊敬的果麦用户，您的订单已发货，签收时若外包装有损请联系客服微信gmxfkf。收货后请妥善保管，待安装人员上门开箱，谢谢！【果麦新风】";
 
         Client client = Client.create();
         WebResource webResource = client.resource(
