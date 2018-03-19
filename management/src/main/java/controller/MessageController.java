@@ -50,4 +50,27 @@ public class MessageController {
         result.setResponseCode(ResponseCode.RESPONSE_OK);
         return result;
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/goodsdeliver")
+    public ResultData deliverySend(String phone) {
+        ResultData result = new ResultData();
+        if (StringUtils.isEmpty(phone)) {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("Phone number cannot be empty");
+            return result;
+        }
+        String message = "尊敬的果麦用户，您的新风机已发货，签收时若外包装有损请联系客服微信gmxfkf。收货后请妥善保管，待安装人员开箱，感谢您的理解与支持！【果麦新风】";
+
+        Client client = Client.create();
+        WebResource webResource = client.resource(
+                "http://microservice.gmair.net/message/send/single");
+        MultivaluedMapImpl formData = new MultivaluedMapImpl();
+        formData.add("phone", phone);
+        formData.add("text", message);
+        ClientResponse response = webResource.type(MediaType.APPLICATION_FORM_URLENCODED).
+                post(ClientResponse.class, formData);
+        System.out.println("response:" + response);
+        result.setResponseCode(ResponseCode.RESPONSE_OK);
+        return result;
+    }
 }

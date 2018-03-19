@@ -313,9 +313,23 @@
                             <a id="message-nofify" class="btn medium bg-blue">
                                 <span class="button-content">短信提醒</span>
                             </a>
+                            <a id="message-goodsdeliver" class="btn medium bg-black">
+                                <span class="button-content">发货提醒</span>
+                            </a>
                             <script>
                                 $("#message-nofify").on('click', function () {
                                     var url = "${path.concat('/message/notify')}";
+                                    var phone = "${order.receiverPhone}";
+                                    $.post(url, {phone: phone}, function (result) {
+                                        if (result.responseCode == "RESPONSE_OK") {
+                                            alert("短信发送成功!");
+                                        } else {
+                                            alert("请联系技术部进行确认!")
+                                        }
+                                    });
+                                });
+                                $("message-goodsdeliver").on('click', function () {
+                                    var url = "${path.concat('/message/goodsdeliver')}";
                                     var phone = "${order.receiverPhone}";
                                     $.post(url, {phone: phone}, function (result) {
                                         if (result.responseCode == "RESPONSE_OK") {
