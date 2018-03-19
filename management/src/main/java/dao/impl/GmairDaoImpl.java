@@ -20,7 +20,7 @@ public class GmairDaoImpl extends BaseDao implements GmairDao {
     public ResultData query(Map<String, Object> condition) {
         ResultData result = new ResultData();
         try {
-            List<GmairOrder> list = sqlSession.selectList("finley.gmair.order.query");
+            List<GmairOrder> list = sqlSession.selectList("finley.gmair.order.query", condition);
             if (list.isEmpty()) {
                 result.setResponseCode(ResponseCode.RESPONSE_NULL);
                 return result;

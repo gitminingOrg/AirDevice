@@ -34,7 +34,7 @@ public class LocationController {
     GMorderService gMorderService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/ip")
-    public ResultData ip2city(String ip){
+    public ResultData ip2city(String ip) {
         ResultData result = new ResultData();
 
         String url = new StringBuffer
@@ -45,17 +45,17 @@ public class LocationController {
         String response = HttpDeal.getResponse(url);
         JSONObject json = JSON.parseObject(response);
         try {
-            if(!StringUtils.isEmpty(json) && !StringUtils.isEmpty(json.getJSONObject("result").getJSONObject("ad_info"))){
+            if (!StringUtils.isEmpty(json) && !StringUtils.isEmpty(json.getJSONObject("result").getJSONObject("ad_info"))) {
                 JSONObject jo = new JSONObject();
                 jo.put("nation", json.getJSONObject("result").getJSONObject("ad_info").get("nation"));
                 jo.put("province", json.getJSONObject("result").getJSONObject("ad_info").get("province"));
                 jo.put("city", json.getJSONObject("result").getJSONObject("ad_info").get("city"));
                 result.setData(jo);
-            }else {
+            } else {
                 result.setResponseCode(ResponseCode.RESPONSE_NULL);
                 result.setDescription("IP未解析成功！");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
             result.setResponseCode(ResponseCode.RESPONSE_ERROR);
             result.setDescription(e.getMessage());
@@ -66,9 +66,12 @@ public class LocationController {
     @RequestMapping(method = RequestMethod.GET, value = "/locationToCoord")
     public ResultData locationToCoord() {
         ResultData result = new ResultData();
+        System.out.println("Processing method locationtocoord");
         Map<String, Object> condition = new HashMap<>();
+        condition.put("lnglat", true);
         condition.put("blockFlag", 0);
         ResultData gmorderResponse = gMorderService.fetchOrder(condition);
+        System.out.println("response: " + JSON.toJSONString(gmorderResponse));
         if (gmorderResponse.getResponseCode() == ResponseCode.RESPONSE_OK) {
             List<GmairOrder> orderList = (List<GmairOrder>) gmorderResponse.getData();
             for (GmairOrder gmairOrder : orderList) {
@@ -84,12 +87,12 @@ public class LocationController {
                 JSONObject json = JSON.parseObject(response);
                 try {
                     if (!StringUtils.isEmpty(json) && json.getInteger("status") == 0
-                            && !StringUtils.isEmpty(json.getJSONObject("result")))
-                    {
+                            && !StringUtils.isEmpty(json.getJSONObject("result"))) {
                         double lng = json.getJSONObject("result").getJSONObject("location").getDouble("lng");
                         double lat = json.getJSONObject("result").getJSONObject("location").getDouble("lat");
                         gmairOrder.setLongtitude(lng);
                         gmairOrder.setLatitude(lat);
+                        logger.debug("order lng lat: " + JSON.toJSONString(gmairOrder));
                         gMorderService.modifyOrder(gmairOrder);
                     } else {
                         result.setResponseCode(ResponseCode.RESPONSE_NULL);
@@ -106,32 +109,15 @@ public class LocationController {
         return result;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/mapUrl")
+    @RequestMapping(method = RequestMethod.GET, value = "/order")
     public ResultData mapUrl() {
-        String coord = "coord:";
-        String title = "title:";
-        String addr = "addr:";
-        String comma = ",";
-        String semicolon = ";";
-        String seperator = "|";
         ResultData result = new ResultData();
         Map<String, Object> condition = new HashMap<>();
         condition.put("blockFlag", 0);
         ResultData gmorderResponse = gMorderService.fetchOrder(condition);
         if (gmorderResponse.getResponseCode() == ResponseCode.RESPONSE_OK) {
             List<GmairOrder> orderList = (List<GmairOrder>) gmorderResponse.getData();
-            StringBuilder sb = new StringBuilder("http://apis.map.qq.com/tools/poimarker?type=0&marker=");
-            for (int i = 0; i < orderList.size(); i++) {
-                GmairOrder order = orderList.get(i);
-                sb.append(coord).append(order.getLatitude()).append(comma).append(order.getLongtitude())
-                        .append(semicolon).append(title).append(order.getDistrict()).append(semicolon)
-                        .append(addr).append(order.getAddress());
-                if (i != orderList.size() - 1) {
-                    sb.append(seperator);
-                }
-            }
-            sb.append("&key=").append(ManagementConfig.getValue("tencent_map_key")).append("&referer=myapp");
-            result.setData(sb.toString());
+            result.setData(orderList);
         } else {
             result.setResponseCode(gmorderResponse.getResponseCode());
             result.setDescription(gmorderResponse.getDescription());

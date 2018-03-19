@@ -1,18 +1,15 @@
 package model.order;
 
-import org.springframework.util.StringUtils;
+import com.google.gson.annotations.Since;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 public class GuoMaiOrder extends Order {
@@ -319,7 +316,7 @@ public class GuoMaiOrder extends Order {
             order.setDescription(param[4]);
         }
         if (param[2] != null) {
-            List<OrderItem> orderItemList = new ArrayList<>();
+            List<OrderItem> orderItemList = new ArrayList<OrderItem>();
             OrderItem orderItem = new OrderItem();
             if (param[2].contains("GM320A")) {
                 orderItem.setCommodityId(OrderConstant.GUOMAI_320A);

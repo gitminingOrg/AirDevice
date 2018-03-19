@@ -1,12 +1,12 @@
 <div id="page-main">
-	<div id="page-main-wrapper">
-		<div id="page-header" class="clearfix">
-			<div id="page-header-wrapper" class="clearfix">
-				<div id="page-breadcrumb-wrapper">
-                	<div id="page-breadcrumb">
+    <div id="page-main-wrapper">
+        <div id="page-header" class="clearfix">
+            <div id="page-header-wrapper" class="clearfix">
+                <div id="page-breadcrumb-wrapper">
+                    <div id="page-breadcrumb">
                         <a href="javascript:;">
-                        	<i class="glyph-icon icon-dashboard"></i>
-                                首页
+                            <i class="glyph-icon icon-dashboard"></i>
+                            首页
                         </a>
                         <a href="${path.concat('/order/overview')}">
                             <i class="glyph-icon icon-file-text-o"></i>
@@ -17,13 +17,13 @@
                         </span>
                     </div>
                 </div>
-			</div>
-		</div>
+            </div>
+        </div>
         <div id="page-breadcrumb-wrapper">
             <div id="page-breadcrumb">
                 <a href="javascript:;">
                     <i class="glyph-icon icon-dashboard"></i>
-                        首页
+                    首页
                 </a>
                 <a href="${path.concat('/order/overview')}">
                     <i class="glyph-icon icon-file-text-o"></i>
@@ -36,23 +36,23 @@
         </div>
         <div id="page-content">
             <div class="col-md-12 center-margin">
-            	<h4>订单详情</h4>
-            	<div class="form-row">
-            		<div class="form-label col-md-2">订单编号</div>
-            		<div class="form-input col-md-10">${order.orderNo}</div>
-            	</div>
-            	<div class="form-row">
-            		<div class="form-label col-md-2">购买人</div>
-            		<div class="form-input col-md-10">
+                <h4>订单详情</h4>
+                <div class="form-row">
+                    <div class="form-label col-md-2">订单编号</div>
+                    <div class="form-input col-md-10">${order.orderNo}</div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label col-md-2">购买人</div>
+                    <div class="form-input col-md-10">
                         <input id="buyerName" type="text" value="${order.buyerName}"/>
                     </div>
-            	</div>
-            	<div class="form-row">
-            		<div class="form-label col-md-2">收货人</div>
-            		<div class="form-input col-md-10">
+                </div>
+                <div class="form-row">
+                    <div class="form-label col-md-2">收货人</div>
+                    <div class="form-input col-md-10">
                         <input id="receiverName" type="text" value="${order.receiverName}"/>
                     </div>
-            	</div>
+                </div>
                 <div class="form-row">
                     <div class="form-label col-md-2">收货人手机</div>
                     <div class="form-input col-md-10">
@@ -65,11 +65,12 @@
                         <input id="orderPrice" type="number" value="${order.orderPrice}"/>
                     </div>
                 </div>
-            	<div class="form-row">
+                <div class="form-row">
                     <div class="form-label col-md-2">收货人地址</div>
                     <div class="form-input col-md-4 select" data-toggle="distpicker">
                         #if(${order.province})
-                            <select id="province" class="col-md-4" data-province="${order.province}" style="border-radius: 5px">
+                            <select id="province" class="col-md-4" data-province="${order.province}"
+                                    style="border-radius: 5px">
                                 <option data-code="" data-text="—— 省 ——">—— 省 ——</option>
                             </select>
                         #else
@@ -87,7 +88,8 @@
                             </select>
                         #end
                         #if(${order.district})
-                            <select id="district" class="col-md-3" style="border-radius: 5px" data-district="${order.district}">
+                            <select id="district" class="col-md-3" style="border-radius: 5px"
+                                    data-district="${order.district}">
                                 <option data-code="" data-text="—— 区 ——" value="${order.district}">—— 区 ——</option>
                             </select>
                         #else
@@ -99,7 +101,7 @@
                     <div class="form-input col-md-6">
                         <input id="receiverAddress" type="text" value="${order.receiverAddress}"/>
                     </div>
-            	</div>
+                </div>
                 <div class="form-row">
                     <div class="form-label col-md-2">优惠码</div>
                     <div class="form-input col-md-10">
@@ -110,16 +112,17 @@
                         #end
                     </div>
                 </div>
-            	<div class="form-row">
-            		<div class="form-label col-md-2">购买商品</div>
-                    <div class="form-input col-md-10" id="goods-container" data-commodity-number="${order.commodityList.size()}">
+                <div class="form-row">
+                    <div class="form-label col-md-2">购买商品</div>
+                    <div class="form-input col-md-10" id="goods-container"
+                         data-commodity-number="${order.commodityList.size()}">
                         <table class="table table-condensed">
                             <thead style="background-color: #e4e9f0">
-                                <tr>
-                                    <td>商品种类</td>
-                                    <td>商品名称</td>
-                                    <td>商品数量</td>
-                                </tr>
+                            <tr>
+                                <td>商品种类</td>
+                                <td>商品名称</td>
+                                <td>商品数量</td>
+                            </tr>
                             </thead>
                             <tbody>
                                 #foreach($commodity in ${order.commodityList})
@@ -140,16 +143,16 @@
                             </tbody>
                         </table>
                     </div>
-            	</div>
-            	<div class="form-row">
-            		<div class="form-label col-md-2">付款时间</div>
-            		<div class="form-input col-md-10">
+                </div>
+                <div class="form-row">
+                    <div class="form-label col-md-2">付款时间</div>
+                    <div class="form-input col-md-10">
                         <input id="orderTime" type="date" value="${orderTime}">
                     </div>
-            	</div>
-				<div class="form-row">
-            		<div class="form-label col-md-2">购买渠道</div>
-            		<div class="form-input col-md-10">
+                </div>
+                <div class="form-row">
+                    <div class="form-label col-md-2">购买渠道</div>
+                    <div class="form-input col-md-10">
                         <select id="order_channel_list">
                             #if(${order.orderChannel})
                                 <option>${order.orderChannel}</option>
@@ -158,7 +161,7 @@
                             #end
                         </select>
                     </div>
-            	</div>
+                </div>
                 <div class="form-row">
                     <div class="form-label col-md-2">订单渠道</div>
                     <div class="form-input col-md-10">
@@ -197,32 +200,32 @@
                         </textarea>
                     </div>
                 </div>
-            	<div class="form-row">
-            		<div class="form-label col-md-2">订单状态</div>
-            		<div class="form-input col-md-10">
+                <div class="form-row">
+                    <div class="form-label col-md-2">订单状态</div>
+                    <div class="form-input col-md-10">
                         #if(${order.orderStatus} == "NOT_PAYED")
                             待付款
-            			#elseif(${order.orderStatus} == "PAYED")
-            				待发货
-            			#elseif(${order.orderStatus} == "SHIPPED")
-            				已发货(订单处理中)
+                        #elseif(${order.orderStatus} == "PAYED")
+                            待发货
+                        #elseif(${order.orderStatus} == "SHIPPED")
+                            已发货(订单处理中)
                         #elseif(${order.orderStatus} == "RECEIVED")
                             #if(${receiveTime})
                                 已收货(收货时间: ${receiveTime})
                             #else
                                 已收货(无收货时间)
                             #end
-            			#elseif(${order.orderStatus} == "INSTALLING")
-            				订单处理中
-            			#elseif(${order.orderStatus} == "SUCCEED")
-            				已完成
-            			#elseif(${order.orderStatus} == "REFUNDED")
-            				已取消
-            			#end
-            		</div>
-            	</div>
+                        #elseif(${order.orderStatus} == "INSTALLING")
+                            订单处理中
+                        #elseif(${order.orderStatus} == "SUCCEED")
+                            已完成
+                        #elseif(${order.orderStatus} == "REFUNDED")
+                            已取消
+                        #end
+                    </div>
+                </div>
                 <div class="form-row">
-                    <button id = "updateOrder" class="btn medium bg-blue" style="margin-left: 15px">更新订单信息</button>
+                    <button id="updateOrder" class="btn medium bg-blue" style="margin-left: 15px">更新订单信息</button>
                     <a href="javascript:;" class="btn medium bg-blue black-modal-80" title="添加订单进度记录">
                         <span class="button-content">添加订单事件</span>
                     </a>
@@ -237,7 +240,7 @@
                                         <label for="order-mission-name">事件名称</label>
                                     </div>
                                     <div class="form-input col-md-9">
-                                        <input id="order-mission-name" type="text" />
+                                        <input id="order-mission-name" type="text"/>
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -277,8 +280,10 @@
                         </div>
                     </div>
                 </div>
-            	#if(${order.orderStatus} == "NOT_PAYED" || ${order.orderStatus} == "SHIPPED" || ${order.orderStatus} == "PAYED" ||
-                    ${order.orderStatus} == "RECEIVED" || ${order.orderStatus} == "INSTALLING" || ${order.orderStatus} == "SUCCEED")
+                #if(${order.orderStatus} == "NOT_PAYED" || ${order.orderStatus} == "SHIPPED" || ${order.orderStatus} ==
+                    "PAYED" ||
+                    ${order.orderStatus} == "RECEIVED" || ${order.orderStatus} =="INSTALLING" || ${order.orderStatus} ==
+                    "SUCCEED")
                     <hr/>
                     #if(${order.orderStatus} == "NOT_PAYED")
                         <a id="order-payed" class="btn medium bg-green">
@@ -305,6 +310,22 @@
                             <a id="order-complete" class="btn medium bg-green">
                                 <span class="button-content">订单完成</span>
                             </a>
+                            <a id="message-nofify" class="btn medium bg-blue">
+                                <span class="button-content">短信提醒</span>
+                            </a>
+                            <script>
+                                $("#message-nofify").on('click', function () {
+                                    var url = "${path.concat('/message/notify')}";
+                                    var phone = "${order.receiverPhone}";
+                                    $.post(url, {phone: phone}, function (result) {
+                                        if (result.responseCode == "RESPONSE_OK") {
+                                            alert("短信发送成功!");
+                                        } else {
+                                            alert("请联系技术部进行确认!")
+                                        }
+                                    });
+                                });
+                            </script>
                         </div>
                     #elseif(${order.orderStatus} == "RECEIVED")
                         <div class="form-row">
@@ -316,7 +337,7 @@
                             </a>
                         </div>
                     #end
-            	#end
+                #end
                 <div id="mission-area" style="display: none">
                     <h4>订单进度</h4>
                 </div>
@@ -380,41 +401,63 @@
                 </div>
             #end
         </div>
-	</div>
+    </div>
 </div>
 <script>
     var uploadList = [];
     var uploadFilePathList = [];
 
-    function convertOrderStatus(status){
+    function convertOrderStatus(status) {
         var convertResult;
-        switch(status) {
-            case 'NOT_PAYED' : convertResult = 0; break;
-            case 'PAYED': convertResult = 1; break;
-            case 'SHIPPED': convertResult = 2; break;
-            case 'RECEIVED': convertResult = 3; break;
-            case 'INSTALLING': convertResult = 4; break;
-            case 'SUCCEED': convertResult = 5; break;
-            case 'EXCHANGED': convertResult = 6; break;
-            case 'REFUNDING': convertResult = 7; break;
-            case 'REFUNDED': convertResult = 8; break;
-            case 'CLOSED': convertResult = 9; break;
-            default: convertResult = 1; break;
+        switch (status) {
+            case 'NOT_PAYED' :
+                convertResult = 0;
+                break;
+            case 'PAYED':
+                convertResult = 1;
+                break;
+            case 'SHIPPED':
+                convertResult = 2;
+                break;
+            case 'RECEIVED':
+                convertResult = 3;
+                break;
+            case 'INSTALLING':
+                convertResult = 4;
+                break;
+            case 'SUCCEED':
+                convertResult = 5;
+                break;
+            case 'EXCHANGED':
+                convertResult = 6;
+                break;
+            case 'REFUNDING':
+                convertResult = 7;
+                break;
+            case 'REFUNDED':
+                convertResult = 8;
+                break;
+            case 'CLOSED':
+                convertResult = 9;
+                break;
+            default:
+                convertResult = 1;
+                break;
         }
         return convertResult;
     }
 
-	$(document).ready(function() {
+    $(document).ready(function () {
         function init_order_mission() {
             var orderId = "${order.orderId}";
             var fetch_mission_url = "${path.concat('/order/')}" + orderId + "/mission";
-            $.get(fetch_mission_url, function(result) {
-                if(result.responseCode == "RESPONSE_OK") {
+            $.get(fetch_mission_url, function (result) {
+                if (result.responseCode == "RESPONSE_OK") {
                     var missions = result.data;
                     if (missions.length > 0) {
                         $("#mission-area").css("display", "block");
                     }
-                    for(var i = 0; i < missions.length; i ++) {
+                    for (var i = 0; i < missions.length; i++) {
                         var missionDate = formatDateTime(new Date(missions[i].createTime));
                         var dateSpan = $('<span style="margin-right: 30px; float: right"></span>').text(missionDate);
                         var row = $("<div class='row'></div>");
@@ -444,7 +487,8 @@
                 }
             });
         }
-	    function init_order_machine() {
+
+        function init_order_machine() {
             var order_machine_url = "${path.concat('/order/orderMachine/detail?orderId=')}" + "${order.orderId}";
             $.get(order_machine_url, function (response) {
                 var table_header = $('<thead></thead>');
@@ -474,11 +518,11 @@
                         } else {
                             machineStaus = '未知';
                         }
-                        var machine_tr = $('<tr><td>' + i +  '</td><td>' + provider + '</td><td>' + installType +
-                                        '</td><td>' + machineCode + '</td><td>' + machineStaus + '</td><td>' +
-                                        "<a href='" + "${path.concat('/order/machine/item/')}" + data[i].machineId +
-                                        "'class='btn small bg-blue-alt tooltip-button' data-placement='top' ><i class='glyph-icon icon-arrow-right'></i></a>"
-                                        +'</td></tr>');
+                        var machine_tr = $('<tr><td>' + i + '</td><td>' + provider + '</td><td>' + installType +
+                                '</td><td>' + machineCode + '</td><td>' + machineStaus + '</td><td>' +
+                                "<a href='" + "${path.concat('/order/machine/item/')}" + data[i].machineId +
+                                "'class='btn small bg-blue-alt tooltip-button' data-placement='top' ><i class='glyph-icon icon-arrow-right'></i></a>"
+                                + '</td></tr>');
                         tbody.append(machine_tr);
                     }
                     $("#machine-list-table").append(table_header);
@@ -490,76 +534,81 @@
                 }
             });
         }
+
         init_order_mission()
         init_order_machine();
 
-		$("#confirm-deliver").on('click', function() {
-			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/deliver";
-			var product_serial = $("#product-serial").val();
-			var ship_no = $("#shipment-no").val();
-			var ship_company = $("#shipment-company").val();
-			var ship_date = $("#shipment-date").val();
-			var ship_description = ship_company + ": " + ship_no + "(" + ship_date + ")";
-			$.post(url, {productSerial: product_serial, shipNo: ship_no, shipDescription: ship_description}, function(result) {
-				if(result.responseCode == "RESPONSE_OK") {
-					window.location.href = "${path.concat('/order/')}" + "${order.orderId}"; 
-				}else {
-					alert("发货失败");
-				}
-			});
-		});
+        $("#confirm-deliver").on('click', function () {
+            var url = "${path.concat('/order/')}" + "${order.orderId}" + "/deliver";
+            var product_serial = $("#product-serial").val();
+            var ship_no = $("#shipment-no").val();
+            var ship_company = $("#shipment-company").val();
+            var ship_date = $("#shipment-date").val();
+            var ship_description = ship_company + ": " + ship_no + "(" + ship_date + ")";
+            $.post(url, {
+                productSerial: product_serial,
+                shipNo: ship_no,
+                shipDescription: ship_description
+            }, function (result) {
+                if (result.responseCode == "RESPONSE_OK") {
+                    window.location.href = "${path.concat('/order/')}" + "${order.orderId}";
+                } else {
+                    alert("发货失败");
+                }
+            });
+        });
 
-		$("#confirm-receive").on('click', function () {
+        $("#confirm-receive").on('click', function () {
             var url = "${path.concat('/order/')}" + "${order.orderId}" + "/receive";
             var receviceDate = $("#receive-date").val();
             var param = {};
             if (!not_null(receviceDate)) {
                 receviceDate = new Date();
                 receviceDate = receviceDate.getFullYear().toString() + "-" + (receviceDate.getMonth() + 1).toString()
-                                    + "-" + receviceDate.getDate();
+                        + "-" + receviceDate.getDate();
             }
             param.receiveDate = receviceDate;
             $.post(url, param, function (reponse) {
-                if(reponse.responseCode == "RESPONSE_OK") {
+                if (reponse.responseCode == "RESPONSE_OK") {
                     window.location.href = "${path.concat('/order/')}" + "${order.orderId}";
-                }else {
+                } else {
                     alert("更新收货状态失败");
                 }
             })
         });
 
         $("#order-payed").on('click', function () {
-           var url = "${path.concat('/order/')}" + "${order.orderId}" + "/payed";
-           $.post(url, function (response) {
-               if(response.responseCode == "RESPONSE_OK") {
-                   window.location.href = "${path.concat('/order/')}" + "${order.orderId}";
-               }else {
-                   alert("更新付款状态失败");
-               }
-           })
+            var url = "${path.concat('/order/')}" + "${order.orderId}" + "/payed";
+            $.post(url, function (response) {
+                if (response.responseCode == "RESPONSE_OK") {
+                    window.location.href = "${path.concat('/order/')}" + "${order.orderId}";
+                } else {
+                    alert("更新付款状态失败");
+                }
+            })
         });
 
-		$("#order-confirm-event").on('click', function() {
-			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/mission/create";
-			var mission_title = $("#order-mission-name").val();
-			var mission_content = $("#order-mission-content").val();
-			var filepath = uploadFilePathList.join(";");
+        $("#order-confirm-event").on('click', function () {
+            var url = "${path.concat('/order/')}" + "${order.orderId}" + "/mission/create";
+            var mission_title = $("#order-mission-name").val();
+            var mission_content = $("#order-mission-content").val();
+            var filepath = uploadFilePathList.join(";");
 
-			if (!not_null(mission_title)) {
-			    alert("请选择事件类型!");
-			    return;
+            if (!not_null(mission_title)) {
+                alert("请选择事件类型!");
+                return;
             }
 
-			var mission_params = {
-			    missionTitle: mission_title, missionContent: mission_content,
-			};
+            var mission_params = {
+                missionTitle: mission_title, missionContent: mission_content,
+            };
 
-			$.post(url, mission_params, function(result) {
-				location.reload();
-			})
-		});
+            $.post(url, mission_params, function (result) {
+                location.reload();
+            })
+        });
 
-		$("#order-provider-event").on('click', function () {
+        $("#order-provider-event").on('click', function () {
             var url = "${path.concat('/order/')}" + "${order.orderId}" + "/dispatchProvider";
             var provider_id = $('#order-provider-list').find(":selected").val();
             if (!not_null(provider_id)) {
@@ -572,20 +621,20 @@
                 }
             });
         })
-		
-		$("#order-complete").on('click', function() {
-			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/complete";
-			$.post(url, function(result) {
-				location.reload();
-			})
-		});
-		
-		$("#order-cancel").on('click', function() {
-			var url = "${path.concat('/order/')}" + "${order.orderId}" + "/cancel";
-			$.post(url, function(result) {
-				location.reload();
-			})
-		});
+
+        $("#order-complete").on('click', function () {
+            var url = "${path.concat('/order/')}" + "${order.orderId}" + "/complete";
+            $.post(url, function (result) {
+                location.reload();
+            })
+        });
+
+        $("#order-cancel").on('click', function () {
+            var url = "${path.concat('/order/')}" + "${order.orderId}" + "/cancel";
+            $.post(url, function (result) {
+                location.reload();
+            })
+        });
 
         $("#updateOrder").on('click', function () {
             var url = "${path.concat('/order/')}" + "${order.orderId}" + "/update";
@@ -630,9 +679,9 @@
                 window.location.href = "${path.concat('/order/').concat("${order.orderId}")}";
             });
         })
-	});
-	
-	function orderChannelReset() {
+    });
+
+    function orderChannelReset() {
         var url = "${path.concat('/order/orderChannel/list')}";
         var currentChannel = $('#order_channel_list').find(":selected");
         var orderChannelList = $('#order_channel_list');

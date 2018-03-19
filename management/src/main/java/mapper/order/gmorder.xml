@@ -14,13 +14,21 @@
     </resultMap>
 
     <select id="query" parameterType="java.util.Map" resultMap="orderVo">
-        SELECT order_id, receiver_name, receiver_province, receiver_city, receiver_district, receiver_address, receiver_phone, longtitude, latitude
-        FROM `location`.gmorder
+        SELECT order_id, receiver_name, receiver_province, receiver_city, receiver_district, receiver_address,
+        receiver_phone, longtitude, latitude
+        FROM `airdevice`.gmorder
         WHERE 1 = 1
+        <if test="lnglat != null">
+            AND (longtitude IS NULL OR latitude IS NULL)
+        </if>
+        <if test="blockFlag != null">
+            AND block_flag = #{blockFlag}
+        </if>
+        ORDER BY order_no
     </select>
 
     <update id="update" parameterType="model.GmairOrder">
-        UPDATE `location`.gmorder
+        UPDATE `airdevice`.gmorder
         <set>
             <if test="longtitude != null">
                 longtitude = #{longtitude},
