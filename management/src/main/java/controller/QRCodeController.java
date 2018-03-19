@@ -548,9 +548,16 @@ public class QRCodeController {
             result.setResponseCode(ResponseCode.RESPONSE_NULL);
             result.setDescription("请输入完成的第三段的值");
             return result;
+        } else {
+            condition.put("codeId", candidate);
+            response = qRCodeService.fetchPreBind(condition);
+            if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+                QRCodeVo vo = list.get(0);
+                result.setData(vo);
+            } else {
+                result.setDescription("查询到" + candidate + "已被预绑定过，请确认是否无误");
+            }
         }
-        QRCodeVo vo = list.get(0);
-        result.setData(vo);
         return result;
     }
 
