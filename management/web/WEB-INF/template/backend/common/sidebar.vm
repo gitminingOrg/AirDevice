@@ -146,6 +146,10 @@
                             <i class="glyph-icon icon-chevron-right"></i>
                             订单配置项
                         </a>
+                        <a href="${path.concat('/message/sendmessage')}">
+                            <i class="glyph-icon icon-chevron-right"></i>
+                            短信通知
+                        </a>
                     </li>
                 </ul>
             </li>

@@ -21,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 public class MessageController {
     private Logger logger = LoggerFactory.getLogger(MessageController.class);
 
+    @RequestMapping(method = RequestMethod.GET, value = "/sendmessage")
     public ModelAndView messagenotify() {
         ModelAndView view = new ModelAndView();
         view.setViewName("/backend/order/notify");
