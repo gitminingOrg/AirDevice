@@ -36,11 +36,67 @@
         </div>
         <div id="page-content">
             <div class="col-md-12 center-margin">
-                <h4>订单详情</h4>
+                <h4>短信服务</h4>
                 <div class="form-row">
-                    
+                    <button class="btn bg-blue medium white-modal-60" id="order-btn">下单通知</button>
+                    <button class="btn bg-blue medium white-modal-60" id="deliver-btn">发货通知</button>
+                    <div id="help-div" data-value=""></div>
+                    <div class="hide" id="white-modal-60" title="短信通知">
+                        <div class="pad10A">
+                            <div class="col-md-12 center-margin">
+                                <div class="form-row">
+                                    <div class="form-label col-md-3">
+                                        <label for="machine-cancel-content" autocomplete="off">手机号</label>
+                                    </div>
+                                    <div class="form-input col-md-9">
+                                        <input id="phone" type="text" autocomplete="off"></input>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <button class="btn medium bg-blue-alt" id="confirm-send-message">
+                                        <span class="button-content">发送</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $("#order-btn").on('click', function () {
+        $("#help-div").attr("data-value", 'order');
+    });
+
+    $("#deliver-btn").on('click', function () {
+        $("#help-div").attr("data-value", 'deliver');
+    });
+
+    $("#confirm-send-message").on('click', function () {
+        var type = $("#help-div").attr('data-value');
+        var url = '';
+        var phone = $("#phone").val();
+        var data = {phone: phone.trim()};
+
+        switch (type) {
+            case 'order' :
+                url = "${path.concat('/message/notify')}";
+                break;
+            case 'deliver':
+                url = "${path.concat('/message/goodsdeliver')}";
+                break;
+            default:
+                return
+        }
+        $.post(url, data, function (response) {
+            if (response.responseCode == 'RESPONSE_OK') {
+                alert("短信发送成功");
+                window.location.reload();
+            } else {
+                alert(response.description);
+                window.location.reload();
+            }
+        })
+    });
+</script>

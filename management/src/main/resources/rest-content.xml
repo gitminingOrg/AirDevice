@@ -98,7 +98,9 @@
         		/dashboard = roles[dashboard_viewer]
         		
         		/order/* = roles[order_writer]
-        		
+
+        		/message/* = roles[order_writer]
+
         		/qrcode/create = roles[qrcode_writer]
         		
         		/qrcode/prebind/unbind = roles[qrcode_prebind_writer]

@@ -12,7 +12,7 @@
 </div>
 <div id="page-wrapper">
     #parse("/backend/common/sidebar.vm")
-    	#parse("/backend/order/component/overview_list.vm")
+    	#parse("/backend/order/component/message_notify.vm")
 </div>
 </body>
 <script type="text/javascript"></script>
