@@ -2,6 +2,7 @@ package controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.sun.org.apache.regexp.internal.RE;
 import form.QRCodeGenerateForm;
 import model.machine.Insight;
 import model.qrcode.PreBindCodeUID;
@@ -372,6 +373,33 @@ public class QRCodeController {
     @RequestMapping(method = RequestMethod.POST, value = "/prebind")
     public ResultData prebind(String uid, String codeId) {
         ResultData result = new ResultData();
+        ResultData rs = qRCodeService.fetchPreBindByUid(uid);
+        if (rs.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+            PreBindCodeUID pb = new PreBindCodeUID(uid, codeId);
+            ResultData response = qRCodeService.prebind(pb);
+            result.setResponseCode(response.getResponseCode());
+            if (result.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                Map<String, Object> condition = new HashMap<>();
+                condition.put("uid", uid);
+                response = machineService.fetchIdleMachine(condition);
+                if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+                    IdleMachineVo vo = ((List<IdleMachineVo>) response.getData()).get(0);
+                    condition.clear();
+                    condition.put("im_id", vo.getImId());
+                    response = machineService.updateIdleMachine(condition);
+                }
+                result.setData(response.getData());
+
+            } else if (result.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
+                result.setDescription(response.getDescription());
+            }
+        } else if (rs.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            result.setDescription("查询到UID为" + uid + "的机器已经预绑定过，请确认是否无误");
+        } else {
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription("查询有误，请稍后重试");
+        }
+        /*
         PreBindCodeUID pb = new PreBindCodeUID(uid, codeId);
         ResultData response = qRCodeService.prebind(pb);
         result.setResponseCode(response.getResponseCode());
@@ -389,7 +417,7 @@ public class QRCodeController {
 
         } else if (result.getResponseCode() == ResponseCode.RESPONSE_ERROR) {
             result.setDescription(response.getDescription());
-        }
+        }*/
         return result;
     }
 
@@ -548,9 +576,16 @@ public class QRCodeController {
             result.setResponseCode(ResponseCode.RESPONSE_NULL);
             result.setDescription("请输入完成的第三段的值");
             return result;
+        } else {
+            condition.put("codeId", candidate);
+            response = qRCodeService.fetchPreBind(condition);
+            if (response.getResponseCode() == ResponseCode.RESPONSE_NULL) {
+                QRCodeVo vo = list.get(0);
+                result.setData(vo);
+            } else {
+                result.setDescription("查询到" + candidate + "已被预绑定过，请确认是否无误");
+            }
         }
-        QRCodeVo vo = list.get(0);
-        result.setData(vo);
         return result;
     }
 
