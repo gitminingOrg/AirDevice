@@ -36,7 +36,7 @@ public class MessageController {
             result.setDescription("Phone number cannot be empty");
             return result;
         }
-        String message = "尊敬的果麦用户，感谢您订购果麦壁挂式新风机，我们将在明天给您致电，麻烦您注意接听区号为025的固定电话，感谢您的支持！【果麦新风】";
+        String message = "尊敬的果麦用户，感谢您订购果麦壁挂式新风机，我们将在近期给您致电，麻烦您注意接听区号为025的固定电话，感谢您的支持！【果麦新风】";
 
         Client client = Client.create();
         WebResource webResource = client.resource(
