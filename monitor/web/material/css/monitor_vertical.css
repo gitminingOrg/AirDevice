@@ -1,5 +1,5 @@
 body {
-    padding-top: 20px;
+    padding-top: 30px;
     padding-bottom: 10px;
 
     padding-left: 30px;
@@ -8,7 +8,7 @@ body {
     font-family: "Microsoft YaHei";
     font-size: 40px;
 
-    background-color: rgb(236, 237, 239);
+    background-color: rgb(240, 241, 242);
 }
 
 .monitor-header {
@@ -95,7 +95,7 @@ body {
 
 .monitor-indoor-body-item {
     background-color: rgb(72, 165, 222);
-    height: 240px;
+    height: 230px;
 
     color: white;
 
