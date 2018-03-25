@@ -2,7 +2,7 @@ package controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.org.apache.regexp.internal.RE;
+//import com.sun.org.apache.regexp.internal.RE;
 import form.QRCodeGenerateForm;
 import model.machine.Insight;
 import model.qrcode.PreBindCodeUID;

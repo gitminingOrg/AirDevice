@@ -1,0 +1,225 @@
+#parse("/common/util.vm")
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    #parse("/lib/init.lib.vm")
+    #parse("lib/bootstrap.lib.vm")
+    #parse("lib/echarts.lib.vm")
+    <link rel="stylesheet" href="${path.concat('/material/css/monitor_vertical.css')}" />
+##    <link rel="stylesheet" href="${path.concat('/material/css/custom.css')}" />
+    <title>数据监测</title>
+</head>
+<body>
+    <div class="monitor-header">
+        <div class="location-div">
+            <img src="${path.concat('/material/image/location_logo.png')}" class="location-img">
+        </div>
+        <div class="init-div">
+            <div class="col-xs-6" id="time-div">
+
+            </div>
+            <div class="col-xs-6" id="machine-div">
+                <img src="${path.concat('/material/image/wind.png')}" class="wind-img">
+                果麦新风净化系统运行中
+            </div>
+        </div>
+    </div>
+
+    <div class="monitor-indoor">
+        <div class="monitor-indoor-outdoor-header">
+            <span class="chinese-label">室内</span>
+            <span class="english-label">Indoor</span>
+        </div>
+        <div class="monitor-indoor-body">
+            <div class="monitor-indoor-body-item">
+                <div class="col-xs-3 center">
+                    <img src="${path.concat('/material/image/air_quality.png')}" class="indoor-img">
+                    <p class="font-30">PM2.5</p>
+                </div>
+                <div class="col-xs-5 font-50">
+                    空气质量
+                    <span class="font-bold">
+                        优秀
+                    </span>
+                </div>
+                <div class="col-xs-4">
+                    <span id="air-quality-indoor" class="font-80">0</span>
+                    <span>ug/m<sup>3</sup></span>
+                </div>
+            </div>
+            <div class="seperate-div"></div>
+            <div class="monitor-indoor-body-item">
+                <div class="col-xs-3 center">
+                    <img src="${path.concat('/material/image/co2.png')}" class="indoor-img">
+                    <p class="font-30">二氧化碳浓度</p>
+                </div>
+                <div class="col-xs-5 font-50">
+                    氧气
+                    <span class="font-bold">
+                        充沛
+                    </span>
+                </div>
+                <div class="col-xs-4">
+                    <span id="co2-indoor" class="font-80">0</span>
+                    <span>ppm</span>
+                </div>
+            </div>
+            <div class="seperate-div"></div>
+            <div class="monitor-indoor-body-item border-bottom-raduis">
+                <div class="col-xs-3 center">
+                    <img src="${path.concat('/material/image/temprature_humidity.png')}" class="indoor-img">
+                    <p class="font-30">温度/湿度</p>
+                </div>
+                <div class="col-xs-5">
+                    <div class="half-height">
+                        室内
+                        <span class="font-bold">
+                        温度
+                        </span>
+                    </div>
+                    <div class="half-height">
+                        室内
+                        <span class="font-bold">
+                        湿度
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="half-height">
+                        <span id="temprature-indoor" class="font-50">0</span>
+                        <span><sup>o</sup>C</span>
+                    </div>
+                    <div class="half-height">
+                        <span id="humidity-indoor" class="font-50">0</span>
+                        <span>%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="div-20"></div>
+
+    <div class="monitor-outdoor">
+        <div class="monitor-indoor-outdoor-header outdoor">
+            <span class="chinese-label">室外</span>
+            <span class="english-label">Outdoor</span>
+        </div>
+        <div class="monitor-outdoor-body">
+            <div class="monitor-indoor-body-item" id="outdoor-item">
+                <div class="col-xs-3 center">
+                    <img src="${path.concat('/material/image/air_quality.png')}" class="indoor-img">
+                    <p class="font-30">AQI/PM2.5</p>
+                </div>
+                <div class="col-xs-5 font-50" id="outdoor-aqi-label">
+                    空气质量优秀
+                </div>
+                <div class="col-xs-4">
+                    <div class="half-height">
+                        <span>AQI</span>
+                        <span id="aqi-outdoor" class="font-80">0</span>
+                    </div>
+                    <div class="half-height">
+                        <span class="font-30">PM2.5</span>
+                        <span id="pm25-outdoor" class="font-50">0</span>
+                        <span>ug/m<sup>3</sup></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="div-20"></div>
+    <div class="div-20"></div>
+
+    <div class="contact-div">
+        <div class="col-xs-7">
+            <div class="half-height">
+                <img src="${path.concat('/material/image/gmair_logo.png')}" class="gmair-image">
+                <img src="${path.concat('/material/image/log.png')}" class="log-image">
+            </div>
+            <div class="div-20"></div>
+            <div class="half-height">
+                <div><span>TEL&nbsp;:&nbsp;</span>4009946898</div>
+                <div><span>Email&nbsp;:&nbsp;</span>service@gmair.net</div>
+            </div>
+        </div>
+        <div class="col-xs-5">
+            <div class="col-xs-6">
+                <img src="${path.concat('/material/image/wechat.png')}" class="qrcode-img">
+            </div>
+            <div class="col-xs-6">
+                <img src="${path.concat('/material/image/wechat_public.jpg')}" class="qrcode-img">
+            </div>
+        </div>
+    </div>
+    <div class="div-20"></div>
+    <div class="footer-bottom">
+        <div class="col-xs-2"></div>
+        <div class="col-xs-5 font-18 full-height">
+            <div class="bottom-div">
+                <span class="glyphicon glyphicon-star bg-red"></span>
+                最终解释权归江苏果麦环保科技有限公司所有.
+            </div>
+        </div>
+        <div class="col-xs-5">
+            <img src="${path.concat('/material/image/aqi_line.png')}" class="aqi-img">
+        </div>
+    </div>
+</body>
+<script>
+
+    $(document).ready(function() {
+        init();
+        init_time();
+        self.setInterval("init()", 30000);
+        self.setInterval("init_time()", 10000);
+    });
+
+    function init() {
+        var url = "${path.concat('/monitor/')}" + "${machineId}" + "/inner";
+        $.get(url, function (response) {
+            if(response.responseCode == "RESPONSE_OK") {
+                $("#air-quality-indoor").html(response.data.pm25);
+                $("#co2-indoor").html(response.data.co2);
+                $("#temperature").html(response.data.temprature);
+                $("#humidity-indoor").html(response.data.humidity);
+            }
+            if (response.responseCode == "RESPONSE_NULL") {
+                $("#air-quality-indoor").html(0);
+                $("#co2-indoor").html(0);
+                $("#temperature").html(0);
+                $("#humidity-indoor").html(0);
+            }
+        });
+        url = "${path.concat('/monitor/')}" + "${machineId}" + "/outer";
+        $.get(url, function (response) {
+            if (response.responseCode = "RESPONSE_OK") {
+                if (response.data.cityAqi <= 50) {
+                    $("#outdoor-item").css({backgroundColor: '#1695DC'});
+                    $("#outdoor-aqi-label").html("空气质量优秀");
+                } else {
+                    $("#outdoor-item").css({backgroundColor: 'rgb(237, 184, 77)'});
+                    $("#outdoor-aqi-label").html("空气轻度污染");
+                }
+                $("#aqi-outdoor").html(response.data.cityAqi);
+                $("#pm25-outdoor").html(response.data.pm25);
+            }
+            if (response.responseCode == "RESPONSE_NULL") {
+                $("#aqi-outdoor").html(0);
+                $("#pm25-outdoor").html(0);
+            }
+        });
+    }
+
+    function init_time() {
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = ('0' + (today.getMonth() + 1)).slice(-2).toString();
+        var date = ('0' + today.getDate()).slice(-2).toString();
+        var hour = ('0' + today.getHours()).slice(-2).toString();
+        var minute = ('0' + today.getMinutes()).slice(-2).toString();
+        var date_string = year + "年" + month + "月" + date + "日" + "&nbsp;&nbsp;" + hour + "&nbsp;:&nbsp;" + minute;
+        $("#time-div").html(date_string);
+    }
+</script>

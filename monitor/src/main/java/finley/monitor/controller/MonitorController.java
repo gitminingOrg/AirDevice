@@ -45,6 +45,19 @@ public class MonitorController {
 		return view;
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/{machine}/vertical")
+    public ModelAndView verticalMonitor(@PathVariable("machine") String machine) {
+	    ModelAndView view = new ModelAndView();
+	    Map<String, Object> condition = new HashMap<>();
+	    condition.put("machineId", machine);
+	    ResultData response = machineService.fetch(condition);
+	    if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+	        view.addObject("machineId", machine);
+        }
+        view.setViewName("/backend/monitor_vertical");
+	    return view;
+    }
+
 	@RequestMapping(method = RequestMethod.GET, value = "/overview")
 	public ModelAndView Monitor() {
 		ModelAndView view = new ModelAndView();

@@ -1,0 +1,200 @@
+body {
+    padding-top: 20px;
+    padding-bottom: 10px;
+
+    padding-left: 30px;
+    padding-right: 30px;
+
+    font-family: "Microsoft YaHei";
+    font-size: 40px;
+
+    background-color: rgb(236, 237, 239);
+}
+
+.monitor-header {
+
+    /*position: fixed;*/
+
+    height: 20%;
+    width: 100%;
+
+    text-align: center;
+
+    color: rgb(124, 125, 126);
+}
+
+.init-div {
+    margin-top: 30px;
+    font-size: 30px;
+    overflow: hidden;
+}
+
+.location-img {
+    height: 80px;
+}
+
+/*rotate image*/
+.wind-img {
+    height: 60px;
+    width: 60px;
+
+    -webkit-animation:rotateImg 1s linear infinite;
+    vertical-align: middle;
+}
+
+@keyframes rotateImg {
+    0% {transform : rotate(0deg);}
+    100% {transform : rotate(360deg);}
+}
+
+@-webkit-keyframes rotateImg {
+    0%{-webkit-transform : rotate(0deg);}
+    100%{-webkit-transform : rotate(360deg);}
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.monitor-indoor {
+    margin-top: 30px;
+
+    border-radius: 10px;
+}
+
+.monitor-indoor-outdoor-header {
+    background-color: rgb(29, 81, 141);
+
+    color: white;
+
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.chinese-label {
+    font-size: 70px;
+    margin-left: 50px;
+}
+
+.english-label {
+    font-size: 40px;
+    margin-left: 30px;
+}
+
+.seperate-div {
+    height: 1px;
+    background-color: white;
+}
+
+.div-20 {
+    height: 20px;
+}
+
+.monitor-indoor-body-item {
+    background-color: rgb(72, 165, 222);
+    height: 240px;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+}
+
+.outdoor {
+    background-color: rgb(230, 156 ,55);
+}
+
+.center {
+    text-align: center;
+}
+
+.font-50 {
+    font-size: 50px;
+}
+
+.font-10 {
+    font-size: 10px;
+}
+
+.font-7 {
+    font-size: 7px;
+}
+
+.font-15 {
+    font-size: 15px;
+}
+
+.font-40 {
+    font-size: 40px;
+}
+
+.font-30 {
+    font-size: 30px;
+}
+
+.font-80 {
+    font-size: 80px;
+}
+
+.font-18 {
+    font-size: 18px;
+}
+
+.half-height {
+    height: 50%;
+}
+
+.indoor-img {
+    height: 120px;
+    width: 120px;
+}
+
+.contact-div {
+    overflow: hidden;
+}
+
+.gmair-image {
+    height: 60px;
+}
+
+.log-image {
+    height: 65px;
+    margin-left: 15px;
+}
+
+.qrcode-img {
+    height: 170px;
+}
+
+.bg-red {
+    color: red;
+}
+
+.bottom-div {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    color: rgb(124, 125, 126);
+}
+
+.border-bottom-raduis {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.footer-bottom {
+    height: 50px;
+}
+
+.aqi-img {
+    width: 370px;
+    border: 1px solid rgb(184, 186, 187);
+}
