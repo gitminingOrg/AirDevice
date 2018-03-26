@@ -13,6 +13,7 @@
     <div class="monitor-header">
         <div class="location-div">
             <img src="${path.concat('/material/image/location_logo.png')}" class="location-img">
+            <img src="${path.concat('/material/image/geeer.png')}" class="geer-img">
         </div>
         <div class="init-div">
             <div class="col-xs-6" id="time-div">
@@ -71,13 +72,13 @@
                     <p class="font-30">温度/湿度</p>
                 </div>
                 <div class="col-xs-5">
-                    <div class="half-height">
+                    <div class="half-height margin-bottom-10">
                         室内
                         <span class="font-bold">
                         温度
                         </span>
                     </div>
-                    <div class="half-height">
+                    <div class="half-height margin-top-10">
                         室内
                         <span class="font-bold">
                         湿度
@@ -85,11 +86,11 @@
                     </div>
                 </div>
                 <div class="col-xs-4">
-                    <div class="half-height">
+                    <div class="half-height margin-bottom-10">
                         <span id="temprature-indoor" class="font-50">0</span>
                         <span><sup>o</sup>C</span>
                     </div>
-                    <div class="half-height">
+                    <div class="half-height margin-top-10">
                         <span id="humidity-indoor" class="font-50">0</span>
                         <span>%</span>
                     </div>
