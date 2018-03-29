@@ -183,7 +183,7 @@
             if(response.responseCode == "RESPONSE_OK") {
                 $("#air-quality-indoor").html(response.data.pm25);
                 $("#co2-indoor").html(response.data.co2);
-                $("#temperature").html(response.data.temprature);
+                $("#temprature-indoor").html(response.data.temperature);
                 $("#humidity-indoor").html(response.data.humidity);
             }
             if (response.responseCode == "RESPONSE_NULL") {
