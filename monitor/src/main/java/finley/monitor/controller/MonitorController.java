@@ -1,9 +1,12 @@
 package finley.monitor.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import finley.monitor.service.LogoPathService;
+import finley.monitor.vo.LogoPathVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +35,9 @@ public class MonitorController {
 	@Autowired
 	private CityPM25Service cityPM25Service;
 
+	@Autowired
+    private LogoPathService logoPathService;
+
 	@RequestMapping(method = RequestMethod.GET, value = "/{machine}")
 	public ModelAndView monitor(@PathVariable("machine") String machine) {
 		ModelAndView view = new ModelAndView();
@@ -53,6 +59,15 @@ public class MonitorController {
 	    ResultData response = machineService.fetch(condition);
 	    if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 	        view.addObject("machineId", machine);
+        }
+        // add logo path
+        condition.clear();
+	    condition.put("code", machine);
+	    condition.put("blockFlag", 0);
+        response = logoPathService.fetchLogoPath(condition);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            LogoPathVo logoPathVo = ((List<LogoPathVo>) response.getData()).get(0);
+            view.addObject("logoPath", logoPathVo.getPath());
         }
         view.setViewName("/backend/monitor_vertical");
 	    return view;

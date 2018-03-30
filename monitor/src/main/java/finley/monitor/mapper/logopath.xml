@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="monitor.logopath">
+    <resultMap id="LogoPathVo" type="finley.monitor.vo.LogoPathVo">
+        <result property="code" column="code"/>
+        <result property="path" column="path"/>
+        <result property="updateTime" column="create_time"/>
+    </resultMap>
+
+    <select id="queryLogoPath" parameterType="java.util.Map" resultMap="LogoPathVo">
+        select code, path, create_time
+        from `gmair_monitor`.`monitor_logo`
+        where 1 = 1
+        <if test="code != null">
+            AND code = #{code}
+        </if>
+        <if test="blockFlag != null">
+            AND block_flag = #{blockFlag}
+        </if>
+    </select>
+</mapper>
