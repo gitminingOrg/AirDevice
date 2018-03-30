@@ -186,12 +186,12 @@
                 $("#temprature-indoor").html(response.data.temperature);
                 $("#humidity-indoor").html(response.data.humidity);
             }
-            if (response.responseCode == "RESPONSE_NULL") {
-                $("#air-quality-indoor").html(0);
-                $("#co2-indoor").html(0);
-                $("#temperature").html(0);
-                $("#humidity-indoor").html(0);
-            }
+            // if (response.responseCode == "RESPONSE_NULL") {
+            //     $("#air-quality-indoor").html(0);
+            //     $("#co2-indoor").html(0);
+            //     $("#temperature").html(0);
+            //     $("#humidity-indoor").html(0);
+            // }
         });
         url = "${path.concat('/monitor/')}" + "${machineId}" + "/outer";
         $.get(url, function (response) {
@@ -206,10 +206,10 @@
                 $("#aqi-outdoor").html(response.data.cityAqi);
                 $("#pm25-outdoor").html(response.data.pm25);
             }
-            if (response.responseCode == "RESPONSE_NULL") {
-                $("#aqi-outdoor").html(0);
-                $("#pm25-outdoor").html(0);
-            }
+            // if (response.responseCode == "RESPONSE_NULL") {
+            //     $("#aqi-outdoor").html(0);
+            //     $("#pm25-outdoor").html(0);
+            // }
         });
     }
 
