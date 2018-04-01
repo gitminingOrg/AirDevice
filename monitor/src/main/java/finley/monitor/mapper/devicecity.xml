@@ -9,13 +9,20 @@
 		<result property="quality" column="aqi_category"/>
 		<result property="time" column="time"/>
 	</resultMap>
+
+	<resultMap id="DeviceCityVo" type="finley.monitor.vo.DeviceCityVo">
+        <result property="deviceId" column="device_id"/>
+        <result property="city" column="city" />
+    </resultMap>
 	
 	<select id="queryCityPM25" parameterType="java.util.Map" resultMap="CityPM25Vo">
 		select city_pinyin, city_name, pm25, city_aqi, aqi_category, time
 		from city_aqi
-		where city_pinyin in (
-			select city from device_city where device_id = #{machineId} and status = 1
-		)
+		where city_pinyin = #{city}
 		order by time desc
 	</select>
+
+    <select id="queryDeviceCity" parameterMap="java.util.Map" resultMap="DeviceCityVo">
+        select * from device_city where device_id = #{machineId} AND status = 1;
+    </select>
 </mapper>

@@ -31,4 +31,22 @@ public class CityPM25DaoImpl extends BaseDao implements CityPM25Dao {
 		return result;
 	}
 
+
+	@Override
+	public ResultData queryDeviceCity(Map<String, Object> condition) {
+        ResultData result = new ResultData();
+        try {
+            List<CityPM25Vo> list = sqlSession.selectList("monitor.devicecity.queryDeviceCity", condition);
+            if (list.isEmpty()) {
+                result.setResponseCode(ResponseCode.RESPONSE_NULL);
+            } else {
+                result.setData(list);
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            result.setResponseCode(ResponseCode.RESPONSE_ERROR);
+            result.setDescription(e.getMessage());
+        }
+        return result;
+	}
 }

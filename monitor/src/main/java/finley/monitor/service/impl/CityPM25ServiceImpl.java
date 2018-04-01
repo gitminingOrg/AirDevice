@@ -32,4 +32,8 @@ public class CityPM25ServiceImpl implements CityPM25Service {
 		return result;
 	}
 
+	@Override
+	public ResultData fetchDeviceCity(Map<String, Object> condition) {
+		return cityPM25Dao.queryDeviceCity(condition);
+	}
 }

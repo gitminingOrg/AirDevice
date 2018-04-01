@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import finley.monitor.service.LogoPathService;
+import finley.monitor.vo.DeviceCityVo;
 import finley.monitor.vo.LogoPathVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -107,7 +108,11 @@ public class MonitorController {
 		ResultData result = new ResultData();
 		Map<String, Object> condition = new HashMap<>();
 		condition.put("machineId", machine);
-		ResultData response = cityPM25Service.fetch(condition);
+		ResultData response = cityPM25Service.fetchDeviceCity(condition);
+		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+		    String city = ((List<DeviceCityVo>) response).get(0).getCity();
+		    condition.put("city", city);
+        }
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			CityPM25Vo vo = ((List<CityPM25Vo>) response.getData()).get(0);
 			result.setData(vo);
