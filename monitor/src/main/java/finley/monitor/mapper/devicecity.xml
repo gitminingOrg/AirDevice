@@ -22,7 +22,7 @@
 		order by time desc
 	</select>
 
-    <select id="queryDeviceCity" parameterMap="java.util.Map" resultMap="DeviceCityVo">
+    <select id="queryDeviceCity" parameterType="java.util.Map" resultMap="DeviceCityVo">
         select * from device_city where device_id = #{machineId} AND status = 1;
     </select>
 </mapper>

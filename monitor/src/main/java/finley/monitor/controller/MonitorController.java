@@ -110,9 +110,10 @@ public class MonitorController {
 		condition.put("machineId", machine);
 		ResultData response = cityPM25Service.fetchDeviceCity(condition);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
-		    String city = ((List<DeviceCityVo>) response).get(0).getCity();
+		    String city = ((List<DeviceCityVo>) response.getData()).get(0).getCity();
 		    condition.put("city", city);
         }
+        response = cityPM25Service.fetch(condition);
 		if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
 			CityPM25Vo vo = ((List<CityPM25Vo>) response.getData()).get(0);
 			result.setData(vo);
