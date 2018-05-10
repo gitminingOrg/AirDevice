@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="seperate-div"></div>
-            <div class="monitor-indoor-body-item">
+            <div class="monitor-indoor-body-item" id="co2-div">
                 <div class="col-xs-3 center">
                     <img src="${path.concat('/material/image/co2.png')}" class="indoor-img">
                     <p class="font-30">二氧化碳浓度</p>
@@ -182,6 +182,11 @@
         $.get(url, function (response) {
             if(response.responseCode == "RESPONSE_OK") {
                 $("#air-quality-indoor").html(response.data.pm25);
+                if (response.data.co2 >= 2000 || response.data == 0) {
+                    $("#co2-div").hide();
+                } else {
+                    $("#co2-div").show();
+                }
                 $("#co2-indoor").html(response.data.co2);
                 $("#temprature-indoor").html(response.data.temperature);
                 $("#humidity-indoor").html(response.data.humidity);
