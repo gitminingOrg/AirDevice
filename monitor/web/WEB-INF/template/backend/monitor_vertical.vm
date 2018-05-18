@@ -101,7 +101,7 @@
 
 <div class="div-20"></div>
     #if($!{advertisement})
-    <div style="font-size: 40px" id="advertisement">${advertisement}</div>
+    <div id="advertisement">${advertisement}</div>
     #end
 <div class="div-20"></div>
 

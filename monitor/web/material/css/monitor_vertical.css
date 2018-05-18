@@ -211,3 +211,8 @@ body {
     width: 370px;
     border: 1px solid rgb(184, 186, 187);
 }
+
+#advertisement {
+    font-size: 90px;
+    font-weight: bold
+}
