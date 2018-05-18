@@ -13,7 +13,7 @@
 <div class="monitor-header">
     <div class="location-div">
         <img src="${path.concat('/material/image/location_logo.png')}" class="location-img">
-        <img src="${path.concat($logoPath)}" class="geer-img">
+        <img src="${path.concat(${logoPath})}" class="geer-img">
     </div>
     <div class="init-div">
         <div class="col-xs-6" id="time-div">
