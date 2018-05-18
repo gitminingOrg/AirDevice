@@ -5,9 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import finley.monitor.service.AdvertisementService;
 import finley.monitor.service.LogoPathService;
-import finley.monitor.vo.DeviceCityVo;
-import finley.monitor.vo.LogoPathVo;
+import finley.monitor.util.MonitorConstant;
+import finley.monitor.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,8 +22,6 @@ import com.alibaba.fastjson.JSONObject;
 
 import finley.monitor.service.CityPM25Service;
 import finley.monitor.service.MachineService;
-import finley.monitor.vo.CityPM25Vo;
-import finley.monitor.vo.MachineVo;
 import utils.HttpDeal;
 import utils.ResponseCode;
 import utils.ResultData;
@@ -38,6 +37,9 @@ public class MonitorController {
 
 	@Autowired
     private LogoPathService logoPathService;
+
+	@Autowired
+    private AdvertisementService advertisementService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{machine}")
 	public ModelAndView monitor(@PathVariable("machine") String machine) {
@@ -69,6 +71,14 @@ public class MonitorController {
         if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
             LogoPathVo logoPathVo = ((List<LogoPathVo>) response.getData()).get(0);
             view.addObject("logoPath", logoPathVo.getPath());
+        } else {
+            view.addObject("logoPath", MonitorConstant.DEFAULT_PATH);
+        }
+
+        response = advertisementService.fetch(condition);
+        if (response.getResponseCode() == ResponseCode.RESPONSE_OK) {
+            AdvertisementVo advertisementVo = ((List<AdvertisementVo>) response.getData()).get(0);
+            view.addObject("advertisement", advertisementVo.getContent());
         }
         view.setViewName("/backend/monitor_vertical");
 	    return view;

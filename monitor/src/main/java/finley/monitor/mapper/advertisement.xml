@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="monitor.advertisement">
+    <resultMap id="AdvertisementVo" type="finley.monitor.vo.AdvertisementVo">
+        <result property="qrcode" column="qrcode"/>
+        <result property="content" column="content"/>
+    </resultMap>
+
+    <select id="query" parameterType="java.util.Map" resultMap="AdvertisementVo">
+        select qrcode, content
+        from `gmair_monitor`.`monitor_ advertisement`
+        where 1 = 1
+        <if test="code != null">
+            AND qrcode = #{code}
+        </if>
+        <if test="blockFlag != null">
+            AND block_flag = #{blockFlag}
+        </if>
+    </select>
+</mapper>

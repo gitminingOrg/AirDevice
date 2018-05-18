@@ -5,5 +5,6 @@
 		<mapper resource="finley/monitor/mapper/machine.xml"/>
 		<mapper resource="finley/monitor/mapper/devicecity.xml"/>
 		<mapper resource="finley/monitor/mapper/logopath.xml"/>
+		<mapper resource="finley/monitor/mapper/advertisement.xml"/>
 	</mappers>
 </configuration>
