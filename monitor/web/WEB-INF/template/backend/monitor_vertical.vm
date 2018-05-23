@@ -145,17 +145,30 @@
         </div>
         <div class="div-20"></div>
         <div class="half-height">
-            <div><span>TEL&nbsp;:&nbsp;</span>4009946898</div>
-            <div><span>Email&nbsp;:&nbsp;</span>service@gmair.net</div>
+            #if("${machineId}"== '35A108A484944')
+                <div><span>TEL&nbsp;:&nbsp;</span>025-83728898</div>
+            #else
+                <div><span>TEL&nbsp;:&nbsp;</span>4009946898</div>
+                <div><span>Email&nbsp;:&nbsp;</span>service@gmair.net</div>
+            #end
+
         </div>
     </div>
     <div class="col-xs-5">
-        <div class="col-xs-6">
-            <img src="${path.concat('/material/image/wechat.png')}" class="qrcode-img">
-        </div>
-        <div class="col-xs-6">
-            <img src="${path.concat('/material/image/wechat_public.jpg')}" class="qrcode-img">
-        </div>
+        #if("${machineId}"== '35A108A484944')
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6">
+                <img src="${path.concat('/material/image/ruixin_logo.jpeg')}" class="qrcode-img">
+            </div>
+        #else
+            <div class="col-xs-6">
+                <img src="${path.concat('/material/image/wechat.png')}" class="qrcode-img">
+            </div>
+            <div class="col-xs-6">
+                <img src="${path.concat('/material/image/wechat_public.jpg')}" class="qrcode-img">
+            </div>
+        #end
+
     </div>
 </div>
 <div class="div-20"></div>
@@ -175,6 +188,7 @@
 </html>
 <script src="${path.concat('/plugins/limarquee/js/jquery.liMarquee.js')}"></script>
 <script>
+
     $(document).ready(function () {
         init();
         init_time();
