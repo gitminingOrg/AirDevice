@@ -133,7 +133,6 @@ public class QRCodeController {
         for (int i = 0; i < list.size(); i++) {
             File file = new File(new StringBuffer(PathUtil.retrivePath()).append(list.get(i).getPath()).toString());
             files[i] = file;
-
         }
         boolean status = ZipUtil.zip(zip, files);
         if (status == true) {
